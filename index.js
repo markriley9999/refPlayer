@@ -66,7 +66,7 @@ expressServer.get('/test', function(req, res) {
     res.send('[{"Test": "Hello, World!"}]');           // Send a JSON string
 });
  
-expressServer.post('/tel', function(req, res) {
+expressServer.post('/log', function(req, res) {
     mainwindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
 	console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging

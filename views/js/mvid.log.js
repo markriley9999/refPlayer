@@ -33,7 +33,7 @@ mVid.Log._write = function(message, cssClass) {
 	
 	// send a xhr/ajax POST request with the serialized media events
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "/tel", true);
+	xhttp.open("POST", "/log", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
 	xhttp.send(out);
 };
