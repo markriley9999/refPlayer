@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta 	http-equiv="Content-Type" content="application/vnd.hbbtv.xml+xhtml; utf-8" />
+
+		<script type="text/javascript" src="http://cdn.dashjs.org/latest/dash.all.debug.js"></script>
+        <script src="/socket.io/socket.io.js" charset="utf-8"></script> <!-- needed for sockets io to be able to detect the client -->
+
+        <script type="text/javascript" src="js/eme.js"></script>
+        <script type="text/javascript" src="js/lic.js"></script>
+        <script type="text/javascript" src="js/mvid.js"></script>
+        <script type="text/javascript" src="js/mvid.log.js"></script>
+		
+        <link 	rel="stylesheet" href="css/mvid.css" />
+		<link 	href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet' type='text/css'/>
+		<link 	href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel='stylesheet' type='text/css'/>
+	</head>
+
+	<body>
+		<div class="safe_area" id="app_area">
+			<div id="player-container" class="video">
+				<video id="mVid-mainContent" poster="bground.jpg" display="none">
+					<source id="mVid-mainContent-source" src="" type="" preload="auto" loop="true"></source> 
+				</video>
+			</div>
+			<div class="videoControls">
+				<progress value="0" max="100" id="playbackBar" class="playbackBar" role="progressbar">
+				</progress>
+			</div>
+			<div class="videoGFXOverlay">
+				<img src="bitmaps/player_rew.png" 	id="player-rew" 	class="playerIcon"></img>				
+				<img src="bitmaps/player_play.png" 	id="player-play" 	class="playerIcon"></img>				
+				<img src="bitmaps/player_fwd.png" 	id="player-fwd" 	class="playerIcon"></img>				
+				<img src="bitmaps/player_pause.png" id="player-pause" 	class="playerIcon"></img>				
+				<img src="bitmaps/player_stop.png" 	id="player-stop" 	class="playerIcon"></img>				
+				<img src="bitmaps/heart.png" 		id="heart" 				class="beat"></img>				
+				<img src="bitmaps/buffering2.png" 	id="player-buffering" 	class="playerBufferingIcon"></img>				
+				<p id="videoTimer" style="font-family: 'VT323'">00:00:00:000</p>
+			</div>
+			<div id="log" class="log"></div>
+			<div class="status-table-container">
+				<table>
+					<caption>Status</caption>
+					<tbody>
+						<tr>
+							<td>Play Count</td>
+							<td id="PlayCount">0</td>
+						</tr>
+						<tr>
+							<td>Buffer Idx</td>
+							<td id="BufferIdx">0</td>
+						</tr>
+						<tr>
+							<td>Playing Idx</td>
+							<td id="PlayingIdx">0</td>
+						</tr>
+					</tbody>
+				</table>
+				<table>
+					<caption>Main Content</caption>
+					<tbody id="status-table-body0">
+					</tbody>
+				</table>
+				<table>
+					<caption>Player 0</caption>
+					<tbody id="status-table-body1">
+					</tbody>
+				</table>
+				<table>
+					<caption>Player 1</caption>
+					<tbody id="status-table-body2">
+					</tbody>
+				</table>
+			</div>
+			<div class="progress-bar-container">
+				<p>Main Buffer:</p> 
+				<progress value="0" max="100" id="mVid-mainContent-bufferBar" 	class="bufferBar" 		role="progressbar">
+				</progress>
+				<progress value="0" max="100" id="mVid-mainContent-headroomBar" 	class="bufferBar" 	role="progressbar">
+				</progress>
+				<p>Video 0 Buffer:</p> 
+				<progress value="0" max="100" id="mVid-video0-bufferBar" 		class="bufferBarActive" role="progressbar">
+				</progress>
+				<progress value="0" max="100" id="mVid-video0-headroomBar" 		class="bufferBarActive" role="progressbar">
+				</progress>
+				<p>Video 1 Buffer:</p> 
+				<progress value="0" max="100" id="mVid-video1-bufferBar" 		class="bufferBar" 		role="progressbar">
+				</progress>
+				<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="bufferBar" 		role="progressbar">
+				</progress>
+			</div>
+		</div>
+    </body>
+</html>
