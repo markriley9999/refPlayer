@@ -3,11 +3,7 @@ mVid.Log = {};
 mVid.Log.init = function (logDiv) {
 	var level = this.getCookie("loglevel");
 	
-	this.logStr = "\nLog\n";
-	this.logStr += "---------------------\n\n";
-		
 	this.lastLogTime 	= Date.now();
-	this.logStr 		= "";
 	this._logCount 		= 0;
 	this.maxLogEntries 	= 26;
 
@@ -75,8 +71,20 @@ mVid.Log._write = function(message, cssClass) {
 	
 	logText = this._logCount + ":" + elapsedTime + "ms:" + message;
 
-	this.logStr += logText + "\n";
 	logText = logText.substring(0, 110);
+
+	
+	var out = JSON.stringify("cssClass=" + cssClass) + "&";
+	out += JSON.stringify("logText=" + logText);
+	
+	// send a xhr/ajax POST request with the serialized media events
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "/tel", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	xhttp.send(out);
+
+	
+	
 	
 	if (this._logCount < this.maxLogEntries) {
 		log = document.createElement("p");
@@ -98,10 +106,6 @@ mVid.Log._write = function(message, cssClass) {
 	}
 	this._logCount++;
 };
-
-mVid.Log.getStr = function() {
-	return this.logStr + "\n\n";
-}
 
 mVid.Log.level = {
   ERROR: 	1,
