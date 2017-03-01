@@ -153,70 +153,26 @@ playerUI.statusTableText = function (playerId, textEntry, text) {
 playerUI.Log = {};
 
 playerUI.Log.init = function (logDiv) {
-	var level = this.getCookie("loglevel");
-	
-	this.logStr = "\nLog\n";
-	this.logStr += "---------------------\n\n";
-		
-	this.lastLogTime 	= Date.now();
-	this.logStr 		= "";
 	this._logCount 		= 0;
 	this.maxLogEntries 	= 26;
 
-	level = (level != "") ? level : this.level.INFO;
-	
 	this._div = logDiv;
-	this.setLevel(level);
 };
 
-playerUI.Log.getCookie = function (cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length,c.length);
-        }
-    }
-    return "";
-}
-
-playerUI.Log.setCookie = function (cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
 playerUI.Log.error = function (message) {
-  if (this.currentLevel < this.level.ERROR) return;
   this._write("ERROR: " + message, "error");
 };
 
 playerUI.Log.warn = function (message) {
-  if (this.currentLevel < this.level.WARN) return;
   this._write("WARN: " + message, "warn");
 };
 
 playerUI.Log.info = function (message) {
-  if (this.currentLevel < this.level.INFO) return;
   this._write("INFO: " + message, "info");
 };
 
 playerUI.Log.debug = function (message) {
-  if (this.currentLevel < this.level.DEBUG) return;
   this._write("DEBUG: " + message, "debug");
-};
-
-playerUI.Log.setLevel = function (level) {
-  this.currentLevel = level;
-
-  this.setCookie("loglevel", level, 28);
-  
-  this.info("log level set to " + level);
 };
 
 playerUI.Log._write = function(message, cssClass) {
@@ -244,18 +200,8 @@ playerUI.Log._write = function(message, cssClass) {
 		log.innerHTML = logText;
 		log.setAttribute("class", cssClass);
 	}
+	
 	this._logCount++;
-};
-
-playerUI.Log.getStr = function() {
-	return this.logStr + "\n\n";
-}
-
-playerUI.Log.level = {
-  ERROR: 	1,
-  WARN: 	2,
-  INFO: 	3,
-  DEBUG: 	4
 };
 
 const ipc = require('electron').ipcRenderer; // Picks up messages sent through electrons internal IPC functions
