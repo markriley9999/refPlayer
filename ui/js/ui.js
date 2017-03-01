@@ -34,7 +34,6 @@ playerUI.start = function () {
 	var confManager = null;
 	
 	this.Log.init(document.getElementById("log"));
-	this.Log.info("app loaded");
 
 	this.statusTables.forEach(function(statTable) {
 		that.setupStatusTable(statTable);

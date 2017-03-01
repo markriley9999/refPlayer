@@ -1290,21 +1290,6 @@ mVid.cmndDebug = function () {
 	xhttp.send(strToSend);
 }	
 
-mVid.cmnd1 = function () {
-	this.Log.info("called : cmnd1"); 
-	this.Log.setLevel(this.Log.level.ERROR);
-}
-
-mVid.cmnd2 = function () {
-	this.Log.info("called : cmnd2"); 
-	this.Log.setLevel(this.Log.level.WARN);
-}
-
-mVid.cmnd3 = function () {
-	this.Log.info("called : cmnd3"); 
-	this.Log.setLevel(this.Log.level.INFO);
-}
-
 mVid.cmndSeekFWD = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 	this.Log.info("called : cmndSeekFWD"); 
@@ -1329,9 +1314,6 @@ keyTable.entries = [
 	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_GREEN 		}, 
 	{ func : mVid.cmndReload, 		key : 'L', hbbKey : __VK_RED 		}, 
 	{ func : mVid.cmndDebug, 		key : 'D', hbbKey : __VK_BLUE		}, 
-	{ func : mVid.cmnd1, 			key : '1', hbbKey : __VK_1			}, 
-	{ func : mVid.cmnd2, 			key : '2', hbbKey : __VK_2			}, 
-	{ func : mVid.cmnd3, 			key : '3', hbbKey : __VK_3			}, 
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
 ];
