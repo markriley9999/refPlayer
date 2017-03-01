@@ -4,7 +4,6 @@ mVid.Log.init = function (logDiv) {
 	var level = this.getCookie("loglevel");
 	
 	this.lastLogTime 	= Date.now();
-	this._logCount 		= 0;
 	this.maxLogEntries 	= 26;
 
 	level = (level != "") ? level : this.level.INFO;
@@ -69,11 +68,8 @@ mVid.Log._write = function(message, cssClass) {
 	elapsedTime = ("000000" + (Date.now() - this.lastLogTime)).slice(-6);
 	this.lastLogTime = Date.now();
 	
-	logText = this._logCount + ":" + elapsedTime + "ms:" + message;
+	logText = elapsedTime + "ms:" + message;
 
-	logText = logText.substring(0, 110);
-
-	
 	var out = "cssClass=" + cssClass + "&";
 	out += "logText=" + logText;
 	
@@ -82,29 +78,6 @@ mVid.Log._write = function(message, cssClass) {
 	xhttp.open("POST", "/tel", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
 	xhttp.send(out);
-
-	
-	
-	
-	if (this._logCount < this.maxLogEntries) {
-		log = document.createElement("p");
-		log.setAttribute("id", "log_" + this._logCount);
-		log.setAttribute("class", cssClass);
-
-		log.innerHTML = logText;
-		this._div.appendChild(log);
-	} else {
-		for (var i = 0; i < (this.maxLogEntries-1); i++) {
-			log 	= document.getElementById("log_" + i);
-			nextLog = document.getElementById("log_" + (i + 1));
-			log.innerHTML = nextLog.innerHTML;
-			log.setAttribute("class", nextLog.getAttribute("class"));
-		}
-		log = document.getElementById("log_" + (this.maxLogEntries - 1));
-		log.innerHTML = logText;
-		log.setAttribute("class", cssClass);
-	}
-	this._logCount++;
 };
 
 mVid.Log.level = {

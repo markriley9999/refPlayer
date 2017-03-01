@@ -220,14 +220,10 @@ playerUI.Log.setLevel = function (level) {
 };
 
 playerUI.Log._write = function(message, cssClass) {
-	var log, nextLog, logText, elapsedTime;
+	var log, nextLog, logText;
 	
-	elapsedTime = ("000000" + (Date.now() - this.lastLogTime)).slice(-6);
-	this.lastLogTime = Date.now();
-	
-	logText = this._logCount + ":" + elapsedTime + "ms:" + message;
+	logText = this._logCount + ":" + message;
 
-	this.logStr += logText + "\n";
 	logText = logText.substring(0, 110);
 	
 	if (this._logCount < this.maxLogEntries) {
@@ -266,6 +262,6 @@ const ipc = require('electron').ipcRenderer; // Picks up messages sent through e
  
 // listen for the async-body event
 ipc.on('ipc-log', function(event, message) {
-//	playerUI.Log._write(message.logText, message.cssClass);
+	playerUI.Log._write(message.logText, message.cssClass);
 	console.log(message.logText);
 });
