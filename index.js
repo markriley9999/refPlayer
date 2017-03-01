@@ -67,7 +67,7 @@ expressServer.get('/test', function(req, res) {
 });
  
 expressServer.post('/tel', function(req, res) {
-    mainwindow.webContents.send('async-body', req.body); // send the async-body message to the rendering thread
+    mainwindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
 	console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });

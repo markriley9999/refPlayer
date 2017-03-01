@@ -261,3 +261,11 @@ playerUI.Log.level = {
   INFO: 	3,
   DEBUG: 	4
 };
+
+const ipc = require('electron').ipcRenderer; // Picks up messages sent through electrons internal IPC functions
+ 
+// listen for the async-body event
+ipc.on('ipc-log', function(event, message) {
+//	playerUI.Log._write(message.logText, message.cssClass);
+	console.log(message.logText);
+});

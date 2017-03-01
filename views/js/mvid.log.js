@@ -74,8 +74,8 @@ mVid.Log._write = function(message, cssClass) {
 	logText = logText.substring(0, 110);
 
 	
-	var out = JSON.stringify("cssClass=" + cssClass) + "&";
-	out += JSON.stringify("logText=" + logText);
+	var out = "cssClass=" + cssClass + "&";
+	out += "logText=" + logText;
 	
 	// send a xhr/ajax POST request with the serialized media events
 	var xhttp = new XMLHttpRequest();
