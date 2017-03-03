@@ -4,21 +4,25 @@ playerUI.statusTables = {};
 
 playerUI.statusTables = [
 	{
-		videoElId 	: "playerUI-mainContent",
+		videoElId 	: "mVid-mainContent",
 		tableElId 	: "status-table-body0",
 		entries 	: ["Play", "Buffer", "Pos", "Play trans"]
 	},
 	{
-		videoElId 	: "playerUI-video0",
+		videoElId 	: "mVid-video0",
 		tableElId 	: "status-table-body1",
 		entries 	: ["Play", "Buffer", "Play trans"]
 	},
 	{
-		videoElId 	: "playerUI-video1",
+		videoElId 	: "mVid-video1",
 		tableElId 	: "status-table-body2",
 		entries 	: ["Play", "Buffer", "Play trans"]
 	}
 ];
+
+e = function (id) {
+  return document.getElementById(id);
+}
 
 window.onload = function () {
 	try {
@@ -205,8 +209,14 @@ playerUI.Log._write = function(message, cssClass) {
 
 const ipc = require('electron').ipcRenderer; // Picks up messages sent through electrons internal IPC functions
  
-// listen for the async-body event
+// listen for the ipc events
 ipc.on('ipc-log', function(event, message) {
 	playerUI.Log._write(message.logText, message.cssClass);
 	console.log(message.logText);
+});
+
+ipc.on('ipc-status', function(event, message) {
+	var t = e(message.id);
+	if (t) t.innerHTML = message.text;
+	console.log(message.id + " " + message.text);
 });

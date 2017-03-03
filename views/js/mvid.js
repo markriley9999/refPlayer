@@ -579,6 +579,15 @@ mVid.setPlayingState = function (state) {
 mVid.statusTableText = function (playerId, textEntry, text) {
 	var tableEntry = document.getElementById("e_" + playerId + "_" + textEntry);
 	if (tableEntry) tableEntry.innerHTML = text;
+	
+	var out = "id=" + "e_" + playerId + "_" + textEntry + "&";
+	out += "text=" + text;
+	
+	// send a xhr/ajax POST request with the serialized media events
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "/status", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
+	xhttp.send(out);
 }
 
 mVid.getCurrentBufferingPlayer = function () {
