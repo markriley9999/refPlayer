@@ -154,6 +154,10 @@ const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream w
 
 mVid.startTime = Date.now();
 
+e = function (id) {
+  return document.getElementById(id);
+}
+
 window.onload = function () {
 	try {
 		mVid.start();
@@ -168,7 +172,7 @@ mVid.start = function () {
 	var that 		= this;
 	var confManager = null;
 	
-	this.Log.init(document.getElementById("log"));
+	this.Log.init(e("log"));
 	this.Log.info("app loaded");
 
 	this.displayBrowserInfo();
@@ -195,7 +199,7 @@ mVid.start = function () {
 
 	this.checkForDeviceWorkArounds();
 	
-	mainVideo = document.getElementById("mVid-mainContent");
+	mainVideo = e("mVid-mainContent");
 	
 	this.createPlayer("mVid-video0");
 	this.createPlayer("mVid-video1");
@@ -230,7 +234,7 @@ mVid.start = function () {
 	
 	
 	window.setInterval( function() {
-		var elTimer = document.getElementById("videoTimer");
+		var elTimer = e("videoTimer");
 
 		// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
 		elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
@@ -369,7 +373,7 @@ mVid.createPlayer = function (playerId) {
 	
 	player.appendChild(source);
 
-	document.getElementById("player-container").appendChild(player);
+	e("player-container").appendChild(player);
 	
 	for(var i in this.videoEvents) {
 		player.addEventListener(this.videoEvents[i], this.onVideoEvent);
@@ -390,7 +394,7 @@ mVid.createPlayer = function (playerId) {
 mVid.purgePlayer = function (playerId) {
 	this.Log.info("purgePlayer: " + playerId);
 
-	var player = document.getElementById(playerId);
+	var player = e(playerId);
 	
 	if (!this.options.bKeepPlayers) {
 		if (player) {
@@ -407,7 +411,7 @@ mVid.purgePlayer = function (playerId) {
 	} else {
 		this.Log.error("Player purposely not destroyed!");
 		if (player) {
-			var source = document.getElementById(player.id + "-source");
+			var source = e(player.id + "-source");
 			source.id = "source-" + Date.now();
 			
 			player.style.display = "none";
@@ -455,9 +459,9 @@ mVid.updateBufferBars = function() {
 } 
 
 mVid.updateBufferBar = function(playerId) {
-	var playerBuffer 	= document.getElementById(playerId + "-bufferBar");
-	var headroomBuffer 	= document.getElementById(playerId + "-headroomBar");
-	var player 			= document.getElementById(playerId);
+	var playerBuffer 	= e(playerId + "-bufferBar");
+	var headroomBuffer 	= e(playerId + "-headroomBar");
+	var player 			= e(playerId);
 	var buffer 			= player.buffered;
 	var duration 		= player.duration;
 	var offset;
@@ -493,8 +497,8 @@ mVid.updateBufferBar = function(playerId) {
 }
 
 mVid.updatePlaybackBar = function(playerId) {
-	var playerBar 		= document.getElementById("playbackBar");
-	var player 			= document.getElementById(playerId);
+	var playerBar 		= e("playbackBar");
+	var player 			= e(playerId);
 	var duration 		= player.duration;
 	
 	if (duration && (duration > 0)) {
@@ -509,7 +513,7 @@ mVid.updatePlaybackBar = function(playerId) {
 
 mVid.showBufferingIcon = function (bBuffering) {
 	if (this.bShowBufferingIcon != bBuffering) {
-		var bufferingIcon = document.getElementById("player-buffering");
+		var bufferingIcon = e("player-buffering");
 		
 		this.bShowBufferingIcon = bBuffering;
 			
@@ -523,7 +527,7 @@ mVid.showBufferingIcon = function (bBuffering) {
 
 mVid.setPlayingState = function (state) {
 	for (var s in this.playIconTable) {
-		var playEl = document.getElementById(this.playIconTable[s].icon);
+		var playEl = e(this.playIconTable[s].icon);
 		if (playEl) {
 			if (this.playIconTable[s].state === state) {
 				playEl.style.display = "block";
@@ -553,7 +557,7 @@ mVid.getCurrentBufferingPlayer = function () {
 	var idx = content.currentBufferingIdx;
 	
 	if (content.list[idx].bBuffering) {
-		return document.getElementById(content.list[idx].playerId);
+		return e(content.list[idx].playerId);
 	} else {
 		return null;
 	}
@@ -563,7 +567,7 @@ mVid.getCurrentPlayingPlayer = function () {
 	//this.Log.info("getCurrentPlayingPlayer: " + content.list[content.currentPlayingIdx].playerId);
 	var idx = content.currentPlayingIdx;
 	
-	return document.getElementById(content.list[idx].playerId);
+	return e(content.list[idx].playerId);
 }
 
 mVid.getBufferingContentIdx = function () {
@@ -612,7 +616,7 @@ mVid.isMainFeaturePlayer = function (player) {
 }
 
 mVid.setPreload = function (player, mode) {
-	var source = document.getElementById(player.id + "-source");
+	var source = e(player.id + "-source");
 	source.setAttribute("preload", mode);
 }
 
@@ -621,7 +625,7 @@ mVid.setSourceAndLoad = function (player, src, type) {
 	
 	this.statusTableText(player.id, "Type", type);
 	
-	var source = document.getElementById(player.id + "-source");
+	var source = e(player.id + "-source");
 
 	if (source.getAttribute("type") == "" || !this.isMainFeaturePlayer(player))
 	{
@@ -1132,7 +1136,7 @@ mVid.cmndPause = function () {
 mVid.cmndInfo = function () {
 	this.Log.info("called : cmndInfo"); 
 		
-	var logEl = document.getElementById("log");
+	var logEl = e("log");
 	
 	if (logEl.style.display != "none") {
 		logEl.style.display = "none";			
@@ -1220,7 +1224,7 @@ mVid.cmndDebug = function () {
 	
 	this.Log.info("called : cmndDebug"); 
 	
-	var playerContainer = document.getElementById("player-container");
+	var playerContainer = e("player-container");
 	var strToSend;
 	var xhttp = new XMLHttpRequest();
 	var strFileName = mVid.devTextNameForInfo + "_debug_" + Date.now() + ".log";
