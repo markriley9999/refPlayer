@@ -152,26 +152,6 @@ const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in o
 const HAVE_FUTURE_DATA	= 3; 	// enough data to start playback
 const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream without interruption till the end.
 
-mVid.statusTables = {};
-
-mVid.statusTables = [
-	{
-		videoElId 	: "mVid-mainContent",
-		tableElId 	: "status-table-body0",
-		entries 	: ["Play", "Buffer", "Pos", "Play trans"]
-	},
-	{
-		videoElId 	: "mVid-video0",
-		tableElId 	: "status-table-body1",
-		entries 	: ["Play", "Buffer", "Play trans"]
-	},
-	{
-		videoElId 	: "mVid-video1",
-		tableElId 	: "status-table-body2",
-		entries 	: ["Play", "Buffer", "Play trans"]
-	}
-];
-
 mVid.startTime = Date.now();
 
 window.onload = function () {
@@ -214,10 +194,6 @@ mVid.start = function () {
     }
 
 	this.checkForDeviceWorkArounds();
-	
-	this.statusTables.forEach(function(statTable) {
-		that.setupStatusTable(statTable);
-	});
 	
 	mainVideo = document.getElementById("mVid-mainContent");
 	
@@ -449,24 +425,6 @@ mVid.purgeAndRecreatePlayers = function () {
 	this.createPlayer("mVid-video1");
 }
 
-mVid.setupStatusTable = function (tableInfo) {
-	var tableBody = document.getElementById(tableInfo.tableElId);
-	
-	for (var i in tableInfo.entries) {
-		var row = document.createElement("tr");
-		var eventNameTd = document.createElement("td");
-		eventNameTd.innerHTML = tableInfo.entries[i] + ": ";
-		row.appendChild(eventNameTd);
-
-		var countTd = document.createElement("td");
-		countTd.setAttribute("id", "e_" + tableInfo.videoElId + "_" + tableInfo.entries[i]);
-		countTd.innerHTML = "---";
-		row.appendChild(countTd);
-
-		tableBody.appendChild(row);
-  }
-};
-
 mVid.getKeyByValue = function (obj, value) {
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
@@ -576,18 +534,18 @@ mVid.setPlayingState = function (state) {
 	}
 }
 
-mVid.statusTableText = function (playerId, textEntry, text) {
-	var tableEntry = document.getElementById("e_" + playerId + "_" + textEntry);
-	if (tableEntry) tableEntry.innerHTML = text;
-	
-	var out = "id=" + "e_" + playerId + "_" + textEntry + "&";
-	out += "text=" + text;
-	
+mVid.postStatusUpdate = function (id, text) {
+	var out = "id=" + id + "&" + "text=" + text;
+
 	// send a xhr/ajax POST request with the serialized media events
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/status", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
 	xhttp.send(out);
+}
+
+mVid.statusTableText = function (playerId, textEntry, text) {
+	this.postStatusUpdate("e_" + playerId + "_" + textEntry, text);
 }
 
 mVid.getCurrentBufferingPlayer = function () {
@@ -638,7 +596,7 @@ mVid.skipBufferingToNextPlayer = function () {
 		content.currentBufferingIdx = 0;
 	}
 	this.Log.info("skipBufferingToNextPlayer: " + content.currentBufferingIdx);
-	document.getElementById("BufferIdx").innerHTML = content.currentBufferingIdx;
+	this.postStatusUpdate("BufferIdx", content.currentBufferingIdx);
 }
 
 mVid.skipPlayingToNextPlayer = function () {
@@ -646,7 +604,7 @@ mVid.skipPlayingToNextPlayer = function () {
 		content.currentPlayingIdx = 0;
 	}
 	this.Log.info("skipPlayingToNextPlayer: " + content.currentPlayingIdx);
-	document.getElementById("PlayingIdx").innerHTML = content.currentPlayingIdx;
+	this.postStatusUpdate("PlayingIdx", content.currentPlayingIdx);
 }
 
 mVid.isMainFeaturePlayer = function (player) {
@@ -739,8 +697,7 @@ mVid.switchPlayerToPlaying = function(freshPlayer, previousPlayer) {
 	}
 	
 	if (freshPlayer) {
-		var elPlayCount = document.getElementById("PlayCount");
-		elPlayCount.innerHTML = ++this.playCount;
+		this.postStatusUpdate("PlayCount", ++this.playCount);
 	}
 }
 
