@@ -29,8 +29,8 @@ div.safe_area
 }
 
 .video {
-	width: 800px;
-	height: 480px;
+	width: 1280px;
+	height: 720px;
 	top: 0;
 	left: 0;
 	position: absolute;
@@ -38,8 +38,8 @@ div.safe_area
 }
 
 .video video {
-	width: 800px;
-	height: 480px;
+	width: 1280px;
+	height: 720px;
 	left: 0;
 	display: none;
 }
