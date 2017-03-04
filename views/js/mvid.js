@@ -199,6 +199,8 @@ mVid.start = function () {
 
 	this.checkForDeviceWorkArounds();
 	
+	this.socket = io();
+	
 	mainVideo = e("mVid-mainContent");
 	
 	this.createPlayer("mVid-video0");
@@ -494,6 +496,25 @@ mVid.updateBufferBar = function(playerId) {
 		headroomBuffer.value = 0;	
 		headroomBuffer.max = 60;	
 	}
+
+	// Send state over io sockets
+	var pbObj = "\"playerBufferObj\": {";
+	pbObj += "\"id\":" + JSON.stringify(playerId) + ",";
+	pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
+	pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
+	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max);
+	pbObj += "}";
+	
+	var hbObj = "\"headroomBufferObj\": {";
+	hbObj += "\"id\":" + JSON.stringify(playerId) + ",";
+	hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
+	hbObj += "\"value\":" + JSON.stringify('' + headroomBuffer.value) + ",";
+	hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
+	hbObj += "}";
+	
+	var out = "{" + pbObj + "," + hbObj + "}";
+
+	this.socket.emit('bufferEvent', out);
 }
 
 mVid.updatePlaybackBar = function(playerId) {

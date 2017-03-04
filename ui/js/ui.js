@@ -207,16 +207,43 @@ playerUI.Log._write = function(message, cssClass) {
 	this._logCount++;
 };
 
+// listen for the ipc events
 const ipc = require('electron').ipcRenderer; // Picks up messages sent through electrons internal IPC functions
  
-// listen for the ipc events
 ipc.on('ipc-log', function(event, message) {
 	playerUI.Log._write(message.logText, message.cssClass);
-	console.log(message.logText);
+	//console.log(message.logText);
 });
 
 ipc.on('ipc-status', function(event, message) {
 	var t = e(message.id);
 	if (t) t.innerHTML = message.text;
-	console.log(message.id + " " + message.text);
+	//console.log(message.id + " " + message.text);
 });
+
+ipc.on('ipc-buffer', function(event, message) {
+	try {
+		var msgObj = JSON.parse(message.toString('utf8')); 
+		var pbObj = msgObj.playerBufferObj;
+		var hbObj = msgObj.headroomBufferObj;
+		var playerId = pbObj.id;
+	} catch(err) {
+		console.log("ipc-buffer: message parse error. " + err.message);
+		return;
+	}
+	
+	//console.log(message);
+	
+	
+	var playerBuffer 	= document.getElementById(playerId + "-bufferBar");
+	var headroomBuffer 	= document.getElementById(playerId + "-headroomBar");
+
+	playerBuffer.setAttribute("class", pbObj.class);
+	headroomBuffer.setAttribute("class", hbObj.class);		
+
+	playerBuffer.value 		= pbObj.value;	
+	playerBuffer.max 		= pbObj.max;	
+	headroomBuffer.value 	= hbObj.value;	
+	headroomBuffer.max 		= hbObj.max;	
+});
+
