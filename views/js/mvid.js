@@ -530,6 +530,13 @@ mVid.updatePlaybackBar = function(playerId) {
 		playerBar.value = 0;	
 		playerBar.max = 100;	
 	}
+
+	var out = "{";
+	out += "\"value\":" + JSON.stringify('' + playerBar.value) + ",";
+	out += "\"max\":" + JSON.stringify('' + playerBar.max);
+	out += "}";
+	
+	this.socket.emit('playbackOffset', out);
 }
 
 mVid.showBufferingIcon = function (bBuffering) {

@@ -235,8 +235,8 @@ ipc.on('ipc-buffer', function(event, message) {
 	//console.log(message);
 	
 	
-	var playerBuffer 	= document.getElementById(playerId + "-bufferBar");
-	var headroomBuffer 	= document.getElementById(playerId + "-headroomBar");
+	var playerBuffer 	= e(playerId + "-bufferBar");
+	var headroomBuffer 	= e(playerId + "-headroomBar");
 
 	playerBuffer.setAttribute("class", pbObj.class);
 	headroomBuffer.setAttribute("class", hbObj.class);		
@@ -245,5 +245,18 @@ ipc.on('ipc-buffer', function(event, message) {
 	playerBuffer.max 		= pbObj.max;	
 	headroomBuffer.value 	= hbObj.value;	
 	headroomBuffer.max 		= hbObj.max;	
+});
+
+ipc.on('ipc-playbackOffset', function(event, message) {
+	var playerBar = e("playbackBar");
+
+	try {
+		var msgObj = JSON.parse(message.toString('utf8')); 
+
+		playerBar.max = msgObj.max;
+		playerBar.value = msgObj.value;
+	} catch(err) {
+		console.log("ipc-playbackOffset: message parse error. " + err.message);	
+	}
 });
 

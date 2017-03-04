@@ -57,6 +57,11 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 		mainwindow.webContents.send('ipc-buffer', data);
 		//console.log(data);
 	});
+	
+	socket.on('playbackOffset', function(data) {
+		mainwindow.webContents.send('ipc-playbackOffset', data);
+		console.log(data);
+	});
 });
 
 expressServer.use(express.static('public')); // put static files in the public folder to make them available on web pages
