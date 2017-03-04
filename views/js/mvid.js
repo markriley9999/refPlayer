@@ -210,7 +210,8 @@ window.onload = function () {
 
 mVid.start = function () {
 	var mainVideo;
-    var appMan 		= null, app;
+    var appMan 		= null;
+	var app			= null;
 	var that 		= this;
 	var confManager = null;
 	
@@ -239,8 +240,6 @@ mVid.start = function () {
         this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
     }
 
-	this.checkForDeviceWorkArounds();
-	
 	this.socket = io();
 	
 	mainVideo = e("mVid-mainContent");
@@ -308,88 +307,6 @@ mVid.start = function () {
 	this.setContentSourceAndLoad();
 	this.resetStallTimer();
 };
-
-mVid.checkForDeviceWorkArounds = function () {
-	var userAgent = navigator.userAgent.toLowerCase();
-	var info;
-	
-	this.Log.info("Check For Device WorkArounds");
-
-	this.options = {};
-	this.options.bSeekToResume 	= false;
-	this.options.bNoDash		= false;
-	this.options.bKeepPlayers 	= false;
-	
-	mVid.devTextNameForInfo = "";
-	
-	for (var i = 0; i < mVid.deviceWorkarounds.length; i++) {
-		if (userAgent.indexOf(mVid.deviceWorkarounds[i].dev.toLowerCase()) >= 0) {
-				info = mVid.deviceWorkarounds[i].info;
-				mVid.devTextNameForInfo = info;
-				mVid.deviceWorkarounds[i].devFunc.bind(this)(info);
-				break;
-		} 
-	}
-
-	var manuWorkaroundId = getUrlVars()["manu"];
-	this.Log.info("Manufacturer Workaround Id: " + manuWorkaroundId);
-	
-	if (manuWorkaroundId && manuWorkaroundId.toLowerCase() == "seektoresume") {
-		this.Log.warn("Use Seek-To-Resume workaround");		
-		this.options.bSeekToResume = true;
-	}
-		
-	var contentOverride = getUrlVars()["cont"];
-	this.Log.info("Content override: " + contentOverride);
-	
-	if (contentOverride && contentOverride.toLowerCase() == "nodash") {
-		this.options.bNoDash = true;
-	}
-
-	var keepObj = getUrlVars()["keepobj"];
-	this.Log.info("Keep Obj: " + keepObj);
-	
-	if (keepObj && keepObj == "1") {
-		this.options.bKeepPlayers = true;
-	}
-	
-	
-	//if (this.options.bNoDash) {
-	//	var idx = content.list.length-1;
-	//	// Browser can't play dash... (well it can is you use the relevant js lib)
-	//	this.Log.warn("Don't use dash (use mp4 content instead)");	
-	//	content.list[idx].src = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-	//	content.list[idx].type = "video/mp4";
-	//	content.list[idx].transitionTime = 25;
-	//}
-	
-}
-
-mVid.deviceHumax = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-	this.Log.warn("*** Use Seek-To-Resume workaround");		
-	this.options.bSeekToResume = true;
-}
-
-mVid.deviceGeneral = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-}
-
-mVid.devicePC = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-	this.Log.warn("*** Don't use DASH");		
-	// this.options.bNoDash = true;
-}
-
-// Device workarounds - todo - why after func defns????
-mVid.deviceWorkarounds = [
-	{ dev : "Humax", 		devFunc : mVid.deviceHumax,		info : "Humax"			},
-	{ dev : "MB100", 		devFunc : mVid.deviceGeneral,	info : "Vestel"			},
-	{ dev : "Panasonic", 	devFunc : mVid.deviceGeneral,	info : "Panasonic"		},
-	{ dev : "Hisense", 		devFunc : mVid.deviceGeneral,	info : "Hisense"		},
-	{ dev : "MStar", 		devFunc : mVid.deviceGeneral,	info : "MStar"			},
-	{ dev : "Windows", 		devFunc : mVid.devicePC,		info : "PC Windows"		},
-];
 
 mVid.displayBrowserInfo = function () {
 	this.Log.info("--------------------------------------------------------------------");
@@ -600,9 +517,9 @@ mVid.setPlayingState = function (state) {
 		var playEl = e(this.playIconTable[s].icon);
 		if (playEl) {
 			if (this.playIconTable[s].state === state) {
-				playEl.style.display = "block";
+//				playEl.style.display = "block";
 			} else {
-				playEl.style.display = "none";				
+//				playEl.style.display = "none";				
 			}
 		}
 	}

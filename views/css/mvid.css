@@ -40,44 +40,9 @@ div.safe_area
 .video video {
 	width: 1280px;
 	height: 720px;
+	top: 0;
 	left: 0;
 	display: none;
-}
-
-.status-table-container {
-	width: 300px;
-	height: 720px;
-	top: 0;
-	left: 850px;
-	background-color: black;
-	color: white;
-	position: absolute;
-}
-
-.status-table-container table {
-	width: inherit;
-	border: none;
-	margin: 1ex auto auto;
-}
-
-.status-table-container caption {
-	background-color: blue;
-	color: white;
-}
-
-#status-table-body0 td {
-	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body1 td {
-	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body2 td {
-	text-align: left;
-	width: 6ex;
 }
 
 p {
@@ -93,42 +58,12 @@ p {
 	color: green;
 }
 
-.log {
-	height: 200px;
-	width: 800px;
-	left: 0;
-	top: 50px;
-	position: absolute;
-}
-
-.log p{
-	max-width: 800px;
-	word-wrap: break-word;
-	font-size: small;
-}
-
-.debug {
-	color: white;
-}
-
-.info {
-	color: green;
-}
-
-.warn {
-	color: blue;
-}
-
-.error {
-	color: red;
-}
-
 .progress-bar-container {
-	width: 500px;
+	width: 100px;
 	height: 50px;
-	top: 380px;
-	left: 850px;
-	background-color: black;
+	top: 200px;
+	left: 10px;
+	background-color: green;
 	color: white;
 	position: absolute;
 }
@@ -163,7 +98,11 @@ progress {
 
 .playbackBar {
 	color: red;
-	width: 800px;
+	width: 1080px;
+	height: 30px;
+	
+	left: 50px;
+	position: absolute;
 }
 
 progress::-webkit-progress-value {
@@ -199,8 +138,8 @@ progress::-moz-progress-bar {
 }
 
 .videoGFXOverlay {
-	width: 800px;
-	height: 480px;
+	width: 1280px;
+	height: 720px;
 	top: 0;
 	left: 0;
 	position: absolute;
@@ -209,13 +148,14 @@ progress::-moz-progress-bar {
 }
 
 .videoControls {
-	width: 800px;
-	height: 64px;
-	top: 480px;
+	width: 1180px;
+	height: 100px;
+/*	top: 600px;*/
+	bottom: 0;
+	left: 50px;
 	position: absolute;
-	background-color: transparent;
+	background-color: red;
 	margin: auto;
-	display: block;
 }
 
 #heart {
@@ -232,11 +172,12 @@ progress::-moz-progress-bar {
 .playerIcon {
 	width: 32px;
 	height: 32px;
-	background-color: transparent;
-	position: absolute;
-	left: 0px;
-	top: 15px;
-	display: none;
+	background-color: purple;
+	bottom : 0px;
+	position: relative;
+/*	left: 0px; */
+/*	top: 15px; */
+/*	display: none; */
 }
 
 .playerBufferingIcon {
