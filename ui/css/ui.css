@@ -108,6 +108,10 @@ p {
 	position: absolute;
 }
 
+.progress-bar-container p {
+	color: black;
+}
+
 progress {
 	/* Turns off styling - not usually needed, but good to know. */
 	appearance: none;

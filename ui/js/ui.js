@@ -28,16 +28,14 @@ window.onload = function () {
 	try {
 		playerUI.start();
 	} catch (error) {
-		this.Log.error("FATAL ERROR: " + error.message);
+		console.log("FATAL ERROR: " + error.message);
 	}
 }
 
 playerUI.start = function () {
-	var mainVideo;
 	var that 		= this;
-	var confManager = null;
 	
-	this.Log.init(document.getElementById("log"));
+	this.Log.init(e("log"));
 
 	this.statusTables.forEach(function(statTable) {
 		that.setupStatusTable(statTable);
@@ -62,79 +60,6 @@ playerUI.setupStatusTable = function (tableInfo) {
   }
 };
 
-playerUI.updateBufferBars = function() {
-	this.updateBufferBar("playerUI-mainContent");
-	this.updateBufferBar("playerUI-video0");
-	this.updateBufferBar("playerUI-video1");
-} 
-
-playerUI.updateBufferBar = function(playerId) {
-	var playerBuffer 	= document.getElementById(playerId + "-bufferBar");
-	var headroomBuffer 	= document.getElementById(playerId + "-headroomBar");
-	var player 			= document.getElementById(playerId);
-	var buffer 			= player.buffered;
-	var duration 		= player.duration;
-	var offset;
-	
-	if (player.paused) {
-		playerBuffer.setAttribute("class", "bufferBar");
-		headroomBuffer.setAttribute("class", "bufferBar");		
-	} else {
-		playerBuffer.setAttribute("class", "bufferBarActive");	
-		headroomBuffer.setAttribute("class", "bufferBarActive");	
-	}
-	
-	offset = (player.paused) ? 0 : player.currentTime;
-	
-	if (duration && (duration > 0)) {
-		playerBuffer.max = duration;
-		headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
-
-		if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
-			playerBuffer.value = buffer.end(buffer.length-1);
-			headroomBuffer.value = buffer.end(buffer.length-1) - offset;
-		} else {
-			playerBuffer.value = 0;			
-			headroomBuffer.value = 0;			
-		}
-	} else
-	{
-		playerBuffer.value = 0;	
-		playerBuffer.max = 60;	
-		headroomBuffer.value = 0;	
-		headroomBuffer.max = 60;	
-	}
-}
-
-playerUI.updatePlaybackBar = function(playerId) {
-	var playerBar 		= document.getElementById("playbackBar");
-	var player 			= document.getElementById(playerId);
-	var duration 		= player.duration;
-	
-	if (duration && (duration > 0)) {
-		playerBar.max = duration;
-		playerBar.value = player.currentTime;
-	} else
-	{
-		playerBar.value = 0;	
-		playerBar.max = 100;	
-	}
-}
-
-playerUI.showBufferingIcon = function (bBuffering) {
-	if (this.bShowBufferingIcon != bBuffering) {
-		var bufferingIcon = document.getElementById("player-buffering");
-		
-		this.bShowBufferingIcon = bBuffering;
-			
-		if (bBuffering) {
-				bufferingIcon.setAttribute("class", "playerBufferingIcon rotate");
-		} else {
-				bufferingIcon.setAttribute("class", "playerBufferingIcon");			
-		}			
-	}
-}
-
 playerUI.setPlayingState = function (state) {
 	for (var s in this.playIconTable) {
 		var playEl = document.getElementById(this.playIconTable[s].icon);
@@ -148,11 +73,6 @@ playerUI.setPlayingState = function (state) {
 	}
 }
 
-playerUI.statusTableText = function (playerId, textEntry, text) {
-	var tableEntry = document.getElementById("e_" + playerId + "_" + textEntry);
-	if (tableEntry) tableEntry.innerHTML = text;
-}
-
 playerUI.Log = {};
 
 playerUI.Log.init = function (logDiv) {
@@ -160,22 +80,6 @@ playerUI.Log.init = function (logDiv) {
 	this.maxLogEntries 	= 26;
 
 	this._div = logDiv;
-};
-
-playerUI.Log.error = function (message) {
-  this._write("ERROR: " + message, "error");
-};
-
-playerUI.Log.warn = function (message) {
-  this._write("WARN: " + message, "warn");
-};
-
-playerUI.Log.info = function (message) {
-  this._write("INFO: " + message, "info");
-};
-
-playerUI.Log.debug = function (message) {
-  this._write("DEBUG: " + message, "debug");
 };
 
 playerUI.Log._write = function(message, cssClass) {
