@@ -26,23 +26,25 @@ div.safe_area
 	position: absolute;
 	/* Border of the safe area: 10% 5% 80% 90 */ 
 	left: 64px; top: 36px; width: 1024px; height: 648px;
+	background-color: transparent;
 }
 
 .video {
-	width: 1280px;
-	height: 720px;
-	top: 0;
-	left: 0;
+	width: fit-content;
+	height: fit-content;
+	top: 0px;
+	left: 0px;
 	position: absolute;
-	background-color: black;
+	background-color: red;
 }
 
 .video video {
-	width: 1280px;
+	width: 1152px;
 	height: 720px;
-	top: 0;
-	left: 0;
+	top: 0px;
+	left: 0px;
 	display: none;
+	background-color: yellow;
 }
 
 p {
@@ -59,11 +61,11 @@ p {
 }
 
 .progress-bar-container {
-	width: 100px;
-	height: 50px;
-	top: 200px;
-	left: 10px;
-	background-color: green;
+	width: fit-content; 
+	height: fit-content; 
+	top: 0px;
+	left: 0px;
+	background-color: purple;
 	color: white;
 	position: absolute;
 }
@@ -98,11 +100,11 @@ progress {
 
 .playbackBar {
 	color: red;
-	width: 1080px;
+	width: 1024px;
 	height: 30px;
-	
-	left: 50px;
-	position: absolute;
+	top: 0px;
+	left: 0px;
+	position: relative;
 }
 
 progress::-webkit-progress-value {
@@ -138,21 +140,19 @@ progress::-moz-progress-bar {
 }
 
 .videoGFXOverlay {
-	width: 1280px;
-	height: 720px;
-	top: 0;
-	left: 0;
-	position: absolute;
+	left: 0px;
+	top: 150px;
+	width: 1024px;
+	height: 200px;
 	background-color: transparent;
-	color: green;
+	position: absolute;
 }
 
 .videoControls {
-	width: 1180px;
-	height: 100px;
-/*	top: 600px;*/
-	bottom: 0;
-	left: 50px;
+	left: 0px;
+	width: 1024px;
+	height: 80px;
+	bottom: 100px;
 	position: absolute;
 	background-color: red;
 	margin: auto;
@@ -161,36 +161,34 @@ progress::-moz-progress-bar {
 #heart {
 	background-color: transparent;
 	position: absolute;
-	width: 32px;
-	height: 32px;
+	width: 16px;
+	height: 16px;
     position: absolute;
-	top: 10px;
+	top: 0px;
     right: 0px;
 	display: block;
+}
+
+.centre {
+    display: block;
+    margin: 0 auto;
+	background-color: white;
+}
+
+.fitwidth {
+	width: fit-content; 
 }
 
 .playerIcon {
 	width: 32px;
 	height: 32px;
 	background-color: purple;
-	bottom : 0px;
-	position: relative;
-/*	left: 0px; */
-/*	top: 15px; */
-/*	display: none; */
 }
 
 .playerBufferingIcon {
-    max-height: 64px;  
-    max-width: 64px;  
-    position: absolute;  
-    top: 0;  
-    bottom: 0;  
-    left: 0;  
-    right: 0;  
-    margin: auto;  
-	display: none; 
-	margin: auto;
+    width: 100px;  
+    height: 100px;  
+	background-color: purple;
 }
 
 /* Rotating */

@@ -621,13 +621,6 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		player.bBuffEnoughToPlay = false;
 		dashjs.MediaPlayerFactory.create(player, source);
 		player.load();
-	} else {
-		if (this.options.bSeekToResume) {
-			this.Log.warn("*** Seek-to-resume workaround - set currentTime to: " + player.restartPoint);
-			player.currentTime = player.restartPoint;
-			this.Log.warn("*** Seek-to-resume workaround - re-call load");
-			player.load();
-		}
 	}
 	
 	if (this.isMainFeaturePlayer(player)) {
@@ -676,12 +669,6 @@ mVid.switchPlayerToPlaying = function(freshPlayer, previousPlayer) {
 		freshPlayer.play();
 	}
 	
-	// Seek-to-resume workaround
-	if (freshPlayer && (this.options.bSeekToResume) && this.isMainFeaturePlayer(freshPlayer)) {
-			this.Log.warn("*** Seek-to-resume workaround - set currentTime to: " + freshPlayer.restartPoint);
-			freshPlayer.currentTime = freshPlayer.restartPoint;
-	}
-
 	// Set the display CSS property of the previous media element to none.
 	if (previousPlayer) {
 		previousPlayer.style.display = "none";
