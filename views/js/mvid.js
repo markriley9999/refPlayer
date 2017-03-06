@@ -280,10 +280,12 @@ mVid.start = function () {
 		var elTimer = e("videoTimer");
 
 		// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
-		elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
-	
+		if (elTimer) {
+			elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
+		}
+		
 		that.updateBufferBars();	
-	}, 250);
+	}, 1000);
 	
 	
     try {
@@ -517,9 +519,9 @@ mVid.setPlayingState = function (state) {
 		var playEl = e(this.playIconTable[s].icon);
 		if (playEl) {
 			if (this.playIconTable[s].state === state) {
-//				playEl.style.display = "block";
+				playEl.setAttribute("class", "playerIcon hilite");
 			} else {
-//				playEl.style.display = "none";				
+				playEl.setAttribute("class", "playerIcon");
 			}
 		}
 	}
@@ -577,6 +579,8 @@ mVid.setContentSourceAndLoad = function () {
 	content.list[content.currentBufferingIdx].bBuffering = true;
 	player = this.getCurrentBufferingPlayer();
 	this.Log.info(player.id + " setContentSourceAndLoad - currentBufferingIdx: " + content.currentBufferingIdx);
+	
+	e("encrypted").setAttribute("class", "playerIcon");
 	
 	this.setSourceAndLoad(player, content.list[content.currentBufferingIdx].src, content.list[content.currentBufferingIdx].type);
 }
@@ -1002,6 +1006,7 @@ mVid.onVideoEvent = function (event) {
 			break;
 			
 		case mVid.videoEvents.ENCRYPTED:
+			e("encrypted").setAttribute("class", "playerIcon encrypted");
 			mVid.Log.warn(this.id + ": ENCRYPTED");
 			break;
 			

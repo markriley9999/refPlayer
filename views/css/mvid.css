@@ -35,7 +35,7 @@ div.safe_area
 	top: 0px;
 	left: 0px;
 	position: absolute;
-	background-color: red;
+	background-color: transparent;
 }
 
 .video video {
@@ -44,7 +44,7 @@ div.safe_area
 	top: 0px;
 	left: 0px;
 	display: none;
-	background-color: yellow;
+	background-color: transparent;
 }
 
 p {
@@ -63,9 +63,9 @@ p {
 .progress-bar-container {
 	width: fit-content; 
 	height: fit-content; 
-	top: 0px;
+	top: 40px;
 	left: 0px;
-	background-color: purple;
+	background-color: transparent;
 	color: white;
 	position: absolute;
 }
@@ -91,7 +91,7 @@ progress {
 }
 
 .bufferBarActive {
-	color: yellow;
+	color: orange;
 }
 
 .bufferBarConsumed {
@@ -100,10 +100,10 @@ progress {
 
 .playbackBar {
 	color: red;
-	width: 1024px;
+	width: 924px;
 	height: 30px;
 	top: 0px;
-	left: 0px;
+	left: 50px;
 	position: relative;
 }
 
@@ -112,11 +112,11 @@ progress::-webkit-progress-value {
 }
 
 .playbackBar::-webkit-progress-value {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarActive::-webkit-progress-value {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarConsumed::-webkit-progress-value {
@@ -132,7 +132,7 @@ progress::-moz-progress-bar {
 }
 
 .bufferBarActive::-moz-progress-bar {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarConsumed::-moz-progress-bar {
@@ -141,7 +141,7 @@ progress::-moz-progress-bar {
 
 .videoGFXOverlay {
 	left: 0px;
-	top: 150px;
+	top: 180px;
 	width: 1024px;
 	height: 200px;
 	background-color: transparent;
@@ -151,10 +151,10 @@ progress::-moz-progress-bar {
 .videoControls {
 	left: 0px;
 	width: 1024px;
-	height: 80px;
-	bottom: 100px;
+	height: 60px;
+	bottom: 50px;
 	position: absolute;
-	background-color: red;
+	background-color: transparent;
 	margin: auto;
 }
 
@@ -172,7 +172,6 @@ progress::-moz-progress-bar {
 .centre {
     display: block;
     margin: 0 auto;
-	background-color: white;
 }
 
 .fitwidth {
@@ -182,13 +181,22 @@ progress::-moz-progress-bar {
 .playerIcon {
 	width: 32px;
 	height: 32px;
-	background-color: purple;
+	background-color: transparent;
+}
+
+.hilite {
+	background-color: orange;
+}
+
+.encrypted {
+	background-color: green;
 }
 
 .playerBufferingIcon {
     width: 100px;  
     height: 100px;  
-	background-color: purple;
+	background-color: transparent;
+	display: none;
 }
 
 /* Rotating */
