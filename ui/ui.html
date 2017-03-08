@@ -5,75 +5,71 @@
         <script type="text/javascript" src="js/ui.js"></script>
 		
         <link 	rel="stylesheet" href="css/ui.css" />
-		<link 	href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet' type='text/css'/>
-		<link 	href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel='stylesheet' type='text/css'/>
 	</head>
 
 	<body>
-		<div class="safe_area" id="app_area">
-			<div class="videoControls">
-				<progress value="0" max="100" id="playbackBar" class="playbackBar" role="progressbar">
-				</progress>
-			</div>
-			<div class="videoGFXOverlay">
-				<img src="bitmaps/player_rew.png" 	id="player-rew" 	class="playerIcon"></img>				
-				<img src="bitmaps/player_play.png" 	id="player-play" 	class="playerIcon"></img>				
-				<img src="bitmaps/player_fwd.png" 	id="player-fwd" 	class="playerIcon"></img>				
-				<img src="bitmaps/player_pause.png" id="player-pause" 	class="playerIcon"></img>				
-				<img src="bitmaps/player_stop.png" 	id="player-stop" 	class="playerIcon"></img>				
-			</div>
-			<div id="log" class="log"></div>
-			<div class="status-table-container">
-				<table>
-					<caption>Status</caption>
-					<tbody>
-						<tr>
-							<td>Play Count</td>
-							<td id="PlayCount">0</td>
-						</tr>
-						<tr>
-							<td>Buffer Idx</td>
-							<td id="BufferIdx">0</td>
-						</tr>
-						<tr>
-							<td>Playing Idx</td>
-							<td id="PlayingIdx">0</td>
-						</tr>
-					</tbody>
-				</table>
-				<table>
-					<caption>Main Content</caption>
-					<tbody id="status-table-body0">
-					</tbody>
-				</table>
-				<table>
-					<caption>Player 0</caption>
-					<tbody id="status-table-body1">
-					</tbody>
-				</table>
-				<table>
-					<caption>Player 1</caption>
-					<tbody id="status-table-body2">
-					</tbody>
-				</table>
-			</div>
-			<div class="progress-bar-container">
-				<p>Main Buffer:</p> 
-				<progress value="0" max="100" id="mVid-mainContent-bufferBar" 	class="bufferBar" 		role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-mainContent-headroomBar" 	class="bufferBar" 	role="progressbar">
-				</progress>
-				<p>Video 0 Buffer:</p> 
-				<progress value="0" max="100" id="mVid-video0-bufferBar" 		class="bufferBarActive" role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-video0-headroomBar" 		class="bufferBarActive" role="progressbar">
-				</progress>
-				<p>Video 1 Buffer:</p> 
-				<progress value="0" max="100" id="mVid-video1-bufferBar" 		class="bufferBar" 		role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="bufferBar" 		role="progressbar">
-				</progress>
-			</div>
+		<div class="videoControls">
+			<progress value="0" max="100" id="playbackBar" class="playbackBar" role="progressbar">
+			</progress>
+		</div>
+		<div class="videoGFXOverlay">
+			<img src="bitmaps/player_rew.png" 	id="player-rew" 	class="playerIcon"></img>				
+			<img src="bitmaps/player_play.png" 	id="player-play" 	class="playerIcon"></img>				
+			<img src="bitmaps/player_fwd.png" 	id="player-fwd" 	class="playerIcon"></img>				
+			<img src="bitmaps/player_pause.png" id="player-pause" 	class="playerIcon"></img>				
+			<img src="bitmaps/player_stop.png" 	id="player-stop" 	class="playerIcon"></img>				
+		</div>
+		<div id="log" class="log"></div>
+		<div class="status-table-container">
+			<table>
+				<caption>Status</caption>
+				<tbody>
+					<tr>
+						<td>Play Count</td>
+						<td id="PlayCount">0</td>
+					</tr>
+					<tr>
+						<td>Buffer Idx</td>
+						<td id="BufferIdx">0</td>
+					</tr>
+					<tr>
+						<td>Playing Idx</td>
+						<td id="PlayingIdx">0</td>
+					</tr>
+				</tbody>
+			</table>
+			<table>
+				<caption>Main Content</caption>
+				<tbody id="status-table-body0">
+				</tbody>
+			</table>
+			<table>
+				<caption>Player 0</caption>
+				<tbody id="status-table-body1">
+				</tbody>
+			</table>
+			<table>
+				<caption>Player 1</caption>
+				<tbody id="status-table-body2">
+				</tbody>
+			</table>
+		</div>
+		<div class="progress-bar-container">
+			<p>Main Buffer:</p> 
+			<progress value="0" max="100" id="mVid-mainContent-bufferBar" 	class="bufferBar" 		role="progressbar">
+			</progress>
+			<progress value="0" max="100" id="mVid-mainContent-headroomBar" 	class="bufferBar" 	role="progressbar">
+			</progress>
+			<p>Video 0 Buffer:</p> 
+			<progress value="0" max="100" id="mVid-video0-bufferBar" 		class="bufferBarActive" role="progressbar">
+			</progress>
+			<progress value="0" max="100" id="mVid-video0-headroomBar" 		class="bufferBarActive" role="progressbar">
+			</progress>
+			<p>Video 1 Buffer:</p> 
+			<progress value="0" max="100" id="mVid-video1-bufferBar" 		class="bufferBar" 		role="progressbar">
+			</progress>
+			<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="bufferBar" 		role="progressbar">
+			</progress>
 		</div>
     </body>
 </html>
