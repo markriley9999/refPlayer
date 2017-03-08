@@ -16,6 +16,8 @@ var expressServer = express(); // Active express object
 var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
 var io = require('socket.io')(server);          // create the sockets io server
  
+var connectedDevices = 0;
+
 ipc.on('player-control', function(event, message) { // listens for the player-control message from the update.js file
     if (message === 'play') {
         io.sockets.emit('play');        // send a play message to all clients
@@ -51,7 +53,9 @@ expressServer.on('activate', function() { // the application is focused create t
 });
  
 io.sockets.on('connection', function(socket) { // listen for a device connection to the server
-    console.log(" ---> Device connected");
+	connectedDevices++;
+
+    console.log(" ---> Device connected: " + connectedDevices);
 	
 	socket.on('bufferEvent', function(data) {
 		mainwindow.webContents.send('ipc-buffer', data);
@@ -60,22 +64,28 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	
 	socket.on('playbackOffset', function(data) {
 		mainwindow.webContents.send('ipc-playbackOffset', data);
-		console.log(data);
+		//console.log(data);
+	});
+	
+	socket.on('disconnect', function () {
+		if (connectedDevices > 0) {
+			connectedDevices--;
+		}
+		
+		console.log(" ---> Device disconnected: " + connectedDevices);
 	});
 });
 
 expressServer.use(express.static('public')); // put static files in the public folder to make them available on web pages
 expressServer.use(bodyParser.urlencoded({ extended: false })); // Tells express to use body parser
 
-expressServer.use(express.static('views'));
+//expressServer.use(express.static('views'));
 expressServer.use('/css', express.static('views/css'));
+expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
  
-expressServer.get('/test', function(req, res) {
-    res.setHeader('Content-Type', 'application/json'); // Tells the browser that the response is JSON
-    res.send('[{"Test": "Hello, World!"}]');           // Send a JSON string
-});
- 
+expressServer.set('view-engine', 'hbs'); 
+
 expressServer.post('/log', function(req, res) {
     mainwindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
@@ -87,5 +97,18 @@ expressServer.post('/status', function(req, res) {
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
+
+expressServer.get('/', function(req, res) {
+	if (connectedDevices === 0) {
+		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
+			res.status(200);
+			res.send(html);
+		});
+	} else {
+			res.status(503);
+			res.send("Sorry, another device is already attached.  Please disconnect it and try again.");	
+	}
+});
+ 
  
 server.listen(3000); // Socket.io port (hides express inside)

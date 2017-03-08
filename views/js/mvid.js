@@ -44,6 +44,7 @@ content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
 
 content.list = [
+/*
 	{	
 		playerId : "mVid-video0",
 		bBuffering : false, 
@@ -58,6 +59,7 @@ content.list = [
 		type : "video/mp4",
 		transitionTime : -1
 	},
+*/
 	{
 		playerId : "mVid-video0", 
 		bBuffering : false, 
@@ -925,7 +927,7 @@ mVid.onVideoEvent = function (event) {
 
 			// Start playing buffered content
 			if (mVid.isMainFeaturePlayer(this)) {
-				location.reload(); 
+				// location.reload(); 
 			} else {
 				mVid.skipPlayingToNextPlayer();
 				var newPlayingPlayer = mVid.getCurrentPlayingPlayer();
