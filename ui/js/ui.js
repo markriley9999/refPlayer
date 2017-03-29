@@ -132,7 +132,7 @@ ipc.on('ipc-buffer', function(event, message) {
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
 	} catch(err) {
-		console.log("ipc-buffer: message parse error. " + err.message);
+		//console.log("ipc-buffer: message parse error. " + err.message);
 		return;
 	}
 	

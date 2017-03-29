@@ -10,7 +10,9 @@ const url = require('url');   // used by electron to load html files
 const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
  
-let mainwindow;      // main window variable
+let mainWindow;      // main window variable
+let graphWindow;     // graph window variable
+
 var expressServer = express(); // Active express object
  
 var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
@@ -26,30 +28,40 @@ ipc.on('player-control', function(event, message) { // listens for the player-co
     }
 })
  
-function createWindow() {
-    mainwindow = new browserWindow({width: 800, height: 600}); // initalize the main gui window
+function createWindows() {
+    mainWindow = new browserWindow({width: 1200, height: 640}); // initalize the main gui window
+    graphWindow = new browserWindow({width: 1200, height: 700}); 
  
-    mainwindow.loadURL(url.format({ // load the html file that acts as the ui
+    mainWindow.loadURL(url.format({ // load the html file that acts as the ui
         pathname: path.join(__dirname, 'ui/ui.html'),
         protocol: 'file:',
         slashes: true
     }));
  
-    mainwindow.on('closed', function() { // reset the window object when it is closed
-        mainwindow = null;
+    graphWindow.loadURL(url.format({ 
+        pathname: path.join(__dirname, 'ui/graph.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+ 
+    mainWindow.on('closed', function() { // reset the window object when it is closed
+        mainWindow = null;
+    });
+    graphWindow.on('closed', function() { // reset the window object when it is closed
+        graphWindow = null;
     });
 }
  
-electronApp.on('ready', createWindow); // when the application is ready create the mainwindow
+electronApp.on('ready', createWindows); // when the application is ready create the mainWindow
  
 electronApp.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
     if (process.platform !== 'darwin')
         electronApp.quit();
 });
  
-expressServer.on('activate', function() { // the application is focused create the mainwindow
-    if (mainwindow === null)
-        createWindow();
+expressServer.on('activate', function() { // the application is focused create the mainWindow
+    if (mainWindow === null && graphWindow === null)
+        createWindows();
 });
  
 io.sockets.on('connection', function(socket) { // listen for a device connection to the server
@@ -58,12 +70,22 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
     console.log(" ---> Device connected: " + connectedDevices);
 	
 	socket.on('bufferEvent', function(data) {
-		mainwindow.webContents.send('ipc-buffer', data);
+		if (mainWindow) {
+			mainWindow.webContents.send('ipc-buffer', data);
+		}
+		if (graphWindow) {
+			graphWindow.webContents.send('ipc-buffer', data);
+		}
 		//console.log(data);
 	});
 	
 	socket.on('playbackOffset', function(data) {
-		mainwindow.webContents.send('ipc-playbackOffset', data);
+		if (mainWindow) {
+			mainWindow.webContents.send('ipc-playbackOffset', data);
+		}
+		if (graphWindow) {
+			graphWindow.webContents.send('ipc-playbackOffset', data);
+		}
 		//console.log(data);
 	});
 	
@@ -87,13 +109,13 @@ expressServer.use('/js', express.static('views/js'));
 expressServer.set('view-engine', 'hbs'); 
 
 expressServer.post('/log', function(req, res) {
-    mainwindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
+    mainWindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
  
 expressServer.post('/status', function(req, res) {
-    mainwindow.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
+    mainWindow.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -103,6 +125,8 @@ expressServer.get('/', function(req, res) {
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
 			res.send(html);
+			console.log("UserAgent: " + req.headers['user-agent']);
+			console.log(JSON.stringify(req.headers));
 		});
 	} else {
 			res.status(503);
