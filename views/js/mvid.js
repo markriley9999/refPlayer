@@ -1,13 +1,3 @@
-// TODO: improve exception handling
-// TODO: use === instead of == where applic
-// TODO: check can play content type
-// TODO: put content in JSON file
-
-// TODO: No trickmode on Panasonic - key filtering???
-// TODO: sw version
-// TODO: report multiple buffer fragments
-// TODO: use better method for readystate mapping
-
 var mVid = {};
  
 mVid.videoEvents = Object.freeze({
@@ -44,7 +34,6 @@ content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
 
 content.list = [
-/*
 	{	
 		playerId : "mVid-video0",
 		bBuffering : false, 
@@ -59,7 +48,6 @@ content.list = [
 		type : "video/mp4",
 		transitionTime : -1
 	},
-*/
 	{
 		playerId : "mVid-video0", 
 		bBuffering : false, 
@@ -465,7 +453,10 @@ mVid.updateBufferBar = function(playerId) {
 	pbObj += "\"id\":" + JSON.stringify(playerId) + ",";
 	pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
 	pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
-	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max);
+	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
+	pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
+	pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
+	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime);
 	pbObj += "}";
 	
 	var hbObj = "\"headroomBufferObj\": {";

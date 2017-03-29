@@ -25,8 +25,8 @@ graph.setupCharts = function () {
 		that.charts[id] = {};
 		
 		that.charts[id].chartData = google.visualization.arrayToDataTable([
-          ['Time'	, 'Pos'	, 'Buffer'	, 'Headroom'],
-          ['0'		,  0		, 0		, 0]
+          ['Time'	, 'Duration'	, 'Pos'	, 'Buffer'	, 'Headroom'],
+          ['0'		,  0			, 0		, 0			, 0]
         ]);
 
         that.charts[id].chartOptions = {
@@ -50,9 +50,10 @@ graph.setupCharts = function () {
 
 var x = 0;
 
-graph.updateChart = function (chartObj, pos, buffer, hroom) {
+graph.updateChart = function (chartObj, d, t, pos, buffer, hroom) {
 	if (chartObj.chartData) {
-		chartObj.chartData.addRow([x.toString(),  
+		chartObj.chartData.addRow([t.toString(),  
+								parseFloat(d), 
 								parseFloat(pos), 
 								parseFloat(buffer), 
 								parseFloat(hroom)]);		
@@ -71,7 +72,7 @@ ipc.on('ipc-buffer', function(event, message) {
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
 		//console.log(msgObj);
-		graph.updateChart(graph.charts[playerId], 0, pbObj.value, hbObj.value);
+		graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value);
 	} catch(err) {
 		console.log("ipc-buffer: message parse error. " + err.message);
 		return;
