@@ -11,7 +11,8 @@ const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
  
 let mainWindow;      // main window variable
-let graphWindow;     // graph window variable
+let graphsWindow;     // graph window variable
+let sGraphWindow;
 
 var expressServer = express(); // Active express object
  
@@ -30,7 +31,8 @@ ipc.on('player-control', function(event, message) { // listens for the player-co
  
 function createWindows() {
     mainWindow = new browserWindow({width: 1200, height: 640}); // initalize the main gui window
-    graphWindow = new browserWindow({width: 1200, height: 700}); 
+    graphsWindow = new browserWindow({width: 1200, height: 700}); 
+    sGraphWindow = new browserWindow({width: 800, height: 800}); 
  
     mainWindow.loadURL(url.format({ // load the html file that acts as the ui
         pathname: path.join(__dirname, 'ui/ui.html'),
@@ -38,8 +40,14 @@ function createWindows() {
         slashes: true
     }));
  
-    graphWindow.loadURL(url.format({ 
+    graphsWindow.loadURL(url.format({ 
         pathname: path.join(__dirname, 'ui/graph.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+ 
+    sGraphWindow.loadURL(url.format({ 
+        pathname: path.join(__dirname, 'ui/singlegraph.html'),
         protocol: 'file:',
         slashes: true
     }));
@@ -47,8 +55,11 @@ function createWindows() {
     mainWindow.on('closed', function() { // reset the window object when it is closed
         mainWindow = null;
     });
-    graphWindow.on('closed', function() { // reset the window object when it is closed
-        graphWindow = null;
+    graphsWindow.on('closed', function() { // reset the window object when it is closed
+        graphsWindow = null;
+    });
+    sGraphWindow.on('closed', function() { // reset the window object when it is closed
+        sGraphWindow = null;
     });
 }
  
@@ -60,7 +71,7 @@ electronApp.on('window-all-closed', function() { // if this is running on a mac 
 });
  
 expressServer.on('activate', function() { // the application is focused create the mainWindow
-    if (mainWindow === null && graphWindow === null)
+    if (mainWindow === null && graphsWindow === null && sGraphWindow === null)
         createWindows();
 });
  
@@ -73,8 +84,11 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 		if (mainWindow) {
 			mainWindow.webContents.send('ipc-buffer', data);
 		}
-		if (graphWindow) {
-			graphWindow.webContents.send('ipc-buffer', data);
+		if (graphsWindow) {
+			graphsWindow.webContents.send('ipc-buffer', data);
+		}
+		if (sGraphWindow) {
+			sGraphWindow.webContents.send('ipc-buffer', data);
 		}
 		//console.log(data);
 	});
@@ -82,9 +96,6 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	socket.on('playbackOffset', function(data) {
 		if (mainWindow) {
 			mainWindow.webContents.send('ipc-playbackOffset', data);
-		}
-		if (graphWindow) {
-			graphWindow.webContents.send('ipc-playbackOffset', data);
 		}
 		//console.log(data);
 	});

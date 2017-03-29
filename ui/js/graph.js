@@ -31,7 +31,7 @@ graph.setupCharts = function () {
 
         that.charts[id].chartOptions = {
           title: title,
-          curveType: 'function',
+          curveType: 'none',
           legend: { position: 'bottom' }
         };
 
@@ -41,9 +41,9 @@ graph.setupCharts = function () {
 
 	function drawCharts() {
 		
-		drawChart('mVid-mainContent', 'Main Video Object', 'chart_div0');
-		drawChart('mVid-video0', 'Video Object 0', 'chart_div1');
-		drawChart('mVid-video1', 'Video Object 1', 'chart_div2');
+		if (e("chart_div0")) {	drawChart('mVid-mainContent', 'Main Video Object', 'chart_div0');	}
+		if (e("chart_div1")) {	drawChart('mVid-video0', 'Video Object 0', 'chart_div1');			}
+		if (e("chart_div2")) {	drawChart('mVid-video1', 'Video Object 1', 'chart_div2');			}
 		
     }	
 }
@@ -72,21 +72,12 @@ ipc.on('ipc-buffer', function(event, message) {
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
 		//console.log(msgObj);
-		graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value);
+		if (graph.charts[playerId]) {
+			graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value);
+		}
 	} catch(err) {
 		console.log("ipc-buffer: message parse error. " + err.message);
 		return;
 	}
 	
-});
-
-ipc.on('ipc-playbackOffset', function(event, message) {
-	try {
-		var msgObj = JSON.parse(message.toString('utf8')); 
-
-		//console.log(msgObj);
-		
-	} catch(err) {
-		console.log("ipc-playbackOffset: message parse error. " + err.message);	
-	}
 });

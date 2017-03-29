@@ -1122,116 +1122,6 @@ mVid.cmndReload = function () {
 	location.reload();
 }	
 
-mVid.objToString = function (obj, bCheckHasOwnObject) {
-    var str = '';
-    for (var p in obj) {
-        if (!bCheckHasOwnObject || obj.hasOwnProperty(p)) {
-            str += " --- " + p + '::' + obj[p] + '\n';
-        }
-    }
-    return str;
-}
-
-mVid.dumpVideoObject = function (obj) {
-    var str = '';
-	var propList = [
-		"autoplay",
-		"bBuffEnoughToPlay",
-		"bPlayPauseTransition",
-		"baseURI",
-		"buffered",
-		"TimeRanges",
-		"className",
-		"clientHeight",
-		"clientLeft",
-		"clientTop",
-		"clientWidth",
-		"currentSrc",
-		"currentTime",
-		"defaultPlaybackRate",
-		"duration",
-		"ended",
-		"error",
-		"height",
-		"hidden",
-		"id",
-		"innerHTML",
-		"networkState",
-		"outerHTML",
-		"playbackRate",
-		"played",
-		"TimeRanges",
-		"poster",
-		"readyState",
-		"restartPoint",
-		"seekable",
-		"TimeRanges",
-		"seeking",
-		"src",
-		// "style",
-		"textContent",
-		"textTracks",
-		"TextTrackList",
-		"title",
-		"videoHeight",
-		"videoWidth",
-		"volume",
-		"width",
-	];
-	
-	var childObj;
-	
-	for (var i=0; i < propList.length; i++) {
-		childObj = obj[propList[i]];
-        str += propList[i] + '::' + childObj + '\n';
-		if (typeof childObj === 'object') {
-			str += mVid.objToString(childObj, false);
-		}
-	}
-    return str;
-};
-
-mVid.cmndDebug = function () {
-	var that = this;
-	
-	this.Log.info("called : cmndDebug"); 
-	
-	var playerContainer = e("player-container");
-	var strToSend;
-	var xhttp = new XMLHttpRequest();
-	var strFileName = mVid.devTextNameForInfo + "_debug_" + Date.now() + ".log";
-	
-	strToSend = "<------------------------------ START OF LOG ------------------------------>\n\n"
-	strToSend += "filename=" + strFileName + "\n\n";
-	strToSend += "\n--- User Agent ---\n\n";
-	strToSend += navigator.userAgent + "\n\n";
-
-	strToSend += "\n--- Play Debug Log ---\n\n";
-	strToSend += this.Log.getStr(); + "\n\n";
-	
-	for (var i = 0; i < playerContainer.childNodes.length; i++) {
-		if (playerContainer.childNodes[i].nodeName === 'VIDEO') {	
-			strToSend += "\nVideo Object dump\n";
-			strToSend += "------------------------------------\n\n";
-			strToSend += this.dumpVideoObject(playerContainer.childNodes[i]);
-			strToSend += "\n\n";
-		}
-	}
-
-	strToSend += "\n\n<------------------------------   END OF LOG ------------------------------>\n\n"
-
-	xhttp.onreadystatechange = function() {
-	  if (xhttp.readyState == 4 && xhttp.status == 200) {
-		that.Log.warn("SERVER response: " + xhttp.responseText);
-	  }
-	};	
-	
-	console.log(strToSend);
-	
-	xhttp.open("POST", "php/savelog.php?filename=" + strFileName, true);
-	xhttp.send(strToSend);
-}	
-
 mVid.cmndSeekFWD = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 	this.Log.info("called : cmndSeekFWD"); 
@@ -1255,7 +1145,6 @@ keyTable.entries = [
 	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_INFO 		}, 
 	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_GREEN 		}, 
 	{ func : mVid.cmndReload, 		key : 'L', hbbKey : __VK_RED 		}, 
-	{ func : mVid.cmndDebug, 		key : 'D', hbbKey : __VK_BLUE		}, 
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
 ];
