@@ -1,13 +1,3 @@
-// TODO: improve exception handling
-// TODO: use === instead of == where applic
-// TODO: check can play content type
-// TODO: put content in JSON file
-
-// TODO: No trickmode on Panasonic - key filtering???
-// TODO: sw version
-// TODO: report multiple buffer fragments
-// TODO: use better method for readystate mapping
-
 var mVid = {};
  
 mVid.videoEvents = Object.freeze({
@@ -210,7 +200,8 @@ window.onload = function () {
 
 mVid.start = function () {
 	var mainVideo;
-    var appMan 		= null, app;
+    var appMan 		= null;
+	var app			= null;
 	var that 		= this;
 	var confManager = null;
 	
@@ -239,8 +230,6 @@ mVid.start = function () {
         this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
     }
 
-	this.checkForDeviceWorkArounds();
-	
 	this.socket = io();
 	
 	mainVideo = e("mVid-mainContent");
@@ -281,10 +270,12 @@ mVid.start = function () {
 		var elTimer = e("videoTimer");
 
 		// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
-		elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
-	
+		if (elTimer) {
+			elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
+		}
+		
 		that.updateBufferBars();	
-	}, 250);
+	}, 1000);
 	
 	
     try {
@@ -308,88 +299,6 @@ mVid.start = function () {
 	this.setContentSourceAndLoad();
 	this.resetStallTimer();
 };
-
-mVid.checkForDeviceWorkArounds = function () {
-	var userAgent = navigator.userAgent.toLowerCase();
-	var info;
-	
-	this.Log.info("Check For Device WorkArounds");
-
-	this.options = {};
-	this.options.bSeekToResume 	= false;
-	this.options.bNoDash		= false;
-	this.options.bKeepPlayers 	= false;
-	
-	mVid.devTextNameForInfo = "";
-	
-	for (var i = 0; i < mVid.deviceWorkarounds.length; i++) {
-		if (userAgent.indexOf(mVid.deviceWorkarounds[i].dev.toLowerCase()) >= 0) {
-				info = mVid.deviceWorkarounds[i].info;
-				mVid.devTextNameForInfo = info;
-				mVid.deviceWorkarounds[i].devFunc.bind(this)(info);
-				break;
-		} 
-	}
-
-	var manuWorkaroundId = getUrlVars()["manu"];
-	this.Log.info("Manufacturer Workaround Id: " + manuWorkaroundId);
-	
-	if (manuWorkaroundId && manuWorkaroundId.toLowerCase() == "seektoresume") {
-		this.Log.warn("Use Seek-To-Resume workaround");		
-		this.options.bSeekToResume = true;
-	}
-		
-	var contentOverride = getUrlVars()["cont"];
-	this.Log.info("Content override: " + contentOverride);
-	
-	if (contentOverride && contentOverride.toLowerCase() == "nodash") {
-		this.options.bNoDash = true;
-	}
-
-	var keepObj = getUrlVars()["keepobj"];
-	this.Log.info("Keep Obj: " + keepObj);
-	
-	if (keepObj && keepObj == "1") {
-		this.options.bKeepPlayers = true;
-	}
-	
-	
-	//if (this.options.bNoDash) {
-	//	var idx = content.list.length-1;
-	//	// Browser can't play dash... (well it can is you use the relevant js lib)
-	//	this.Log.warn("Don't use dash (use mp4 content instead)");	
-	//	content.list[idx].src = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-	//	content.list[idx].type = "video/mp4";
-	//	content.list[idx].transitionTime = 25;
-	//}
-	
-}
-
-mVid.deviceHumax = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-	this.Log.warn("*** Use Seek-To-Resume workaround");		
-	this.options.bSeekToResume = true;
-}
-
-mVid.deviceGeneral = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-}
-
-mVid.devicePC = function (txtDescr) {
-	this.Log.info("Device Info: " + txtDescr);
-	this.Log.warn("*** Don't use DASH");		
-	// this.options.bNoDash = true;
-}
-
-// Device workarounds - todo - why after func defns????
-mVid.deviceWorkarounds = [
-	{ dev : "Humax", 		devFunc : mVid.deviceHumax,		info : "Humax"			},
-	{ dev : "MB100", 		devFunc : mVid.deviceGeneral,	info : "Vestel"			},
-	{ dev : "Panasonic", 	devFunc : mVid.deviceGeneral,	info : "Panasonic"		},
-	{ dev : "Hisense", 		devFunc : mVid.deviceGeneral,	info : "Hisense"		},
-	{ dev : "MStar", 		devFunc : mVid.deviceGeneral,	info : "MStar"			},
-	{ dev : "Windows", 		devFunc : mVid.devicePC,		info : "PC Windows"		},
-];
 
 mVid.displayBrowserInfo = function () {
 	this.Log.info("--------------------------------------------------------------------");
@@ -544,7 +453,10 @@ mVid.updateBufferBar = function(playerId) {
 	pbObj += "\"id\":" + JSON.stringify(playerId) + ",";
 	pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
 	pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
-	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max);
+	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
+	pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
+	pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
+	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime);
 	pbObj += "}";
 	
 	var hbObj = "\"headroomBufferObj\": {";
@@ -600,9 +512,9 @@ mVid.setPlayingState = function (state) {
 		var playEl = e(this.playIconTable[s].icon);
 		if (playEl) {
 			if (this.playIconTable[s].state === state) {
-				playEl.style.display = "block";
+				playEl.setAttribute("class", "playerIcon hilite");
 			} else {
-				playEl.style.display = "none";				
+				playEl.setAttribute("class", "playerIcon");
 			}
 		}
 	}
@@ -661,6 +573,8 @@ mVid.setContentSourceAndLoad = function () {
 	player = this.getCurrentBufferingPlayer();
 	this.Log.info(player.id + " setContentSourceAndLoad - currentBufferingIdx: " + content.currentBufferingIdx);
 	
+	e("encrypted").setAttribute("class", "playerIcon");
+	
 	this.setSourceAndLoad(player, content.list[content.currentBufferingIdx].src, content.list[content.currentBufferingIdx].type);
 }
 
@@ -704,13 +618,6 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		player.bBuffEnoughToPlay = false;
 		dashjs.MediaPlayerFactory.create(player, source);
 		player.load();
-	} else {
-		if (this.options.bSeekToResume) {
-			this.Log.warn("*** Seek-to-resume workaround - set currentTime to: " + player.restartPoint);
-			player.currentTime = player.restartPoint;
-			this.Log.warn("*** Seek-to-resume workaround - re-call load");
-			player.load();
-		}
 	}
 	
 	if (this.isMainFeaturePlayer(player)) {
@@ -759,12 +666,6 @@ mVid.switchPlayerToPlaying = function(freshPlayer, previousPlayer) {
 		freshPlayer.play();
 	}
 	
-	// Seek-to-resume workaround
-	if (freshPlayer && (this.options.bSeekToResume) && this.isMainFeaturePlayer(freshPlayer)) {
-			this.Log.warn("*** Seek-to-resume workaround - set currentTime to: " + freshPlayer.restartPoint);
-			freshPlayer.currentTime = freshPlayer.restartPoint;
-	}
-
 	// Set the display CSS property of the previous media element to none.
 	if (previousPlayer) {
 		previousPlayer.style.display = "none";
@@ -1017,7 +918,7 @@ mVid.onVideoEvent = function (event) {
 
 			// Start playing buffered content
 			if (mVid.isMainFeaturePlayer(this)) {
-				location.reload(); 
+				// location.reload(); 
 			} else {
 				mVid.skipPlayingToNextPlayer();
 				var newPlayingPlayer = mVid.getCurrentPlayingPlayer();
@@ -1098,6 +999,7 @@ mVid.onVideoEvent = function (event) {
 			break;
 			
 		case mVid.videoEvents.ENCRYPTED:
+			e("encrypted").setAttribute("class", "playerIcon encrypted");
 			mVid.Log.warn(this.id + ": ENCRYPTED");
 			break;
 			
@@ -1220,116 +1122,6 @@ mVid.cmndReload = function () {
 	location.reload();
 }	
 
-mVid.objToString = function (obj, bCheckHasOwnObject) {
-    var str = '';
-    for (var p in obj) {
-        if (!bCheckHasOwnObject || obj.hasOwnProperty(p)) {
-            str += " --- " + p + '::' + obj[p] + '\n';
-        }
-    }
-    return str;
-}
-
-mVid.dumpVideoObject = function (obj) {
-    var str = '';
-	var propList = [
-		"autoplay",
-		"bBuffEnoughToPlay",
-		"bPlayPauseTransition",
-		"baseURI",
-		"buffered",
-		"TimeRanges",
-		"className",
-		"clientHeight",
-		"clientLeft",
-		"clientTop",
-		"clientWidth",
-		"currentSrc",
-		"currentTime",
-		"defaultPlaybackRate",
-		"duration",
-		"ended",
-		"error",
-		"height",
-		"hidden",
-		"id",
-		"innerHTML",
-		"networkState",
-		"outerHTML",
-		"playbackRate",
-		"played",
-		"TimeRanges",
-		"poster",
-		"readyState",
-		"restartPoint",
-		"seekable",
-		"TimeRanges",
-		"seeking",
-		"src",
-		// "style",
-		"textContent",
-		"textTracks",
-		"TextTrackList",
-		"title",
-		"videoHeight",
-		"videoWidth",
-		"volume",
-		"width",
-	];
-	
-	var childObj;
-	
-	for (var i=0; i < propList.length; i++) {
-		childObj = obj[propList[i]];
-        str += propList[i] + '::' + childObj + '\n';
-		if (typeof childObj === 'object') {
-			str += mVid.objToString(childObj, false);
-		}
-	}
-    return str;
-};
-
-mVid.cmndDebug = function () {
-	var that = this;
-	
-	this.Log.info("called : cmndDebug"); 
-	
-	var playerContainer = e("player-container");
-	var strToSend;
-	var xhttp = new XMLHttpRequest();
-	var strFileName = mVid.devTextNameForInfo + "_debug_" + Date.now() + ".log";
-	
-	strToSend = "<------------------------------ START OF LOG ------------------------------>\n\n"
-	strToSend += "filename=" + strFileName + "\n\n";
-	strToSend += "\n--- User Agent ---\n\n";
-	strToSend += navigator.userAgent + "\n\n";
-
-	strToSend += "\n--- Play Debug Log ---\n\n";
-	strToSend += this.Log.getStr(); + "\n\n";
-	
-	for (var i = 0; i < playerContainer.childNodes.length; i++) {
-		if (playerContainer.childNodes[i].nodeName === 'VIDEO') {	
-			strToSend += "\nVideo Object dump\n";
-			strToSend += "------------------------------------\n\n";
-			strToSend += this.dumpVideoObject(playerContainer.childNodes[i]);
-			strToSend += "\n\n";
-		}
-	}
-
-	strToSend += "\n\n<------------------------------   END OF LOG ------------------------------>\n\n"
-
-	xhttp.onreadystatechange = function() {
-	  if (xhttp.readyState == 4 && xhttp.status == 200) {
-		that.Log.warn("SERVER response: " + xhttp.responseText);
-	  }
-	};	
-	
-	console.log(strToSend);
-	
-	xhttp.open("POST", "php/savelog.php?filename=" + strFileName, true);
-	xhttp.send(strToSend);
-}	
-
 mVid.cmndSeekFWD = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 	this.Log.info("called : cmndSeekFWD"); 
@@ -1353,7 +1145,6 @@ keyTable.entries = [
 	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_INFO 		}, 
 	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_GREEN 		}, 
 	{ func : mVid.cmndReload, 		key : 'L', hbbKey : __VK_RED 		}, 
-	{ func : mVid.cmndDebug, 		key : 'D', hbbKey : __VK_BLUE		}, 
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
 ];

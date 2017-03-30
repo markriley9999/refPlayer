@@ -26,58 +26,25 @@ div.safe_area
 	position: absolute;
 	/* Border of the safe area: 10% 5% 80% 90 */ 
 	left: 64px; top: 36px; width: 1024px; height: 648px;
+	background-color: transparent;
 }
 
 .video {
-	width: 1280px;
-	height: 720px;
-	top: 0;
-	left: 0;
+	width: fit-content;
+	height: fit-content;
+	top: 0px;
+	left: 0px;
 	position: absolute;
-	background-color: black;
+	background-color: transparent;
 }
 
 .video video {
-	width: 1280px;
+	width: 1152px;
 	height: 720px;
-	left: 0;
+	top: 0px;
+	left: 0px;
 	display: none;
-}
-
-.status-table-container {
-	width: 300px;
-	height: 720px;
-	top: 0;
-	left: 850px;
-	background-color: black;
-	color: white;
-	position: absolute;
-}
-
-.status-table-container table {
-	width: inherit;
-	border: none;
-	margin: 1ex auto auto;
-}
-
-.status-table-container caption {
-	background-color: blue;
-	color: white;
-}
-
-#status-table-body0 td {
-	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body1 td {
-	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body2 td {
-	text-align: left;
-	width: 6ex;
+	background-color: transparent;
 }
 
 p {
@@ -93,42 +60,12 @@ p {
 	color: green;
 }
 
-.log {
-	height: 200px;
-	width: 800px;
-	left: 0;
-	top: 50px;
-	position: absolute;
-}
-
-.log p{
-	max-width: 800px;
-	word-wrap: break-word;
-	font-size: small;
-}
-
-.debug {
-	color: white;
-}
-
-.info {
-	color: green;
-}
-
-.warn {
-	color: blue;
-}
-
-.error {
-	color: red;
-}
-
 .progress-bar-container {
-	width: 500px;
-	height: 50px;
-	top: 380px;
-	left: 850px;
-	background-color: black;
+	width: fit-content; 
+	height: fit-content; 
+	top: 40px;
+	left: 0px;
+	background-color: transparent;
 	color: white;
 	position: absolute;
 }
@@ -154,7 +91,7 @@ progress {
 }
 
 .bufferBarActive {
-	color: yellow;
+	color: orange;
 }
 
 .bufferBarConsumed {
@@ -163,7 +100,11 @@ progress {
 
 .playbackBar {
 	color: red;
-	width: 800px;
+	width: 924px;
+	height: 30px;
+	top: 0px;
+	left: 50px;
+	position: relative;
 }
 
 progress::-webkit-progress-value {
@@ -171,11 +112,11 @@ progress::-webkit-progress-value {
 }
 
 .playbackBar::-webkit-progress-value {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarActive::-webkit-progress-value {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarConsumed::-webkit-progress-value {
@@ -191,7 +132,7 @@ progress::-moz-progress-bar {
 }
 
 .bufferBarActive::-moz-progress-bar {
-	background-color: yellow;
+	background-color: orange;
 }
 
 .bufferBarConsumed::-moz-progress-bar {
@@ -199,57 +140,63 @@ progress::-moz-progress-bar {
 }
 
 .videoGFXOverlay {
-	width: 800px;
-	height: 480px;
-	top: 0;
-	left: 0;
-	position: absolute;
+	left: 0px;
+	top: 180px;
+	width: 1024px;
+	height: 200px;
 	background-color: transparent;
-	color: green;
+	position: absolute;
 }
 
 .videoControls {
-	width: 800px;
-	height: 64px;
-	top: 480px;
+	left: 0px;
+	width: 1024px;
+	height: 60px;
+	bottom: 50px;
 	position: absolute;
 	background-color: transparent;
 	margin: auto;
-	display: block;
 }
 
 #heart {
 	background-color: transparent;
 	position: absolute;
-	width: 32px;
-	height: 32px;
+	width: 16px;
+	height: 16px;
     position: absolute;
-	top: 10px;
+	top: 0px;
     right: 0px;
 	display: block;
+}
+
+.centre {
+    display: block;
+    margin: 0 auto;
+}
+
+.fitwidth {
+	width: fit-content; 
 }
 
 .playerIcon {
 	width: 32px;
 	height: 32px;
 	background-color: transparent;
-	position: absolute;
-	left: 0px;
-	top: 15px;
-	display: none;
+}
+
+.hilite {
+	background-color: orange;
+}
+
+.encrypted {
+	background-color: green;
 }
 
 .playerBufferingIcon {
-    max-height: 64px;  
-    max-width: 64px;  
-    position: absolute;  
-    top: 0;  
-    bottom: 0;  
-    left: 0;  
-    right: 0;  
-    margin: auto;  
-	display: none; 
-	margin: auto;
+    width: 100px;  
+    height: 100px;  
+	background-color: transparent;
+	display: none;
 }
 
 /* Rotating */
