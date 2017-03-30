@@ -194,8 +194,12 @@ window.onload = function () {
 	try {
 		mVid.start();
 	} catch (error) {
-		this.Log.error("FATAL ERROR: " + error.message);
+		mVid.Log.error("FATAL ERROR: " + error.message);
 	}
+}
+
+window.onunload = function () {
+	mVid.socket.disconnect();
 }
 
 mVid.start = function () {
@@ -349,27 +353,16 @@ mVid.purgePlayer = function (playerId) {
 
 	var player = e(playerId);
 	
-	if (!this.options.bKeepPlayers) {
-		if (player) {
-			player.pause();
-			player.src="";
-			
-			player.removeAttribute("src");
-			player.removeAttribute("source");
-			player.innerHTML = ""; // Why is the <source> placed in here!?
-			player.load();
-			player.parentNode.removeChild(player);
-			player=null;	// don't really need this...
-		}
-	} else {
-		this.Log.error("Player purposely not destroyed!");
-		if (player) {
-			var source = e(player.id + "-source");
-			source.id = "source-" + Date.now();
-			
-			player.style.display = "none";
-			player.id = "video-" + Date.now();
-		}
+	if (player) {
+		player.pause();
+		player.src="";
+		
+		player.removeAttribute("src");
+		player.removeAttribute("source");
+		player.innerHTML = ""; // Why is the <source> placed in here!?
+		player.load();
+		player.parentNode.removeChild(player);
+		player=null;	// don't really need this...
 	}
 }
 
@@ -415,55 +408,73 @@ mVid.updateBufferBar = function(playerId) {
 	var playerBuffer 	= e(playerId + "-bufferBar");
 	var headroomBuffer 	= e(playerId + "-headroomBar");
 	var player 			= e(playerId);
-	var buffer 			= player.buffered;
-	var duration 		= player.duration;
-	var offset;
 	
-	if (player.paused) {
-		playerBuffer.setAttribute("class", "bufferBar");
-		headroomBuffer.setAttribute("class", "bufferBar");		
-	} else {
-		playerBuffer.setAttribute("class", "bufferBarActive");	
-		headroomBuffer.setAttribute("class", "bufferBarActive");	
-	}
-	
-	offset = (player.paused) ? 0 : player.currentTime;
-	
-	if (duration && (duration > 0)) {
-		playerBuffer.max = duration;
-		headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
-
-		if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
-			playerBuffer.value = buffer.end(buffer.length-1);
-			headroomBuffer.value = buffer.end(buffer.length-1) - offset;
-		} else {
-			playerBuffer.value = 0;			
-			headroomBuffer.value = 0;			
-		}
-	} else
+	if (player)
 	{
-		playerBuffer.value = 0;	
-		playerBuffer.max = 60;	
-		headroomBuffer.value = 0;	
-		headroomBuffer.max = 60;	
-	}
+		var buffer 			= player.buffered;
+		var duration 		= player.duration;
+		var offset;
+		
+		if (player.paused) {
+			playerBuffer.setAttribute("class", "bufferBar");
+			headroomBuffer.setAttribute("class", "bufferBar");		
+		} else {
+			playerBuffer.setAttribute("class", "bufferBarActive");	
+			headroomBuffer.setAttribute("class", "bufferBarActive");	
+		}
+		
+		offset = (player.paused) ? 0 : player.currentTime;
+		
+		if (duration && (duration > 0)) {
+			playerBuffer.max = duration;
+			headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
 
+			if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
+				playerBuffer.value = buffer.end(buffer.length-1);
+				headroomBuffer.value = buffer.end(buffer.length-1) - offset;
+			} else {
+				playerBuffer.value = 0;			
+				headroomBuffer.value = 0;			
+			}
+		} else
+		{
+			playerBuffer.value = 0;	
+			playerBuffer.max = 60;	
+			headroomBuffer.value = 0;	
+			headroomBuffer.max = 60;	
+		}
+	}
+	
 	// Send state over io sockets
 	var pbObj = "\"playerBufferObj\": {";
 	pbObj += "\"id\":" + JSON.stringify(playerId) + ",";
-	pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
-	pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
-	pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
-	pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
-	pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
+	if (player)	{
+		pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
+		pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
+		pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
+		pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
+		pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
+	} else {
+		pbObj += "\"class\":\"bufferBar\",";
+		pbObj += "\"value\":\"0\","; 
+		pbObj += "\"max\":\"0\",";
+		pbObj += "\"currentTime\":\"0\",";
+		pbObj += "\"duration\":\"0\",";	
+	}
 	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime);
 	pbObj += "}";
 	
 	var hbObj = "\"headroomBufferObj\": {";
 	hbObj += "\"id\":" + JSON.stringify(playerId) + ",";
-	hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
-	hbObj += "\"value\":" + JSON.stringify('' + headroomBuffer.value) + ",";
-	hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
+	if (player)	{
+		hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
+		hbObj += "\"value\":" + JSON.stringify('' + headroomBuffer.value) + ",";
+		hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
+	} else {
+		hbObj += "\"class\":\"bufferBar\",";
+		hbObj += "\"value\":\"0\","; 
+		hbObj += "\"max\":\"0\"";
+	}
 	hbObj += "}";
 	
 	var out = "{" + pbObj + "," + hbObj + "}";
@@ -474,23 +485,26 @@ mVid.updateBufferBar = function(playerId) {
 mVid.updatePlaybackBar = function(playerId) {
 	var playerBar 		= e("playbackBar");
 	var player 			= e(playerId);
-	var duration 		= player.duration;
 	
-	if (duration && (duration > 0)) {
-		playerBar.max = duration;
-		playerBar.value = player.currentTime;
-	} else
-	{
-		playerBar.value = 0;	
-		playerBar.max = 100;	
-	}
+	if (player) {
+		var duration 		= player.duration;
+		
+		if (duration && (duration > 0)) {
+			playerBar.max = duration;
+			playerBar.value = player.currentTime;
+		} else
+		{
+			playerBar.value = 0;	
+			playerBar.max = 100;	
+		}
 
-	var out = "{";
-	out += "\"value\":" + JSON.stringify('' + playerBar.value) + ",";
-	out += "\"max\":" + JSON.stringify('' + playerBar.max);
-	out += "}";
-	
-	this.socket.emit('playbackOffset', out);
+		var out = "{";
+		out += "\"value\":" + JSON.stringify('' + playerBar.value) + ",";
+		out += "\"max\":" + JSON.stringify('' + playerBar.max);
+		out += "}";
+		
+		this.socket.emit('playbackOffset', out);
+	}
 }
 
 mVid.showBufferingIcon = function (bBuffering) {
@@ -537,9 +551,16 @@ mVid.statusTableText = function (playerId, textEntry, text) {
 mVid.getCurrentBufferingPlayer = function () {
 	//this.Log.info("getCurrentBufferingPlayer: " + content.list[content.currentBufferingIdx].playerId);
 	var idx = content.currentBufferingIdx;
+	var playerId = content.list[idx].playerId;
+	var player = e(playerId);
+	
+	if (!player) {
+		this.createPlayer(playerId);
+		player = e(playerId);
+	}
 	
 	if (content.list[idx].bBuffering) {
-		return e(content.list[idx].playerId);
+		return player;
 	} else {
 		return null;
 	}
@@ -673,6 +694,11 @@ mVid.switchPlayerToPlaying = function(freshPlayer, previousPlayer) {
 	
 	if (freshPlayer) {
 		this.postStatusUpdate("PlayCount", ++this.playCount);
+	}
+	
+	// Purge previous player
+	if (previousPlayer && !this.isMainFeaturePlayer(previousPlayer)) {
+		this.purgePlayer(previousPlayer.id);
 	}
 }
 
@@ -1119,6 +1145,7 @@ mVid.cmndInfo = function () {
 	
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
+	this.socket.disconnect();
 	location.reload();
 }	
 
