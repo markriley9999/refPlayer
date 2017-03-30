@@ -80,6 +80,9 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 
     console.log(" ---> Device connected: " + connectedDevices);
 	
+	//electronApp.relaunch();
+	//electronApp.exit(0);
+	
 	socket.on('bufferEvent', function(data) {
 		if (mainWindow) {
 			mainWindow.webContents.send('ipc-buffer', data);
