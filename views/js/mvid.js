@@ -34,41 +34,44 @@ content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
 
 content.list = [
+	{
+		playerId : "mVid-mainContent", 
+		bBuffering : false, 
+		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		type : "application/dash+xml",
+		transitionTime : 10	
+	},
 	{	
 		playerId : "mVid-video0",
 		bBuffering : false, 
-		src : "http://cdn.http.anno.test.channel4.com/m/1/174055/7/2047111/MUM-HATD170-020_1462888808_93626_17.mp4", 
+		src : "http://mp.adverts.itv.com/priority/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video1", 
 		bBuffering : false, 
-		src : "http://cdn.http.anno.test.channel4.com/m/1/174055/78/1340110/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
+		src : "http://mp.adverts.itv.com/priority/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video0", 
 		bBuffering : false, 
-		src : "http://cdn.http.anno.test.channel4.com/m/1/174055/77/1340109/CH4_31_02_50_AMV_SYPR030_030_001_93613_17.mp4", 
-		type : "video/mp4",
-		transitionTime : -1
-	},
-	{
-		playerId : "mVid-video1",  
-		bBuffering : false, 
-		src : "http://cdn.http.anno.test.channel4.com/m/1/174055/110/1858926/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
+		src : "http://mp.adverts.itv.com/priority/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-mainContent", 
 		bBuffering : false, 
-//		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
-		transitionTime : 60	
+		transitionTime : 10	
 	},
 ];
 
@@ -342,6 +345,7 @@ mVid.createPlayer = function (playerId) {
 	this.statusTableText(playerId, "Pos", "---");
 
 	player.bPlayPauseTransition = false;
+	player.restartPoint = 0;
 	
 	this.timeStampStartOfPlay(player);
 	
@@ -453,12 +457,14 @@ mVid.updateBufferBar = function(playerId) {
 		pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
 		pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
 		pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
+		pbObj += "\"restartPoint\":" + JSON.stringify('' + player.restartPoint) + ",";
 		pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
 	} else {
 		pbObj += "\"class\":\"bufferBar\",";
 		pbObj += "\"value\":\"0\","; 
 		pbObj += "\"max\":\"0\",";
 		pbObj += "\"currentTime\":\"0\",";
+		pbObj += "\"restartPoint\":\"0\",";
 		pbObj += "\"duration\":\"0\",";	
 	}
 	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime);
@@ -806,6 +812,7 @@ mVid.onVideoEvent = function (event) {
 			if (this === playingPlayer) {
 				mVid.resetStallTimer();
 			}
+
 			break;
 			
 		case mVid.videoEvents.CAN_PLAY_THROUGH:
@@ -884,6 +891,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.PAUSE:
 			mVid.Log.info(this.id + ": video is paused");
 			mVid.statusTableText(this.id, "Play", "Paused");
+			mVid.updateBufferBar(this.id);
 
 			// Sanity check
 			if (this != playingPlayer) {
@@ -911,6 +919,7 @@ mVid.onVideoEvent = function (event) {
 			
 		case mVid.videoEvents.SEEKED:
 			mVid.Log.info(this.id + ": video has seeked");
+			mVid.updateBufferBar(this.id);
 			// Sanity check
 			if (this != playingPlayer) {
 				mVid.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
@@ -920,11 +929,13 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.STALLED:
 			mVid.Log.warn(this.id + ": has stalled");
 			mVid.showBufferingIcon(true);
+			mVid.updateBufferBar(this.id);
 			break;
 			
 		case mVid.videoEvents.WAITING:
 			mVid.Log.warn(this.id + ": is waiting");
 			mVid.showBufferingIcon(true);
+			mVid.updateBufferBar(this.id);
 			break;
 			
 		case mVid.videoEvents.RESIZE:
@@ -934,6 +945,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.ENDED:
 			mVid.statusTableText(this.id, "Buffer", "---");
 			mVid.Log.info(this.id + ": video has ended");
+			mVid.updateBufferBar(this.id);
 			
 			mVid.showBufferingIcon(true);
 			mVid.setPlayingState(PLAYSTATE_STOP);
@@ -969,10 +981,10 @@ mVid.onVideoEvent = function (event) {
 				var bufferEnd 	= mVid.getBufferedAmount(this);
 				var bPreloadNextAd = false;
 				
-				if (mVid.isMainFeaturePlayer(playingPlayer)) {
-					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= mVid.getTransitionTime(playingPlayer)) {
-						bPreloadNextAd = true;
-						mVid.setPreload(playingPlayer, "none");
+				if ((mVid.isMainFeaturePlayer(this)) && (this === playingPlayer)) {
+					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.restartPoint + mVid.getTransitionTime(this))) {
+					bPreloadNextAd = true;
+					mVid.setPreload(playingPlayer, "none");
 					}
 				} else {
 					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
@@ -981,14 +993,14 @@ mVid.onVideoEvent = function (event) {
 				}
 				
 				if (bPreloadNextAd) {
-					mVid.statusTableText(this.id, "Buffer", "Buffering complete");
-					mVid.Log.info(this.id + ": Content fully buffered");			
+					mVid.Log.info(this.id + ": Commence buffering for next item");			
 					mVid.skipBufferingToNextPlayer(); // Get ready to buffer next player
 					mVid.setContentSourceAndLoad();
 
 					if (this.bufferSeqCheck != mVid.videoEvents.CAN_PLAY_THROUGH) {
 						mVid.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 					}
+					mVid.updateBufferBar(this.id);
 				}
 			}
 			
@@ -1001,12 +1013,14 @@ mVid.onVideoEvent = function (event) {
 				mVid.statusTableText(this.id, "Play trans", playTransMS + "ms");
 			}
 			
+			// Time for adverts?
 			if ((this == playingPlayer) && mVid.isMainFeaturePlayer(playingPlayer)) {
-				if ((this.currentTime - this.restartPoint) >= mVid.getTransitionTime(playingPlayer)) {
-					mVid.Log.info(this.id + ": transition main content");
+				if ((this.currentTime - this.restartPoint) >= mVid.getTransitionTime(this)) {
+					mVid.Log.warn(this.id + ": transition main content");
 					this.restartPoint = this.currentTime;
 					this.bPlayPauseTransition = false;
 					this.pause();
+					mVid.updateBufferBar(this.id);
 				}
 			}
 

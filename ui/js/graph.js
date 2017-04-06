@@ -71,7 +71,7 @@ ipc.on('ipc-buffer', function(event, message) {
 		var pbObj = msgObj.playerBufferObj;
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
-		//console.log(msgObj);
+		//console.log(pbObj);
 		if (graph.charts[playerId]) {
 			graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value);
 		}
