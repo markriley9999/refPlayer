@@ -34,15 +34,6 @@ content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
 
 content.list = [
-	{
-		playerId : "mVid-mainContent", 
-		bBuffering : false, 
-		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
-		type : "application/dash+xml",
-		transitionTime : 10	
-	},
 	{	
 		playerId : "mVid-video0",
 		bBuffering : false, 
@@ -67,11 +58,11 @@ content.list = [
 	{
 		playerId : "mVid-mainContent", 
 		bBuffering : false, 
-		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
+		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
 		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
-		transitionTime : 10	
+		transitionTime : 30	
 	},
 ];
 
@@ -208,9 +199,10 @@ window.onunload = function () {
 mVid.start = function () {
 	var mainVideo;
     var appMan 		= null;
-	var app			= null;
 	var that 		= this;
 	var confManager = null;
+	
+	this.app = null;
 	
 	this.Log.init(e("log"));
 	this.Log.info("app loaded");
@@ -226,13 +218,13 @@ mVid.start = function () {
     }
 	
     try {
-        app = appMan.getOwnerApplication(document);
+        this.app = appMan.getOwnerApplication(document);
     } catch (err) {
         this.Log.warn("Exception when getting the owner Application object. Error: " + err.message);
     }
 
     try {
-        app.show();
+        this.app.show();
     } catch (err) {
         this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
     }
@@ -643,7 +635,10 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		source.setAttribute("src", src);
 		source.setAttribute("type", type);	
 		player.bBuffEnoughToPlay = false;
-		dashjs.MediaPlayerFactory.create(player, source);
+		// Running on a non hbbtv device?
+		if (!this.app) {
+			dashjs.MediaPlayerFactory.create(player, source);
+		}
 		player.load();
 	}
 	
@@ -782,8 +777,7 @@ mVid.onVideoEvent = function (event) {
 			mVid.Log.info(this.id + ": video can play");
 			mVid.statusTableText(this.id, "Buffer", "Enough to start play");
 			mVid.updateBufferBar(this.id);
-			
-			
+				
 			// Sanity check
 			if (this != bufferingPlayer) {
 				mVid.Log.error(this.id + ": " + event.type + ": event for non buffering video object!");
@@ -801,14 +795,13 @@ mVid.onVideoEvent = function (event) {
 				mVid.Log.warn(this.id + ": Buffer should not still be empty!");				
 			}
 
-/*			
 			this.bBuffEnoughToPlay = true;
 
 			if (bBufferingWhilstAttemptingToPlay) {
 				// Happens for first piece of content (or we're behind on buffering) - we can start playing now...
 				mVid.switchPlayerToPlaying(this, null);
 			} 
-*/
+
 			if (this === playingPlayer) {
 				mVid.resetStallTimer();
 			}
@@ -974,7 +967,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.TIME_UPDATE:
 			mVid.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
 			mVid.updatePlaybackBar(this.id);
-			
+	
 			// Start buffering next programme?
 			if (bBufferingWhilstAttemptingToPlay) {
 				var duration 	= this.duration;
