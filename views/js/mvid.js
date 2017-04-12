@@ -36,31 +36,27 @@ content.currentPlayingIdx 	= 0;
 content.list = [
 	{	
 		playerId : "mVid-video0",
-		bBuffering : false, 
 		src : "http://mp.adverts.itv.com/priority/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video1", 
-		bBuffering : false, 
 		src : "http://mp.adverts.itv.com/priority/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video0", 
-		bBuffering : false, 
 		src : "http://mp.adverts.itv.com/priority/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-mainContent", 
-		bBuffering : false, 
 		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		//src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
 		transitionTime : 30	
 	},
@@ -233,9 +229,6 @@ mVid.start = function () {
 	
 	mainVideo = e("mVid-mainContent");
 	
-	this.createPlayer("mVid-video0");
-	this.createPlayer("mVid-video1");
-
 	for(var i in this.videoEvents) {
 		mainVideo.addEventListener(this.videoEvents[i], this.onVideoEvent);
 	}
@@ -360,15 +353,6 @@ mVid.purgePlayer = function (playerId) {
 		player.parentNode.removeChild(player);
 		player=null;	// don't really need this...
 	}
-}
-
-mVid.purgeAndRecreatePlayers = function () {
-	this.Log.info("purgeAndRecreatePlayers");
-	
-	this.purgePlayer("mVid-video0");
-	this.purgePlayer("mVid-video1");
-	this.createPlayer("mVid-video0");
-	this.createPlayer("mVid-video1");
 }
 
 mVid.getKeyByValue = function (obj, value) {
@@ -557,11 +541,7 @@ mVid.getCurrentBufferingPlayer = function () {
 		player = e(playerId);
 	}
 	
-	if (content.list[idx].bBuffering) {
-		return player;
-	} else {
-		return null;
-	}
+	return player;
 }
 
 mVid.getCurrentPlayingPlayer = function () {
@@ -588,7 +568,6 @@ mVid.getTransitionTime = function () {
 mVid.setContentSourceAndLoad = function () {
 	var player;
 
-	content.list[content.currentBufferingIdx].bBuffering = true;
 	player = this.getCurrentBufferingPlayer();
 	this.Log.info(player.id + " setContentSourceAndLoad - currentBufferingIdx: " + content.currentBufferingIdx);
 	
@@ -598,7 +577,6 @@ mVid.setContentSourceAndLoad = function () {
 }
 
 mVid.skipBufferingToNextPlayer = function () {
-	content.list[content.currentBufferingIdx].bBuffering = false;
 	if (++content.currentBufferingIdx >= content.list.length) {
 		content.currentBufferingIdx = 0;
 	}
@@ -863,11 +841,6 @@ mVid.onVideoEvent = function (event) {
 			{
 				this.startPlaybackPointMS = this.currentTime * 1000;
 					
-				// If main content is playing, purge the advert video objects
-				if (mVid.isMainFeaturePlayer(this)) {
-					mVid.purgeAndRecreatePlayers();
-				}
-				
 				if (!bBufferingWhilstAttemptingToPlay) {
 					// Right let's start buffering the next piece of content
 					if (this == playingPlayer) {
