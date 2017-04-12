@@ -9,6 +9,8 @@ const url = require('url');   // used by electron to load html files
  
 const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
+
+const fs = require('fs');
  
 let mainWindow;      // main window variable
 let graphsWindow;     // graph window variable
@@ -114,6 +116,7 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 
 expressServer.use(express.static('public')); // put static files in the public folder to make them available on web pages
 expressServer.use(bodyParser.urlencoded({ extended: false })); // Tells express to use body parser
+expressServer.use(bodyParser.text({type: 'text/plain'})); // Tells express to use body parser
 
 //expressServer.use(express.static('views'));
 expressServer.use('/css', express.static('views/css'));
@@ -139,8 +142,8 @@ expressServer.get('/', function(req, res) {
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
 			res.send(html);
-			console.log("UserAgent: " + req.headers['user-agent']);
-			console.log(JSON.stringify(req.headers));
+			//console.log("UserAgent: " + req.headers['user-agent']);
+			//console.log(JSON.stringify(req.headers));
 		});
 	} else {
 			res.status(503);
@@ -148,5 +151,16 @@ expressServer.get('/', function(req, res) {
 	}
 });
  
+expressServer.post('/savelog', function(req, res) {
+	console.log("/savelog: " + req.query.filename);
+    res.send(); // Send an empty response to stop clients from hanging
+
+	fs.writeFile("/logs/" + req.query.filename, req.body, function(err) {
+		if(err) {
+			console.log(err);
+		}
+	});
+});
  
 server.listen(3000); // Socket.io port (hides express inside)
+

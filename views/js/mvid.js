@@ -139,6 +139,7 @@ mVid.Log = {};
 
 mVid.Log.init = function (logDiv) {
 	this.lastLogTime 	= Date.now();
+	this.logStr 		= "";
 };
 
 mVid.Log.error = function (message) {
@@ -164,7 +165,8 @@ mVid.Log._write = function(message, cssClass) {
 	this.lastLogTime = Date.now();
 	
 	logText = elapsedTime + "ms:" + message;
-
+	this.logStr += logText + "\r\n";
+	
 	var out = "cssClass=" + cssClass + "&";
 	out += "logText=" + logText;
 	
@@ -188,7 +190,8 @@ window.onload = function () {
 	}
 }
 
-window.onunload = function () {
+window.onbeforeunload = function () {
+	mVid.Log.warn("Refresh page");
 	mVid.socket.disconnect();
 }
 
@@ -1111,18 +1114,6 @@ mVid.cmndPause = function () {
 	}
 }	
 	
-mVid.cmndInfo = function () {
-	this.Log.info("called : cmndInfo"); 
-		
-	var logEl = e("log");
-	
-	if (logEl.style.display != "none") {
-		logEl.style.display = "none";			
-	} else {
-		logEl.style.display = "block";	
-	}
-}	
-	
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
 	this.socket.disconnect();
@@ -1143,24 +1134,32 @@ mVid.cmndSeekBACK = function () {
 	playingPlayer.currentTime -= 5;
 }
 
+mVid.cmndLog = function () {
+	// send a xhr/ajax POST request with the serialized media events
+	var xhttp = new XMLHttpRequest();
+	var fileName = extractDevName(navigator.userAgent) + "_debug_" + Date.now() + ".log";
+	
+	xhttp.open("POST", "/savelog?filename=" + fileName, true);
+	xhttp.setRequestHeader("Content-type", "text/plain"); 
+	xhttp.send(this.Log.logStr);
+
+	this.Log.info("Save file : " + fileName); 
+}
+
 // TODO: need to forward ref funcs
 keyTable.entries = [
 	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : __VK_FAST_FWD 	}, 
 	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : __VK_REWIND 	}, 
 	{ func : mVid.cmndPlay,			key : 'P', hbbKey : __VK_PLAY 		}, 
 	{ func : mVid.cmndPause, 		key : 'S', hbbKey : __VK_PAUSE 		}, 
-	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_INFO 		}, 
-	{ func : mVid.cmndInfo,			key : 'I', hbbKey : __VK_GREEN 		}, 
 	{ func : mVid.cmndReload, 		key : 'L', hbbKey : __VK_RED 		}, 
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
+	{ func : mVid.cmndLog, 			key : 'D', hbbKey : __VK_BLUE		}, 
 ];
 		
 // Utility functions
-function getUrlVars() {
-	var vars = {};
-	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		vars[key] = value;
-	});
-	return vars;
+function extractDevName(sUA) {
+	var arr = sUA.match(/\bFVC\/2.0 \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
+	return arr[1] + arr[2];
 }
