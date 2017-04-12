@@ -1116,6 +1116,7 @@ mVid.cmndPause = function () {
 	
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
+	this.cmndLog();
 	this.socket.disconnect();
 	location.reload();
 }	

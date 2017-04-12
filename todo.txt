@@ -1,5 +1,4 @@
 - adverts in main content
-- save log (PUT)
-- clear log (DELETE)
 - shutdown cleanly
 - control from browser
+- window control

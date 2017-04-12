@@ -82,9 +82,6 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 
     console.log(" ---> Device connected: " + connectedDevices);
 	
-	//electronApp.relaunch();
-	//electronApp.exit(0);
-	
 	socket.on('bufferEvent', function(data) {
 		if (mainWindow) {
 			mainWindow.webContents.send('ipc-buffer', data);
@@ -139,6 +136,10 @@ expressServer.post('/status', function(req, res) {
 
 expressServer.get('/', function(req, res) {
 	if (connectedDevices === 0) {
+		if (mainWindow) mainWindow.reload();
+		if (graphsWindow) graphsWindow.reload();
+		if (sGraphWindow) sGraphWindow.reload();
+		
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
 			res.send(html);
