@@ -58,8 +58,8 @@ content.list = [
 	{
 		playerId : "mVid-mainContent", 
 		bBuffering : false, 
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		// src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
 		// src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
 		transitionTime : 30	
