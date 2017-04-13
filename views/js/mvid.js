@@ -55,8 +55,8 @@ content.list = [
 	{
 		playerId : "mVid-mainContent", 
 		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		//src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		//src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
 		transitionTime : 30	
 	},
@@ -274,7 +274,7 @@ mVid.start = function () {
 	
 	
     try {
-		var myKeyset = app.privateData.keyset;
+		var myKeyset = this.app.privateData.keyset;
 		myKeyset.setValue(	myKeyset.RED 		| 
 							myKeyset.GREEN 		| 
 							myKeyset.BLUE 		| 
@@ -1136,15 +1136,15 @@ mVid.cmndSeekBACK = function () {
 }
 
 mVid.cmndLog = function () {
-	// send a xhr/ajax POST request with the serialized media events
 	var xhttp = new XMLHttpRequest();
 	var fileName = extractDevName(navigator.userAgent) + "_debug_" + Date.now() + ".log";
+
+	this.Log.info("Save file : " + fileName); 
 	
+	// send a xhr/ajax POST request with the serialized media events
 	xhttp.open("POST", "/savelog?filename=" + fileName, true);
 	xhttp.setRequestHeader("Content-type", "text/plain"); 
 	xhttp.send(this.Log.logStr);
-
-	this.Log.info("Save file : " + fileName); 
 }
 
 // TODO: need to forward ref funcs

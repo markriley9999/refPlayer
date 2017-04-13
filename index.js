@@ -12,9 +12,9 @@ const bodyParser = require('body-parser');  // Express middle-ware that allows p
 
 const fs = require('fs');
  
-let mainWindow;      // main window variable
-let graphsWindow;     // graph window variable
-let sGraphWindow;
+let mainWindow 		= null;      // main window variable
+let graphsWindow	= null;     // graph window variable
+let sGraphWindow	= null;
 
 var expressServer = express(); // Active express object
  
@@ -32,37 +32,48 @@ ipc.on('player-control', function(event, message) { // listens for the player-co
 })
  
 function createWindows() {
-    mainWindow = new browserWindow({width: 1200, height: 640}); // initalize the main gui window
-    graphsWindow = new browserWindow({width: 1200, height: 700}); 
-    sGraphWindow = new browserWindow({width: 800, height: 800}); 
- 
-    mainWindow.loadURL(url.format({ // load the html file that acts as the ui
-        pathname: path.join(__dirname, 'ui/ui.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
- 
-    graphsWindow.loadURL(url.format({ 
-        pathname: path.join(__dirname, 'ui/graph.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
- 
-    sGraphWindow.loadURL(url.format({ 
-        pathname: path.join(__dirname, 'ui/singlegraph.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
- 
-    mainWindow.on('closed', function() { // reset the window object when it is closed
-        mainWindow = null;
-    });
-    graphsWindow.on('closed', function() { // reset the window object when it is closed
-        graphsWindow = null;
-    });
-    sGraphWindow.on('closed', function() { // reset the window object when it is closed
-        sGraphWindow = null;
-    });
+	
+	if (!mainWindow) {
+		mainWindow = new browserWindow({width: 1200, height: 640}); // initalize the main gui window
+		
+		mainWindow.loadURL(url.format({ // load the html file that acts as the ui
+			pathname: path.join(__dirname, 'ui/ui.html'),
+			protocol: 'file:',
+			slashes: true
+		}));
+		
+		mainWindow.on('closed', function() { // reset the window object when it is closed
+			mainWindow = null;
+		});
+	}
+	
+	if (!graphsWindow) {
+		graphsWindow = new browserWindow({width: 1200, height: 700}); 
+
+		graphsWindow.loadURL(url.format({ 
+			pathname: path.join(__dirname, 'ui/graph.html'),
+			protocol: 'file:',
+			slashes: true
+		}));
+	 
+		graphsWindow.on('closed', function() { // reset the window object when it is closed
+			graphsWindow = null;
+		});
+	}
+
+	if (!sGraphWindow) {
+		sGraphWindow = new browserWindow({width: 800, height: 800}); 
+	 
+		sGraphWindow.loadURL(url.format({ 
+			pathname: path.join(__dirname, 'ui/singlegraph.html'),
+			protocol: 'file:',
+			slashes: true
+		}));
+	 
+		sGraphWindow.on('closed', function() { // reset the window object when it is closed
+			sGraphWindow = null;
+		});
+	}
 }
  
 electronApp.on('ready', createWindows); // when the application is ready create the mainWindow
@@ -73,8 +84,8 @@ electronApp.on('window-all-closed', function() { // if this is running on a mac 
 });
  
 expressServer.on('activate', function() { // the application is focused create the mainWindow
-    if (mainWindow === null && graphsWindow === null && sGraphWindow === null)
-        createWindows();
+    //if (mainWindow === null && graphsWindow === null && sGraphWindow === null)
+        // createWindows();
 });
  
 io.sockets.on('connection', function(socket) { // listen for a device connection to the server
@@ -123,19 +134,25 @@ expressServer.use('/js', express.static('views/js'));
 expressServer.set('view-engine', 'hbs'); 
 
 expressServer.post('/log', function(req, res) {
-    mainWindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
+	if (mainWindow) {
+		mainWindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
+	}
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
  
 expressServer.post('/status', function(req, res) {
-    mainWindow.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
+	if (mainWindow) {
+		mainWindow.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
+	}
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
 expressServer.get('/', function(req, res) {
 	if (connectedDevices === 0) {
+		createWindows();
+		
 		if (mainWindow) mainWindow.reload();
 		if (graphsWindow) graphsWindow.reload();
 		if (sGraphWindow) sGraphWindow.reload();
