@@ -2,3 +2,4 @@
 - shutdown cleanly
 - control from browser
 - window control
+- ad transitions bar chart
