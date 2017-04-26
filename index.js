@@ -12,9 +12,10 @@ const bodyParser = require('body-parser');  // Express middle-ware that allows p
 
 const fs = require('fs');
  
-let mainWindow 		= null;      // main window variable
-let graphsWindow	= null;     // graph window variable
-let sGraphWindow	= null;
+let winMain 	= null;      // main window variable
+let winGraphs	= null;     // graph window variable
+let winSGraph	= null;
+let winAdTrans	= null;
 
 var expressServer = express(); // Active express object
  
@@ -30,61 +31,43 @@ ipc.on('player-control', function(event, message) { // listens for the player-co
         io.sockets.emit('pause');       // send a pause message to all clients
     }
 })
- 
-function createWindows() {
-	
-	if (!mainWindow) {
-		mainWindow = new browserWindow({width: 1200, height: 640}); // initalize the main gui window
-		
-		mainWindow.loadURL(url.format({ // load the html file that acts as the ui
-			pathname: path.join(__dirname, 'ui/ui.html'),
-			protocol: 'file:',
-			slashes: true
-		}));
-		
-		mainWindow.on('closed', function() { // reset the window object when it is closed
-			mainWindow = null;
-		});
-	}
-	
-	if (!graphsWindow) {
-		graphsWindow = new browserWindow({width: 1200, height: 700}); 
 
-		graphsWindow.loadURL(url.format({ 
-			pathname: path.join(__dirname, 'ui/graph.html'),
+function createWindow(winObj, uiurl, w, h) {
+	if (!winObj) {
+		obj = new browserWindow({width: w, height: h}); 
+	 
+		obj.loadURL(url.format({ 
+			pathname: path.join(__dirname, uiurl),
 			protocol: 'file:',
 			slashes: true
 		}));
 	 
-		graphsWindow.on('closed', function() { // reset the window object when it is closed
-			graphsWindow = null;
+		obj.on('closed', function() { // reset the window object when it is closed
+			obj = null;
 		});
-	}
-
-	if (!sGraphWindow) {
-		sGraphWindow = new browserWindow({width: 800, height: 800}); 
-	 
-		sGraphWindow.loadURL(url.format({ 
-			pathname: path.join(__dirname, 'ui/singlegraph.html'),
-			protocol: 'file:',
-			slashes: true
-		}));
-	 
-		sGraphWindow.on('closed', function() { // reset the window object when it is closed
-			sGraphWindow = null;
-		});
+		
+		return obj;
+	} else {
+		return winObj;
 	}
 }
  
-electronApp.on('ready', createWindows); // when the application is ready create the mainWindow
+function createWindows() {
+	winMain 	= createWindow(winMain,		'ui/ui.html',			1200,	640);
+	winGraphs 	= createWindow(winGraphs,	'ui/graph.html',		1200,	700);
+	winSGraph 	= createWindow(winSGraph, 	'ui/singlegraph.html', 	800, 	800);
+	winAdTrans	= createWindow(winAdTrans, 	'ui/adtransgraph.html', 800, 	800);
+}
+ 
+electronApp.on('ready', createWindows); // when the application is ready create the winMain
  
 electronApp.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
     if (process.platform !== 'darwin')
         electronApp.quit();
 });
  
-expressServer.on('activate', function() { // the application is focused create the mainWindow
-    //if (mainWindow === null && graphsWindow === null && sGraphWindow === null)
+expressServer.on('activate', function() { // the application is focused create the winMain
+    //if (winMain === null && winGraphs === null && winSGraph === null)
         // createWindows();
 });
  
@@ -94,21 +77,21 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
     console.log(" ---> Device connected: " + connectedDevices);
 	
 	socket.on('bufferEvent', function(data) {
-		if (mainWindow) {
-			mainWindow.webContents.send('ipc-buffer', data);
+		if (winMain) {
+			winMain.webContents.send('ipc-buffer', data);
 		}
-		if (graphsWindow) {
-			graphsWindow.webContents.send('ipc-buffer', data);
+		if (winGraphs) {
+			winGraphs.webContents.send('ipc-buffer', data);
 		}
-		if (sGraphWindow) {
-			sGraphWindow.webContents.send('ipc-buffer', data);
+		if (winSGraph) {
+			winSGraph.webContents.send('ipc-buffer', data);
 		}
 		//console.log(data);
 	});
 	
 	socket.on('playbackOffset', function(data) {
-		if (mainWindow) {
-			mainWindow.webContents.send('ipc-playbackOffset', data);
+		if (winMain) {
+			winMain.webContents.send('ipc-playbackOffset', data);
 		}
 		//console.log(data);
 	});
@@ -134,18 +117,26 @@ expressServer.use('/js', express.static('views/js'));
 expressServer.set('view-engine', 'hbs'); 
 
 expressServer.post('/log', function(req, res) {
-	if (mainWindow) {
-		mainWindow.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
+	if (winMain) {
+		winMain.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
 	}
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
  
 expressServer.post('/status', function(req, res) {
-	if (mainWindow) {
-		mainWindow.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
+	if (winMain) {
+		winMain.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
 	}
 	//console.log(req.body);
+    res.send(); // Send an empty response to stop clients from hanging
+});
+
+expressServer.post('/adtrans', function(req, res) {
+	if (winAdTrans) {
+		winAdTrans.webContents.send('ipc-adtrans', req.body); // send the async-body message to the rendering thread
+	}
+	console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -153,9 +144,10 @@ expressServer.get('/', function(req, res) {
 	if (connectedDevices === 0) {
 		createWindows();
 		
-		if (mainWindow) mainWindow.reload();
-		if (graphsWindow) graphsWindow.reload();
-		if (sGraphWindow) sGraphWindow.reload();
+		if (winMain) 	winMain.reload();
+		if (winGraphs) 	winGraphs.reload();
+		if (winSGraph) 	winSGraph.reload();
+		if (winAdTrans) winAdTrans.reload();
 		
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);

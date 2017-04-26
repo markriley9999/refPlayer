@@ -55,10 +55,10 @@ content.list = [
 	{
 		playerId : "mVid-mainContent", 
 		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		//src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		//src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+		src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
-		transitionTime : 30	
+		transitionTime : 10	
 	},
 ];
 
@@ -521,10 +521,18 @@ mVid.setPlayingState = function (state) {
 
 mVid.postStatusUpdate = function (id, text) {
 	var out = "id=" + id + "&" + "text=" + text;
+	this._post("/status", out);
+}
 
+mVid.postAdTrans = function (id, time) {
+	var out = "id=" + id + "&" + "time=" + time;
+	this._post("/adtrans", out);
+}
+
+mVid._post = function (url, out) {
 	// send a xhr/ajax POST request with the serialized media events
 	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "/status", true);
+	xhttp.open("POST", url, true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
 	xhttp.send(out);
 }
@@ -980,6 +988,7 @@ mVid.onVideoEvent = function (event) {
 				var playTransMS = Date.now() - this.timestampStartPlay - mVid.transitionThresholdMS;
 				playTransMS = (playTransMS > 0) ? playTransMS : 0;
 				mVid.statusTableText(this.id, "Play trans", playTransMS + "ms");
+				mVid.postAdTrans(this.id, playTransMS);
 			}
 			
 			// Time for adverts?

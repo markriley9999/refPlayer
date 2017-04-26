@@ -48,8 +48,6 @@ graph.setupCharts = function () {
     }	
 }
 
-var x = 0;
-
 graph.updateChart = function (chartObj, d, t, pos, buffer, hroom) {
 	if (chartObj.chartData) {
 		chartObj.chartData.addRow([t.toString(),  
@@ -59,7 +57,6 @@ graph.updateChart = function (chartObj, d, t, pos, buffer, hroom) {
 								parseFloat(hroom)]);		
 		chartObj.chart.draw(chartObj.chartData, chartObj.chartOptions);
 	}
-	x++;
 }
 
 // listen for the ipc events
