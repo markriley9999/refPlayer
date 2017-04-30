@@ -24,10 +24,16 @@ graph.setupCharts = function () {
 
 		that.charts[id] = {};
 		
-		that.charts[id].chartData = google.visualization.arrayToDataTable([
-          ['Time'	, 'Duration'	, 'Pos'	, 'Buffer'	, 'Headroom'],
-          ['0'		,  0			, 0		, 0			, 0]
-        ]);
+		that.charts[id].chartData = new google.visualization.DataTable();
+		
+		that.charts[id].chartData.addColumn('number', 'Time'); 
+		that.charts[id].chartData.addColumn('number', 'Duration'); 
+		that.charts[id].chartData.addColumn('number', 'Pos'); 
+		that.charts[id].chartData.addColumn('number', 'Buffer'); 
+		that.charts[id].chartData.addColumn('number', 'Headroom'); 
+
+		that.charts[id].chartData.addColumn({type:'string', role:'annotation'}); 
+		that.charts[id].chartData.addColumn({type:'string', role:'annotationText'});
 
         that.charts[id].chartOptions = {
           title: title,
@@ -36,7 +42,7 @@ graph.setupCharts = function () {
         };
 
         that.charts[id].chart = new google.visualization.LineChart(e(div));
-        that.charts[id].chart.draw(that.charts[id].chartData, that.charts[id].chartOptions);
+        // that.charts[id].chart.draw(that.charts[id].chartData, that.charts[id].chartOptions);
 	}
 
 	function drawCharts() {
@@ -49,12 +55,24 @@ graph.setupCharts = function () {
 }
 
 graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
+	var ev;
+	
+	if (annotation) {
+		ev = 'e';
+	} else {
+		ev = null;
+		annotation = null;
+	}
+		
 	if (chartObj.chartData) {
-		chartObj.chartData.addRow([t.toString(),  
-								parseFloat(d), 
-								parseFloat(pos), 
-								parseFloat(buffer), 
-								parseFloat(hroom)]);		
+		chartObj.chartData.addRow([	parseFloat(t),  
+									parseFloat(d), 
+									parseFloat(pos), 
+									parseFloat(buffer), 
+									parseFloat(hroom),
+									ev,
+									annotation
+								]);		
 		chartObj.chart.draw(chartObj.chartData, chartObj.chartOptions);
 		//console.log(annotation);
 	}

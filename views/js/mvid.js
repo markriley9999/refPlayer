@@ -192,6 +192,7 @@ window.onload = function () {
 
 window.onbeforeunload = function () {
 	mVid.Log.warn("Refresh page");
+	mVid.cmndLog();
 	mVid.socket.disconnect();
 }
 
@@ -918,6 +919,7 @@ mVid.onVideoEvent = function (event) {
 			
 		case mVid.videoEvents.RESIZE:
 			mVid.Log.info(this.id + ": resize called");
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			break;
 			
 		case mVid.videoEvents.ENDED:
@@ -1015,13 +1017,27 @@ mVid.onVideoEvent = function (event) {
 			
 		case mVid.videoEvents.ERROR:
 			mVid.Log.error(this.id + ": video error: " + event.srcElement.error.code + " - " + mVid.eventErrorCodesMappingTable[event.srcElement.error.code]);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			break;
 			
 		case mVid.videoEvents.ENCRYPTED:
 			e("encrypted").setAttribute("class", "playerIcon encrypted");
 			mVid.Log.warn(this.id + ": ENCRYPTED");
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			break;
-			
+
+		case mVid.videoEvents.SUSPEND:
+		case mVid.videoEvents.ABORT:
+		case mVid.videoEvents.EMPTIED:
+		case mVid.videoEvents.LOADED_DATA:
+		case mVid.videoEvents.PLAYING:
+		case mVid.videoEvents.SEEKING:
+		case mVid.videoEvents.DURATION_CHANGE:
+		case mVid.videoEvents.RATE_CHANGE:
+		case mVid.videoEvents.VOLUME_CHANGE:
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
+			break;
+
 		default:
 			//do nothing
   }
@@ -1126,7 +1142,7 @@ mVid.cmndPause = function () {
 	
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
-	this.cmndLog();
+	// this.cmndLog();
 	this.socket.disconnect();
 	location.reload();
 }	
