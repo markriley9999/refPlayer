@@ -63,7 +63,7 @@ p {
 .log {
 	height: 200px;
 	width: 800px;
-	left: 0;
+	left: 10px;
 	top: 50px;
 	position: absolute;
 }

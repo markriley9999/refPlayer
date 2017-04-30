@@ -15,6 +15,8 @@ const fs = require('fs');
 let winMain 	= null;      // main window variable
 let winGraphs	= null;     // graph window variable
 let winSGraph	= null;
+let winGraphAd0 = null;
+let winGraphAd1	= null;
 let winAdTrans	= null;
 
 var expressServer = express(); // Active express object
@@ -54,8 +56,10 @@ function createWindow(winObj, uiurl, w, h) {
  
 function createWindows() {
 	winMain 	= createWindow(winMain,		'ui/ui.html',			1200,	640);
-	winGraphs 	= createWindow(winGraphs,	'ui/graph.html',		1200,	700);
-	winSGraph 	= createWindow(winSGraph, 	'ui/singlegraph.html', 	800, 	800);
+	winGraphs 	= createWindow(winGraphs,	'ui/graph.html',		1400,	700);
+	winSGraph 	= createWindow(winSGraph, 	'ui/singlegraph.html', 	1400, 	800);
+	winGraphAd0	= createWindow(winGraphAd0, 'ui/graphAdVid0.html', 	1400, 	800);
+	winGraphAd1	= createWindow(winGraphAd1, 'ui/graphAdVid1.html', 	1400, 	800);
 	winAdTrans	= createWindow(winAdTrans, 	'ui/adtransgraph.html', 800, 	800);
 }
  
@@ -85,6 +89,12 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 		}
 		if (winSGraph) {
 			winSGraph.webContents.send('ipc-buffer', data);
+		}
+		if (winGraphAd0) {
+			winGraphAd0.webContents.send('ipc-buffer', data);
+		}
+		if (winGraphAd1) {
+			winGraphAd1.webContents.send('ipc-buffer', data);
 		}
 		//console.log(data);
 	});
@@ -136,7 +146,7 @@ expressServer.post('/adtrans', function(req, res) {
 	if (winAdTrans) {
 		winAdTrans.webContents.send('ipc-adtrans', req.body); // send the async-body message to the rendering thread
 	}
-	console.log(req.body);
+	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -144,10 +154,12 @@ expressServer.get('/', function(req, res) {
 	if (connectedDevices === 0) {
 		createWindows();
 		
-		if (winMain) 	winMain.reload();
-		if (winGraphs) 	winGraphs.reload();
-		if (winSGraph) 	winSGraph.reload();
-		if (winAdTrans) winAdTrans.reload();
+		if (winMain) 		winMain.reload();
+		if (winGraphs) 		winGraphs.reload();
+		if (winSGraph) 		winSGraph.reload();
+		if (winGraphAd0) 	winGraphAd0.reload();
+		if (winGraphAd1) 	winGraphAd1.reload();
+		if (winAdTrans) 	winAdTrans.reload();
 		
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
