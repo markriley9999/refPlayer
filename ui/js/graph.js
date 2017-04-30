@@ -48,7 +48,7 @@ graph.setupCharts = function () {
     }	
 }
 
-graph.updateChart = function (chartObj, d, t, pos, buffer, hroom) {
+graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
 	if (chartObj.chartData) {
 		chartObj.chartData.addRow([t.toString(),  
 								parseFloat(d), 
@@ -56,6 +56,7 @@ graph.updateChart = function (chartObj, d, t, pos, buffer, hroom) {
 								parseFloat(buffer), 
 								parseFloat(hroom)]);		
 		chartObj.chart.draw(chartObj.chartData, chartObj.chartOptions);
+		//console.log(annotation);
 	}
 }
 
@@ -70,7 +71,7 @@ ipc.on('ipc-buffer', function(event, message) {
 		var playerId = pbObj.id;
 		//console.log(pbObj);
 		if (graph.charts[playerId]) {
-			graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value);
+			graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value, pbObj.annotation);
 		}
 	} catch(err) {
 		console.log("ipc-buffer: message parse error. " + err.message);

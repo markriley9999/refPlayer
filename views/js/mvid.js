@@ -382,12 +382,12 @@ mVid.msToTime  = function (timeMS) {
 }
 
 mVid.updateBufferBars = function() {
-	this.updateBufferBar("mVid-mainContent");
-	this.updateBufferBar("mVid-video0");
-	this.updateBufferBar("mVid-video1");
+	this.updateBufferBar("mVid-mainContent", '');
+	this.updateBufferBar("mVid-video0", '');
+	this.updateBufferBar("mVid-video1", '');
 } 
 
-mVid.updateBufferBar = function(playerId) {
+mVid.updateBufferBar = function(playerId, annot) {
 	var playerBuffer 	= e(playerId + "-bufferBar");
 	var headroomBuffer 	= e(playerId + "-headroomBar");
 	var player 			= e(playerId);
@@ -446,7 +446,8 @@ mVid.updateBufferBar = function(playerId) {
 		pbObj += "\"restartPoint\":\"0\",";
 		pbObj += "\"duration\":\"0\",";	
 	}
-	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime);
+	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime) + ",";
+	pbObj += "\"annotation\":" + JSON.stringify(annot);
 	pbObj += "}";
 	
 	var hbObj = "\"headroomBufferObj\": {";
@@ -728,7 +729,7 @@ mVid.onVideoEvent = function (event) {
 	switch(event.type) {
 		case mVid.videoEvents.LOAD_START:
 			mVid.Log.info(this.id + ": video has started loading");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			// Sanity check
 			/* TODO: why is this being generated for non buffering content???
 			if (this != bufferingPlayer) {
@@ -744,7 +745,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.LOADED_METADATA:
 			mVid.Log.info(this.id + ": metadata has loaded");
 			mVid.statusTableText(this.id, "Buffer", "Started buffering");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			// Sanity check
 			if (this != bufferingPlayer) {
 				mVid.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
@@ -765,7 +766,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.CAN_PLAY:
 			mVid.Log.info(this.id + ": video can play");
 			mVid.statusTableText(this.id, "Buffer", "Enough to start play");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 				
 			// Sanity check
 			if (this != bufferingPlayer) {
@@ -800,7 +801,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.CAN_PLAY_THROUGH:
 			mVid.Log.info(this.id + ": buffered sufficiently to play-through.");
 			mVid.statusTableText(this.id, "Buffer", "Can play through");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 
 			// Sanity check
 			if (this != bufferingPlayer) {
@@ -835,7 +836,7 @@ mVid.onVideoEvent = function (event) {
 			mVid.Log.info(this.id + ": video is playing");
 			mVid.statusTableText(this.id, "Play", "Playing");
 			// mVid.statusTableText(this.id, "Buffer", "Being consumed");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "");
 
 			mVid.setPlayingState(PLAYSTATE_PLAY);
 			
@@ -868,7 +869,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.PAUSE:
 			mVid.Log.info(this.id + ": video is paused");
 			mVid.statusTableText(this.id, "Play", "Paused");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 
 			// Sanity check
 			if (this != playingPlayer) {
@@ -896,7 +897,7 @@ mVid.onVideoEvent = function (event) {
 			
 		case mVid.videoEvents.SEEKED:
 			mVid.Log.info(this.id + ": video has seeked");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			// Sanity check
 			if (this != playingPlayer) {
 				mVid.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
@@ -906,13 +907,13 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.STALLED:
 			mVid.Log.warn(this.id + ": has stalled");
 			mVid.showBufferingIcon(true);
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			break;
 			
 		case mVid.videoEvents.WAITING:
 			mVid.Log.warn(this.id + ": is waiting");
 			mVid.showBufferingIcon(true);
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			break;
 			
 		case mVid.videoEvents.RESIZE:
@@ -922,7 +923,7 @@ mVid.onVideoEvent = function (event) {
 		case mVid.videoEvents.ENDED:
 			mVid.statusTableText(this.id, "Buffer", "---");
 			mVid.Log.info(this.id + ": video has ended");
-			mVid.updateBufferBar(this.id);
+			mVid.updateBufferBar(this.id, "Event: " + event.type);
 			
 			mVid.showBufferingIcon(true);
 			mVid.setPlayingState(PLAYSTATE_STOP);
@@ -977,7 +978,7 @@ mVid.onVideoEvent = function (event) {
 					if (this.bufferSeqCheck != mVid.videoEvents.CAN_PLAY_THROUGH) {
 						mVid.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 					}
-					mVid.updateBufferBar(this.id);
+					mVid.updateBufferBar(this.id, "Preload next ad");
 				}
 			}
 			
@@ -998,7 +999,7 @@ mVid.onVideoEvent = function (event) {
 					this.restartPoint = this.currentTime;
 					this.bPlayPauseTransition = false;
 					this.pause();
-					mVid.updateBufferBar(this.id);
+					mVid.updateBufferBar(this.id, "Play advert");
 				}
 			}
 
