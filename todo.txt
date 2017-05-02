@@ -1,5 +1,3 @@
 - adverts in main content
-- shutdown cleanly
 - control from browser
 - window control
-- ad transitions bar chart

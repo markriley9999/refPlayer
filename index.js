@@ -12,12 +12,14 @@ const bodyParser = require('body-parser');  // Express middle-ware that allows p
 
 const fs = require('fs');
  
-let winMain 	= null;      // main window variable
-let winGraphs	= null;     // graph window variable
-let winSGraph	= null;
-let winGraphAd0 = null;
-let winGraphAd1	= null;
-let winAdTrans	= null;
+var win = {};
+win['log'] 			= null;
+win['allVidObs'] 	= null;
+win['mainContent'] 	= null;
+win['ad0'] 			= null;
+win['ad1']			= null;
+win['adTrans']		= null;
+
 
 var expressServer = express(); // Active express object
  
@@ -34,44 +36,73 @@ ipc.on('player-control', function(event, message) { // listens for the player-co
     }
 })
 
-function createWindow(winObj, uiurl, w, h) {
-	if (!winObj) {
-		obj = new browserWindow({width: w, height: h}); 
-	 
-		obj.loadURL(url.format({ 
-			pathname: path.join(__dirname, uiurl),
-			protocol: 'file:',
-			slashes: true
-		}));
-	 
-		obj.on('closed', function() { // reset the window object when it is closed
-			obj = null;
-		});
+function WINDOW(uiurl, w, h) {
+	this.uiurl 	= uiurl;
+	this.width 	= w;
+	this.height	= h;
+	this.winObj = null;
+	
+	this.createWindow = function () {
+		var that = this;
 		
-		return obj;
-	} else {
-		return winObj;
+		if (!this.winObj) {
+			this.winObj = new browserWindow({width: this.width, height: this.height}); 
+		 
+			this.winObj.loadURL(url.format({ 
+				pathname: path.join(__dirname, this.uiurl),
+				protocol: 'file:',
+				slashes: true
+			}));
+		 
+			this.winObj.on('closed', function() { // reset the window object when it is closed
+				that.winObj = null;
+			});
+		}
 	}
-}
- 
+	
+	this.sendToWindow = function(ipc, data)
+	{
+		if (this.winObj) {
+			this.winObj.webContents.send(ipc, data);
+		}
+	}
+	
+	this.reload = function()
+	{
+		if (this.winObj) {
+			this.winObj.reload();
+		}
+	}
+};
+
 function createWindows() {
-	winMain 	= createWindow(winMain,		'ui/ui.html',			1200,	640);
-	winGraphs 	= createWindow(winGraphs,	'ui/graph.html',		1400,	700);
-	winSGraph 	= createWindow(winSGraph, 	'ui/singlegraph.html', 	1400, 	800);
-	winGraphAd0	= createWindow(winGraphAd0, 'ui/graphAdVid0.html', 	1400, 	800);
-	winGraphAd1	= createWindow(winGraphAd1, 'ui/graphAdVid1.html', 	1400, 	800);
-	winAdTrans	= createWindow(winAdTrans, 	'ui/adtransgraph.html', 800, 	800);
+	win['log'].createWindow();
+	win['allVidObs'].createWindow();
+	win['mainContent'].createWindow();
+	win['ad0'].createWindow();
+	win['ad1'].createWindow();
+	win['adTrans'].createWindow();
+}
+
+function initWindows() {
+	win['log'] 			= new WINDOW('ui/ui.html',				1200,	640);
+	win['allVidObs'] 	= new WINDOW('ui/graph.html',			1400,	700);
+	win['mainContent'] 	= new WINDOW('ui/singlegraph.html', 	1400, 	800);
+	win['ad0']			= new WINDOW('ui/graphAdVid0.html', 	1400, 	800);
+	win['ad1']			= new WINDOW('ui/graphAdVid1.html', 	1400, 	800);
+	win['adTrans']		= new WINDOW('ui/adtransgraph.html',	800, 	800);
+	createWindows();
 }
  
-electronApp.on('ready', createWindows); // when the application is ready create the winMain
+electronApp.on('ready', initWindows); // when the application is ready create the win['log']
  
 electronApp.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
     if (process.platform !== 'darwin')
         electronApp.quit();
 });
  
-expressServer.on('activate', function() { // the application is focused create the winMain
-    //if (winMain === null && winGraphs === null && winSGraph === null)
+expressServer.on('activate', function() { // the application is focused create the win['log']
+    //if (win['log'] === null && win['allVidObs'] === null && win['mainContent'] === null)
         // createWindows();
 });
  
@@ -81,28 +112,16 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
     console.log(" ---> Device connected: " + connectedDevices);
 	
 	socket.on('bufferEvent', function(data) {
-		if (winMain) {
-			winMain.webContents.send('ipc-buffer', data);
-		}
-		if (winGraphs) {
-			winGraphs.webContents.send('ipc-buffer', data);
-		}
-		if (winSGraph) {
-			winSGraph.webContents.send('ipc-buffer', data);
-		}
-		if (winGraphAd0) {
-			winGraphAd0.webContents.send('ipc-buffer', data);
-		}
-		if (winGraphAd1) {
-			winGraphAd1.webContents.send('ipc-buffer', data);
-		}
+		win['log'].sendToWindow('ipc-buffer', data);
+		win['allVidObs'].sendToWindow('ipc-buffer', data);
+		win['mainContent'].sendToWindow('ipc-buffer', data);
+		win['ad0'].sendToWindow('ipc-buffer', data);
+		win['ad1'].sendToWindow('ipc-buffer', data);
 		//console.log(data);
 	});
 	
 	socket.on('playbackOffset', function(data) {
-		if (winMain) {
-			winMain.webContents.send('ipc-playbackOffset', data);
-		}
+		win['log'].sendToWindow('ipc-playbackOffset', data);
 		//console.log(data);
 	});
 	
@@ -127,25 +146,19 @@ expressServer.use('/js', express.static('views/js'));
 expressServer.set('view-engine', 'hbs'); 
 
 expressServer.post('/log', function(req, res) {
-	if (winMain) {
-		winMain.webContents.send('ipc-log', req.body); // send the async-body message to the rendering thread
-	}
+	win['log'].sendToWindow('ipc-log', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
  
 expressServer.post('/status', function(req, res) {
-	if (winMain) {
-		winMain.webContents.send('ipc-status', req.body); // send the async-body message to the rendering thread
-	}
+	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
 expressServer.post('/adtrans', function(req, res) {
-	if (winAdTrans) {
-		winAdTrans.webContents.send('ipc-adtrans', req.body); // send the async-body message to the rendering thread
-	}
+	win['adTrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -154,12 +167,12 @@ expressServer.get('/', function(req, res) {
 	if (connectedDevices === 0) {
 		createWindows();
 		
-		if (winMain) 		winMain.reload();
-		if (winGraphs) 		winGraphs.reload();
-		if (winSGraph) 		winSGraph.reload();
-		if (winGraphAd0) 	winGraphAd0.reload();
-		if (winGraphAd1) 	winGraphAd1.reload();
-		if (winAdTrans) 	winAdTrans.reload();
+		win['log'].reload();
+		win['allVidObs'].reload();
+		win['mainContent'].reload();
+		win['ad0'].reload();
+		win['ad1'].reload();
+		win['adTrans'].reload();
 		
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
