@@ -2,3 +2,5 @@
 - multiple playlists
 - control from browser
 - window control
+- ait
+- ip address

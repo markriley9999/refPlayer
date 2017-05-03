@@ -198,5 +198,5 @@ expressServer.post('/savelog', function(req, res) {
 	});
 });
  
-server.listen(80); // Socket.io port (hides express inside)
+server.listen(3000); // Socket.io port (hides express inside)
 
