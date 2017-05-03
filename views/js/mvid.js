@@ -36,19 +36,22 @@ content.currentPlayingIdx 	= 0;
 content.list = [
 	{	
 		playerId : "mVid-video0",
-		src : "http://mp.adverts.itv.com/priority/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+		//src : "http://mp.adverts.itv.com/priority/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+		src : "content/adverts/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video1", 
-		src : "http://mp.adverts.itv.com/priority/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
+		//src : "http://mp.adverts.itv.com/priority/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
+		src : "content/adverts/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
 	{
 		playerId : "mVid-video0", 
-		src : "http://mp.adverts.itv.com/priority/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+		//src : "http://mp.adverts.itv.com/priority/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+		src : "content/adverts/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
 		type : "video/mp4",
 		transitionTime : -1
 	},
@@ -56,9 +59,10 @@ content.list = [
 		playerId : "mVid-mainContent", 
 		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
 		//src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		//src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
+		src : "content/bbc/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
-		transitionTime : 10	
+		transitionTime : 30
 	},
 ];
 

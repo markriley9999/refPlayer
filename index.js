@@ -142,6 +142,7 @@ expressServer.use(bodyParser.text({type: 'text/plain'})); // Tells express to us
 expressServer.use('/css', express.static('views/css'));
 expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
+expressServer.use('/content', express.static('content'));
  
 expressServer.set('view-engine', 'hbs'); 
 
@@ -197,5 +198,5 @@ expressServer.post('/savelog', function(req, res) {
 	});
 });
  
-server.listen(3000); // Socket.io port (hides express inside)
+server.listen(80); // Socket.io port (hides express inside)
 

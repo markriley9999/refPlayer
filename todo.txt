@@ -1,3 +1,4 @@
-- adverts in main content
+- json playlist 
+- multiple playlists
 - control from browser
 - window control
