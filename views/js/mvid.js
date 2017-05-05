@@ -451,7 +451,7 @@ mVid.updateBufferBar = function(playerId, annot) {
 		pbObj += "\"restartPoint\":\"0\",";
 		pbObj += "\"duration\":\"0\",";	
 	}
-	pbObj += "\"time\":" + JSON.stringify('' + Date.now() - this.startTime) + ",";
+	pbObj += "\"time\":" + JSON.stringify('' + (Date.now() - this.startTime) / 1000) + ",";
 	pbObj += "\"annotation\":" + JSON.stringify(annot);
 	pbObj += "}";
 	

@@ -4,3 +4,22 @@
 - window control
 - ait
 - ip address
+- advert wait
+
+- generate errors
+- throttle thruput
+
+- linux
+- add DRM
+
+
+https://www.npmjs.com/package/throttled-stream
+https://www.npmjs.com/package/stream-throttle
+https://www.npmjs.com/package/throttle
+
+- download:
+	- STV
+	- ITV
+	- ITV Clearkey
+	- iPlayer
+	
