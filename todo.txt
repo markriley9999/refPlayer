@@ -1,3 +1,7 @@
+- play main content time before adverts
+
+- more adverts
+
 - json playlist 
 - multiple playlists
 - control from browser
@@ -12,7 +16,7 @@
 - linux
 - add DRM
 
-
+https://www.npmjs.com/package/crapify
 https://www.npmjs.com/package/throttled-stream
 https://www.npmjs.com/package/stream-throttle
 https://www.npmjs.com/package/throttle

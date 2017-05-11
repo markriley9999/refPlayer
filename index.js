@@ -12,6 +12,8 @@ const bodyParser = require('body-parser');  // Express middle-ware that allows p
 
 const fs = require('fs');
  
+const Throttle = require('stream-throttle').Throttle;
+
 var win = {};
 win['log'] 			= null;
 win['allVidObs'] 	= null;
@@ -142,7 +144,7 @@ expressServer.use(bodyParser.text({type: 'text/plain'})); // Tells express to us
 expressServer.use('/css', express.static('views/css'));
 expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
-expressServer.use('/content', express.static('content'));
+//expressServer.use('/content', express.static('content'));
  
 expressServer.set('view-engine', 'hbs'); 
 
@@ -151,7 +153,17 @@ expressServer.post('/log', function(req, res) {
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
- 
+
+function sendServerLog(msg) {
+	var logObj = { 
+					'cssClass': 'warn', 
+					'logText': 	"*** SERVER: " + msg + " ***"
+				 };
+				 
+	console.log("* " + msg);
+	win['log'].sendToWindow('ipc-log', logObj); 
+} 
+
 expressServer.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
@@ -185,6 +197,106 @@ expressServer.get('/', function(req, res) {
 			res.status(503);
 			res.send("Sorry, another device is already attached.  Please disconnect it and try again.");	
 	}
+});
+
+var badNetwork = {
+	chanceOfError		: 10, 						// 1 in x 505 errors
+	bSimErrors			: false,
+	throttleBitrate		: 2 * 1024,					// kbps (bits)
+	bThrottle			: true
+};
+
+expressServer.get('/content/*', function(req, res) {
+	// Why seeing 2 gets????
+	
+	sendServerLog("GET content: " + req.originalUrl);
+	sendServerLog(JSON.stringify(req.headers));
+
+	// ***** Simulate error condition (505)? *****
+	if (badNetwork.bSimErrors) {
+		var rndErr = Math.floor(Math.random() * (badNetwork.chanceOfError-1));
+		
+		if (rndErr === 0) {
+			// Simulate error (505)
+			sendServerLog("SIMULATE ERROR! (505)");
+			return res.sendStatus(505);
+		}
+	}
+
+	// Get file on server
+	var file = path.join(__dirname, req.originalUrl);
+	console.log(" - file: " + file);
+	
+    fs.stat(file, function(err, stats) {
+		if (err) {
+			if (err.code === 'ENOENT') {
+				// 404 Error if file not found
+				console.log(" * file does not exist");
+				return res.sendStatus(404);
+			}
+			res.end(err);
+		}
+		
+		var range = req.headers.range;
+
+		var start;
+		var end;
+		var chunksize;
+		var total = stats.size;
+		var rtn = 200;
+		
+		if (range) {
+			var positions = range.replace(/bytes=/, "").split("-");
+			start = parseInt(positions[0], 10);
+			end = positions[1] ? parseInt(positions[1], 10) : total - 1;
+
+			console.log(" - range: " + range);
+			console.log(" - positions: " + positions);
+		} else {
+			start = 0;
+			end = total - 1;		
+		}
+
+		chunksize = (end - start) + 1;
+
+		console.log(" - total: " + total);
+
+		console.log(" - start: " + start);
+		console.log(" - end: " + end);
+		console.log(" - chunksize: " + chunksize);
+
+		if ((chunksize+start) < total) {
+			rtn = 206;
+		} 
+		console.log(" - rtn: " + rtn);
+		
+		if (start >= end) {
+			console.log(" * Error: start >= end!");
+			return res.sendStatus(400);				
+		}
+
+		res.writeHead(rtn, {
+			"Content-Range": "bytes " + start + "-" + end + "/" + total,
+			"Accept-Ranges": "bytes",
+			"Content-Length": chunksize,
+			"Content-Type": "video/mp4"
+		});			
+
+		var stream = fs.createReadStream(file, { start: start, end: end })
+			.on("open", function() {
+				console.log(" - send chunk");
+				if (badNetwork.bThrottle) {
+					stream.pipe(new Throttle({rate: badNetwork.throttleBitrate * 1024 / 8, chunksize: 2048 * 1024})).pipe(res);
+					sendServerLog("Throttle server: " + badNetwork.throttleBitrate + "(kbps)");
+				} else {
+					stream.pipe(res);				
+				}
+			}).on("error", function(err) {
+				res.sendStatus(400);
+				res.end(err);
+			});
+	});
+	
 });
  
 expressServer.post('/savelog', function(req, res) {

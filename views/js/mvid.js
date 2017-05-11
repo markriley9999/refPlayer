@@ -62,7 +62,7 @@ content.list = [
 		//src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
 		src : "content/bbc/client_manifest-common_init.mpd",
 		type : "application/dash+xml",
-		transitionTime : 30
+		transitionTime : 180
 	},
 ];
 
@@ -262,9 +262,9 @@ mVid.start = function () {
 		}
 	];
 
-	SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options);
-	
-	
+	if ("MediaKeys" in window) {
+		SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options);
+	}
 	
 	window.setInterval( function() {
 		var elTimer = e("videoTimer");
@@ -627,8 +627,8 @@ mVid.setSourceAndLoad = function (player, src, type) {
 
 	if (source.getAttribute("type") == "" || !this.isMainFeaturePlayer(player))
 	{
-		source.setAttribute("src", src);
 		source.setAttribute("type", type);	
+		source.setAttribute("src", src);
 		player.bBuffEnoughToPlay = false;
 		// Running on a non hbbtv device?
 		if (!this.app) {
@@ -1191,6 +1191,6 @@ keyTable.entries = [
 		
 // Utility functions
 function extractDevName(sUA) {
-	var arr = sUA.match(/\bFVC\/2.0 \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
+	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
 	return arr[1] + arr[2];
 }
