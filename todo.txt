@@ -5,6 +5,7 @@
 
 - play main content time before adverts
 
+- hoston vm / aws - remote ui
 
 - json playlist 
 - multiple playlists

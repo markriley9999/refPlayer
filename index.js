@@ -137,14 +137,15 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 });
 
 expressServer.use(express.static('public')); // put static files in the public folder to make them available on web pages
-expressServer.use(bodyParser.urlencoded({ extended: false })); // Tells express to use body parser
-expressServer.use(bodyParser.text({type: 'text/plain'})); // Tells express to use body parser
+expressServer.use(bodyParser.urlencoded({ extended: false })); 
+expressServer.use(bodyParser.text({type: 'text/plain'})); 
+expressServer.use(bodyParser.json());
 
 //expressServer.use(express.static('views'));
 expressServer.use('/css', express.static('views/css'));
 expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
-//expressServer.use('/content', express.static('content'));
+//expressServer.use('/clearKey', express.static('clearKey'));
  
 expressServer.set('view-engine', 'hbs'); 
 
@@ -303,11 +304,20 @@ expressServer.post('/savelog', function(req, res) {
 	console.log("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
-	fs.writeFile("/logs/" + req.query.filename, req.body, function(err) {
+	fs.writeFile("./logs/" + req.query.filename, req.body, function(err) {
 		if(err) {
 			console.log(err);
 		}
 	});
+});
+ 
+const clearKeyLicense = require('./clearKey/itv-license.json');
+
+expressServer.post('/getkeys', function(req, res) {
+	sendServerLog("getkeys: " + JSON.stringify(req.body));
+	
+	res.status(200);
+	res.send(clearKeyLicense);
 });
  
 server.listen(3000); // Socket.io port (hides express inside)
