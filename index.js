@@ -311,7 +311,7 @@ expressServer.post('/savelog', function(req, res) {
 	});
 });
  
-const clearKeyLicense = require('./clearKey/itv-license.json');
+const clearKeyLicense = require('./clearKey/itv-licence.json');
 
 expressServer.post('/getkeys', function(req, res) {
 	sendServerLog("getkeys: " + JSON.stringify(req.body));

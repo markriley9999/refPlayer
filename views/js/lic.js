@@ -43,5 +43,4 @@ function clearkeyGetLicence(session, msg) {
 	};
 
 	ajax(keyServiceUrl, callback, msg);
-	log("msg->server: " + JSON.stringify(msg));
 }
