@@ -1,10 +1,10 @@
-function log(msg) {
-	mVid.Log.warn("Licence: " + msg);
-}
-
 function clearkeyGetLicence(session, msg) {
 
 	var keyServiceUrl = "http://itvpnp.test.ott.irdeto.com/ClearKey/getkeys?CrmId=itvpnp&AccountId=itvpnp&ContentId=1-9360-1784-001_20";
+
+	function log(msg) {
+		mVid.Log.warn("Licence: " + msg);
+	}
 
 	function callback(licenseString, xhr) {
 		log(licenseString);

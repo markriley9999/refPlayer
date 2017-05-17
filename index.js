@@ -203,7 +203,7 @@ var badNetwork = {
 	chanceOfError		: 10, 						// 1 in x 505 errors
 	bSimErrors			: false,
 	throttleBitrate		: 2 * 1024,					// kbps (bits)
-	bThrottle			: true
+	bThrottle			: false
 };
 
 expressServer.get('/content/*', function(req, res) {
