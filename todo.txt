@@ -5,7 +5,9 @@
 
 - play main content time before adverts
 
-- hoston vm / aws - remote ui
+- host on vm / aws - remote ui
+
+- tidy up logging ui
 
 - json playlist 
 - multiple playlists
@@ -26,24 +28,3 @@
 	- ITV
 	- ITV Clearkey
 	- iPlayer
-	
-http://itvpnp.test.ott.irdeto.com/ClearKey/getkeys?CrmId=itvpnp&AccountId=itvpnp&ContentId=1-9360-1784-001_20
-{"keys":[{"kty":"oct","alg":"A128KW","k":"Q8iXoAHmbnZdu9wg-j4JHw","kid":"7fZXGH6aSeevajQZUVJb2w"}],"type":"temporary"}
-
-
-
-
-
-{"kids":["LBSOTLfQRz6i1Kt9VOrHpQ"],"type":"temporary"}
-
-{
-  "keys": [
-    {
-      "kty": "oct",
-      "alg": "A128KW",
-      "k": "gtghwHdjqMSFrc2F3_n6Ug",
-      "kid": "LBSOTLfQRz6i1Kt9VOrHpQ"
-    }
-  ],
-  "type": "temporary"
-}
