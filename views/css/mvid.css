@@ -88,14 +88,17 @@ progress {
 
 .bufferBar {
 	color: green;
+	opacity: 0.5;
 }
 
 .bufferBarActive {
 	color: orange;
+	opacity: 0.5;
 }
 
 .bufferBarConsumed {
 	color: grey;
+	opacity: 0.5;
 }
 
 .playbackBar {
