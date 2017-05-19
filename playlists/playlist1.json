@@ -1,0 +1,20 @@
+playList = {
+	"ads" : [
+		{	
+			"src" : "content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+			"type" : "video/mp4",
+		},
+		{
+			"src" : "content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
+			"type" : "video/mp4",
+		},
+		{
+			"src" : "content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+			"type" : "video/mp4",
+		}
+	]
+	"src" : "content/bbc/client_manifest-common_init.mpd",
+	//"src" : "content/itv/itv-clearkey.mpd",
+	"type" : "application/dash+xml",
+	"transitionTime" : "60"
+}

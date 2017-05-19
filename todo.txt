@@ -17,8 +17,7 @@
 - ip address
 - advert wait
 
-- generate errors
-- throttle thruput
+- ait
 
 - linux
 - add DRM

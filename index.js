@@ -145,7 +145,7 @@ expressServer.use(bodyParser.json());
 expressServer.use('/css', express.static('views/css'));
 expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
-//expressServer.use('/clearKey', express.static('clearKey'));
+expressServer.use('/playlists', express.static('playlists'));
  
 expressServer.set('view-engine', 'hbs'); 
 
@@ -157,8 +157,8 @@ expressServer.post('/log', function(req, res) {
 
 function sendServerLog(msg) {
 	var logObj = { 
-					'cssClass': 'warn', 
-					'logText': 	"*** SERVER: " + msg + " ***"
+					'cssClass': 'debug', 
+					'logText': 	"--- SERVER: " + msg + " ---"
 				 };
 				 
 	console.log("* " + msg);
@@ -204,7 +204,7 @@ var badNetwork = {
 	chanceOfError		: 10, 						// 1 in x 505 errors
 	bSimErrors			: false,
 	throttleBitrate		: 2 * 1024,					// kbps (bits)
-	bThrottle			: false
+	bThrottle			: true
 };
 
 expressServer.get('/content/*', function(req, res) {
