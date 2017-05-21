@@ -29,6 +29,7 @@ var server = require('http').createServer(expressServer); // use the electron se
 var io = require('socket.io')(server);          // create the sockets io server
  
 var connectedDevices = 0;
+var currentDeviceUA = "";
 
 ipc.on('player-control', function(event, message) { // listens for the player-control message from the update.js file
     if (message === 'play') {
@@ -178,7 +179,10 @@ expressServer.post('/adtrans', function(req, res) {
 });
 
 expressServer.get('/', function(req, res) {
-	if (connectedDevices === 0) {
+	var UA = req.headers['user-agent'];
+	
+	if (!currentDeviceUA || currentDeviceUA === UA) {
+		currentDeviceUA = UA;
 		createWindows();
 		
 		win['log'].reload();
@@ -204,7 +208,7 @@ var badNetwork = {
 	chanceOfError		: 10, 						// 1 in x 505 errors
 	bSimErrors			: false,
 	throttleBitrate		: 2 * 1024,					// kbps (bits)
-	bThrottle			: true
+	bThrottle			: false
 };
 
 expressServer.get('/content/*', function(req, res) {

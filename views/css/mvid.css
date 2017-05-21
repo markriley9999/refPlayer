@@ -60,10 +60,22 @@ p {
 	color: green;
 }
 
+.status-container {
+	width: fit-content; 
+	height: fit-content; 
+	top: 0px;
+	left: 0px;
+	background-color: orange;
+	color: white;
+	position: absolute;
+	opacity: 0.75;
+	font-size: 150%;
+}
+
 .progress-bar-container {
 	width: fit-content; 
 	height: fit-content; 
-	top: 40px;
+	top: 50px;
 	left: 0px;
 	background-color: transparent;
 	color: white;
@@ -88,26 +100,27 @@ progress {
 
 .bufferBar {
 	color: green;
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
 .bufferBarActive {
 	color: orange;
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
 .bufferBarConsumed {
 	color: grey;
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
 .playbackBar {
 	color: red;
-	width: 924px;
+	width: 1024px;
 	height: 30px;
 	top: 0px;
 	left: 50px;
 	position: relative;
+	opacity: 0.75;
 }
 
 progress::-webkit-progress-value {
@@ -153,12 +166,13 @@ progress::-moz-progress-bar {
 
 .videoControls {
 	left: 0px;
-	width: 1024px;
+	width: 1100px;
 	height: 60px;
 	bottom: 50px;
 	position: absolute;
 	background-color: transparent;
 	margin: auto;
+	opacity: 0.75;
 }
 
 #heart {

@@ -13,8 +13,8 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "content/bigbuckbunny/client_manifest-common_init.mpd",
+	"src" 	: "content/itv/itv-clearkey.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "60",
-	"channelName" : "Ch 1 - Ads: 3 ITV Ads, Main: Big Buck Bunny"
+	"channelName" : "Ch 3 - Ads: 3 ITV Ads, Main: Clear Key (Lorraine)"
 }

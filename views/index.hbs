@@ -10,6 +10,7 @@
         <script type="text/javascript" src="js/eme.js"></script>
         <script type="text/javascript" src="js/lic.js"></script>
         <script type="text/javascript" src="js/mvid.js"></script>
+        <script type="text/javascript" src="js/playlist.js"></script>
  		
         <link 	rel="stylesheet" href="css/mvid.css" />
 		<link 	href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet' type='text/css'/>
@@ -19,30 +20,12 @@
 	<body>
 		<div id="player-container" class="video">
 			<video id="mVid-mainContent" poster="bitmaps/bground.jpg" display="none">
-				<source id="mVid-mainContent-source" src="" type="" preload="auto" loop="true"></source> 
+				<source id="mVid-mainContent-source" src="" type="" preload="auto" loop="false"></source> 
 			</video>
 		</div>
 		<div class="safe_area" id="app_area">
-			<div class="videoControls">
-				<div>
-					<progress value="0" max="100" id="playbackBar" class="playbackBar" role="progressbar"></progress>
-					<img src="bitmaps/heart.png" 		id="heart" 				class="beat"></img>				
-					<!--p id="videoTimer" style="font-family: 'VT323'">00:00:00:000</p-->
-				</div>
-				<p style="height:10px"></p>
-				<div class="centre fitwidth">
-					<img src="bitmaps/player_rew2.png" 	id="player-rew" 	class="playerIcon"></img>				
-					<img src="bitmaps/player_play2.png" 	id="player-play" 	class="playerIcon"></img>				
-					<img src="bitmaps/player_fwd2.png" 	id="player-fwd" 	class="playerIcon"></img>				
-					<img src="bitmaps/player_pause2.png" id="player-pause" 	class="playerIcon"></img>				
-					<img src="bitmaps/player_stop2.png" 	id="player-stop" 	class="playerIcon"></img>				
-					<img src="bitmaps/key.png" 	id="encrypted" 	class="playerIcon"></img>				
-				</div>
-			</div>
-			<div class="videoGFXOverlay">
-				<div class="centre fitwidth">
-					<img src="bitmaps/buffering2.png" 	id="player-buffering" 	class="playerBufferingIcon"></img>				
-				</div>
+			<div class="status-container">
+				<p id="currentChannel">---</p>
 			</div>
 			<div class="progress-bar-container">
 				<p>Main Buffer:</p> 
@@ -60,6 +43,27 @@
 				</progress>
 				<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="bufferBar" 		role="progressbar">
 				</progress>
+			</div>
+			<div class="videoGFXOverlay">
+				<div class="centre fitwidth">
+					<img src="bitmaps/buffering2.png" 	id="player-buffering" 	class="playerBufferingIcon"></img>				
+				</div>
+			</div>
+			<div class="videoControls">
+				<div>
+					<progress value="0" max="100" id="playbackBar" class="playbackBar" role="progressbar"></progress>
+					<img src="bitmaps/heart.png" 			id="heart" 			class="beat"></img>				
+					<!--p id="videoTimer" style="font-family: 'VT323'">00:00:00:000</p-->
+				</div>
+				<p style="height:10px"></p>
+				<div class="centre fitwidth">
+					<img src="bitmaps/player_rew2.png" 		id="player-rew" 	class="playerIcon"></img>				
+					<img src="bitmaps/player_play2.png" 	id="player-play" 	class="playerIcon"></img>				
+					<img src="bitmaps/player_fwd2.png" 		id="player-fwd" 	class="playerIcon"></img>				
+					<img src="bitmaps/player_pause2.png" 	id="player-pause" 	class="playerIcon"></img>				
+					<img src="bitmaps/player_stop2.png" 	id="player-stop" 	class="playerIcon"></img>				
+					<img src="bitmaps/key.png" 				id="encrypted" 		class="playerIcon"></img>				
+				</div>
 			</div>
 		</div>
     </body>

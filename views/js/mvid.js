@@ -32,40 +32,7 @@ mVid.playCount 				= 0;
 var content = {};
 content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
-
-content.list = [
-	{	
-		playerId : "mVid-video0",
-		//src : "http://mp.adverts.itv.com/priority/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-		src : "content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-		type : "video/mp4",
-		transitionTime : -1
-	},
-	{
-		playerId : "mVid-video1", 
-		//src : "http://mp.adverts.itv.com/priority/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-		src : "content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-		type : "video/mp4",
-		transitionTime : -1
-	},
-	{
-		playerId : "mVid-video0", 
-		//src : "http://mp.adverts.itv.com/priority/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-		src : "content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-		type : "video/mp4",
-		transitionTime : -1
-	},
-	{
-		playerId : "mVid-mainContent", 
-		// *** wrong licence *** src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-8647-0243-001-DVBDASH-CLEARKEY.ism/.mpd",
-		src : "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
-		//src : "http://rdmedia.bbc.co.uk/dash/ondemand/bbb/2/client_manifest-common_init.mpd",
-		src : "content/bbc/client_manifest-common_init.mpd",
-		//src : "content/itv/itv-clearkey.mpd",
-		type : "application/dash+xml",
-		transitionTime : 60
-	},
-];
+content.list = [];
 
 // Key mapping table
 var keyTable = {};
@@ -139,7 +106,6 @@ const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream w
 
 mVid.startTime = Date.now();
 
-
 mVid.Log = {};
 
 mVid.Log.init = function (logDiv) {
@@ -149,10 +115,12 @@ mVid.Log.init = function (logDiv) {
 
 mVid.Log.error = function (message) {
 	this._write("ERROR: " + message, "error");
+	console.log("ERROR: " + message);
 };
 
 mVid.Log.warn = function (message) {
 	this._write("WARN: " + message, "warn");
+	console.log("WARN: " + message);
 };
 
 mVid.Log.info = function (message) {
@@ -196,13 +164,12 @@ window.onload = function () {
 }
 
 window.onbeforeunload = function () {
-	mVid.Log.warn("Refresh page");
+	mVid.Log.warn("Unload page");
 	mVid.cmndLog();
 	mVid.socket.disconnect();
 }
 
 mVid.start = function () {
-	var mainVideo;
     var appMan 		= null;
 	var that 		= this;
 	var confManager = null;
@@ -228,78 +195,165 @@ mVid.start = function () {
         this.Log.warn("Exception when getting the owner Application object. Error: " + err.message);
     }
 
-    try {
-        this.app.show();
-    } catch (err) {
-        this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
-    }
-
-	this.socket = io();
-	
-	mainVideo = e("mVid-mainContent");
-	
-	for(var i in this.videoEvents) {
-		mainVideo.addEventListener(this.videoEvents[i], this.onVideoEvent);
-	}
-
-	mainVideo.restartPoint 			= 0;
-	mainVideo.bPlayPauseTransition 	= false;
-	mainVideo.bBuffEnoughToPlay 	= false;
-	this.transitionThresholdMS 		= 1000;
-	this.bShowBufferingIcon			= false;
-	
-	// Clear key
-    const KEYSYSTEM_TYPE = "org.w3.clearkey";
-
-	var options = [];
-	const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
-	const videoContentType = 'video/mp4; codecs="avc3.64001F"'; 
-
-	options = [
-		{
-		  initDataTypes: ["cenc"],
-		  videoCapabilities: [{contentType: videoContentType}],
-		  audioCapabilities: [{contentType: audioContentType}],
+	if (this.app) {
+		try {
+			this.app.show();
+		} catch (err) {
+			this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
 		}
-	];
 
-	if ("MediaKeys" in window) {
-		SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options);
-	}
-	
-	window.setInterval( function() {
-		var elTimer = e("videoTimer");
-
-		// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
-		if (elTimer) {
-			elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
+	   try {
+			var myKeyset = this.app.privateData.keyset;
+			myKeyset.setValue(	myKeyset.RED 		| 
+								myKeyset.GREEN 		| 
+								myKeyset.BLUE 		| 
+								myKeyset.YELLOW		| 
+								myKeyset.VCR		|
+								myKeyset.NUMERIC 	|
+								myKeyset.NAVIGATION);
+		} catch (err) {
+			this.Log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
 		}
+	}
 		
-		that.updateBufferBars();	
-	}, 1000);
-	
-	
-    try {
-		var myKeyset = this.app.privateData.keyset;
-		myKeyset.setValue(	myKeyset.RED 		| 
-							myKeyset.GREEN 		| 
-							myKeyset.BLUE 		| 
-							myKeyset.YELLOW		| 
-							myKeyset.VCR		|
-							myKeyset.NUMERIC 	|
-							myKeyset.NAVIGATION);
-    } catch (err) {
-        this.Log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
-    }
-	
-	document.addEventListener("keydown", this.OnKeyDown.bind(this));
-	
-	this.showBufferingIcon(false);
-	this.setPlayingState(PLAYSTATE_STOP);
-	
-	this.setContentSourceAndLoad();
-	this.resetStallTimer();
+	this.socket = io();
+
+	getCookie = function (cname) {
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i = 0; i <ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length,c.length);
+			}
+		}
+		return "";
+	}
+
+	var currentChannel = getCookie("channel");
+
+	getPlaylist(currentChannel || "1", function(playlistObj) {		
+		var mainVideo;
+
+		that.procPlaylist(playlistObj);
+
+		mainVideo = e("mVid-mainContent");
+		
+		for(var i in that.videoEvents) {
+			mainVideo.addEventListener(that.videoEvents[i], that.onVideoEvent);
+		}
+
+		mainVideo.resumeFrom 			= 0;
+		mainVideo.bPlayPauseTransition 	= false;
+		mainVideo.bBuffEnoughToPlay 	= false;
+		that.transitionThresholdMS 		= 1000;
+		that.bShowBufferingIcon			= false;
+		
+		// Clear key
+		const KEYSYSTEM_TYPE = "org.w3.clearkey";
+
+		var options = [];
+		const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
+		const videoContentType = 'video/mp4; codecs="avc3.64001F"'; 
+
+		options = [
+			{
+			  initDataTypes: ["cenc"],
+			  videoCapabilities: [{contentType: videoContentType}],
+			  audioCapabilities: [{contentType: audioContentType}],
+			}
+		];
+
+		if ("MediaKeys" in window) {
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options);
+		}
+			
+		that.showBufferingIcon(false);
+		that.setPlayingState(PLAYSTATE_STOP);
+		
+		document.addEventListener("keydown", that.OnKeyDown.bind(that));
+		
+		that.setContentSourceAndLoad();
+		that.resetStallTimer();
+		
+		window.setInterval( function() {
+			var elTimer = e("videoTimer");
+
+			// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
+			if (elTimer) {
+				elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
+			}
+			
+			that.updateBufferBars();	
+		}, 1000);	
+	});
 };
+
+mVid.procPlaylist = function (playlistObj) {
+	var c = content.list;
+	
+	this.Log.info("- New playlist: " + JSON.stringify(playlistObj));
+	
+	c.length = playlistObj.ads.length + 1;
+	c[playlistObj.ads.length] = {};
+	c[playlistObj.ads.length].src 				= playlistObj.src;
+	c[playlistObj.ads.length].type 				= playlistObj.type;
+	c[playlistObj.ads.length].transitionTime 	= playlistObj.transitionTime;
+	c[playlistObj.ads.length].playerId 			= "mVid-mainContent";
+	c[playlistObj.ads.length].channelName		= playlistObj.channelName;
+	
+	var pId = "mVid-video0";
+	
+	for (var i = 0; i < playlistObj.ads.length; i++) {
+		//this.Log.info("- Ad: " + i + " " + playlistObj.ads[i].src);	
+		//this.Log.info("- Ad: " + i + " " + playlistObj.ads[i].type);	
+		c[i] = {};
+		c[i].src 			= playlistObj.ads[i].src;
+		c[i].type 			= playlistObj.ads[i].type;
+		c[i].transitionTime = -1;
+		c[i].playerId 		= pId;
+		c[i].channelName	= playlistObj.channelName;
+		pId = (pId === "mVid-video0") ? "mVid-video1" : "mVid-video0";
+	}
+	
+	this.Log.info("---- Content List ----");	
+	for (var i = 0; i < c.length; i++) {
+		this.Log.info(" - " + c[i].channelName);	
+		this.Log.info(" - " + c[i].src);	
+		this.Log.info(" - " + c[i].type);	
+		this.Log.info(" - " + c[i].playerId);	
+		this.Log.info(" - " + c[i].transitionTime);	
+		this.Log.info(" - ");			
+	}
+	
+	e("currentChannel") && (e("currentChannel").innerHTML = playlistObj.channelName);
+}
+
+mVid.reload = function () {
+    this.socket.on("disconnect", function(){
+        console.log("client disconnected from server");
+		location.reload();
+    });
+
+	this.socket.disconnect();	
+}
+
+mVid.setChannel = function (idx) {
+	
+	setCookie = function (cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cname + "=" + cvalue + "; " + expires;
+	}
+
+	setCookie("channel", idx, 28);
+	
+	this.reload();
+}
 
 mVid.displayBrowserInfo = function () {
 	this.Log.info("--------------------------------------------------------------------");
@@ -339,7 +393,7 @@ mVid.createPlayer = function (playerId) {
 	this.statusTableText(playerId, "Pos", "---");
 
 	player.bPlayPauseTransition = false;
-	player.restartPoint = 0;
+	player.resumeFrom = 0;
 	
 	this.timeStampStartOfPlay(player);
 	
@@ -442,14 +496,14 @@ mVid.updateBufferBar = function(playerId, annot) {
 		pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
 		pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
 		pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
-		pbObj += "\"restartPoint\":" + JSON.stringify('' + player.restartPoint) + ",";
+		pbObj += "\"resumeFrom\":" + JSON.stringify('' + player.resumeFrom) + ",";
 		pbObj += "\"duration\":" + JSON.stringify('' + player.duration) + ",";
 	} else {
 		pbObj += "\"class\":\"bufferBar\",";
 		pbObj += "\"value\":\"0\","; 
 		pbObj += "\"max\":\"0\",";
 		pbObj += "\"currentTime\":\"0\",";
-		pbObj += "\"restartPoint\":\"0\",";
+		pbObj += "\"resumeFrom\":\"0\",";
 		pbObj += "\"duration\":\"0\",";	
 	}
 	pbObj += "\"time\":" + JSON.stringify('' + (Date.now() - this.startTime) / 1000) + ",";
@@ -645,7 +699,7 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		if (player.currentTime >= player.duration) {
 			this.Log.info(player.id + " start content again at beginning");
 			player.currentTime = 0;
-			player.restartPoint = 0;
+			player.resumeFrom = 0;
 		}
 		*/
 	}
@@ -941,6 +995,7 @@ mVid.onVideoEvent = function (event) {
 
 			// Start playing buffered content
 			if (mVid.isMainFeaturePlayer(this)) {
+				player.resumeFrom = 0;
 				// location.reload(); 
 			} else {
 				mVid.skipPlayingToNextPlayer();
@@ -967,7 +1022,7 @@ mVid.onVideoEvent = function (event) {
 				var bPreloadNextAd = false;
 				
 				if ((mVid.isMainFeaturePlayer(this)) && (this === playingPlayer)) {
-					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.restartPoint + mVid.getTransitionTime(this))) {
+					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + mVid.getTransitionTime(this))) {
 					bPreloadNextAd = true;
 					mVid.setPreload(playingPlayer, "none");
 					}
@@ -1001,9 +1056,9 @@ mVid.onVideoEvent = function (event) {
 			
 			// Time for adverts?
 			if ((this == playingPlayer) && mVid.isMainFeaturePlayer(playingPlayer)) {
-				if ((this.currentTime - this.restartPoint) >= mVid.getTransitionTime(this)) {
+				if ((this.currentTime - this.resumeFrom) >= mVid.getTransitionTime(this)) {
 					mVid.Log.warn(this.id + ": transition main content");
-					this.restartPoint = this.currentTime;
+					this.resumeFrom = this.currentTime;
 					this.bPlayPauseTransition = false;
 					this.pause();
 					mVid.updateBufferBar(this.id, "Play advert");
@@ -1148,8 +1203,7 @@ mVid.cmndPause = function () {
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
 	// this.cmndLog();
-	this.socket.disconnect();
-	location.reload();
+	this.reload();
 }	
 
 mVid.cmndSeekFWD = function () {
@@ -1178,7 +1232,6 @@ mVid.cmndLog = function () {
 	xhttp.send(this.Log.logStr);
 }
 
-// TODO: need to forward ref funcs
 keyTable.entries = [
 	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : __VK_FAST_FWD 	}, 
 	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : __VK_REWIND 	}, 
@@ -1188,6 +1241,16 @@ keyTable.entries = [
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
 	{ func : mVid.cmndLog, 			key : 'D', hbbKey : __VK_BLUE		}, 
+	
+	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : __VK_1	}, 
+	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : __VK_2	}, 
+	{ func : function() {this.setChannel(3)},	key : '3',	hbbKey : __VK_3	}, 
+	{ func : function() {this.setChannel(4)},	key : '4',	hbbKey : __VK_4	}, 
+	{ func : function() {this.setChannel(5)},	key : '5',	hbbKey : __VK_5	}, 
+	{ func : function() {this.setChannel(6)},	key : '6',	hbbKey : __VK_6	}, 
+	{ func : function() {this.setChannel(7)},	key : '7',	hbbKey : __VK_7	}, 
+	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : __VK_8	}, 
+	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : __VK_9	}, 
 ];
 		
 // Utility functions

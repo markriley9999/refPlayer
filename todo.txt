@@ -1,7 +1,12 @@
-- more adverts
-- local clear key content
+- time to next ad
+- pause causes buffer icon
 
-- show tv connected
+- show ip
+- connected status
+
+- set errors, throttle
+
+- tidy ui
 
 - play main content time before adverts
 
@@ -9,17 +14,15 @@
 
 - tidy up logging ui
 
-- json playlist 
-- multiple playlists
 - control from browser
 - window control
 - ait
 - ip address
 - advert wait
 
-- ait
 
 - linux
+
 - add DRM
 
 - download:
@@ -27,3 +30,13 @@
 	- ITV
 	- ITV Clearkey
 	- iPlayer
+
+	https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd
+	http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-one_representation_per_component.mpd
+	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-ctv-events.mpd
+	
+	
+	http://www.dash-downloader.com/
+	https://bitmovin.com/cloud-encoding-service/
+	https://rg3.github.io/youtube-dl/
+	
