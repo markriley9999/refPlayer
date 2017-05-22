@@ -17,8 +17,8 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "content/bigbuckbunny/client_manifest-common_init.mpd",
+	"src" 	: "content/elephantsdream/client_manifest-all.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "60",
-	"channelName" : "Ch 2 - Ads: 4 Channel4, Main: Big Buck Bunny"
+	"channelName" : "Ch 2 - Ads: 4 Channel4, Main: Elephant's Dream (EBU-TT-D subs)"
 }

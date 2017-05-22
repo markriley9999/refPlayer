@@ -1,3 +1,11 @@
+- handle no ads - no ad breaks
+
+- install
+	- extract from github
+	- execute 2nd script to:
+		- download and extract content 
+		- install nodejs modules
+	
 - time to next ad
 - pause causes buffer icon
 
@@ -35,6 +43,13 @@
 	http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-one_representation_per_component.mpd
 	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-ctv-events.mpd
 	
+	http://rdmedia.bbc.co.uk/dash/ondemand/sintel/1/client_manifest-common_init.mpd
+	
+	http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-all.mpd  REAL
+	http://rdmedia.bbc.co.uk/dash/ondemand/sintel/1/client_manifest-all.mpd
+	
+	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/ REAL
+	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-ctv-events.mpd
 	
 	http://www.dash-downloader.com/
 	https://bitmovin.com/cloud-encoding-service/

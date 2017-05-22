@@ -13,8 +13,8 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "content/bigbuckbunny/client_manifest-common_init.mpd",
+	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "60",
-	"channelName" : "Ch 7 - Ads: 3 ITV Ads, Main: Big Buck Bunny"
+	"channelName" : "Ch 7 - Ads: 3 ITV Ads, Main: Testcard"
 }

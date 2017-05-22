@@ -1,20 +1,7 @@
 {
-	"ads" : [
-		{	
-			"src" 	: "content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],
-	"src" 	: "content/bigbuckbunny/client_manifest-common_init.mpd",
+	"ads" : [],
+	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "60",
-	"channelName" : "Ch 9 - Ads: 3 ITV Ads, Main: Big Buck Bunny"
+	"transitionTime" : "1000",
+	"channelName" : "Ch 9 - Testcard"
 }
