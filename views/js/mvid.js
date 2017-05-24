@@ -218,7 +218,7 @@ mVid.start = function () {
 		}
 	}
 	
-	this.showPlayrange();
+	this.ShowPlayrange();
 	
 	getCookie = function (cname) {
 		var name = cname + "=";
@@ -695,19 +695,7 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		if (!this.app) {
 			dashjs.MediaPlayerFactory.create(player, source);
 		}
-		player.load();
-	}
-	
-	if (this.isMainFeaturePlayer(player)) {
 		this.setPreload(player, "auto");
-		/*
-		// wrap around main content - if at the end
-		if (player.currentTime >= player.duration) {
-			this.Log.info(player.id + " start content again at beginning");
-			player.currentTime = 0;
-			player.resumeFrom = 0;
-		}
-		*/
 	}
 }
 
@@ -783,22 +771,22 @@ mVid.getBufferedAmount = function (player) {
 	return bufferEnd;
 }
 
-mVid.showPlayrange = function () {
-	let p = this.getCurrentPlayingPlayer();
+mVid.ShowPlayrange = function () {
+	var p = this.getCurrentPlayingPlayer();
 	
-	let c = e("playbackBar").getBoundingClientRect();
-	let offset = e("ad-start-point").getBoundingClientRect().width / 2;
+	var c = e("playbackBar").getBoundingClientRect();
+	var offset = e("ad-start-point").getBoundingClientRect().width / 2;
 
-	let x1, x2;
+	var x1, x2;
 	
 	if (!p || !mVid.isMainFeaturePlayer(p)) {
 		x1 = c.left;
 		x2 = c.right;			
 	} else {
-		let coef = (c.width / p.duration);
-		let t = this.getTransitionTime();
+		var coef = (c.width / p.duration);
+		var t = this.getTransitionTime();
 		x1 =  (coef * p.resumeFrom) + c.left;
-		let endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
+		var endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
 		
 		x2 =  (coef * endP) + c.left;
 	}
@@ -807,6 +795,7 @@ mVid.showPlayrange = function () {
 	e("ad-resume-point").style.left = (x2 - offset) + "px";			
 }
 
+// TODO: Don't use mVid in main code 
 mVid.onVideoEvent = function (event) {
 	var bufferingPlayer = mVid.getCurrentBufferingPlayer();
 	var playingPlayer = mVid.getCurrentPlayingPlayer();
@@ -929,7 +918,7 @@ mVid.onVideoEvent = function (event) {
 			mVid.updateBufferBar(this.id, "");
 
 			mVid.setPlayingState(PLAYSTATE_PLAY);
-			mVid.showPlayrange();
+			mVid.ShowPlayrange();
 			
 			// Sanity check
 			if (this != playingPlayer) {
@@ -940,20 +929,16 @@ mVid.onVideoEvent = function (event) {
 				mVid.Log.warn(this.id + ": Buffer should not still be empty!");				
 			}
 
-			if ((this == playingPlayer) && !this.bPlayPauseTransition)
-			{
+			if ((this == playingPlayer) && !this.bPlayPauseTransition) {
 				this.startPlaybackPointMS = this.currentTime * 1000;
-					
-				if (!bBufferingWhilstAttemptingToPlay) {
-					// Right let's start buffering the next piece of content
-					if (this == playingPlayer) {
-						mVid.setContentSourceAndLoad();
-					} else {
-						mVid.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
-					}
-				}
 			} else {
 				this.bPlayPauseTransition = false;
+			}
+			
+			// Sanity check
+			if (mVid.isMainFeaturePlayer(this) && (this == playingPlayer) && (playingPlayer.currentTime < playingPlayer.resumeFrom)) {
+				mVid.Log.error(this.id + ": resume error (currentTime < resume point)");
+				playingPlayer.currentTime = playingPlayer.resumeFrom;
 			}
 			break;
 			
@@ -1058,7 +1043,7 @@ mVid.onVideoEvent = function (event) {
 					if (mVid.isMainFeaturePlayer(this)) {
 						if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + mVid.getTransitionTime())) {
 						bPreloadNextAd = true;
-						mVid.setPreload(playingPlayer, "none");
+						// not needed???? mVid.setPreload(playingPlayer, "none");
 						}
 					} else {
 						if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
@@ -1285,7 +1270,7 @@ mVid.cmndJumpToEnd = function () {
 		playingPlayer.currentTime = t;
 		if (this.isMainFeaturePlayer(playingPlayer)) {
 			playingPlayer.resumeFrom = t;
-			this.showPlayrange();
+			this.ShowPlayrange();
 		}
 	}
 }
