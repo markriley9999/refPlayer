@@ -129,6 +129,7 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	});
 	
 	socket.on('disconnect', function () {
+		currentDeviceUA = "";
 		if (connectedDevices > 0) {
 			connectedDevices--;
 		}

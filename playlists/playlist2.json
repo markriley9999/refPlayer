@@ -19,6 +19,6 @@
 	],
 	"src" 	: "content/elephantsdream/client_manifest-all.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "60",
+	"transitionTime" : "600",
 	"channelName" : "Ch 2 - Ads: 4 Channel4, Main: Elephant's Dream (EBU-TT-D subs)"
 }

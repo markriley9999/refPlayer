@@ -1,20 +1,12 @@
 {
 	"ads" : [
-		{	
-			"src" 	: "content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
 		{
-			"src" 	: "content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+			"src" 	: "content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
 			"type" 	: "video/mp4"
 		}
 	],
 	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "10",
-	"channelName" : "Ch 5 - Ads: 3 ITV Ads, Main: Testcard (10s)"
+	"channelName" : "Ch 5 - Ads: 1 Ch4 Ad, Main: Testcard (10s)"
 }

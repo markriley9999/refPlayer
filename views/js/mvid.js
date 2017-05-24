@@ -174,6 +174,8 @@ mVid.start = function () {
 	var that 		= this;
 	var confManager = null;
 	
+	this.socket = io();
+
 	this.app = null;
 	
 	this.Log.init(e("log"));
@@ -215,9 +217,9 @@ mVid.start = function () {
 			this.Log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
 		}
 	}
-		
-	this.socket = io();
-
+	
+	this.showPlayrange();
+	
 	getCookie = function (cname) {
 		var name = cname + "=";
 		var ca = document.cookie.split(';');
@@ -620,7 +622,11 @@ mVid.getCurrentPlayingPlayer = function () {
 	//this.Log.info("getCurrentPlayingPlayer: " + content.list[content.currentPlayingIdx].playerId);
 	var idx = content.currentPlayingIdx;
 	
-	return e(content.list[idx].playerId);
+	if (content.list[idx]){
+		return e(content.list[idx].playerId);
+	} else {
+		return null;
+	}
 }
 
 mVid.getBufferingContentIdx = function () {
@@ -634,7 +640,7 @@ mVid.getPlayingContentIdx = function () {
 }
 
 mVid.getTransitionTime = function () {
-	return content.list[content.currentPlayingIdx].transitionTime;
+	return parseInt(content.list[content.currentPlayingIdx].transitionTime);
 }
 
 mVid.setContentSourceAndLoad = function () {
@@ -777,6 +783,30 @@ mVid.getBufferedAmount = function (player) {
 	return bufferEnd;
 }
 
+mVid.showPlayrange = function () {
+	let p = this.getCurrentPlayingPlayer();
+	
+	let c = e("playbackBar").getBoundingClientRect();
+	let offset = e("ad-start-point").getBoundingClientRect().width / 2;
+
+	let x1, x2;
+	
+	if (!p || !mVid.isMainFeaturePlayer(p)) {
+		x1 = c.left;
+		x2 = c.right;			
+	} else {
+		let coef = (c.width / p.duration);
+		let t = this.getTransitionTime();
+		x1 =  (coef * p.resumeFrom) + c.left;
+		let endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
+		
+		x2 =  (coef * endP) + c.left;
+	}
+	
+	e("ad-start-point").style.left 	= (x1 - offset) + "px";
+	e("ad-resume-point").style.left = (x2 - offset) + "px";			
+}
+
 mVid.onVideoEvent = function (event) {
 	var bufferingPlayer = mVid.getCurrentBufferingPlayer();
 	var playingPlayer = mVid.getCurrentPlayingPlayer();
@@ -899,6 +929,7 @@ mVid.onVideoEvent = function (event) {
 			mVid.updateBufferBar(this.id, "");
 
 			mVid.setPlayingState(PLAYSTATE_PLAY);
+			mVid.showPlayrange();
 			
 			// Sanity check
 			if (this != playingPlayer) {
@@ -995,8 +1026,10 @@ mVid.onVideoEvent = function (event) {
 
 			// Start playing buffered content
 			if (mVid.isMainFeaturePlayer(this)) {
-				player.resumeFrom = 0;
-				// location.reload(); 
+				mVid.Log.info(this.id + ": video has ended - reload");
+				//this.resumeFrom = 0;
+				//this.currentTime = 0;
+				mVid.reload(); 
 			} else {
 				mVid.skipPlayingToNextPlayer();
 				var newPlayingPlayer = mVid.getCurrentPlayingPlayer();
@@ -1021,15 +1054,17 @@ mVid.onVideoEvent = function (event) {
 				var bufferEnd 	= mVid.getBufferedAmount(this);
 				var bPreloadNextAd = false;
 				
-				if ((mVid.isMainFeaturePlayer(this)) && (this === playingPlayer)) {
-					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + mVid.getTransitionTime(this))) {
-					bPreloadNextAd = true;
-					mVid.setPreload(playingPlayer, "none");
-					}
-				} else {
-					if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
+				if (this === playingPlayer) {
+					if (mVid.isMainFeaturePlayer(this)) {
+						if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + mVid.getTransitionTime())) {
 						bPreloadNextAd = true;
-					}					
+						mVid.setPreload(playingPlayer, "none");
+						}
+					} else {
+						if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
+							bPreloadNextAd = true;
+						}					
+					}
 				}
 				
 				if (bPreloadNextAd) {
@@ -1056,9 +1091,17 @@ mVid.onVideoEvent = function (event) {
 			
 			// Time for adverts?
 			if ((this == playingPlayer) && mVid.isMainFeaturePlayer(playingPlayer)) {
-				if ((this.currentTime - this.resumeFrom) >= mVid.getTransitionTime(this)) {
+				if ((this.currentTime - this.resumeFrom) >= mVid.getTransitionTime()) {
 					mVid.Log.warn(this.id + ": transition main content");
-					this.resumeFrom = this.currentTime;
+					
+					// Check to see if we're buffering the right video object
+					if (bBufferingWhilstAttemptingToPlay) {
+						mVid.Log.error(this.id + ": still buffering current player (should be prebuffering next!)");
+						mVid.skipBufferingToNextPlayer(); // Get ready to buffer next player
+						mVid.setContentSourceAndLoad();						
+					}
+					
+					this.resumeFrom += mVid.getTransitionTime();
 					this.bPlayPauseTransition = false;
 					this.pause();
 					mVid.updateBufferBar(this.id, "Play advert");
@@ -1202,7 +1245,7 @@ mVid.cmndPause = function () {
 	
 mVid.cmndReload = function () {
 	this.Log.info("called : cmndReload"); 
-	// this.cmndLog();
+	this.cmndLog();
 	this.reload();
 }	
 
@@ -1232,6 +1275,21 @@ mVid.cmndLog = function () {
 	xhttp.send(this.Log.logStr);
 }
 
+mVid.cmndJumpToEnd = function () {
+	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	this.Log.info(playingPlayer.id + ": Jump to end"); 
+
+	if (playingPlayer) {
+		var t = playingPlayer.duration * 0.9;
+		playingPlayer.currentTime = t;
+		if (this.isMainFeaturePlayer(playingPlayer)) {
+			playingPlayer.resumeFrom = t;
+			this.showPlayrange();
+		}
+	}
+}
+
 keyTable.entries = [
 	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : __VK_FAST_FWD 	}, 
 	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : __VK_REWIND 	}, 
@@ -1241,6 +1299,7 @@ keyTable.entries = [
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
 	{ func : mVid.cmndLog, 			key : 'D', hbbKey : __VK_BLUE		}, 
+	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : __VK_YELLOW		}, 
 	
 	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : __VK_1	}, 
 	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : __VK_2	}, 

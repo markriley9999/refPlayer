@@ -1,3 +1,5 @@
+- correctly calculated resume point!
+
 - handle no ads - no ad breaks
 
 - install
@@ -15,6 +17,7 @@
 - set errors, throttle
 
 - tidy ui
+- fix stalling
 
 - play main content time before adverts
 
@@ -28,6 +31,7 @@
 - ip address
 - advert wait
 
+- port 80
 
 - linux
 

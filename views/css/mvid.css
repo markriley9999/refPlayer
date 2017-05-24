@@ -201,6 +201,14 @@ progress::-moz-progress-bar {
 	background-color: transparent;
 }
 
+.ad-arrow {
+	width: 16px;
+	height: 16px;
+	background-color: transparent;
+	position: fixed;
+	opacity: 0.75;
+}
+
 .hilite {
 	background-color: orange;
 }
