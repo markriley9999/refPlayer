@@ -13,8 +13,8 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
+	"src" 	: "https://bitdash-a.akamaihd.net/content/sintel/sintel.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "60",
-	"channelName" : "Ch 6 - Ads: 3 ITV Ads, Main: Testcard"
+	"channelName" : "Ch 6 - Ads: 3 ITV Ads, Main: Sintel"
 }

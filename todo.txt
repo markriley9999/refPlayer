@@ -19,8 +19,6 @@
 - tidy ui
 - fix stalling
 
-- play main content time before adverts
-
 - host on vm / aws - remote ui
 
 - tidy up logging ui
