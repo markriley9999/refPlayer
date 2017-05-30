@@ -9,10 +9,12 @@ ODIR=$6
 OPRENAME=$7
 FIRSTSEG=$8
 LASTSEG=$9
+PAD=${10}
+
 TIMESTAMP=$(date +%s)
 
 echo UA: $UA
-echo Example URL: $BASEURL$REP"000001.m4s"
+echo Example URL: $BASEURL$REP"x.m4s"
 
 echo First seg = $FIRSTSEG
 echo Last seg = $LASTSEG
@@ -28,7 +30,7 @@ while [  $COUNTER -le $LASTSEG ]; do
 	echo --- Segment = $COUNTER
 	
 	if [ "$OPRENAME" == "" ]; then
-		printf -v PCOUNTER "%06d" $COUNTER
+		printf -v PCOUNTER "$PAD" $COUNTER
 	else
 		PCOUNTER=$COUNTER
 	fi
