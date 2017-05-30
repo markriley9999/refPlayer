@@ -13,7 +13,7 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "content/itv/itv-clearkey.mpd",
+	"src" 	: "content/itv/clearkey/itv-clearkey.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "600",
 	"channelName" : "Ch 3 - Ads: 3 ITV Ads, Main: Clear Key (Lorraine)"

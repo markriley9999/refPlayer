@@ -21,6 +21,9 @@
 
 - host on vm / aws - remote ui
 
+- pass lic paramter - content id
+
+
 - tidy up logging ui
 
 - control from browser
