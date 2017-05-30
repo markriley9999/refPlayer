@@ -45,9 +45,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# artefacts - content / nodejs
 node_modules
 ui/OLD - index.html
 ui/OLD - update.js
 views/OLD-dash.hbs
-content
+*.mp4
+*.m4s
+*.dash
 logs
