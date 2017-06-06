@@ -12,9 +12,6 @@
     "express": "^4.14.1",
     "socket.io": "^1.7.2",
     "electron": "^1.4.1"
-  },
-  "devDependencies": {
-    "electron": "^1.6.10",
     "stream-throttle": "^0.1.3"
   }
 }
