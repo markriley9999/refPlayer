@@ -1,3 +1,12 @@
+- Fix graph!!!
+
+- detect right install
+
+https://github.com/markriley9999/refPlayer.git
+
+- install from branch
+
+
 - correctly calculated resume point!
 
 - handle no ads - no ad breaks
