@@ -4,7 +4,7 @@ URL=$1
 
 echo $URL
 
-curl -v $URL -o refplayer-content.tar.gz
+curl $URL -o refplayer-content.tar.gz
 
 tar -tf refplayer-content.tar.gz
 
