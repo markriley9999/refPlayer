@@ -2,6 +2,8 @@
 
 CNT=$1
 
+echo $CNT
+
 #./git-pull.sh
 #./node-setup.sh
 
