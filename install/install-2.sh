@@ -4,8 +4,8 @@ CNT=$1
 
 echo $CNT
 
-#./git-pull.sh
-#./node-setup.sh
+./git-pull.sh
+./node-setup.sh
 
 if [ "$CNT" == "aws" ]; then
   ./getcontent-markriley9999-aws.sh

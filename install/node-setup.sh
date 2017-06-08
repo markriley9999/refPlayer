@@ -7,11 +7,11 @@ if ! [ -x "$(command -v nodejs)" ]; then
   echo 'First, installing nodejs'
   
   if [ -x "$(command -v dnf)" ]; then
-    dnf install nodejs
+    sudo dnf install nodejs
   elif [ -x "$(command -v yum)" ]; then
-    yum install nodejs
+    sudo yum install nodejs
   elif [ -x "$(command -v apt-get)" ]; then
-    apt-get install nodejs
+    sudo apt-get install nodejs
   else
     echo "Please first install nodejs."
     exit 1
@@ -19,7 +19,7 @@ if ! [ -x "$(command -v nodejs)" ]; then
 
 fi
 
-npm install
+sudo npm install
 ln -s ./node_modules/.bin/electron
 
 cd install/

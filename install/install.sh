@@ -5,11 +5,11 @@ if ! [ -x "$(command -v git)" ]; then
   echo 'First, installing git'
   
   if [ -x "$(command -v dnf)" ]; then
-    dnf install git
+    sudo dnf install git
   elif [ -x "$(command -v yum)" ]; then
-    yum install git
+    sudo yum install git
   elif [ -x "$(command -v apt-get)" ]; then
-    apt-get install git
+    sudo apt-get install git
   else
     echo "Please first install git."
     exit 1
