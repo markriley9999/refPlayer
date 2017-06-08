@@ -15,5 +15,9 @@ else
   ./getcontent-markriley9999-duk.sh
 fi
 
-echo Install Complete
+echo --- Install Complete! ---
+echo Type:
+echo cd refPlayer/
+echo ./run.sh
+
 
