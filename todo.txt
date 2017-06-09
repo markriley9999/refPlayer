@@ -1,6 +1,8 @@
-- Fix graph!!!
+- Debian / Ubunto error - electron install
+- Firewall config???
+- run with no ui
+- install confluence page
 
-- detect right install
 
 https://github.com/markriley9999/refPlayer.git
 
