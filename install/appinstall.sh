@@ -12,9 +12,12 @@ if ! [ -x "$(command -v $APP)" ]; then
     sudo yum install $APP
   elif [ -x "$(command -v apt-get)" ]; then
     sudo apt-get install $APP
+  elif [ -x "$(command -v zypper)" ]; then
+    sudo zypper install $APP
   else
     echo Cannot install $APP
     exit 1
   fi
 
 fi
+

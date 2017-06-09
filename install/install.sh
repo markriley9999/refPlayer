@@ -10,6 +10,8 @@ if ! [ -x "$(command -v git)" ]; then
     sudo yum install git
   elif [ -x "$(command -v apt-get)" ]; then
     sudo apt-get install git
+  elif [ -x "$(command -v zypper)" ]; then
+    sudo zypper install git
   else
     echo "Please first install git."
     exit 1
