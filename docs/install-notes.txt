@@ -16,6 +16,13 @@ git push
 
 - No sudo!!!
 
+**** openSUSE ***
+
+good!
+
+
+
+
 
 https://github.com/markriley9999/refPlayer.git
 
