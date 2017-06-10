@@ -1,3 +1,5 @@
+- fix canberra error
+- set eol, tabs to spaces
 - Debian / Ubunto error - electron install
 - Firewall config???
 - run with no ui
