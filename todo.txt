@@ -2,6 +2,10 @@
 - Firewall config???
 - run with no ui
 - install confluence page
+- use release branch
+
+
+sudo apt-get install nodejs-legacy    !!!!
 
 
 https://github.com/markriley9999/refPlayer.git

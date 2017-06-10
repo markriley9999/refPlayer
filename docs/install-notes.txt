@@ -1,5 +1,8 @@
 *** Ubuntu ***
 
+Add -y ???
+
+
 - need to install npm as well!
 - and curl!
 
@@ -15,6 +18,31 @@ git push
 *** Debian ***
 
 - No sudo!!!
+
+sudo apt-get install npm2deb  --- REMOVE?!
+!!!!
+first remove npm npm2deb node nodejs!!!!!
+https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+canberra-gtk-module
+
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+curl -sL https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-install | sudo -E bash -
+curl -sL https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-install | bash -
+
+
+
+./install/appinstall.sh npm
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
+
 
 **** openSUSE ***
 
