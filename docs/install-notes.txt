@@ -1,15 +1,26 @@
+Windows BASH - broken
+Debian - fixed 
+
+
+!!!! Firewalls !!!!!
+
+**** Windows BASH (ubuntu) ****
+
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+markriley9999@SNARKLAPTOP:/mnt/c/Users/Mark Work/Documents/playpen/refPlayer$ ./run.sh install
+/mnt/c/Users/Mark Work/Documents/playpen/refPlayer/node_modules/electron/dist/electron: error while loading shared libraries: libgtk-x11-2.0.so.0: cannot open shared object file: No such file or directory
+
+sudo apt-get install libgtk*
+
+
 *** Ubuntu ***
 
 Add -y ???
-
-
-- need to install npm as well!
 - and curl!
 
-sudo apt-get install npm
 sudo apt-get install curl
-
-
 
 git add file
 git commit -a
@@ -18,36 +29,38 @@ git push
 *** Debian ***
 
 - No sudo!!!
+- no curl
 
-sudo apt-get install npm2deb  --- REMOVE?!
-!!!!
-first remove npm npm2deb node nodejs!!!!!
 https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 canberra-gtk-module
+sudo apt-get install libcanberra-gtk*
+
+
 
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Debian and Ubuntu 
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 INSTALL!!!!
-- Fix to use params!!!!
 curl -sL https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-install/install-minimal | bash -
 
-
-
-./install/appinstall.sh npm
-rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
 
 **** openSUSE ***
 
 good!
+broken graphs:
+:ERR_INSECURE_RESPONSE
 
 
 

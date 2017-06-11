@@ -1,31 +1,15 @@
-- fix canberra error
 - set eol, tabs to spaces
-- Debian / Ubunto error - electron install
-- Firewall config???
 - run with no ui
 - install confluence page
-- use release branch
+- update param run.sh update (git and npm)
 
-
-sudo apt-get install nodejs-legacy    !!!!
 
 
 https://github.com/markriley9999/refPlayer.git
 
-- install from branch
-
-
-- correctly calculated resume point!
 
 - handle no ads - no ad breaks
 
-- install
-	- extract from github
-	- execute 2nd script to:
-		- download and extract content 
-		- install nodejs modules
-	
-- time to next ad
 - pause causes buffer icon
 
 - show ip
@@ -34,46 +18,19 @@ https://github.com/markriley9999/refPlayer.git
 - set errors, throttle
 
 - tidy ui
-- fix stalling
-
-- host on vm / aws - remote ui
 
 - pass lic paramter - content id
-
 
 - tidy up logging ui
 
 - control from browser
 - window control
 - ait
-- ip address
-- advert wait
 
 - port 80
-
-- linux
 
 - add DRM
 
 - download:
 	- STV
 	- ITV
-	- ITV Clearkey
-	- iPlayer
-
-	https://storage.googleapis.com/shaka-demo-assets/sintel/dash.mpd
-	http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-one_representation_per_component.mpd
-	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-ctv-events.mpd
-	
-	http://rdmedia.bbc.co.uk/dash/ondemand/sintel/1/client_manifest-common_init.mpd
-	
-	http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-all.mpd  REAL
-	http://rdmedia.bbc.co.uk/dash/ondemand/sintel/1/client_manifest-all.mpd
-	
-	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/ REAL
-	http://rdmedia.bbc.co.uk/dash/ondemand/testcard/1/client_manifest-ctv-events.mpd
-	
-	http://www.dash-downloader.com/
-	https://bitmovin.com/cloud-encoding-service/
-	https://rg3.github.io/youtube-dl/
-	
