@@ -3,7 +3,7 @@
 - install confluence page
 - update param run.sh update (git and npm)
 
-
+- sort out keycodes (see below)
 
 https://github.com/markriley9999/refPlayer.git
 
@@ -34,3 +34,28 @@ https://github.com/markriley9999/refPlayer.git
 - download:
 	- STV
 	- ITV
+
+- electron icon
+	
+	
+keyTable.entries = [
+	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : (typeof VK_FAST_FWD !== 'undefined')  	? VK_FAST_FWD : __VK_FAST_FWD 	}, 
+	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : (typeof VK_REWIND !== 'undefined')  	? VK_REWIND : __VK_REWIND 		}, 
+	{ func : mVid.cmndPlay,			key : 'P', hbbKey : (typeof VK_PLAY !== 'undefined')  		? VK_PLAY	: __VK_PLAY 		}, 
+	{ func : mVid.cmndPause, 		key : 'S', hbbKey : (typeof VK_PAUSE !== 'undefined')  		? VK_PAUSE	: __VK_PAUSE 		}, 
+	{ func : mVid.cmndInfo,			key : 'I', hbbKey : (typeof VK_INFO !== 'undefined')  		? VK_INFO	: __VK_INFO 		}, 
+	{ func : mVid.cmndInfo,			key : 'I', hbbKey : (typeof VK_GREEN !== 'undefined')  		? VK_GREEN	: __VK_GREEN 		}, 
+	{ func : mVid.cmndReload, 		key : 'L', hbbKey : (typeof VK_RED !== 'undefined')  		? VK_RED	: __VK_RED 			}, 
+	{ func : mVid.cmndDebug, 		key : 'D', hbbKey : (typeof VK_BLUE !== 'undefined')  		? VK_BLUE	: __VK_BLUE			}, 
+	{ func : mVid.cmnd1, 			key : '1', hbbKey : (typeof VK_1 !== 'undefined')  			? VK_1		: __VK_1			}, 
+	{ func : mVid.cmnd2, 			key : '2', hbbKey : (typeof VK_2 !== 'undefined')  			? VK_2		: __VK_2			}, 
+	{ func : mVid.cmnd3, 			key : '3', hbbKey : (typeof VK_3 !== 'undefined')  			? VK_3		: __VK_3			}, 
+	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : (typeof VK_RIGHT !== 'undefined')  		? VK_RIGHT	: __VK_RIGHT		}, 
+	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : (typeof VK_LEFT !== 'undefined')  		? VK_LEFT	: __VK_LEFT			}, 
+];
+
+mVid.getTransitionTime = function () {
+	var i = parseInt(content.list[content.currentPlayingIdx].transitionTime);
+	
+	return (i != -1) ? i : Number.MAX_SAFE_INTEGER;
+}

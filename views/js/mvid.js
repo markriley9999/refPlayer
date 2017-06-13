@@ -641,7 +641,9 @@ mVid.getPlayingContentIdx = function () {
 }
 
 mVid.getTransitionTime = function () {
-	return parseInt(content.list[content.currentPlayingIdx].transitionTime);
+	var i = parseInt(content.list[content.currentPlayingIdx].transitionTime);
+	
+	return (i != -1) ? i : Number.MAX_SAFE_INTEGER;
 }
 
 mVid.setContentSourceAndLoad = function () {

@@ -2,6 +2,6 @@
 	"ads" : [],
 	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "9000",
+	"transitionTime" : "-1",
 	"channelName" : "Ch 9 - Testcard"
 }
