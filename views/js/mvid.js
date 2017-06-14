@@ -34,32 +34,6 @@ content.currentBufferingIdx = 0;
 content.currentPlayingIdx 	= 0;
 content.list = [];
 
-// Key mapping table
-var keyTable = {};
-
-const __VK_LEFT		= 37;
-const __VK_RIGHT	= 39;
-const __VK_0 		= 48;
-const __VK_1 		= 49;
-const __VK_2 		= 50;
-const __VK_3 		= 51;
-const __VK_4 		= 52;
-const __VK_5 		= 53;
-const __VK_6 		= 54;
-const __VK_7 		= 55;
-const __VK_8 		= 56;
-const __VK_9 		= 57;
-const __VK_FAST_FWD = 417;
-const __VK_REWIND 	= 412;
-const __VK_PLAY 	= 415;
-const __VK_PAUSE 	= 19;
-const __VK_INFO 	= 457;
-const __VK_RED 		= 403;
-const __VK_GREEN	= 404;
-const __VK_YELLOW	= 405;
-const __VK_BLUE		= 406;
-
-
 // Play states
 const PLAYSTATE_STOP	= 0;
 const PLAYSTATE_PLAY	= 1;
@@ -1279,26 +1253,61 @@ mVid.cmndJumpToEnd = function () {
 	}
 }
 
+// Key mapping table
+var keyTable = {};
+
+lVKTable = {};
+
+lVKTable['VK_LEFT']			= 37;
+lVKTable['VK_RIGHT']		= 39;
+lVKTable['VK_0'] 			= 48;
+lVKTable['VK_1'] 			= 49;
+lVKTable['VK_2'] 			= 50;
+lVKTable['VK_3'] 			= 51;
+lVKTable['VK_4'] 			= 52;
+lVKTable['VK_5'] 			= 53;
+lVKTable['VK_6'] 			= 54;
+lVKTable['VK_7'] 			= 55;
+lVKTable['VK_8'] 			= 56;
+lVKTable['VK_9'] 			= 57;
+lVKTable['VK_FAST_FWD'] 	= 417;
+lVKTable['VK_REWIND'] 		= 412;
+lVKTable['VK_PLAY'] 		= 415;
+lVKTable['VK_PAUSE'] 		= 19;
+lVKTable['VK_INFO'] 		= 457;
+lVKTable['VK_RED'] 			= 403;
+lVKTable['VK_GREEN']		= 404;
+lVKTable['VK_YELLOW']		= 405;
+lVKTable['VK_BLUE']			= 406;
+
+getVK = function (vk) {
+	if ((typeof window.KeyEvent !== 'undefined') && (typeof window.KeyEvent[vk] !== 'undefined')) {
+		return window.KeyEvent[vk]; 
+	} else {
+		return lVKTable[vk];
+	}
+} 
+
 keyTable.entries = [
-	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : __VK_FAST_FWD 	}, 
-	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : __VK_REWIND 	}, 
-	{ func : mVid.cmndPlay,			key : 'P', hbbKey : __VK_PLAY 		}, 
-	{ func : mVid.cmndPause, 		key : 'S', hbbKey : __VK_PAUSE 		}, 
-	{ func : mVid.cmndReload, 		key : 'L', hbbKey : __VK_RED 		}, 
-	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : __VK_RIGHT		}, 
-	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : __VK_LEFT		}, 
-	{ func : mVid.cmndLog, 			key : 'D', hbbKey : __VK_BLUE		}, 
-	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : __VK_YELLOW		}, 
+	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : getVK('VK_FAST_FWD') 	}, 
+	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : getVK('VK_REWIND') 		}, 
+	{ func : mVid.cmndPlay,			key : 'P', hbbKey : getVK('VK_PLAY') 		}, 
+	{ func : mVid.cmndPause, 		key : 'S', hbbKey : getVK('VK_PAUSE') 		}, 
+	{ func : mVid.cmndReload, 		key : 'L', hbbKey : getVK('VK_RED') 		}, 
+	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : getVK('VK_RIGHT')		}, 
+	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : getVK('VK_LEFT')		}, 
+	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_BLUE')		}, 
+	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_YELLOW')		}, 
 	
-	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : __VK_1	}, 
-	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : __VK_2	}, 
-	{ func : function() {this.setChannel(3)},	key : '3',	hbbKey : __VK_3	}, 
-	{ func : function() {this.setChannel(4)},	key : '4',	hbbKey : __VK_4	}, 
-	{ func : function() {this.setChannel(5)},	key : '5',	hbbKey : __VK_5	}, 
-	{ func : function() {this.setChannel(6)},	key : '6',	hbbKey : __VK_6	}, 
-	{ func : function() {this.setChannel(7)},	key : '7',	hbbKey : __VK_7	}, 
-	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : __VK_8	}, 
-	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : __VK_9	}, 
+	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : getVK('VK_1')	}, 
+	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : getVK('VK_2')	}, 
+	{ func : function() {this.setChannel(3)},	key : '3',	hbbKey : getVK('VK_3')	}, 
+	{ func : function() {this.setChannel(4)},	key : '4',	hbbKey : getVK('VK_4')	}, 
+	{ func : function() {this.setChannel(5)},	key : '5',	hbbKey : getVK('VK_5')	}, 
+	{ func : function() {this.setChannel(6)},	key : '6',	hbbKey : getVK('VK_6')	}, 
+	{ func : function() {this.setChannel(7)},	key : '7',	hbbKey : getVK('VK_7')	}, 
+	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : getVK('VK_8')	}, 
+	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	}, 
 ];
 		
 // Utility functions
