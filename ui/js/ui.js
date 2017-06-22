@@ -76,9 +76,7 @@ playerUI.setPlayingState = function (state) {
 playerUI.Log = {};
 
 playerUI.Log.init = function (logDiv) {
-	this._logCount 		= 0;
-	this.maxLogEntries 	= 26;
-
+	this._logCount = 0;
 	this._div = logDiv;
 };
 
@@ -87,27 +85,13 @@ playerUI.Log._write = function(message, cssClass) {
 	
 	logText = this._logCount + ":" + message;
 
-	logText = logText.substring(0, 110);
-	
-	if (this._logCount < this.maxLogEntries) {
-		log = document.createElement("p");
-		log.setAttribute("id", "log_" + this._logCount);
-		log.setAttribute("class", cssClass);
+	log = document.createElement("p");
+	log.setAttribute("id", "log_" + this._logCount);
+	log.setAttribute("class", cssClass);
 
-		log.innerHTML = logText;
-		this._div.appendChild(log);
-	} else {
-		for (var i = 0; i < (this.maxLogEntries-1); i++) {
-			log 	= document.getElementById("log_" + i);
-			nextLog = document.getElementById("log_" + (i + 1));
-			log.innerHTML = nextLog.innerHTML;
-			log.setAttribute("class", nextLog.getAttribute("class"));
-		}
-		log = document.getElementById("log_" + (this.maxLogEntries - 1));
-		log.innerHTML = logText;
-		log.setAttribute("class", cssClass);
-	}
-	
+	log.innerHTML = logText;
+	this._div.appendChild(log);
+
 	this._logCount++;
 };
 

@@ -49,7 +49,7 @@ function WINDOW(uiurl, w, h) {
 		var that = this;
 		
 		if (!this.winObj) {
-			this.winObj = new browserWindow({width: this.width, height: this.height}); 
+			this.winObj = new browserWindow({width: this.width, height: this.height, icon: 'bitmaps/tv-512.png'}); 
 		 
 			this.winObj.loadURL(url.format({ 
 				pathname: path.join(__dirname, this.uiurl),
@@ -94,7 +94,7 @@ function initWindows() {
 	win['ad0']			= new WINDOW('ui/graphAdVid0.html', 	1400, 	800);
 	win['ad1']			= new WINDOW('ui/graphAdVid1.html', 	1400, 	800);
 	win['adTrans']		= new WINDOW('ui/adtransgraph.html',	800, 	800);
-	createWindows();
+	win['log'].createWindow();
 }
  
 electronApp.on('ready', initWindows); // when the application is ready create the win['log']
@@ -184,7 +184,7 @@ expressServer.get('/', function(req, res) {
 	
 	if (!currentDeviceUA || currentDeviceUA === UA) {
 		currentDeviceUA = UA;
-		createWindows();
+		//createWindows();
 		
 		win['log'].reload();
 		win['allVidObs'].reload();

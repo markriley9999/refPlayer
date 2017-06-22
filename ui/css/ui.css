@@ -1,71 +1,102 @@
-* {
-    padding: 0;
-    margin: 0;
-}
-
 body
 {
-	/* we explicitly set the size of the body element. This avoids that browser show scroll bars or that pages are floating if they are
-	bigger than the logical screen size */
-	width: 1280px;
-	height: 720px;
+	font-family: "Verdana";
+	background-color: #00000f;
 	overflow: hidden;
-	background-color: white;
 }
 
-a
-{
-	/* According to the OIPF DAE specification this shall prevent that a browser draws there default highlighting */
-	outline-style: none;
-	text-decoration: none;
+.titlebar {
+	position: absolute;
+	width: 100%;
+	height: 64px;
+	top: 0px;
+}
+
+.titlelogo {
+	position: absolute;
+	top: 10px;
+}
+
+.titletext {
+	color: white;
+	font-size: 24px;
+	position: absolute;
+	top: 0px;
+	left: 64px;
+}
+
+.titleitems {
+	position: absolute;
+	left: 200px;
+	top: -10px;
+}
+
+.titleitem {
+	/*width: 100px; */
+    list-style-type: none;
+	color: white;
+	font-family: "Verdana";
+	font-size: 16px;
+	/* background-color: #d65900; */
+	/* background-color: #1e1e1d; */
+	text-align: center;
+	float: left;
+	display: block;
+	padding: 8px;
+	padding-right: 24px;
+}
+
+#mainarea {
+	position: absolute;
+	background: white;
+	width: 98%;
+	height: 98%;
+	top: 72px;
+	padding: 8px;
 }
 
 .status-table-container {
-	width: 300px;
-	height: 720px;
-	top: 0;
-	left: 850px;
-	background-color: white;
-	color: black;
 	position: absolute;
+	color: black;
+	padding: 4px;
 }
 
 .status-table-container table {
-	width: inherit;
+	/*width: inherit;
 	border: none;
-	margin: 1ex auto auto;
+	margin: 1ex auto auto;*/
 }
 
 .status-table-container caption {
 	background-color: blue;
 	color: white;
+	height: 48px;
+	text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+	width: 180px;
 }
 
-#status-table-body0 td {
+.status-table-body td {
 	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body1 td {
-	text-align: left;
-	width: 6ex;
-}
-
-#status-table-body2 td {
-	text-align: left;
-	width: 6ex;
-}
-
-p {
-	color: white;
+	font-size: 12px;
+	padding: 4px;
+	width: 100px;
 }
 
 .log {
-	height: 200px;
-	width: 800px;
-	left: 10px;
-	top: 50px;
+	width: 700px;
+	top: 8px;
 	position: absolute;
+	left: 280px;
+	height: 480px;
+}
+
+#log {
+	border-color: #bababa;
+	border-style: solid;
+	height: 480px;
+	overflow: auto;
 }
 
 .log p{
@@ -90,18 +121,33 @@ p {
 	color: red;
 }
 
-.progress-bar-container {
+.buffercontainer {
+	padding: 8px;
+}
+
+#progress-bar-container {
 	width: 500px;
 	height: 50px;
-	top: 380px;
-	left: 850px;
-	background-color: white;
-	color: black;
+	top: 8px;
+	left: 1000px;
 	position: absolute;
 }
 
-.progress-bar-container p {
-	color: black;
+.buffertitle {
+	color: white;
+	background-color: orange;
+	height: 48px;
+	text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+	width: 300px;
+}
+
+.buffertext {
+	text-align: left;
+	font-size: 14px;
+	color: blue;
+	height: 10px;
 }
 
 progress {
@@ -117,7 +163,17 @@ progress {
 	background-size: auto;
    
 	width: 300px;
-    border-radius: 1px;
+	height: 24px;
+	
+    border-radius: 1px;	
+}
+
+#playbackcontainer {
+	position: absolute;
+	top: 560px;
+	left: 280px;
+	width: 700px;
+	background-color: green;
 }
 
 .bufferBar {
@@ -134,7 +190,7 @@ progress {
 
 .playbackBar {
 	color: red;
-	width: 800px;
+	width: 700px;
 }
 
 progress::-webkit-progress-value {
@@ -167,34 +223,4 @@ progress::-moz-progress-bar {
 
 .bufferBarConsumed::-moz-progress-bar {
 	background-color: grey;
-}
-
-.videoGFXOverlay {
-	width: 800px;
-	height: 480px;
-	top: 0;
-	left: 0;
-	position: absolute;
-	background-color: transparent;
-	color: green;
-}
-
-.videoControls {
-	width: 800px;
-	height: 64px;
-	top: 480px;
-	position: absolute;
-	background-color: transparent;
-	margin: auto;
-	display: block;
-}
-
-.playerIcon {
-	width: 32px;
-	height: 32px;
-	background-color: transparent;
-	position: absolute;
-	left: 0px;
-	top: 15px;
-	display: none;
 }

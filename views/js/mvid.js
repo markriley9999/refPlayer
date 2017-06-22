@@ -756,7 +756,7 @@ mVid.ShowPlayrange = function () {
 
 	var x1, x2;
 	
-	if (!p || !mVid.isMainFeaturePlayer(p)) {
+	if (!p || !this.isMainFeaturePlayer(p)) {
 		x1 = c.left;
 		x2 = c.right;			
 	} else {
@@ -772,7 +772,6 @@ mVid.ShowPlayrange = function () {
 	e("ad-resume-point").style.left = (x2 - offset) + "px";			
 }
 
-// TODO: Don't use mVid in main code 
 function onVideoEvent (v) {
 	return function (event) {
 		var bufferingPlayer = v.getCurrentBufferingPlayer();
