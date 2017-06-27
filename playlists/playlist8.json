@@ -3,5 +3,5 @@
 	"src" 	: "content/mperiods/testcard-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Ch 8 - Multiple Periods (10): Testcard (60s)"
+	"channelName" : "Multiple Periods (10): Testcard (60s)"
 }

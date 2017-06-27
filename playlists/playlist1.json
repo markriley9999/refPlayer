@@ -16,5 +16,5 @@
 	"src" 	: "content/bigbuckbunny/client_manifest-common_init.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "240",
-	"channelName" : "Ch 1 - Ads: 3 ITV Ads, Main: Big Buck Bunny"
+	"channelName" : "Ads: 3 ITV Ads, Main: Big Buck Bunny"
 }

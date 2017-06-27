@@ -192,7 +192,7 @@ mVid.start = function () {
 		}
 	}
 	
-	this.ShowPlayrange();
+	this.showPlayrange();
 	
 	getCookie = function (cname) {
 		var name = cname + "=";
@@ -211,10 +211,10 @@ mVid.start = function () {
 
 	var currentChannel = getCookie("channel");
 
-	getPlaylist(currentChannel || "1", function(playlistObj) {		
+	getPlaylist(currentChannel || "1", function(ch, playlistObj) {		
 		var mainVideo;
 
-		that.procPlaylist(playlistObj);
+		that.procPlaylist(ch, playlistObj);
 
 		mainVideo = e("mVid-mainContent");
 		
@@ -268,7 +268,7 @@ mVid.start = function () {
 	});
 };
 
-mVid.procPlaylist = function (playlistObj) {
+mVid.procPlaylist = function (ch, playlistObj) {
 	var c = content.list;
 	
 	this.Log.info("- New playlist: " + JSON.stringify(playlistObj));
@@ -305,7 +305,7 @@ mVid.procPlaylist = function (playlistObj) {
 		this.Log.info(" - ");			
 	}
 	
-	e("currentChannel") && (e("currentChannel").innerHTML = playlistObj.channelName);
+	e("currentChannel") && (e("currentChannel").innerHTML = "Ch " + ch + " - " + playlistObj.channelName);
 }
 
 mVid.reload = function () {
@@ -748,7 +748,7 @@ mVid.getBufferedAmount = function (player) {
 	return bufferEnd;
 }
 
-mVid.ShowPlayrange = function () {
+mVid.showPlayrange = function () {
 	var p = this.getCurrentPlayingPlayer();
 	
 	var c = e("playbackBar").getBoundingClientRect();
@@ -895,7 +895,7 @@ function onVideoEvent (v) {
 				v.updateBufferBar(this.id, "");
 
 				v.setPlayingState(PLAYSTATE_PLAY);
-				v.ShowPlayrange();
+				v.showPlayrange();
 				
 				// Sanity check
 				if (this != playingPlayer) {
@@ -1247,7 +1247,7 @@ mVid.cmndJumpToEnd = function () {
 		playingPlayer.currentTime = t;
 		if (this.isMainFeaturePlayer(playingPlayer)) {
 			playingPlayer.resumeFrom = t;
-			this.ShowPlayrange();
+			this.showPlayrange();
 		}
 	}
 }

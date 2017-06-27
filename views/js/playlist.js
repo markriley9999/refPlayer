@@ -17,7 +17,7 @@ function getPlaylist(idx, playlistReadyCallback) {
 		try {
 			var playlistObj = JSON.parse(json);
 			//log(JSON.stringify(playlistObj));
-			playlistReadyCallback && playlistReadyCallback(playlistObj);
+			playlistReadyCallback && playlistReadyCallback(idx, playlistObj);
 		} catch(e) {
 			logErr(e);			
 		}

@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/bbbandele-mperiod.mpd",
+	"src" 	: "content/mperiods/bbbitvck-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Ch 9 - Multiple Periods (2): BBB and Elephants Dream"
+	"channelName" : "Multiple Periods (4): BBB (1M) and ITV Clear Key (2M)"
 }

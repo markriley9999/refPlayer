@@ -7,6 +7,6 @@
 	],
 	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "10",
-	"channelName" : "Ch 5 - Ads: 1 Ch4 Ad, Main: Testcard (10s)"
+	"transitionTime" : "60",
+	"channelName" : "Ads: 1 Ch4 Ad, Main: Testcard (60s)"
 }
