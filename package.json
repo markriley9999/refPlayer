@@ -12,6 +12,7 @@
     "electron": "^1.4.1",
     "express": "^4.14.1",
     "hbs": "^4.0.1",
+    "ip": "^1.1.5",
     "socket.io": "^1.7.2",
     "stream-throttle": "^0.1.3"
   }

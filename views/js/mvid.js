@@ -1227,7 +1227,7 @@ mVid.cmndSeekBACK = function () {
 
 mVid.cmndLog = function () {
 	var xhttp = new XMLHttpRequest();
-	var fileName = extractDevName(navigator.userAgent) + "_debug_" + Date.now() + ".log";
+	var fileName = utils.extractDevName(navigator.userAgent) + "_debug_" + Date.now() + ".log";
 
 	this.Log.info("Save file : " + fileName); 
 	
@@ -1309,8 +1309,3 @@ keyTable.entries = [
 	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	}, 
 ];
 		
-// Utility functions
-function extractDevName(sUA) {
-	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
-	return arr[1] + arr[2];
-}

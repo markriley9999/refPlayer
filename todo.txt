@@ -1,8 +1,7 @@
-- open graph windows bar
-- reaarange main screen
-	- status
-	- buffer bars
-	- log 
+- ip address wrong
+- show ip at start up!
+
+- tidy up graph screens
 - add config screen
 	- bandwidth throttle
 	- lost packets
@@ -12,6 +11,10 @@
 	- ait url
 - hilte fwd and rewind keys
 - electron menu
+- sizing
+- window closing
+- electron icon (BrowserWindow({icon:'path/to/image.png'});)
+
 
 - set eol, tabs to spaces
 - run with no ui
@@ -20,26 +23,19 @@
 
 - sort out keycodes (see below)
 
+- use utils lib
+
 https://github.com/markriley9999/refPlayer.git
 
 
 - handle no ads - no ad breaks
 
-- pause causes buffer icon
-
-- show ip
-- connected status
-
-- set errors, throttle
-
-- tidy ui
 
 - pass lic paramter - content id
 
 - tidy up logging ui
 
 - control from browser
-- window control
 - ait
 
 - port 80
@@ -50,7 +46,6 @@ https://github.com/markriley9999/refPlayer.git
 	- STV
 	- ITV
 
-- electron icon (BrowserWindow({icon:'path/to/image.png'});)
 	
 	
 Windows:

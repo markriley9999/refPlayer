@@ -14,13 +14,15 @@ const fs = require('fs');
  
 const Throttle = require('stream-throttle').Throttle;
 
+const ip = require("ip");
+
 var win = {};
 win['log'] 			= null;
-win['allVidObs'] 	= null;
-win['mainContent'] 	= null;
-win['ad0'] 			= null;
-win['ad1']			= null;
-win['adTrans']		= null;
+win['allvideoobjs'] 	= null;
+win['mainvideoobj'] 	= null;
+win['ad0videoobj'] 			= null;
+win['ad1videoobj']			= null;
+win['adtrans']		= null;
 
 
 var expressServer = express(); // Active express object
@@ -28,15 +30,17 @@ var expressServer = express(); // Active express object
 var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
 var io = require('socket.io')(server);          // create the sockets io server
  
-var connectedDevices = 0;
-var currentDeviceUA = "";
-
-ipc.on('player-control', function(event, message) { // listens for the player-control message from the update.js file
-    if (message === 'play') {
-        io.sockets.emit('play');        // send a play message to all clients
-    } else if (message === 'pause') {
-        io.sockets.emit('pause');       // send a pause message to all clients
-    }
+ var connectedStatus = {
+	connectedDevices	: 0,
+	currentDeviceUA 	: "",
+	serverIP 			: "",
+	devName 			: ""
+ };
+ 
+ipc.on('ipc-openwindow', function(event, w) { // listens for the player-control message from the update.js file
+	if (win[w]) {
+			win[w].createWindow(); 		
+	}
 })
 
 function WINDOW(uiurl, w, h) {
@@ -80,46 +84,51 @@ function WINDOW(uiurl, w, h) {
 
 function createWindows() {
 	win['log'].createWindow();
-	win['allVidObs'].createWindow();
-	win['mainContent'].createWindow();
-	win['ad0'].createWindow();
-	win['ad1'].createWindow();
-	win['adTrans'].createWindow();
+	win['allvideoobjs'].createWindow();
+	win['mainvideoobj'].createWindow();
+	win['ad0videoobj'].createWindow();
+	win['ad1videoobj'].createWindow();
+	win['adtrans'].createWindow();
 }
 
-function initWindows() {
+function init() {
 	win['log'] 			= new WINDOW('ui/ui.html',				1200,	640);
-	win['allVidObs'] 	= new WINDOW('ui/graph.html',			1400,	700);
-	win['mainContent'] 	= new WINDOW('ui/singlegraph.html', 	1400, 	800);
-	win['ad0']			= new WINDOW('ui/graphAdVid0.html', 	1400, 	800);
-	win['ad1']			= new WINDOW('ui/graphAdVid1.html', 	1400, 	800);
-	win['adTrans']		= new WINDOW('ui/adtransgraph.html',	800, 	800);
+	win['allvideoobjs'] = new WINDOW('ui/graph.html',			1400,	700);
+	win['mainvideoobj'] = new WINDOW('ui/singlegraph.html',		1400, 	800);
+	win['ad0videoobj']	= new WINDOW('ui/graphAdVid0.html', 	1400, 	800);
+	win['ad1videoobj']	= new WINDOW('ui/graphAdVid1.html', 	1400, 	800);
+	win['adtrans']		= new WINDOW('ui/adtransgraph.html',	800, 	800);
+
 	win['log'].createWindow();
+	
+	connectedStatus.serverIP = ip.address() + ":" + server.address().port;
+	sendConnectionStatus();
 }
  
-electronApp.on('ready', initWindows); // when the application is ready create the win['log']
+electronApp.on('ready', init); 
  
 electronApp.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
     if (process.platform !== 'darwin')
         electronApp.quit();
 });
  
-expressServer.on('activate', function() { // the application is focused create the win['log']
-    //if (win['log'] === null && win['allVidObs'] === null && win['mainContent'] === null)
-        // createWindows();
+expressServer.on('activate', function() {
 });
  
 io.sockets.on('connection', function(socket) { // listen for a device connection to the server
-	connectedDevices++;
+	connectedStatus.connectedDevices++;
 
-    console.log(" ---> Device connected: " + connectedDevices);
+    console.log(" ---> Device connected: " + connectedStatus.connectedDevices);
+	connectedStatus.devName = extractDevName(connectedStatus.currentDeviceUA);
+	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
 		win['log'].sendToWindow('ipc-buffer', data);
-		win['allVidObs'].sendToWindow('ipc-buffer', data);
-		win['mainContent'].sendToWindow('ipc-buffer', data);
-		win['ad0'].sendToWindow('ipc-buffer', data);
-		win['ad1'].sendToWindow('ipc-buffer', data);
+		win['allvideoobjs'].sendToWindow('ipc-buffer', data);
+		win['mainvideoobj'].sendToWindow('ipc-buffer', data);
+		win['ad0videoobj'].sendToWindow('ipc-buffer', data);
+		win['ad1videoobj'].sendToWindow('ipc-buffer', data);
+		
 		//console.log(data);
 	});
 	
@@ -129,12 +138,16 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	});
 	
 	socket.on('disconnect', function () {
-		currentDeviceUA = "";
-		if (connectedDevices > 0) {
-			connectedDevices--;
+		if (connectedStatus.connectedDevices > 0) {
+			connectedStatus.connectedDevices--;
 		}
 		
-		console.log(" ---> Device disconnected: " + connectedDevices);
+		connectedStatus.currentDeviceUA = "";
+		connectedStatus.devName = "";
+
+		sendConnectionStatus();
+
+	console.log(" ---> Device disconnected: " + connectedStatus.connectedDevices);
 	});
 });
 
@@ -144,6 +157,7 @@ expressServer.use(bodyParser.text({type: 'text/plain'}));
 expressServer.use(bodyParser.json());
 
 //expressServer.use(express.static('views'));
+expressServer.use('/common', express.static('common'));
 expressServer.use('/css', express.static('views/css'));
 expressServer.use('/bitmaps', express.static('views/bitmaps'));
 expressServer.use('/js', express.static('views/js'));
@@ -174,7 +188,7 @@ expressServer.post('/status', function(req, res) {
 });
 
 expressServer.post('/adtrans', function(req, res) {
-	win['adTrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
+	win['adtrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -182,16 +196,18 @@ expressServer.post('/adtrans', function(req, res) {
 expressServer.get('/', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!currentDeviceUA || currentDeviceUA === UA) {
-		currentDeviceUA = UA;
+	if (!connectedStatus.currentDeviceUA || connectedStatus.currentDeviceUA === UA) {
+		connectedStatus.currentDeviceUA = UA;
+		connectedStatus.devName = extractDevName(connectedStatus.currentDeviceUA);
+		
 		//createWindows();
 		
 		win['log'].reload();
-		win['allVidObs'].reload();
-		win['mainContent'].reload();
-		win['ad0'].reload();
-		win['ad1'].reload();
-		win['adTrans'].reload();
+		win['allvideoobjs'].reload();
+		win['mainvideoobj'].reload();
+		win['ad0videoobj'].reload();
+		win['ad1videoobj'].reload();
+		win['adtrans'].reload();
 		
 		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
 			res.status(200);
@@ -199,6 +215,7 @@ expressServer.get('/', function(req, res) {
 			//console.log("UserAgent: " + req.headers['user-agent']);
 			//console.log(JSON.stringify(req.headers));
 		});
+		
 	} else {
 			res.status(503);
 			res.send("Sorry, another device is already attached.  Please disconnect it and try again.");	
@@ -324,6 +341,23 @@ expressServer.post('/getkeys', function(req, res) {
 	res.status(200);
 	res.send(clearKeyLicense);
 });
+
+function sendConnectionStatus() {
+	var obj = { 
+					'serverIP'		: connectedStatus.serverIP, 
+					'bConnected'	: (connectedStatus.connectedDevices > 0),
+					'devName'		: connectedStatus.devName
+				};
+				 
+	win['log'].sendToWindow('ipc-connected', obj); 
+} 
+
  
 server.listen(3000); // Socket.io port (hides express inside)
 
+
+// Put in a util module!!!!! 
+extractDevName = function (sUA) {
+	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
+	return arr[1] + arr[2];
+}

@@ -34,16 +34,29 @@ window.onload = function () {
 
 playerUI.start = function () {
 	var that 		= this;
+	var li;
 	
 	this.Log.init(e("log"));
 
 	this.statusTables.forEach(function(statTable) {
 		that.setupStatusTable(statTable);
 	});
+	
+	li = document.getElementsByClassName("titleitem");
+	for (var i = 0;  i < li.length; i++) {
+		console.log(li[i].id);
+		li[i].onclick = playerUI.onClickMenu(li[i].id);
+	}
 };
 
+playerUI.onClickMenu = function (id) {
+	return function () {
+		 ipc.send("ipc-openwindow", id);
+	}
+}
+
 playerUI.setupStatusTable = function (tableInfo) {
-	var tableBody = document.getElementById(tableInfo.tableElId);
+	var tableBody = e(tableInfo.tableElId);
 	
 	for (var i in tableInfo.entries) {
 		var row = document.createElement("tr");
@@ -62,7 +75,7 @@ playerUI.setupStatusTable = function (tableInfo) {
 
 playerUI.setPlayingState = function (state) {
 	for (var s in this.playIconTable) {
-		var playEl = document.getElementById(this.playIconTable[s].icon);
+		var playEl = e(this.playIconTable[s].icon);
 		if (playEl) {
 			if (this.playIconTable[s].state === state) {
 				playEl.style.display = "block";
@@ -116,7 +129,7 @@ ipc.on('ipc-buffer', function(event, message) {
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
 	} catch(err) {
-		//console.log("ipc-buffer: message parse error. " + err.message);
+		console.log("ipc-buffer: message parse error. " + err.message);
 		return;
 	}
 	
@@ -143,6 +156,20 @@ ipc.on('ipc-playbackOffset', function(event, message) {
 
 		playerBar.max = msgObj.max;
 		playerBar.value = msgObj.value;
+	} catch(err) {
+		console.log("ipc-playbackOffset: message parse error. " + err.message);	
+	}
+});
+
+ipc.on('ipc-connected', function(event, message) {
+	try {
+		//var msgObj = JSON.parse(message.toString('utf8')); 
+
+		console.log("connected: " + message);
+		e("connected").setAttribute("class", message.bConnected ? "connected" : "");
+		e("connected").innerHTML = message.bConnected ? "Connected" : "Not Connected";
+		e("serverip").innerHTML = "Server Address: " + message.serverIP;
+		e("devname").innerHTML = "Device Name: " + message.devName;
 	} catch(err) {
 		console.log("ipc-playbackOffset: message parse error. " + err.message);	
 	}
