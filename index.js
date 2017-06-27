@@ -43,27 +43,53 @@ ipc.on('ipc-openwindow', function(event, w) { // listens for the player-control 
 	}
 })
 
-function WINDOW(uiurl, w, h) {
+function WINDOW(p, uiurl, w, h, r, c) {
 	this.uiurl 	= uiurl;
 	this.width 	= w;
 	this.height	= h;
 	this.winObj = null;
+	this.onFocus = r;
+	this.onClosed = c;
 	
 	this.createWindow = function () {
 		var that = this;
 		
 		if (!this.winObj) {
-			this.winObj = new browserWindow({width: this.width, height: this.height, icon: 'bitmaps/tv-512.png'}); 
+			this.winObj = new browserWindow({
+					parent: p,
+					width: this.width, 
+					height: this.height, 
+					icon: 'bitmaps/tv-512.png'
+				}); 
 		 
+			this.winObj.on('focus', function() {
+				if (that.onFocus) {
+					that.onFocus(that.winObj);
+				}
+			});
+			
+			this.winObj.on('closed', function() { // reset the window object when it is closed
+				if (that.onClosed) {
+					that.onClosed(that.winObj);
+				}
+				that.winObj = null;
+			});
+
 			this.winObj.loadURL(url.format({ 
 				pathname: path.join(__dirname, this.uiurl),
 				protocol: 'file:',
 				slashes: true
-			}));
-		 
-			this.winObj.on('closed', function() { // reset the window object when it is closed
-				that.winObj = null;
-			});
+			}));	
+		}
+	}
+	
+	this.getWin = function() {
+		return this.winObj;
+	}
+	
+	this.closeWin = function() {
+		if (this.winObj) {
+			this.winObj.close();
 		}
 	}
 	
@@ -91,13 +117,30 @@ function createWindows() {
 	win['adtrans'].createWindow();
 }
 
+function updateUI() {
+	sendConnectionStatus("");
+}
+
+function mainUIClosed() {
+	win['allvideoobjs'].closeWin();
+	win['mainvideoobj'].closeWin();
+	win['ad0videoobj'].closeWin();
+	win['ad1videoobj'].closeWin();
+	win['adtrans'].closeWin();
+}
+
 function init() {
-	win['log'] 			= new WINDOW('ui/ui.html',				1200,	640);
-	win['allvideoobjs'] = new WINDOW('ui/graph.html',			1400,	700);
-	win['mainvideoobj'] = new WINDOW('ui/singlegraph.html',		1400, 	800);
-	win['ad0videoobj']	= new WINDOW('ui/graphAdVid0.html', 	1400, 	800);
-	win['ad1videoobj']	= new WINDOW('ui/graphAdVid1.html', 	1400, 	800);
-	win['adtrans']		= new WINDOW('ui/adtransgraph.html',	800, 	800);
+	var p;
+	
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	updateUI,	mainUIClosed);
+	
+	p = win['log'].getWin();
+	
+	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1400,	700,	null,			null);
+	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1400, 	800,	null,			null);
+	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null,			null);
+	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null,			null);
+	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null,			null);
 
 	win['log'].createWindow();
 	

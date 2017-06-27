@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<MPD type="static" xmlns="urn:mpeg:dash:schema:mpd:2011" profiles="urn:mpeg:dash:profile:isoff-live:2011" minBufferTime="PT0.451S" mediaPresentationDuration="PT9M32.520S">
+<MPD type="static" xmlns="urn:mpeg:dash:schema:mpd:2011" profiles="urn:mpeg:dash:profile:isoff-live:2011" minBufferTime="PT0.451S" mediaPresentationDuration="PT20M4.48S">
 
 	<ProgramInformation>
 		<Title>Multi-period test content: BBB and Elephants...</Title>
@@ -8,7 +8,7 @@
 
 	<Period duration="PT9M32.520S" start="PT0S">
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
-			<BaseURL>bbb-avc3/</BaseURL>
+			<BaseURL>../bigbuckbunny/avc3/</BaseURL>
 			<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
 			<Representation id="1920x1080p25" codecs="avc3.640028" height="1080" width="1920" bandwidth="4741120" />
 			<Representation id="896x504p25" codecs="avc3.64001f" height="504" width="896" bandwidth="1416688" />
@@ -18,7 +18,7 @@
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<BaseURL>bbb-audio/</BaseURL>
+			<BaseURL>../bigbuckbunny/audio/</BaseURL>
 			<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="160kbps/IS.mp4" />
 			<Representation id="160kbps" bandwidth="160000" />
 			<Representation id="96kbps" bandwidth="96000" />
@@ -26,10 +26,10 @@
 		</AdaptationSet>
 	</Period>
 
-	<Period duration="PT10M31.960S" start="PT0S">
+	<Period duration="PT10M31.960S" start="PT9M33S">
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
-			<BaseURL>ele-avc3/</BaseURL>
+			<BaseURL>../elephantsdream/avc3/</BaseURL>
 			<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="1920x1080p25" codecs="avc3.640028" height="1080" width="1920" scanType="interlaced" bandwidth="13178360" />
 			<Representation id="896x504p25" codecs="avc3.64001f" height="504" width="896" scanType="progressive" bandwidth="3693344" />
@@ -40,14 +40,14 @@
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" contentType="audio" mimeType="audio/mp4">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
-			<BaseURL>ele-audio/</BaseURL>
+			<BaseURL>../elephantsdream/audio/</BaseURL>
 			<SegmentTemplate startNumber="1" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="128kbps" bandwidth="128000"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
-			<BaseURL>ele-subs/</BaseURL>
+			<BaseURL>../elephantsdream/subs/</BaseURL>
 			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="english-hh" bandwidth="1100"/>
 		</AdaptationSet>

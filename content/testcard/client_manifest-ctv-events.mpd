@@ -17,12 +17,9 @@
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>avc3-events/</BaseURL>
 			<SegmentTemplate startNumber="1" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
-			<Representation id="960x540p50" codecs="avc3.64001f" height="540" width="960" frameRate="50" scanType="progressive" bandwidth="2814440"/>
 			<Representation id="704x396p50" codecs="avc3.64001f" height="396" width="704" frameRate="50" scanType="progressive" bandwidth="1572456"/>
-			<Representation id="1920x1080i25" codecs="avc3.640028" height="1080" width="1920" frameRate="25" scanType="interlaced" bandwidth="8060152"/>
 			<Representation id="512x288p25" codecs="avc3.4d4015" height="288" width="512" frameRate="25" scanType="progressive" bandwidth="440664"/>
 			<Representation id="384x216p25" codecs="avc3.42c015" height="216" width="384" frameRate="25" scanType="progressive" bandwidth="283320"/>
-			<Representation id="1280x720p50" codecs="avc3.640020" height="720" width="1280" frameRate="50" scanType="progressive" bandwidth="5072376"/>
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >

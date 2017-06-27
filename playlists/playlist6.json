@@ -1,20 +1,7 @@
 {
-	"ads" : [
-		{	
-			"src" 	: "content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],
-	"src" 	: "content/sintel/sintel.mpd",
+	"ads" : [],
+	"src" 	: "content/mperiods/bbbitvck-mperiod.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "60",
-	"channelName" : "Ch 6 - Ads: 3 ITV Ads, Main: Sintel"
+	"transitionTime" : "-1",
+	"channelName" : "Ch 6 - Multiple Periods (2): BBB (2M) and ITV Clear Key (3M)"
 }

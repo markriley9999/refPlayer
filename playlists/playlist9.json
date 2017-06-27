@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
+	"src" 	: "content/mperiods/bbbandele-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Ch 9 - Testcard"
+	"channelName" : "Ch 9 - Multiple Periods (2): BBB and Elephants Dream"
 }

@@ -1,29 +1,30 @@
 - ip address wrong
-- show ip at start up!
+
+- pickup events mpd InbandEventStream etc
+
+- cut size of test stream!  drop some representations!
 
 - tidy up graph screens
+
+- electron menu
+- sizing
+- electron icon (BrowserWindow({icon:'path/to/image.png'});)
+
 - add config screen
 	- bandwidth throttle
 	- lost packets
-- additional status
-	- server ip
-	- connected device
+
+	- additional status
 	- ait url
-- hilte fwd and rewind keys
-- electron menu
-- sizing
-- window closing
-- electron icon (BrowserWindow({icon:'path/to/image.png'});)
 
-
-- set eol, tabs to spaces
-- run with no ui
-- install confluence page
 - update param run.sh update (git and npm)
+
+- install confluence page
 
 - sort out keycodes (see below)
 
-- use utils lib
+- *use* utils lib
+
 
 https://github.com/markriley9999/refPlayer.git
 
@@ -32,8 +33,6 @@ https://github.com/markriley9999/refPlayer.git
 
 
 - pass lic paramter - content id
-
-- tidy up logging ui
 
 - control from browser
 - ait
@@ -53,3 +52,4 @@ https://git-scm.com/download/win
 https://www.gnu.org/software/wget/
 https://www.gnu.org/software/tar/
 https://nodejs.org/en/
+
