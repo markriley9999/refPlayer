@@ -244,15 +244,19 @@ mVid.start = function () {
 						var cue = textTrack.activeCues[i];
 
 						if (cue !== null) {
+							var f = e("flag");
+							
 							that.Log.error("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
 							that.Log.error("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
 							
-							e("flag").setAttribute("class", "playerIcon flag");
+							f.setAttribute("class", "playerIcon flag");
 							that.updateBufferBar(mainVideo.id, "Event: Cue Start");
+							f.innerHTML = "ID: " + cue.id;
 							
 							cue.onexit = function (ev) {
-								e("flag").setAttribute("class", "playerIcon");
+								f.setAttribute("class", "playerIcon");
 								that.updateBufferBar(mainVideo.id, "Event: Cue End");
+								f.innerHTML = "";
 							}
 							return;
 						}
