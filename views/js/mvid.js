@@ -465,6 +465,8 @@ mVid.updateBufferBar = function(playerId, annot) {
 	var playerBuffer 	= e(playerId + "-bufferBar");
 	var headroomBuffer 	= e(playerId + "-headroomBar");
 	var player 			= e(playerId);
+	var buffV 			= 0;
+	var buffO			= 0;
 	
 	if (player)
 	{
@@ -487,18 +489,21 @@ mVid.updateBufferBar = function(playerId, annot) {
 			headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
 
 			if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
-				playerBuffer.value = buffer.end(buffer.length-1);
-				headroomBuffer.value = buffer.end(buffer.length-1) - offset;
+				buffV = buffer.end(buffer.length-1);
+				buffO = buffer.end(buffer.length-1) - offset;
+				
+				playerBuffer.value 		= buffV;
+				headroomBuffer.value 	= buffO;
 			} else {
-				playerBuffer.value = 0;			
-				headroomBuffer.value = 0;			
+				playerBuffer.value 		= 0;			
+				headroomBuffer.value 	= 0;			
 			}
 		} else
 		{
-			playerBuffer.value = 0;	
-			playerBuffer.max = 60;	
-			headroomBuffer.value = 0;	
-			headroomBuffer.max = 60;	
+			playerBuffer.value 		= 0;	
+			playerBuffer.max 		= 60;	
+			headroomBuffer.value 	= 0;	
+			headroomBuffer.max 		= 60;	
 		}
 	}
 	
@@ -507,7 +512,7 @@ mVid.updateBufferBar = function(playerId, annot) {
 	pbObj += "\"id\":" + JSON.stringify(playerId) + ",";
 	if (player)	{
 		pbObj += "\"class\":" + JSON.stringify(playerBuffer.getAttribute("class")) + ",";
-		pbObj += "\"value\":" + JSON.stringify('' + playerBuffer.value) + ","; 
+		pbObj += "\"value\":" + JSON.stringify('' + buffV) + ","; 
 		pbObj += "\"max\":" + JSON.stringify('' + playerBuffer.max) + ",";
 		pbObj += "\"currentTime\":" + JSON.stringify('' + player.currentTime) + ",";
 		pbObj += "\"resumeFrom\":" + JSON.stringify('' + player.resumeFrom) + ",";
@@ -528,7 +533,7 @@ mVid.updateBufferBar = function(playerId, annot) {
 	hbObj += "\"id\":" + JSON.stringify(playerId) + ",";
 	if (player)	{
 		hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
-		hbObj += "\"value\":" + JSON.stringify('' + headroomBuffer.value) + ",";
+		hbObj += "\"value\":" + JSON.stringify('' + buffO) + ",";
 		hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
 	} else {
 		hbObj += "\"class\":\"bufferBar\",";
