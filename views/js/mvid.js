@@ -233,6 +233,7 @@ mVid.start = function () {
 		mainVideo.textTracks.onaddtrack = function (event) {
 			var textTrack = event.track;
 
+			// TODO: Fix this!
 			// cuechange event is registered and cues in activeCues list are checked when event occurs
 			textTrack.oncuechange = function () {
 
@@ -247,8 +248,11 @@ mVid.start = function () {
 							that.Log.error("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
 							
 							e("flag").setAttribute("class", "playerIcon flag");
+							that.updateBufferBar(mainVideo.id, "Event: Cue Start");
+							
 							cue.onexit = function (ev) {
 								e("flag").setAttribute("class", "playerIcon");
+								that.updateBufferBar(mainVideo.id, "Event: Cue End");
 							}
 							return;
 						}

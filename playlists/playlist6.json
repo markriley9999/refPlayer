@@ -3,5 +3,5 @@
 	"src" 	: "content/mperiods/bbbandele-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (2): BBB and Elephants Dream (EBU-TT-D subs)"
+	"channelName" : "Multiple Periods (2): BBB and Ele Dream (EBU-TT-D subs)"
 }

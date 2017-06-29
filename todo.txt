@@ -4,6 +4,7 @@
 - select graph bring to front
 - if pos more than duration stop!
 - dash content does not start cleanly
+- improve cue handling
 
 - pickup events mpd InbandEventStream etc
 
