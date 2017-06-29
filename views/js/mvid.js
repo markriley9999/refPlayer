@@ -1069,11 +1069,16 @@ function onVideoEvent (v) {
 					break;
 				}
 				this.tOld = tNow;				
-				v.Log.info(this.tOld + " " + tNow);
 				
 				v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
 				v.updatePlaybackBar(this.id);
 		
+				// Check if gone off end!
+				if (this.currentTime > this.duration) {
+						v.Log.error("Current Time > Duration - content should have ended!");
+						v.reload();
+				}
+				
 				// Start buffering next programme?
 				if (bBufferingWhilstAttemptingToPlay) {
 					var duration 	= this.duration;

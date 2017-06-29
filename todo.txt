@@ -1,17 +1,6 @@
 - ip address wrong
-- graph capped headroom
-- centre stuff
 - select graph bring to front
-- if pos more than duration stop!
-- dash content does not start cleanly
 - improve cue handling
-- show buffers as they're created
-
-- pickup events mpd InbandEventStream etc
-
-- cut size of test stream!  drop some representations!
-
-- tidy up graph screens
 
 - electron menu
 - sizing
@@ -20,9 +9,7 @@
 - add config screen
 	- bandwidth throttle
 	- lost packets
-
-	- additional status
-	- ait url
+- ait url
 
 - update param run.sh update (git and npm)
 

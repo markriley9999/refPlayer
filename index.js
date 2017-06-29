@@ -39,7 +39,8 @@ var io = require('socket.io')(server);          // create the sockets io server
  
 ipc.on('ipc-openwindow', function(event, w) { // listens for the player-control message from the update.js file
 	if (win[w]) {
-			win[w].createWindow(); 		
+		win[w].createWindow(); 
+		win[w].focusWindow();	
 	}
 })
 
@@ -93,6 +94,12 @@ function WINDOW(p, uiurl, w, h, r, c) {
 		}
 	}
 	
+	this.focusWindow = function() {
+		if (this.winObj) {
+			this.winObj.focus();
+		}
+	}
+
 	this.sendToWindow = function(ipc, data)
 	{
 		if (this.winObj) {

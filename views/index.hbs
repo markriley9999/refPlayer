@@ -29,21 +29,27 @@
 				<p id="currentChannel">---</p>
 			</div>
 			<div class="progress-bar-container">
-				<p>Main Buffer:</p> 
-				<progress value="0" max="100" id="mVid-mainContent-bufferBar" 	class="bufferBar" 		role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-mainContent-headroomBar" 	class="bufferBar" 	role="progressbar">
-				</progress>
-				<p>Video 0 Buffer:</p> 
-				<progress value="0" max="100" id="mVid-video0-bufferBar" 		class="bufferBarActive" role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-video0-headroomBar" 		class="bufferBarActive" role="progressbar">
-				</progress>
-				<p>Video 1 Buffer:</p> 
-				<progress value="0" max="100" id="mVid-video1-bufferBar" 		class="bufferBar" 		role="progressbar">
-				</progress>
-				<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="bufferBar" 		role="progressbar">
-				</progress>
+				<div class="barcontainer">
+					<p>Main Buffer:</p> 
+					<progress value="0" max="100" id="mVid-mainContent-bufferBar" 	class="notinuse" 		role="progressbar">
+					</progress>
+					<progress value="0" max="100" id="mVid-mainContent-headroomBar" 	class="notinuse" 	role="progressbar">
+					</progress>
+				</div>
+				<div class="barcontainer">
+					<p>Video 0 Buffer:</p> 
+					<progress value="0" max="100" id="mVid-video0-bufferBar" 		class="notinuse" role="progressbar">
+					</progress>
+					<progress value="0" max="100" id="mVid-video0-headroomBar" 		class="notinuse" role="progressbar">
+					</progress>
+				</div>
+				<div class="barcontainer">
+					<p>Video 1 Buffer:</p> 
+					<progress value="0" max="100" id="mVid-video1-bufferBar" 		class="notinuse" 		role="progressbar">
+					</progress>
+					<progress value="0" max="100" id="mVid-video1-headroomBar" 		class="notinuse" 		role="progressbar">
+					</progress>
+				</div>
 			</div>
 			<div class="videoGFXOverlay">
 				<div class="centre fitwidth">

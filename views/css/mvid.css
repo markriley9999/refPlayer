@@ -82,6 +82,11 @@ p {
 	position: absolute;
 }
 
+.barcontainer{
+	width: 800px;
+	height: 50px;
+}
+
 progress {
 	/* Turns off styling - not usually needed, but good to know. */
 	appearance: none;
@@ -101,6 +106,10 @@ progress {
 .bufferBar {
 	color: green;
 	opacity: 0.75;
+}
+
+.notinuse {
+	display: none;
 }
 
 .bufferBarActive {
