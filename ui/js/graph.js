@@ -1,3 +1,5 @@
+const remote = require('electron').remote;
+
 var graph = {};
 
 graph.charts = {};
@@ -7,7 +9,21 @@ e = function(id) {
 } 
 
 window.onload = function () {
+	var li;
+	
 	graph.start();
+	
+	li = document.getElementsByClassName("titleitem");
+	for (var i = 0;  i < li.length; i++) {
+		li[i].onclick = onClickMenu(li[i].id);
+	}
+};
+
+onClickMenu = function (id) {
+	return function () {
+		var window = remote.getCurrentWindow();
+		window.close();
+ 	}
 }
 
 graph.start = function () {

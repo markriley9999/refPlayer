@@ -1063,6 +1063,14 @@ function onVideoEvent (v) {
 				break;
 
 			case v.videoEvents.TIME_UPDATE:
+				var tNow = Math.floor(this.currentTime);
+				if (tNow === this.tOld) 
+				{
+					break;
+				}
+				this.tOld = tNow;				
+				v.Log.info(this.tOld + " " + tNow);
+				
 				v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
 				v.updatePlaybackBar(this.id);
 		

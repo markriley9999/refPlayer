@@ -10,7 +10,6 @@
 
 	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
 		<Event duration="5000"  presentationTime="0" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
-		<Event duration="5000"  presentationTime="100" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
 	</EventStream>
 	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >

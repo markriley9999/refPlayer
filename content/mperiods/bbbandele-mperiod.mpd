@@ -7,6 +7,11 @@
 	</ProgramInformation>
 
 	<Period duration="PT9M32.520S" start="PT0S">
+
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+			<Event duration="5000"  presentationTime="0" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		</EventStream>
+	
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
 			<BaseURL>../bigbuckbunny/avc3/</BaseURL>
 			<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
@@ -27,6 +32,11 @@
 	</Period>
 
 	<Period duration="PT10M31.960S" start="PT9M33S">
+
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+			<Event duration="5000"  presentationTime="573000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		</EventStream>
+			
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../elephantsdream/avc3/</BaseURL>

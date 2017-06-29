@@ -44,7 +44,6 @@ playerUI.start = function () {
 	
 	li = document.getElementsByClassName("titleitem");
 	for (var i = 0;  i < li.length; i++) {
-		console.log(li[i].id);
 		li[i].onclick = playerUI.onClickMenu(li[i].id);
 	}
 };
