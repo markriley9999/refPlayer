@@ -237,6 +237,19 @@ mVid.start = function () {
 			// cuechange event is registered and cues in activeCues list are checked when event occurs
 			textTrack.oncuechange = function () {
 
+				that.Log.error("*** textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+				if (textTrack.cues.length > 0) {
+
+					for (var i = 0; i < textTrack.cues.length; ++i) {
+
+						var cue = textTrack.cues[i];
+
+						if (cue !== null) {
+							that.Log.error("*** Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
+						}
+					}
+				}
+
 				if (textTrack.activeCues.length > 0) {
 
 					for (var i = 0; i < textTrack.activeCues.length; ++i) {
@@ -251,12 +264,12 @@ mVid.start = function () {
 							
 							f.setAttribute("class", "playerIcon flag");
 							that.updateBufferBar(mainVideo.id, "Event: Cue Start");
-							f.innerHTML = "ID: " + cue.id;
+							//f.innerHTML = "ID: " + cue.id;
 							
 							cue.onexit = function (ev) {
 								f.setAttribute("class", "playerIcon");
 								that.updateBufferBar(mainVideo.id, "Event: Cue End");
-								f.innerHTML = "";
+								//f.innerHTML = "";
 							}
 							return;
 						}

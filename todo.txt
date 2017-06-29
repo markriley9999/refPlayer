@@ -5,6 +5,7 @@
 - if pos more than duration stop!
 - dash content does not start cleanly
 - improve cue handling
+- show buffers as they're created
 
 - pickup events mpd InbandEventStream etc
 
