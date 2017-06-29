@@ -1,4 +1,9 @@
 - ip address wrong
+- graph capped headroom
+- centre stuff
+- select graph bring to front
+- if pos more than duration stop!
+- dash content does not start cleanly
 
 - pickup events mpd InbandEventStream etc
 

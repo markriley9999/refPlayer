@@ -3,5 +3,5 @@
 	"src" 	: "content/mperiods/mix-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (6): BBB, Elephants Dream & Testcard (1M)"
+	"channelName" : "Multiple Periods (6): BBB, Elephants Dream (EBU-TT-D subs) & Testcard (1M)"
 }

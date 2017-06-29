@@ -41,7 +41,7 @@ const PLAYSTATE_PAUSE	= 2;
 const PLAYSTATE_REW		= 3;
 const PLAYSTATE_FWD		= 4;
 
-const STALL_TIMEOUT_MS = 5000;
+const STALL_TIMEOUT_MS = 10000;
 
 const PRELOAD_NEXT_AD_S = 5;
 
@@ -217,16 +217,45 @@ mVid.start = function () {
 		that.procPlaylist(ch, playlistObj);
 
 		mainVideo = e("mVid-mainContent");
-		
-		for(var i in that.videoEvents) {
-			mainVideo.addEventListener(that.videoEvents[i], onVideoEvent(that));
-		}
 
 		mainVideo.resumeFrom 			= 0;
 		mainVideo.bPlayPauseTransition 	= false;
 		mainVideo.bBuffEnoughToPlay 	= false;
 		that.transitionThresholdMS 		= 1000;
 		that.bShowBufferingIcon			= false;
+		
+		
+		for(var i in that.videoEvents) {
+			mainVideo.addEventListener(that.videoEvents[i], onVideoEvent(that));
+		}
+
+		// Cues
+		mainVideo.textTracks.onaddtrack = function (event) {
+			var textTrack = event.track;
+
+			// cuechange event is registered and cues in activeCues list are checked when event occurs
+			textTrack.oncuechange = function () {
+
+				if (textTrack.activeCues.length > 0) {
+
+					for (var i = 0; i < textTrack.activeCues.length; ++i) {
+
+						var cue = textTrack.activeCues[i];
+
+						if (cue !== null) {
+							that.Log.error("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+							that.Log.error("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
+							
+							e("flag").setAttribute("class", "playerIcon flag");
+							cue.onexit = function (ev) {
+								e("flag").setAttribute("class", "playerIcon");
+							}
+							return;
+						}
+					}
+				}
+			}
+		};		
 		
 		// Clear key
 		const KEYSYSTEM_TYPE = "org.w3.clearkey";
@@ -672,7 +701,8 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		if (!this.app) {
 			dashjs.MediaPlayerFactory.create(player, source);
 		}
-		this.setPreload(player, "auto");
+		//this.setPreload(player, "auto");
+		player.load();
 	}
 }
 

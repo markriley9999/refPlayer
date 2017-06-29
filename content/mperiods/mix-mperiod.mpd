@@ -7,6 +7,12 @@
 </ProgramInformation>
 
 <Period duration="PT1M" start="PT0M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="0" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<Event duration="5000"  presentationTime="100" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
 		<BaseURL>../bigbuckbunny/avc3/</BaseURL>
 		<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
@@ -27,6 +33,11 @@
 </Period>
 
 <Period duration="PT1M" start="PT1M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="60000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/avc3/</BaseURL>
@@ -54,6 +65,11 @@
 </Period>
 
 <Period duration="PT1M" start="PT2M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="120000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
 		<InbandEventStream schemeIdUri="tag:rdmedia.bbc.co.uk,2014:events/ballposition" value="1"/>
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -81,6 +97,11 @@
 </Period>
 
 <Period duration="PT1M" start="PT3M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="180000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
 		<BaseURL>../bigbuckbunny/avc3/</BaseURL>
 		<SegmentTemplate startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
@@ -101,6 +122,11 @@
 </Period>
 
 <Period duration="PT1M" start="PT4M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="240000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/avc3/</BaseURL>
@@ -128,6 +154,11 @@
 </Period>
 
 <Period duration="PT1M" start="PT5M">
+
+	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
+		<Event duration="5000"  presentationTime="300000" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+	</EventStream>
+	
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
 		<InbandEventStream schemeIdUri="tag:rdmedia.bbc.co.uk,2014:events/ballposition" value="1"/>
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>

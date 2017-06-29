@@ -276,7 +276,7 @@ expressServer.get('/content/*', function(req, res) {
 	// Why seeing 2 gets????
 	
 	sendServerLog("GET content: " + req.originalUrl);
-	sendServerLog(JSON.stringify(req.headers));
+	console.log(JSON.stringify(req.headers));
 
 	// ***** Simulate error condition (505)? *****
 	if (badNetwork.bSimErrors) {
