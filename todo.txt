@@ -1,6 +1,15 @@
+- eme logs - all warnings currently!
 - ip address wrong
-- select graph bring to front
-- improve cue handling
+- improve cue handling, show cue points
+
+	useContentSize 
+	center 
+	minWidth 
+	fullscreen 
+	icon 
+	show 
+	autoHideMenuBar 
+	titleBarStyle  hidden 
 
 - electron menu
 - sizing
@@ -9,27 +18,21 @@
 - add config screen
 	- bandwidth throttle
 	- lost packets
+
 - ait url
 
 - update param run.sh update (git and npm)
 
 - install confluence page
 
-- sort out keycodes (see below)
-
 - *use* utils lib
 
 
 https://github.com/markriley9999/refPlayer.git
 
-
-- handle no ads - no ad breaks
-
-
 - pass lic paramter - content id
 
 - control from browser
-- ait
 
 - port 80
 
@@ -40,10 +43,7 @@ https://github.com/markriley9999/refPlayer.git
 	- ITV
 
 	
+- upload new content
 	
-Windows:
-https://git-scm.com/download/win
-https://www.gnu.org/software/wget/
-https://www.gnu.org/software/tar/
-https://nodejs.org/en/
+- retest in fedora
 
