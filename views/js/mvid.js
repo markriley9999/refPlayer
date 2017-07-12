@@ -723,6 +723,8 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		source.setAttribute("type", type);	
 		source.setAttribute("src", src);
 		player.bBuffEnoughToPlay = false;
+		player.bEncrypted = false;
+		
 		// Running on a non hbbtv device?
 		if (!this.app) {
 			dashjs.MediaPlayerFactory.create(player, source);
