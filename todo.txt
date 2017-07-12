@@ -19,6 +19,8 @@
 	- bandwidth throttle
 	- lost packets
 
+- defer lic
+
 - ait url
 
 - update param run.sh update (git and npm)

@@ -10,6 +10,6 @@ utils.getUrlVars = function () {
 }
 
 utils.extractDevName = function (sUA) {
-	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
+	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \(\s*(\w*);\s*(\w*)/) || ["", "Unknown", "Model"]; 
 	return arr[1] + arr[2];
 }

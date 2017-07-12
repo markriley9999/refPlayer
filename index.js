@@ -276,7 +276,8 @@ var badNetwork = {
 	chanceOfError		: 10, 						// 1 in x 505 errors
 	bSimErrors			: false,
 	throttleBitrate		: 2 * 1024,					// kbps (bits)
-	bThrottle			: false
+	bThrottle			: false,
+	delayLicense		: 5000
 };
 
 expressServer.get('/content/*', function(req, res) {
@@ -388,8 +389,11 @@ const clearKeyLicense = require('./clearKey/itv-licence.json');
 expressServer.post('/getkeys', function(req, res) {
 	sendServerLog("getkeys: " + JSON.stringify(req.body));
 	
-	res.status(200);
-	res.send(clearKeyLicense);
+	setTimeout(function() {
+		res.status(200);
+		res.send(clearKeyLicense);
+	}, 0);
+   
 });
 
 function sendConnectionStatus() {
@@ -408,6 +412,6 @@ server.listen(3000); // Socket.io port (hides express inside)
 
 // Put in a util module!!!!! 
 extractDevName = function (sUA) {
-	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \((\w*);(\w*)/) || ["", "Unknown", "Model"]; 
+	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \(\s*(\w*);\s*(\w*)/) || ["", "Unknown", "Model"]; 
 	return arr[1] + arr[2];
 }
