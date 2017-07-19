@@ -1,3 +1,10 @@
+- create:
+	- live
+	- dynamic
+	- multi period
+	- cues
+	
+	
 - eme logs - all warnings currently!
 - ip address wrong
 - improve cue handling, show cue points

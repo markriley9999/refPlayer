@@ -9,7 +9,8 @@ const url = require('url');   // used by electron to load html files
  
 const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
-
+const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
+ 
 const fs = require('fs');
  
 const Throttle = require('stream-throttle').Throttle;
@@ -272,12 +273,20 @@ expressServer.get('/', function(req, res) {
 	}
 });
 
+expressServer.get('/player.aitx', function(req, res) {
+	res.render('playerait.hbs', {url: connectedStatus.serverIP}, function(err, html) { 
+		res.type("application/vnd.dvb.ait+xml");
+		res.status(200);
+        res.send(html);
+    });
+});
+
 var badNetwork = {
 	chanceOfError		: 10, 						// 1 in x 505 errors
 	bSimErrors			: false,
 	throttleBitrate		: 2 * 1024,					// kbps (bits)
 	bThrottle			: false,
-	delayLicense		: 5000
+	delayLicense		: 0
 };
 
 expressServer.get('/content/*', function(req, res) {
@@ -392,7 +401,7 @@ expressServer.post('/getkeys', function(req, res) {
 	setTimeout(function() {
 		res.status(200);
 		res.send(clearKeyLicense);
-	}, 0);
+	}, badNetwork.delayLicense);
    
 });
 
@@ -408,7 +417,6 @@ function sendConnectionStatus() {
 
  
 server.listen(3000); // Socket.io port (hides express inside)
-
 
 // Put in a util module!!!!! 
 extractDevName = function (sUA) {
