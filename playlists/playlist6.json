@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/bbbandele-mperiod.mpd",
+	"src" 	: "dynamic/dartest",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (2): BBB and Ele Dream (EBU-TT-D subs)"
+	"channelName" : "Live Dynamic, Multiperiod: Starts on the hour"
 }

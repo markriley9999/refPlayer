@@ -94,8 +94,8 @@ sudo dnf install nodejs
 npm install
 
 
-?? npm install electron --save-dev
-?? npm install stream-throttle --save-dev
+?? npm install electron --save
+?? npm install stream-throttle --save
 
 
 
