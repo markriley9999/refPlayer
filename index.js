@@ -427,7 +427,18 @@ expressServer.get('/dynamic/*', function(req, res) {
 		options.availabilityStartTime = progStart;
 		
 		if (bDARTest) {
-			options['period0'] = makePeriod();
+			// TODO put these constants somewhere else!!!!
+			const periodD 	= 599040;
+			const segsize 	= 3840;
+			const maxP 		= 5;
+			const margin 	= 3;
+			
+			var lowerP = getPeriod((utcMinutes - margin) * 60 * 1000, periodD, maxP);
+			var upperP = getPeriod((utcMinutes + margin) * 60 * 1000, periodD, maxP);
+			
+			for (var i = lowerP; i <= upperP; i++) {
+				options['period' + i] = makePeriod(i, periodD, segsize);
+			}
 		}
 		
 		res.render(file, options, function(err, mpd) { 
@@ -441,28 +452,58 @@ expressServer.get('/dynamic/*', function(req, res) {
 		});
     });
 });
- 
-makePeriod = function() {
-	return {"<Period duration=\"PT1H0.040S\" start=\"PT0S\">
-				<AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >
-					<InbandEventStream schemeIdUri=\"tag:rdmedia.bbc.co.uk,2014:events/ballposition\" value=\"1\"/>
-					<Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>
-					<BaseURL>../content/testcard/avc3-events/</BaseURL>
-					<SegmentTemplate startNumber=\"1\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />
-					<Representation id=\"704x396p50\" codecs=\"avc3.64001f\" height=\"396\" width=\"704\" frameRate=\"50\" scanType=\"progressive\" bandwidth=\"1572456\"/>
-					<Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"440664\"/>
-					<Representation id=\"384x216p25\" codecs=\"avc3.42c015\" height=\"216\" width=\"384\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"283320\"/>
-					<Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>
-				</AdaptationSet>
-				<AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >
-					<AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>
-					<Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>
-					<BaseURL>../content/testcard/audio/</BaseURL>
-					<SegmentTemplate startNumber=\"1\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />
-					<Representation id=\"128kbps\" bandwidth=\"128000\" />
-				</AdaptationSet>
-			</Period>
-	"};
+
+getPeriod = function(m, d, mx) {
+	if (m < 0) { 
+		m = 0; 
+	}
+	
+	var p = Math.floor(m / d);
+	if (p > mx) {
+		p = mx;
+	}
+	
+	return p;
+}
+
+makePeriod = function(p, d, sz) {
+	var fd = new Date(d);
+	var fs = new Date(p * d);
+	var seg = (p * d) / sz;
+	
+	var sDuration = "PT" + fd.getHours() + "H" + fd.getMinutes() + "M" + fd.getSeconds() + "." + fd.getMilliseconds() + "S";
+	var sStart =  	"PT" + fs.getHours() + "H" + fs.getMinutes() + "M" + fs.getSeconds() + "." + fs.getMilliseconds() + "S";
+	
+	sendServerLog(" - Generated manifest file: Period: " + p + " Duration: " + sDuration + " Start: " + sStart);
+	return mainContentXML(sDuration, sStart, seg);
+}
+
+mainContentXML = function(sDuration, sStart, seg) {
+	var str;
+	
+	str = "<!-- *** Generated Period *** -->\n";
+	
+	str += "<Period duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	
+	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >\n" +
+		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
+		"  <BaseURL>../content/testcard/avc3-events/</BaseURL>\n" + 
+		"  <SegmentTemplate startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
+		"  <Representation id=\"704x396p50\" codecs=\"avc3.64001f\" height=\"396\" width=\"704\" frameRate=\"50\" scanType=\"progressive\" bandwidth=\"1572456\"/>\n" +
+		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"440664\"/>\n" +
+		"  <Representation id=\"384x216p25\" codecs=\"avc3.42c015\" height=\"216\" width=\"384\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"283320\"/>\n" + 
+		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>\n" +
+		" </AdaptationSet>\n" +
+		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
+		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
+		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
+		"  <BaseURL>../content/testcard/audio/</BaseURL>\n" +
+		"  <SegmentTemplate startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
+		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
+		" </AdaptationSet>\n" +
+		"</Period>\n";
+		
+	return str;
 }
 
 expressServer.post('/savelog', function(req, res) {

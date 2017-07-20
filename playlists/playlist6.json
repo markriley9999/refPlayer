@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "dynamic/dartest",
+	"src" 	: "content/mperiods/testcard-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Live Dynamic, Multiperiod: Starts on the hour"
+	"channelName" : "Multiple Periods (10): Testcard (60s)"
 }

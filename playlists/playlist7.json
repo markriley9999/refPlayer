@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/mix-mperiod.mpd",
+	"src" 	: "content/mperiods/bbbitvck-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (6): BBB, Ele Dream & Testcard (1M) + Cues"
+	"channelName" : "Multiple Periods (4): BBB (1M) and ITV Clear Key (2M)"
 }
