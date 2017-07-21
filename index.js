@@ -397,7 +397,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 	sendServerLog("GET dynamic: " + useURL);
 
-	//console.log("utc - " + utcHours + ":" + utcMinutes);
+	console.log("Minutes - " + utcMinutes + "M");
 	
 	if (req.originalUrl == "/dynamic/dartest") {
 		console.log("*** DAR Test ***");
@@ -431,13 +431,26 @@ expressServer.get('/dynamic/*', function(req, res) {
 			const periodD 	= 599040;
 			const segsize 	= 3840;
 			const maxP 		= 5;
-			const margin 	= 3;
+			const marginF 	= 3;
+			const marginB 	= 10;
+			const tweakF	= (60 * 1000);
+			const adD		= (2 * 60 * 1000);
 			
-			var lowerP = getPeriod((utcMinutes - margin) * 60 * 1000, periodD, maxP);
-			var upperP = getPeriod((utcMinutes + margin) * 60 * 1000, periodD, maxP);
+			var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
+			var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
+			var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
+			var numP = (upperP - lowerP) + 1;
+			var tw;
 			
+			console.log("CurrentPeriod: " + currentP);
+
 			for (var i = lowerP; i <= upperP; i++) {
-				options['period' + i] = makePeriod(i, periodD, segsize);
+				if (((numP > 1) && (i == upperP) && (upperP < maxP)) || (upperP == 0)) {
+					tw = tweakF;
+				} else {
+					tw = 0;
+				}
+				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize, tw);
 			}
 		}
 		
@@ -466,22 +479,57 @@ getPeriod = function(m, d, mx) {
 	return p;
 }
 
-makePeriod = function(p, d, sz) {
-	var fd = new Date(d);
+/*
+makePeriod = function(p, d, sz, tw) {
+	var fd = new Date(d-tw);
 	var fs = new Date(p * d);
 	var seg = (p * d) / sz;
 	
-	var sDuration = "PT" + fd.getHours() + "H" + fd.getMinutes() + "M" + fd.getSeconds() + "." + fd.getMilliseconds() + "S";
-	var sStart =  	"PT" + fs.getHours() + "H" + fs.getMinutes() + "M" + fs.getSeconds() + "." + fs.getMilliseconds() + "S";
+	var sDuration = _formatTime(fd);
+	var sStart =  	_formatTime(fs);
 	
 	sendServerLog(" - Generated manifest file: Period: " + p + " Duration: " + sDuration + " Start: " + sStart);
 	return mainContentXML(sDuration, sStart, seg);
+}
+*/
+
+makeAdAndMainPeriods = function(p, periodD, adD, sz, tw) {
+	var str;
+
+	var fadD = new Date(adD);
+	var fsAd = new Date(p * periodD);
+	
+	var sAdDuration = _formatTime(fadD);
+	var sAdStart 	= _formatTime(fsAd);
+	
+	sendServerLog(" - Generated manifest file: Period: " + p);
+	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
+
+	str = adXML(sAdDuration, sAdStart);
+
+	var fd = new Date(periodD-tw-adD);
+	var fs = new Date((p * periodD) + adD);
+	var seg = Math.floor(((p * periodD) + adD) / sz);
+	
+	var sDuration 	= _formatTime(fd);
+	var sStart 		= _formatTime(fs);
+
+	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart);
+
+	str += "\n";
+	str += mainContentXML(sDuration, sStart, seg);
+	
+	return str;
+}
+
+_formatTime = function(d) {
+	return "PT" + d.getHours() + "H" + d.getMinutes() + "M" + d.getSeconds() + "." + d.getMilliseconds() + "S";
 }
 
 mainContentXML = function(sDuration, sStart, seg) {
 	var str;
 	
-	str = "<!-- *** Generated Period *** -->\n";
+	str = "<!-- *** Generated Period: Main Content *** -->\n";
 	
 	str += "<Period duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
 	
@@ -503,6 +551,35 @@ mainContentXML = function(sDuration, sStart, seg) {
 		" </AdaptationSet>\n" +
 		"</Period>\n";
 		
+	return str;
+}
+
+adXML = function(sDuration, sStart) {
+	var str;
+	
+	str = "<!-- *** Generated Period: Ad *** -->\n";
+	
+	str += "<Period duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	
+	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" frameRate=\"25\" scanType=\"progressive\" mimeType=\"video/mp4\" >\n" + 
+		"  <BaseURL>../content/bigbuckbunny/avc3/</BaseURL>\n" +
+		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"1920x1080p25/IS.mp4\" />\n" +
+		"  <Representation id=\"1920x1080p25\" codecs=\"avc3.640028\" height=\"1080\" width=\"1920\" bandwidth=\"4741120\" />\n" +
+		"  <Representation id=\"896x504p25\" codecs=\"avc3.64001f\" height=\"504\" width=\"896\" bandwidth=\"1416688\" />\n" +
+		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" bandwidth=\"843768\" />\n" +
+		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" bandwidth=\"449480\" />\n" +
+		"  <Representation id=\"1280x720p25\" codecs=\"avc3.640020\" height=\"720\" width=\"1280\" bandwidth=\"2656696\" />\n" +
+		" </AdaptationSet>\n" +
+		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
+		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
+		"  <BaseURL>../content/bigbuckbunny/audio/</BaseURL>\n" +
+		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"160kbps/IS.mp4\" />\n" +
+		"  <Representation id=\"160kbps\" bandwidth=\"160000\" />\n" +
+		"  <Representation id=\"96kbps\" bandwidth=\"96000\" />\n" +
+		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
+		" </AdaptationSet>\n" +
+		"</Period>\n";
+
 	return str;
 }
 
