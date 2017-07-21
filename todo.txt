@@ -1,3 +1,5 @@
+- upload all content
+
 - create:
 	- live
 	- dynamic
