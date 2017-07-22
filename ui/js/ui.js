@@ -167,8 +167,12 @@ ipc.on('ipc-connected', function(event, message) {
 		console.log("connected: " + message);
 		e("connected").setAttribute("class", message.bConnected ? "connected" : "");
 		e("connected").innerHTML = message.bConnected ? "Connected" : "Not Connected";
-		e("serverip").innerHTML = "Server Address: " + message.serverIP;
+		//e("serverip").innerHTML = "Server Address: " + message.serverIP;
 		e("devname").innerHTML = "Device Name: " + message.devName;
+		
+		for( var i = 0; i < message.addresses.length; i++) {
+			playerUI.Log._write("NET - " + i + ": " + message.addresses[i] + ":" + message.port, "info");
+		}		
 	} catch(err) {
 		console.log("ipc-playbackOffset: message parse error. " + err.message);	
 	}

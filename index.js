@@ -1,3 +1,7 @@
+const os = require("os");
+const ip = require("ip");
+const fs = require('fs');
+
 const electron = require('electron');   // include electron
 const electronApp = electron.app;                // give access to electron functions
  
@@ -11,11 +15,8 @@ const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
 const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
  
-const fs = require('fs');
  
 const Throttle = require('stream-throttle').Throttle;
-
-const ip = require("ip");
 
 const dateFormat = require('dateformat');
 
@@ -36,9 +37,10 @@ var server = require('http').createServer(expressServer); // use the electron se
 var io = require('socket.io')(server);          // create the sockets io server
  
  var connectedStatus = {
+	port				: 0,
+	addresses 			: [],
 	connectedDevices	: 0,
 	currentDeviceUA 	: "",
-	serverIP 			: "",
 	devName 			: ""
  };
  
@@ -156,7 +158,26 @@ function init() {
 
 	win['log'].createWindow();
 	
-	connectedStatus.serverIP = ip.address() + ":" + server.address().port;
+	
+	var interfaces = os.networkInterfaces();
+
+	for (var k in interfaces) {
+		for (var k2 in interfaces[k]) {
+			var address = interfaces[k][k2];
+			if (address.family === 'IPv4' && !address.internal) {
+				connectedStatus.addresses.push(address.address);
+			}
+		}
+	}
+	
+	sendServerLog("Server (IPv4) Addresses");
+	sendServerLog("-----------------------");
+
+	connectedStatus.port = server.address().port;
+	for( var i = 0; i < connectedStatus.addresses.length; i++) {
+		sendServerLog(i + ": " + connectedStatus.addresses[i] + ":" + connectedStatus.port);
+	}
+	
 	sendConnectionStatus();
 }
  
@@ -278,7 +299,7 @@ expressServer.get('/', function(req, res) {
 });
 
 expressServer.get('/player.aitx', function(req, res) {
-	res.render('playerait.hbs', {url: connectedStatus.serverIP}, function(err, html) { 
+	res.render('playerait.hbs', {url: req.headers.host}, function(err, html) { 
 		res.type("application/vnd.dvb.ait+xml");
 		res.status(200);
         res.send(html);
@@ -608,7 +629,8 @@ expressServer.post('/getkeys', function(req, res) {
 
 function sendConnectionStatus() {
 	var obj = { 
-					'serverIP'		: connectedStatus.serverIP, 
+					'port'			: connectedStatus.port,
+					'addresses'		: connectedStatus.addresses, 
 					'bConnected'	: (connectedStatus.connectedDevices > 0),
 					'devName'		: connectedStatus.devName
 				};

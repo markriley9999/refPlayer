@@ -55,3 +55,4 @@ views/OLD-dash.hbs
 *.m4s
 *.dash
 logs
+*.gz
