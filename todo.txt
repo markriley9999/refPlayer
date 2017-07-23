@@ -1,4 +1,13 @@
-- upload all content
+- periods
+	<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main" />
+	publishTime="2017-07-23T10:18:12Z" 
+	presentationTimeOffset="1500804780" !!!!!!!!!!!!!!!!
+	<Period id="p25013413" start="PT1500804780S">
+
+    <SupplementalProperty schemeIdUri="urn:mpeg:dash:period_continuity:2014" value="p25013413" />  !!!!!!!!!!!!!!!
+
+http://vm2.dashif.org/livesim-dev/periods_60/continuous_1/testpic_2s/Manifest.mpd
+	
 
 - create:
 	- live
@@ -7,8 +16,6 @@
 	- cues
 	
 	
-- eme logs - all warnings currently!
-- ip address wrong
 - improve cue handling, show cue points
 
 	useContentSize 
@@ -29,8 +36,6 @@
 	- lost packets
 
 - defer lic
-
-- ait url
 
 - update param run.sh update (git and npm)
 

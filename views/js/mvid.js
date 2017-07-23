@@ -1049,7 +1049,9 @@ function onVideoEvent (v) {
 					v.Log.info(this.id + ": video has ended - reload");
 					//this.resumeFrom = 0;
 					//this.currentTime = 0;
-					//v.reload(); 
+					if (this.duration > 0) {
+						v.reload(); 
+					}
 				} else {
 					v.skipPlayingToNextPlayer();
 					var newPlayingPlayer = v.getCurrentPlayingPlayer();

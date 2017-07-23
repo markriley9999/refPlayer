@@ -464,7 +464,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 			var tw;
 			
 			console.log("CurrentPeriod: " + currentP);
-
+			
 			for (var i = lowerP; i <= upperP; i++) {
 				if (((numP > 1) && (i == upperP) && (upperP < maxP)) || (upperP == 0)) {
 					tw = tweakF;
@@ -473,6 +473,12 @@ expressServer.get('/dynamic/*', function(req, res) {
 				}
 				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize, tw);
 			}
+			/* All periods....
+			for (var i = 0; i <= 5; i++) {
+				tw = 0;
+				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize, tw);
+			}
+			*/
 		}
 		
 		res.render(file, options, function(err, mpd) { 
@@ -526,7 +532,7 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz, tw) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	str = adXML(sAdDuration, sAdStart);
+	str = adXML(p, sAdDuration, sAdStart);
 
 	var fd = new Date(periodD-tw-adD);
 	var fs = new Date((p * periodD) + adD);
@@ -534,11 +540,12 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz, tw) {
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
-
-	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart);
+	var offsetS  	= _getSecs(fs);
+	
+	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (" + offsetS + "S)");
 
 	str += "\n";
-	str += mainContentXML(sDuration, sStart, seg);
+	str += mainContentXML(p, sDuration, sStart, offsetS, seg);
 	
 	return str;
 }
@@ -547,27 +554,34 @@ _formatTime = function(d) {
 	return "PT" + d.getHours() + "H" + d.getMinutes() + "M" + d.getSeconds() + "." + d.getMilliseconds() + "S";
 }
 
-mainContentXML = function(sDuration, sStart, seg) {
+_getSecs = function(d) {
+		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
+}
+
+mainContentXML = function(p, sDuration, sStart, offset, seg) {
 	var str;
 	
 	str = "<!-- *** Generated Period: Main Content *** -->\n";
 	
-	str += "<Period duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	//str += "<Period id=\"main-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	str += "<Period id=\"main-" + p + "\" start=\"" + sStart + "\">\n";
 	
 	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >\n" +
+		"  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"ad-" + p + "\" />\n" +
 		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
 		"  <BaseURL>../content/testcard/avc3-events/</BaseURL>\n" + 
-		"  <SegmentTemplate startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
+		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
 		"  <Representation id=\"704x396p50\" codecs=\"avc3.64001f\" height=\"396\" width=\"704\" frameRate=\"50\" scanType=\"progressive\" bandwidth=\"1572456\"/>\n" +
 		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"440664\"/>\n" +
 		"  <Representation id=\"384x216p25\" codecs=\"avc3.42c015\" height=\"216\" width=\"384\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"283320\"/>\n" + 
 		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>\n" +
 		" </AdaptationSet>\n" +
 		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
+		"  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"ad-" + p + "\" />\n" +
 		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
 		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
 		"  <BaseURL>../content/testcard/audio/</BaseURL>\n" +
-		"  <SegmentTemplate startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
+		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
 		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
 		" </AdaptationSet>\n" +
 		"</Period>\n";
@@ -575,14 +589,21 @@ mainContentXML = function(sDuration, sStart, seg) {
 	return str;
 }
 
-adXML = function(sDuration, sStart) {
+adXML = function(p, sDuration, sStart) {
 	var str;
+	var pc = "";
 	
 	str = "<!-- *** Generated Period: Ad *** -->\n";
 	
-	str += "<Period duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	if (p > 0) {
+		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"main-" + (p-1) + "\" />\n";	
+	}
 	
-	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" frameRate=\"25\" scanType=\"progressive\" mimeType=\"video/mp4\" >\n" + 
+	// str += "<Period id=\"ad-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
+	str += "<Period id=\"ad-" + p + "\" start=\"" + sStart + "\">\n";
+	
+	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" frameRate=\"25\" scanType=\"progressive\" mimeType=\"video/mp4\" >\n" +
+		pc + 
 		"  <BaseURL>../content/bigbuckbunny/avc3/</BaseURL>\n" +
 		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"1920x1080p25/IS.mp4\" />\n" +
 		"  <Representation id=\"1920x1080p25\" codecs=\"avc3.640028\" height=\"1080\" width=\"1920\" bandwidth=\"4741120\" />\n" +
@@ -592,6 +613,7 @@ adXML = function(sDuration, sStart) {
 		"  <Representation id=\"1280x720p25\" codecs=\"avc3.640020\" height=\"720\" width=\"1280\" bandwidth=\"2656696\" />\n" +
 		" </AdaptationSet>\n" +
 		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
+		pc + 
 		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
 		"  <BaseURL>../content/bigbuckbunny/audio/</BaseURL>\n" +
 		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"160kbps/IS.mp4\" />\n" +
