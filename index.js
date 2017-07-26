@@ -67,7 +67,7 @@ function WINDOW(p, uiurl, w, h, r, c) {
 					parent: p,
 					width: this.width, 
 					height: this.height, 
-					icon: 'bitmaps/tv-512.png'
+					icon: 'ui/bitmaps/tv-512.png'
 				}); 
 		 
 			this.winObj.on('focus', function() {
@@ -83,6 +83,8 @@ function WINDOW(p, uiurl, w, h, r, c) {
 				that.winObj = null;
 			});
 
+			this.winObj.maximize();
+			
 			this.winObj.loadURL(url.format({ 
 				pathname: path.join(__dirname, this.uiurl),
 				protocol: 'file:',

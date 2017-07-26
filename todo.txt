@@ -18,18 +18,6 @@ http://vm2.dashif.org/livesim-dev/periods_60/continuous_1/testpic_2s/Manifest.mp
 	
 - improve cue handling, show cue points
 
-	useContentSize 
-	center 
-	minWidth 
-	fullscreen 
-	icon 
-	show 
-	autoHideMenuBar 
-	titleBarStyle  hidden 
-
-- electron menu
-- sizing
-- electron icon (BrowserWindow({icon:'path/to/image.png'});)
 
 - add config screen
 	- bandwidth throttle
