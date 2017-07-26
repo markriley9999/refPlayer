@@ -29,6 +29,7 @@ win['mainvideoobj'] = null;
 win['ad0videoobj'] 	= null;
 win['ad1videoobj']	= null;
 win['adtrans']		= null;
+win['config']		= null;
 
 
 var expressServer = express(); // Active express object
@@ -131,6 +132,7 @@ function createWindows() {
 	win['ad0videoobj'].createWindow();
 	win['ad1videoobj'].createWindow();
 	win['adtrans'].createWindow();
+	win['config'].createWindow();
 }
 
 function updateUI() {
@@ -143,6 +145,7 @@ function mainUIClosed() {
 	win['ad0videoobj'].closeWin();
 	win['ad1videoobj'].closeWin();
 	win['adtrans'].closeWin();
+	win['config'].closeWin();
 }
 
 function init() {
@@ -157,6 +160,7 @@ function init() {
 	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null,			null);
 	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null,			null);
 	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null,			null);
+	win['config']		= new WINDOW(p,	'ui/config.html',		800, 	800,	null,			null);
 
 	win['log'].createWindow();
 	
