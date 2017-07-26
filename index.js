@@ -20,7 +20,8 @@ const Throttle = require('stream-throttle').Throttle;
 
 const dateFormat = require('dateformat');
 
-
+const utils = require('./common/utils.js');
+var commonUtils = new utils();
 
 var win = {};
 win['log'] 			= null;
@@ -201,7 +202,7 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	connectedStatus.connectedDevices++;
 
     console.log(" ---> Device connected: " + connectedStatus.connectedDevices);
-	connectedStatus.devName = extractDevName(connectedStatus.currentDeviceUA);
+	connectedStatus.devName = commonUtils.extractDevName(connectedStatus.currentDeviceUA);
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
@@ -280,7 +281,7 @@ expressServer.get('/', function(req, res) {
 	
 	if (!connectedStatus.currentDeviceUA || connectedStatus.currentDeviceUA === UA) {
 		connectedStatus.currentDeviceUA = UA;
-		connectedStatus.devName = extractDevName(connectedStatus.currentDeviceUA);
+		connectedStatus.devName = commonUtils.extractDevName(connectedStatus.currentDeviceUA);
 		
 		//createWindows();
 		
@@ -668,9 +669,3 @@ function sendConnectionStatus() {
 
  
 server.listen(3000); // Socket.io port (hides express inside)
-
-// Put in a util module!!!!! 
-extractDevName = function (sUA) {
-	var arr = sUA.match(/\bFVC\/[0-9]+.[0-9]+ \(\s*(\w*);\s*(\w*)/) || ["", "Unknown", "Model"]; 
-	return arr[1] + arr[2];
-}

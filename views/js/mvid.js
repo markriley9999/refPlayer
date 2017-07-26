@@ -1,5 +1,7 @@
 var mVid = {};
- 
+
+var commonUtils = new utils();
+
 mVid.videoEvents = Object.freeze({
   LOAD_START		: "loadstart",
   PROGRESS			: "progress",
@@ -1300,7 +1302,7 @@ mVid.cmndSeekBACK = function () {
 
 mVid.cmndLog = function () {
 	var xhttp = new XMLHttpRequest();
-	var fileName = utils.extractDevName(navigator.userAgent) + "_debug_" + Date.now() + ".log";
+	var fileName = commonUtils.extractDevName(navigator.userAgent) + "_" + Date.now() + ".log";
 
 	this.Log.info("Save file : " + fileName); 
 	
