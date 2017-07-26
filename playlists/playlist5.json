@@ -1,12 +1,7 @@
 {
-	"ads" : [
-		{
-			"src" 	: "content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],
-	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
+	"ads" : [],
+	"src" 	: "content/mperiods/mix-mperiod.mpd",
 	"type" 	: "application/dash+xml",
-	"transitionTime" : "60",
-	"channelName" : "Ads: 1 Ch4 Ad, Main: Testcard (60s)"
+	"transitionTime" : "-1",
+	"channelName" : "Multiple Periods (6): BBB, Ele Dream & Testcard (1M) + Cues"
 }

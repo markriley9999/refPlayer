@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/bbbandele-mperiod.mpd",
+	"src" 	: "content/mperiods/testcard-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (2): BBB and Ele Dream (EBU-TT-D subs)"
+	"channelName" : "Multiple Periods (10): Testcard (60s)"
 }

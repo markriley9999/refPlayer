@@ -1,7 +1,7 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/testcard-mperiod.mpd",
+	"src" 	: "dynamic/live-1hr.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
-	"channelName" : "Multiple Periods (10): Testcard (60s)"
+	"channelName" : "Live Dynamic: Starts on the hour"
 }

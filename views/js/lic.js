@@ -3,8 +3,13 @@ function clearkeyGetLicence(session, msg) {
 	var keyServiceUrl = "/getkeys?test";
 
 
+	// TODO: mVid should be a param
 	function log(msg) {
-		mVid.Log.warn("Licence: " + msg);
+		mVid.Log.info("Licence: " + msg);
+	}
+
+	function logerr(msg) {
+		mVid.Log.error("Licence: " + msg);
 	}
 
 	function callback(licenseString, xhr) {
@@ -22,7 +27,7 @@ function clearkeyGetLicence(session, msg) {
 			log(' Session updated');
 		}).catch(
 			function(error) {
-				log('Failed to update the session', error);
+				logerr('Failed to update the session', error);
 			}
 		);
 	}
@@ -37,7 +42,7 @@ function clearkeyGetLicence(session, msg) {
 			};
 			x.send(new Uint8Array(data));
 		} catch (e) {
-			log(e);
+			logerr(e);
 		}
 	};
 
