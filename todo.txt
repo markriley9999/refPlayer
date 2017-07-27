@@ -7,18 +7,12 @@
 	
 - improve cue handling, show cue points
 
-
 - add config screen
 	- bandwidth throttle
 	- lost packets
 	- defer lic
 
 - install confluence page
-
-- *use* utils lib
-
-
-https://github.com/markriley9999/refPlayer.git
 
 - pass lic paramter - content id
 

@@ -137,7 +137,7 @@ function createWindows() {
 }
 
 function updateUI() {
-	sendConnectionStatus("");
+	sendConnectionStatus();
 }
 
 function mainUIClosed() {
