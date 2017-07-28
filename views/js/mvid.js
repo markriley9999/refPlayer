@@ -1,6 +1,6 @@
 var mVid = {};
 
-var commonUtils = new utils();
+var commonUtils = new UTILS();
 
 mVid.videoEvents = Object.freeze({
   LOAD_START		: "loadstart",

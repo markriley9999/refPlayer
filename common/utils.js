@@ -1,5 +1,5 @@
 // Utility functions
-var utils = function () {
+var UTILS = function () {
  
 	var self = this;
 	
@@ -19,7 +19,7 @@ var utils = function () {
 }
 
 if (typeof module !== 'undefined') {
-	module.exports = utils;
-	//console.log("- export: utils");
+	module.exports = UTILS;
+	//console.log("- export: UTILS");
 }
 
