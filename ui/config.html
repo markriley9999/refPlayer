@@ -4,6 +4,7 @@
 	<head>
 		<meta 	http-equiv="Content-Type" content="application/vnd.hbbtv.xml+xhtml; utf-8" />
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="common/configobj.js"></script>		
         <script type="text/javascript" src="js/config.js"></script>
         <link 	rel="stylesheet" href="css/ui.css" />
 	</head>
@@ -19,28 +20,28 @@
 			</ul>
 		</div>	
 		<div id="mainarea" style="top: 72px; position: absolute;">
-			<form>
+			<form id="THROTTLE">
 				<p>Throttle Network</p>
-				<input type="radio" name="tnet" value="0" checked> None<br>
-				<input type="radio" name="tnet" value="1"> 1 mbps<br>
-				<input type="radio" name="tnet" value="2"> 2 mbps<br>
-				<input type="radio" name="tnet" value="4"> 4 mbps<br>
-				<input type="radio" name="tnet" value="8"> 8 mbps<br>
+				<input type="radio" name="tnet" value="NONE" checked> None<br>
+				<input type="radio" name="tnet" value="T1MBPS"> 1 mbps<br>
+				<input type="radio" name="tnet" value="T2MBPS"> 2 mbps<br>
+				<input type="radio" name="tnet" value="T4MBPS"> 4 mbps<br>
+				<input type="radio" name="tnet" value="T8MBPS"> 8 mbps<br>
 			</form>
-			<form>
+			<form id="NETERRS">
 				<p>Network Errors</p>
-				<input type="radio" name="err" value="0" checked> No errors<br>
-				<input type="radio" name="err" value="10"> 1 in 10<br>
-				<input type="radio" name="err" value="100"> 1 in 100<br>
-				<input type="radio" name="err" value="1000"> 1 in 1000<br>
+				<input type="radio" name="err" value="NONE" checked> No errors<br>
+				<input type="radio" name="err" value="E1IN10"> 1 in 10<br>
+				<input type="radio" name="err" value="E1IN100"> 1 in 100<br>
+				<input type="radio" name="err" value="E1IN1000"> 1 in 1000<br>
 			</form>
-			<form>
+			<form id="DELAYLICENSE">
 				<p>Delay License</p>
-				<input type="radio" name="delay" value="0" checked> No Delay<br>
-				<input type="radio" name="delay" value="10"> 10ms delay<br>
-				<input type="radio" name="delay" value="100"> 100ms delay<br>
-				<input type="radio" name="delay" value="1000"> 1s delay<br>
-				<input type="radio" name="delay" value="5000"> 5s delay<br>
+				<input type="radio" name="delay" value="NONE" checked> No Delay<br>
+				<input type="radio" name="delay" value="D10MS"> 10ms delay<br>
+				<input type="radio" name="delay" value="D100MS"> 100ms delay<br>
+				<input type="radio" name="delay" value="D1000MS"> 1s delay<br>
+				<input type="radio" name="delay" value="D5000MS"> 5s delay<br>
 			</form>
 		</div>
     </body>

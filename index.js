@@ -20,8 +20,12 @@ const Throttle = require('stream-throttle').Throttle;
 
 const dateFormat = require('dateformat');
 
-const utils = require('./common/utils.js');
-var commonUtils = new utils();
+const UTILS = require('./common/utils.js');
+var commonUtils = new UTILS();
+
+const CONFIG = require('./common/configobj.js');
+var commonConfig = new CONFIG();
+
 
 var win = {};
 win['log'] 			= null;
@@ -46,11 +50,19 @@ var io = require('socket.io')(server);          // create the sockets io server
 	devName 			: ""
  };
  
-ipc.on('ipc-openwindow', function(event, w) { // listens for the player-control message from the update.js file
+ipc.on('ipc-openwindow', function(event, w) { 
 	if (win[w]) {
 		win[w].createWindow(); 
 		win[w].focusWindow();	
 	}
+})
+
+ipc.on('ipc-get-config', function(event, w) { 
+	sendConfig();
+})
+
+ipc.on('ipc-set-config', function(event, w) { 
+	commonConfig._setProps(w);
 })
 
 function WINDOW(p, uiurl, w, h, r, c) {
@@ -186,6 +198,10 @@ function init() {
 	}
 	
 	sendConnectionStatus();
+	
+	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.T2MBPS);
+	commonConfig.setNetworkErrors(commonConfig.NETERRS.E1IN100);
+	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.D5000MS);
 }
  
 electronApp.on('ready', init); 
@@ -413,6 +429,20 @@ expressServer.get('/content/*', function(req, res) {
 	});
 	
 });
+
+expressServer.get('/time', function(req, res) {
+	var tISO;
+
+	var d = new Date();
+	
+	tISO = dateFormat(d, "isoUtcDateTime");
+	console.log("tISO: " + tISO);
+	
+	res.status(200);
+	res.type("text/plain");
+
+	res.send(tISO);	
+});
  
 expressServer.get('/dynamic/*', function(req, res) {
 	var progStart;
@@ -422,10 +452,13 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var useURL = req.originalUrl;
 	var bDARTest = false;
 	var options = {};
+	var timeServer = "http://" + req.headers.host + "/time";
 	
 	sendServerLog("GET dynamic: " + useURL);
 
 	console.log("Minutes - " + utcMinutes + "M");
+	// console.log("timeServer: " + timeServer);
+	options.timeServer = timeServer;
 	
 	if (req.originalUrl == "/dynamic/dartest") {
 		console.log("*** DAR Test ***");
@@ -449,20 +482,20 @@ expressServer.get('/dynamic/*', function(req, res) {
 
 		d.setUTCMinutes(0);
 		d.setUTCSeconds(0);
-		progStart = dateFormat(d.toUTCString(), "isoDateTime");
+		progStart = dateFormat(d.toUTCString(), "isoUtcDateTime");
 		//console.log("progStart: " + progStart);
 		
 		options.availabilityStartTime = progStart;
 		
 		if (bDARTest) {
 			// TODO put these constants somewhere else!!!!
-			const periodD 	= 599040;
 			const segsize 	= 3840;
+			const periodD 	= (157 * segsize); // approx 10 mins
 			const maxP 		= 5;
 			const marginF 	= 3;
 			const marginB 	= 10;
 			const tweakF	= (60 * 1000);
-			const adD		= (2 * 60 * 1000);
+			const adD		= (32 * segsize); // approx 2mins
 			
 			var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
 			var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
@@ -667,5 +700,11 @@ function sendConnectionStatus() {
 	win['log'].sendToWindow('ipc-connected', obj); 
 } 
 
- 
+function sendConfig() {
+	var props = commonConfig._getProps();
+				 
+	win['config'].sendToWindow('ipc-send-config', props); 
+} 
+
+
 server.listen(3000); // Socket.io port (hides express inside)

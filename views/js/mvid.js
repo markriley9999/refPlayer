@@ -1082,7 +1082,7 @@ function onVideoEvent (v) {
 				// Check if gone off end!
 				if (this.currentTime > this.duration) {
 						v.Log.error("Current Time > Duration - content should have ended!");
-						v.reload();
+						//v.reload();
 				}
 				
 				// Start buffering next programme?

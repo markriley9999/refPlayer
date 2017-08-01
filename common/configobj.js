@@ -4,15 +4,15 @@ var CONFIG = function () {
 	var self = this;
 	var props = {};
 	
-	var THROTTLE = {
+	self.THROTTLE = {
 	  NONE 	: 	{value: 0, name: "None"}, 
-	  1MBPS : 	{value: 1, name: "1mbps"}, 
-	  2MBPS : 	{value: 2, name: "2mbps"}, 
-	  4MBPS : 	{value: 4, name: "4mbps"}, 
-	  8MBPS : 	{value: 8, name: "8mbps"}
+	  T1MBPS : 	{value: 1, name: "1mbps"}, 
+	  T2MBPS : 	{value: 2, name: "2mbps"}, 
+	  T4MBPS : 	{value: 4, name: "4mbps"}, 
+	  T8MBPS : 	{value: 8, name: "8mbps"}
 	};
 	
-	props.throttle = THROTTLE.NONE;
+	props.throttle = self.THROTTLE.NONE;
 	
 	self.getNetworkThrottle = function () {
 		return props.throttle;
@@ -23,14 +23,14 @@ var CONFIG = function () {
 	}
 
 
-	var NETERRS = {
+	self.NETERRS = {
 	  NONE 		: 	{value: 0, 		name: "None"}, 
-	  1IN10 	: 	{value: 10, 	name: "1in10"}, 
-	  1IN100 	: 	{value: 100,  	name: "1in100"}, 
-	  1IN1000 	: 	{value: 1000, 	name: "1in1000"}, 
+	  E1IN10 	: 	{value: 10, 	name: "1in10"}, 
+	  E1IN100 	: 	{value: 100,  	name: "1in100"}, 
+	  E1IN1000 	: 	{value: 1000, 	name: "1in1000"}, 
 	};
 	
-	props.networkErrors = NETERRS.NONE;
+	props.networkErrors = self.NETERRS.NONE;
 	
 	self.getNetworkErrors = function () {
 		return props.networkErrors;
@@ -41,15 +41,15 @@ var CONFIG = function () {
 	}
 
 	
-	var DELAYLICENSE = {
+	self.DELAYLICENSE = {
 	  NONE 		: 	{value: 0, 		name: "None"}, 
-	  10MS 		: 	{value: 10, 	name: "10ms"}, 
-	  100MS		: 	{value: 100, 	name: "100ms"}, 
-	  1000MS 	: 	{value: 1000, 	name: "1000ms"}, 
-	  5000MS 	: 	{value: 5000, 	name: "5000ms"}, 
+	  D10MS 	: 	{value: 10, 	name: "10ms"}, 
+	  D100MS	: 	{value: 100, 	name: "100ms"}, 
+	  D1000MS 	: 	{value: 1000, 	name: "1000ms"}, 
+	  D5000MS 	: 	{value: 5000, 	name: "5000ms"}, 
 	};
 	
-	props.delayLicense = DELAYLICENSE.NONE;
+	props.delayLicense = self.DELAYLICENSE.NONE;
 	
 
 	self.getDelayLicense = function () {
