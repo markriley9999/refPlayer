@@ -460,7 +460,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
 	
-	if (req.originalUrl == "/dynamic/dartest") {
+	if (req.originalUrl == "/dynamic/dartest.mpd") {
 		console.log("*** DAR Test ***");
 		useURL = "dynamic/live-mperiods-1hr.mpd";
 		bDARTest = true;
@@ -491,34 +491,21 @@ expressServer.get('/dynamic/*', function(req, res) {
 			// TODO put these constants somewhere else!!!!
 			const segsize 	= 3840;
 			const periodD 	= (157 * segsize); // approx 10 mins
-			const maxP 		= 5;
-			const marginF 	= 3;
-			const marginB 	= 10;
-			const tweakF	= (60 * 1000);
 			const adD		= (32 * segsize); // approx 2mins
+			const maxP 		= 5;
+			const marginF 	= 2;	// forward - mins
+			const marginB 	= 10;	// back - mins
 			
 			var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
 			var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
 			var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
 			var numP = (upperP - lowerP) + 1;
-			var tw;
 			
 			console.log("CurrentPeriod: " + currentP);
 			
 			for (var i = lowerP; i <= upperP; i++) {
-				if (((numP > 1) && (i == upperP) && (upperP < maxP)) || (upperP == 0)) {
-					tw = tweakF;
-				} else {
-					tw = 0;
-				}
-				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize, tw);
+				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize);
 			}
-			/* All periods....
-			for (var i = 0; i <= 5; i++) {
-				tw = 0;
-				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize, tw);
-			}
-			*/
 		}
 		
 		res.render(file, options, function(err, mpd) { 
@@ -547,8 +534,8 @@ getPeriod = function(m, d, mx) {
 }
 
 /*
-makePeriod = function(p, d, sz, tw) {
-	var fd = new Date(d-tw);
+makePeriod = function(p, d, sz) {
+	var fd = new Date(d);
 	var fs = new Date(p * d);
 	var seg = (p * d) / sz;
 	
@@ -560,7 +547,7 @@ makePeriod = function(p, d, sz, tw) {
 }
 */
 
-makeAdAndMainPeriods = function(p, periodD, adD, sz, tw) {
+makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	var str;
 
 	var fadD = new Date(adD);
@@ -574,7 +561,7 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz, tw) {
 
 	str = adXML(p, sAdDuration, sAdStart);
 
-	var fd = new Date(periodD-tw-adD);
+	var fd = new Date(periodD-adD);
 	var fs = new Date((p * periodD) + adD);
 	var seg = Math.floor(((p * periodD) + adD) / sz);
 	

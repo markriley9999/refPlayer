@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 	: "dynamic/dartest",
+	"src" 	: "dynamic/dartest.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
 	"channelName" : "Live Dynamic, Multiperiod: Starts on the hour"

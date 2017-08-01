@@ -1,9 +1,12 @@
+LG - DiscoApp cookie issue for Luke!!!!
+
+
 - create:
-	- live
-	- dynamic
-	- multi period
-	- cues
-	
+		- loose tweak
+		- 1 min dyn periods!
+		- add period_continuity to all m-period mpds (ch6!)
+		- add cues!
+		- encrypt content
 	
 - improve cue handling, show cue points
 
