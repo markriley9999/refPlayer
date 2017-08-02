@@ -1,10 +1,5 @@
-LG - DiscoApp cookie issue for Luke!!!!
-
 
 - create:
-		- loose tweak
-		- 1 min dyn periods!
-		- add period_continuity to all m-period mpds (ch6!)
 		- add cues!
 		- encrypt content
 	
