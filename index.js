@@ -450,20 +450,58 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var utcHours = d.getUTCHours();	
 	var utcMinutes = d.getUTCMinutes();
 	var useURL = req.originalUrl;
-	var bDARTest = false;
 	var options = {};
 	var timeServer = "http://" + req.headers.host + "/time";
+	var bAdsandMain = false;
 	
 	sendServerLog("GET dynamic: " + useURL);
 
 	console.log("Minutes - " + utcMinutes + "M");
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
+
+	var segsize;
+	var periodD; 
+	var adD; 
+	var maxP;
+	var marginF;	// forward - mins
+	var marginB;	// back - mins
 	
-	if (req.originalUrl == "/dynamic/dartest.mpd") {
+	if (req.originalUrl === "/dynamic/dartest.mpd") {
 		console.log("*** DAR Test ***");
-		useURL = "dynamic/live-mperiods-1hr.mpd";
-		bDARTest = true;
+
+		segsize 	= 3840;
+		periodD 	= (157 * segsize); // approx 10 mins
+		adD			= (32 * segsize); // approx 2mins
+		maxP 		= 5;
+		marginF 	= 2;	// forward - mins
+		marginB 	= 10;	// back - mins
+		
+		bAdsandMain = true;
+		
+	} else if (req.originalUrl === "/dynamic/mperiod.mpd") {
+		console.log("*** Multi-period Test ***");
+
+		segsize 	= 3840;
+		periodD 	= (79 * segsize); // approx 5 mins
+		maxP 		= 11;
+		marginF 	= 5;	// forward - mins
+		marginB 	= 5;	// back - mins
+	}
+
+	var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
+	var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
+	var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
+	var numP = (upperP - lowerP) + 1;
+	
+	console.log("CurrentPeriod: " + currentP);
+	
+	for (var i = lowerP; i <= upperP; i++) {
+		if (bAdsandMain) {
+			options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize);
+		} else {
+			options['period' + i] = makePeriod(i, periodD, segsize);			
+		}
 	}
 	
 	// Get file on server
@@ -486,27 +524,6 @@ expressServer.get('/dynamic/*', function(req, res) {
 		//console.log("progStart: " + progStart);
 		
 		options.availabilityStartTime = progStart;
-		
-		if (bDARTest) {
-			// TODO put these constants somewhere else!!!!
-			const segsize 	= 3840;
-			const periodD 	= (157 * segsize); // approx 10 mins
-			const adD		= (32 * segsize); // approx 2mins
-			const maxP 		= 5;
-			const marginF 	= 2;	// forward - mins
-			const marginB 	= 10;	// back - mins
-			
-			var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
-			var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
-			var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
-			var numP = (upperP - lowerP) + 1;
-			
-			console.log("CurrentPeriod: " + currentP);
-			
-			for (var i = lowerP; i <= upperP; i++) {
-				options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize);
-			}
-		}
 		
 		res.render(file, options, function(err, mpd) { 
 			if (err) {
@@ -533,19 +550,25 @@ getPeriod = function(m, d, mx) {
 	return p;
 }
 
-/*
 makePeriod = function(p, d, sz) {
 	var fd = new Date(d);
 	var fs = new Date(p * d);
 	var seg = (p * d) / sz;
 	
-	var sDuration = _formatTime(fd);
-	var sStart =  	_formatTime(fs);
+	var sDuration 	= _formatTime(fd);
+	var sStart 		= _formatTime(fs);
+	var offsetS  	= _getSecs(fs);
 	
 	sendServerLog(" - Generated manifest file: Period: " + p + " Duration: " + sDuration + " Start: " + sStart);
-	return mainContentXML(sDuration, sStart, seg);
+
+	var pPreviousPeriod = "";
+	
+	if (p > 0) {
+		pPreviousPeriod = "main-" + (p-1);	
+	}
+	
+	return mainContentXML(p, sDuration, sStart, offsetS, seg, pPreviousPeriod);
 }
-*/
 
 makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	var str;
@@ -559,7 +582,13 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	str = adXML(p, sAdDuration, sAdStart);
+	var pPreviousPeriod1 = "";
+	
+	if (p > 0) {
+		pPreviousPeriod1 = "main-" + (p-1);	
+	}
+	
+	str = adXML(p, sAdDuration, sAdStart, pPreviousPeriod1);
 
 	var fd = new Date(periodD-adD);
 	var fs = new Date((p * periodD) + adD);
@@ -571,8 +600,10 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (" + offsetS + "S)");
 
+	var pPreviousPeriod2 = "ad-" + p;
+
 	str += "\n";
-	str += mainContentXML(p, sDuration, sStart, offsetS, seg);
+	str += mainContentXML(p, sDuration, sStart, offsetS, seg, pPreviousPeriod2);
 	
 	return str;
 }
@@ -585,16 +616,22 @@ _getSecs = function(d) {
 		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
 }
 
-mainContentXML = function(p, sDuration, sStart, offset, seg) {
+mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 	var str;
+	var pc = "";
 	
+	if (prevPeriodID != "") {
+		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
+	}
+	
+	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
 	str = "<!-- *** Generated Period: Main Content *** -->\n";
 	
 	//str += "<Period id=\"main-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
 	str += "<Period id=\"main-" + p + "\" start=\"" + sStart + "\">\n";
 	
 	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >\n" +
-		"  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"ad-" + p + "\" />\n" +
+		pc +
 		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
 		"  <BaseURL>../content/testcard/avc3-events/</BaseURL>\n" + 
 		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
@@ -604,7 +641,7 @@ mainContentXML = function(p, sDuration, sStart, offset, seg) {
 		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>\n" +
 		" </AdaptationSet>\n" +
 		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
-		"  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"ad-" + p + "\" />\n" +
+		pc +
 		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
 		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
 		"  <BaseURL>../content/testcard/audio/</BaseURL>\n" +
@@ -616,14 +653,15 @@ mainContentXML = function(p, sDuration, sStart, offset, seg) {
 	return str;
 }
 
-adXML = function(p, sDuration, sStart) {
+adXML = function(p, sDuration, sStart, prevPeriodID) {
 	var str;
 	var pc = "";
 	
+	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
 	str = "<!-- *** Generated Period: Ad *** -->\n";
 	
-	if (p > 0) {
-		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"main-" + (p-1) + "\" />\n";	
+	if (prevPeriodID != "") {
+		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
 	}
 	
 	// str += "<Period id=\"ad-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
