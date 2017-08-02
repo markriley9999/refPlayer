@@ -29,3 +29,4 @@ LG - DiscoApp cookie issue for Luke!!!!
 	
 - retest in fedora
 
+- version info!
