@@ -65,7 +65,7 @@ ipc.on('ipc-set-config', function(event, w) {
 	commonConfig._setProps(w);
 })
 
-function WINDOW(p, uiurl, w, h, r, c) {
+function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	this.uiurl 	= uiurl;
 	this.width 	= w;
 	this.height	= h;
@@ -96,8 +96,10 @@ function WINDOW(p, uiurl, w, h, r, c) {
 				}
 				that.winObj = null;
 			});
-
-			this.winObj.maximize();
+			
+			if (bMax) {
+				this.winObj.maximize();
+			}
 			
 			this.winObj.loadURL(url.format({ 
 				pathname: path.join(__dirname, this.uiurl),
@@ -164,16 +166,16 @@ function mainUIClosed() {
 function init() {
 	var p;
 	
-	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	updateUI,	mainUIClosed);
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	updateUI,	mainUIClosed, true);
 	
 	p = win['log'].getWin();
 	
-	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1400,	700,	null,			null);
-	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1400, 	800,	null,			null);
-	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null,			null);
-	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null,			null);
-	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null,			null);
-	win['config']		= new WINDOW(p,	'ui/config.html',		800, 	800,	null,			null);
+	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1400,	700,	null, null, true);
+	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1400, 	800,	null, null, true);
+	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null, null, true);
+	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null, null, true);
+	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null, null, false);
+	win['config']		= new WINDOW(p,	'ui/config.html',		335, 	650,	null, null, false);
 
 	win['log'].createWindow();
 	

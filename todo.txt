@@ -21,3 +21,6 @@
 - retest in fedora
 
 - version info!
+
+- last segment may not be whole!
+
