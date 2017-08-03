@@ -22,26 +22,26 @@
 		<div id="mainarea" style="top: 72px; position: absolute;">
 			<form id="THROTTLE">
 				<p>Throttle Network</p>
-				<input type="radio" name="tnet" value="None"> None<br /></input>
-				<input type="radio" name="tnet" value="1mbps"> 1 mbps<br /></input>
-				<input type="radio" name="tnet" value="2mbps"> 2 mbps<br /></input>
-				<input type="radio" name="tnet" value="4mbps"> 4 mbps<br /></input>
-				<input type="radio" name="tnet" value="8mbps"> 8 mbps<br /></input>
+				<input type="radio" name="tnet" value="None" onclick="selectOption(this, commonConfig.setNetworkThrottleByName)"> None<br /></input>
+				<input type="radio" name="tnet" value="1mbps" onclick="selectOption(this, commonConfig.setNetworkThrottleByName)"> 1 mbps<br /></input>
+				<input type="radio" name="tnet" value="2mbps" onclick="selectOption(this, commonConfig.setNetworkThrottleByName)"> 2 mbps<br /></input>
+				<input type="radio" name="tnet" value="4mbps" onclick="selectOption(this, commonConfig.setNetworkThrottleByName)"> 4 mbps<br /></input>
+				<input type="radio" name="tnet" value="8mbps" onclick="selectOption(this, commonConfig.setNetworkThrottleByName)"> 8 mbps<br /></input>
 			</form>
 			<form id="NETERRS">
 				<p>Network Errors</p>
-				<input type="radio" name="err" value="None"> No errors<br /></input>
-				<input type="radio" name="err" value="1in10"> 1 in 10<br /></input>
-				<input type="radio" name="err" value="1in100"> 1 in 100<br /></input>
-				<input type="radio" name="err" value="1in1000"> 1 in 1000<br /></input>
+				<input type="radio" name="err" value="None" onclick="selectOption(this, commonConfig.setNetworkErrorsByName)"> No errors<br /></input>
+				<input type="radio" name="err" value="1in10" onclick="selectOption(this, commonConfig.setNetworkErrorsByName)"> 1 in 10<br /></input>
+				<input type="radio" name="err" value="1in100" onclick="selectOption(this, commonConfig.setNetworkErrorsByName)"> 1 in 100<br /></input>
+				<input type="radio" name="err" value="1in1000" onclick="selectOption(this, commonConfig.setNetworkErrorsByName)"> 1 in 1000<br /></input>
 			</form>
 			<form id="DELAYLICENSE">
 				<p>Delay License</p>
-				<input type="radio" name="delay" value="None"> No Delay<br /></input>
-				<input type="radio" name="delay" value="10ms"> 10ms delay<br /></input>
-				<input type="radio" name="delay" value="100ms"> 100ms delay<br /></input>
-				<input type="radio" name="delay" value="1000ms"> 1s delay<br /></input>
-				<input type="radio" name="delay" value="5000ms"> 5s delay<br /></input>
+				<input type="radio" name="delay" value="None" onclick="selectOption(this, commonConfig.setDelayLicenseByName)"> No Delay<br /></input>
+				<input type="radio" name="delay" value="10ms" onclick="selectOption(this, commonConfig.setDelayLicenseByName)"> 10ms delay<br /></input>
+				<input type="radio" name="delay" value="100ms" onclick="selectOption(this, commonConfig.setDelayLicenseByName)"> 100ms delay<br /></input>
+				<input type="radio" name="delay" value="1000ms" onclick="selectOption(this, commonConfig.setDelayLicenseByName)"> 1s delay<br /></input>
+				<input type="radio" name="delay" value="5000ms" onclick="selectOption(this, commonConfig.setDelayLicenseByName)"> 5s delay<br /></input>
 			</form>
 		</div>
     </body>

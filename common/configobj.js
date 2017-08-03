@@ -22,6 +22,16 @@ var CONFIG = function () {
 		props.throttle = v;
 	}
 
+	self.setNetworkThrottleByName = function (n) {
+		
+		for (var k in self.THROTTLE) {
+			if ((self.THROTTLE.hasOwnProperty(k)) && (self.THROTTLE[k].name === n)) {
+				props.throttle = self.THROTTLE[k];
+				break;
+			}
+		}
+	}
+
 
 	self.NETERRS = {
 	  NONE 		: 	{value: 0, 		name: "None"}, 
@@ -40,6 +50,15 @@ var CONFIG = function () {
 		props.networkErrors = v;
 	}
 
+	self.setNetworkErrorsByName = function (n) {
+		
+		for (var k in self.NETERRS) {
+			if ((self.NETERRS.hasOwnProperty(k)) && (self.NETERRS[k].name === n)) {
+				props.networkErrors = self.NETERRS[k];
+				break;
+			}
+		}
+	}
 	
 	self.DELAYLICENSE = {
 	  NONE 		: 	{value: 0, 		name: "None"}, 
@@ -60,6 +79,16 @@ var CONFIG = function () {
 		props.delayLicense = v;
 	}
 
+	self.setDelayLicenseByName = function (n) {
+		
+		for (var k in self.DELAYLICENSE) {
+			if ((self.DELAYLICENSE.hasOwnProperty(k)) && (self.DELAYLICENSE[k].name === n)) {
+				props.delayLicense = self.DELAYLICENSE[k];
+				break;
+			}
+		}
+	}
+	
 	
 	self._getProps = function () {
 		return props;

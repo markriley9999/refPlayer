@@ -1,24 +1,20 @@
-
+- add config screen
+	- bandwidth throttle
+	- lost packets
+	- defer lic
+	- config UI
+	
 - create:
 		- add cues!
 		- encrypt content
 	
 - improve cue handling, show cue points
 
-- add config screen
-	- bandwidth throttle
-	- lost packets
-	- defer lic
-
 - install confluence page
 
 - pass lic paramter - content id
 
-- control from browser
-
 - port 80
-
-- add DRM
 
 - upload new content
 	

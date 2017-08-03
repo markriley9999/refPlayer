@@ -32,6 +32,12 @@ function clearkeyGetLicence(session, msg) {
 		);
 	}
 
+	function arrayBufferToString(buffer){
+		var arr = new Uint8Array(buffer);
+		var str = String.fromCharCode.apply(String, arr);
+		return str;
+	}
+	
 	function ajax(url, callback, data, x) {
 		try {
 			x = new (this.XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
@@ -40,6 +46,7 @@ function clearkeyGetLicence(session, msg) {
 			x.onreadystatechange = function() {
 				x.readyState > 3 && callback && callback(x.responseText, x);
 			};
+			log(' AJAX send: ' + arrayBufferToString(data));
 			x.send(new Uint8Array(data));
 		} catch (e) {
 			logerr(e);

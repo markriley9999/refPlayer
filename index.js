@@ -199,9 +199,9 @@ function init() {
 	
 	sendConnectionStatus();
 	
-	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.T2MBPS);
-	commonConfig.setNetworkErrors(commonConfig.NETERRS.E1IN100);
-	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.D5000MS);
+	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
+	commonConfig.setNetworkErrors(commonConfig.NETERRS.NONE);
+	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.NONE);
 }
  
 electronApp.on('ready', init); 
@@ -329,14 +329,6 @@ expressServer.get('/player.aitx', function(req, res) {
     });
 });
 
-var badNetwork = {
-	chanceOfError		: 10, 						// 1 in x 505 errors
-	bSimErrors			: false,
-	throttleBitrate		: 2 * 1024,					// kbps (bits)
-	bThrottle			: false,
-	delayLicense		: 0
-};
-
 expressServer.get('/content/*', function(req, res) {
 	// Why seeing 2 gets????
 	
@@ -344,8 +336,10 @@ expressServer.get('/content/*', function(req, res) {
 	//console.log(JSON.stringify(req.headers));
 
 	// ***** Simulate error condition (505)? *****
-	if (badNetwork.bSimErrors) {
-		var rndErr = Math.floor(Math.random() * (badNetwork.chanceOfError-1));
+	var nErrs = commonConfig.getNetworkErrors();
+	
+	if (nErrs.value != 0) {
+		var rndErr = Math.floor(Math.random() * (nErrs.value - 1));
 		
 		if (rndErr === 0) {
 			// Simulate error (505)
@@ -416,9 +410,11 @@ expressServer.get('/content/*', function(req, res) {
 		var stream = fs.createReadStream(file, { start: start, end: end })
 			.on("open", function() {
 				//console.log(" - send chunk");
-				if (badNetwork.bThrottle) {
-					stream.pipe(new Throttle({rate: badNetwork.throttleBitrate * 1024 / 8, chunksize: 2048 * 1024})).pipe(res);
-					sendServerLog("Throttle server: " + badNetwork.throttleBitrate + "(kbps)");
+				var nThrot = commonConfig.getNetworkThrottle();
+				
+				if (nThrot.value != 0) {
+					stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
+					sendServerLog("Throttle server: " + nThrot.name);
 				} else {
 					stream.pipe(res);				
 				}
@@ -705,13 +701,22 @@ expressServer.post('/savelog', function(req, res) {
 const clearKeyLicense = require('./clearKey/itv-licence.json');
 
 expressServer.post('/getkeys', function(req, res) {
+	
+	var lDelay = commonConfig.getDelayLicense();
+	
 	sendServerLog("getkeys: " + JSON.stringify(req.body));
 	
-	setTimeout(function() {
+	if (lDelay.value != 0) {
+		sendServerLog("getkeys: delay license by " + lDelay.name);
+		setTimeout(function() {
+			res.status(200);
+			res.send(clearKeyLicense);
+		}, lDelay.value);
+	} else {
 		res.status(200);
-		res.send(clearKeyLicense);
-	}, badNetwork.delayLicense);
-   
+		res.send(clearKeyLicense);		
+	}
+	
 });
 
 function sendConnectionStatus() {

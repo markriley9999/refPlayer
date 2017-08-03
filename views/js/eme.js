@@ -102,8 +102,14 @@ function SetupEME(video, keySystem, name, options)
 	  return ensurePromise;
 	}
 
+	function arrayBufferToString(buffer){
+		var arr = new Uint8Array(buffer);
+		var str = String.fromCharCode.apply(String, arr);
+		return str;
+	}
+	
 	video.addEventListener("encrypted", function(ev) {
-		log(name + " got encrypted event");
+		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData" +  arrayBufferToString(ev.initData) + ")");
 
 		if (!video.bEncrypted) { 
 			video.bEncrypted = true;

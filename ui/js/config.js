@@ -49,6 +49,13 @@ updateUI = function () {
 	setCheck(e("DELAYLICENSE"), delayLicense.name);
 }
 
+selectOption = function (obj, f) {
+		//console.log(obj.value);
+		if (f) { 
+			f(obj.value);
+			ipc.send("ipc-set-config", commonConfig._getProps());
+		}
+}
 // listen for the ipc events
 ipc.on('ipc-send-config', function(event, message) {
 	try {
