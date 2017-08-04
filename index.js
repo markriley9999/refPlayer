@@ -44,7 +44,7 @@ var io = require('socket.io')(server);          // create the sockets io server
  
  var connectedStatus = {
 	port				: 0,
-	addresses 			: [],
+	serverAddresses 	: [],
 	connectedDevices	: 0,
 	currentDeviceUA 	: "",
 	devName 			: ""
@@ -65,44 +65,51 @@ ipc.on('ipc-set-config', function(event, w) {
 	commonConfig._setProps(w);
 })
 
+ipc.on('ipc-get-connectionstatus', function(event, w) { 
+	sendConnectionStatus();
+})
+
 function WINDOW(p, uiurl, w, h, r, c, bMax) {
-	this.uiurl 	= uiurl;
-	this.width 	= w;
-	this.height	= h;
-	this.winObj = null;
-	this.onFocus = r;
-	this.onClosed = c;
+	var self = this;
 	
-	this.createWindow = function () {
-		var that = this;
-		
-		if (!this.winObj) {
-			this.winObj = new browserWindow({
+	self.uiurl 	= uiurl;
+	self.width 	= w;
+	self.height	= h;
+	self.winObj = null;
+	self.onFocus = r;
+	self.onClosed = c;
+	
+	self.createWindow = function () {
+
+	if (!self.winObj) {
+			self.winObj = new browserWindow({
 					parent: p,
-					width: this.width, 
-					height: this.height, 
+					width: self.width, 
+					height: self.height, 
 					icon: 'ui/bitmaps/tv-512.png'
 				}); 
 		 
-			this.winObj.on('focus', function() {
-				if (that.onFocus) {
-					that.onFocus(that.winObj);
+			// TODO: doesn't work :( - see https://github.com/electron/electron/issues/7779
+			self.winObj.once('ready-to-show', () => {
+				if (self.onFocus) {
+					self.onFocus(self.winObj);
 				}
 			});
 			
-			this.winObj.on('closed', function() { // reset the window object when it is closed
-				if (that.onClosed) {
-					that.onClosed(that.winObj);
+			self.winObj.on('closed', function() { // reset the window object when it is closed
+				console.log("-------");
+				if (self.onClosed) {
+					self.onClosed(self.winObj);
 				}
-				that.winObj = null;
+				self.winObj = null;
 			});
 			
 			if (bMax) {
-				this.winObj.maximize();
+				self.winObj.maximize();
 			}
 			
-			this.winObj.loadURL(url.format({ 
-				pathname: path.join(__dirname, this.uiurl),
+			self.winObj.loadURL(url.format({ 
+				pathname: path.join(__dirname, self.uiurl),
 				protocol: 'file:',
 				slashes: true
 			}));	
@@ -150,10 +157,6 @@ function createWindows() {
 	win['config'].createWindow();
 }
 
-function updateUI() {
-	sendConnectionStatus();
-}
-
 function mainUIClosed() {
 	win['allvideoobjs'].closeWin();
 	win['mainvideoobj'].closeWin();
@@ -166,7 +169,7 @@ function mainUIClosed() {
 function init() {
 	var p;
 	
-	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	updateUI,	mainUIClosed, true);
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
 	p = win['log'].getWin();
 	
@@ -186,7 +189,7 @@ function init() {
 		for (var k2 in interfaces[k]) {
 			var address = interfaces[k][k2];
 			if (address.family === 'IPv4' && !address.internal) {
-				connectedStatus.addresses.push(address.address);
+				connectedStatus.serverAddresses.push(address.address);
 			}
 		}
 	}
@@ -195,11 +198,9 @@ function init() {
 	sendServerLog("-----------------------");
 
 	connectedStatus.port = server.address().port;
-	for( var i = 0; i < connectedStatus.addresses.length; i++) {
-		sendServerLog(i + ": " + connectedStatus.addresses[i] + ":" + connectedStatus.port);
+	for( var i = 0; i < connectedStatus.serverAddresses.length; i++) {
+		sendServerLog(i + ": " + connectedStatus.serverAddresses[i] + ":" + connectedStatus.port);
 	}
-	
-	sendConnectionStatus();
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
 	commonConfig.setNetworkErrors(commonConfig.NETERRS.NONE);
@@ -622,7 +623,7 @@ mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
 	}
 	
-	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
+	// TODO: Use handlebars! 
 	str = "<!-- *** Generated Period: Main Content *** -->\n";
 	
 	//str += "<Period id=\"main-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
@@ -655,7 +656,7 @@ adXML = function(p, sDuration, sStart, prevPeriodID) {
 	var str;
 	var pc = "";
 	
-	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
+	// TODO: Use handbars! 
 	str = "<!-- *** Generated Period: Ad *** -->\n";
 	
 	if (prevPeriodID != "") {
@@ -724,7 +725,7 @@ expressServer.post('/getkeys', function(req, res) {
 function sendConnectionStatus() {
 	var obj = { 
 					'port'			: connectedStatus.port,
-					'addresses'		: connectedStatus.addresses, 
+					'addresses'		: connectedStatus.serverAddresses, 
 					'bConnected'	: (connectedStatus.connectedDevices > 0),
 					'devName'		: connectedStatus.devName
 				};
