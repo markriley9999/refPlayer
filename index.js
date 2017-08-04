@@ -616,53 +616,31 @@ _getSecs = function(d) {
 		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
 }
 
-//const periodMain 		= require('./dynamic/periods/main-testcard.xml');
 //const periodAd 			= require('./dynamic/periods/ad-bbb.xml');
-//const periodContinuity 	= require('./dynamic/periods/period-continuity.xml');
 
-var periodMain = fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
+const periodMain 		= fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
+const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
 
 mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
-	var str;
-	var pc = "";
-	
-	if (prevPeriodID != "") {
-		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
-	}
-	
-	// TODO: Use handlebars! 
-	str = "<!-- *** Generated Period: Main Content *** -->\n";
-	
-	//str += "<Period id=\"main-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
-	str += "<Period id=\"main-" + p + "\" start=\"" + sStart + "\">\n";
-	
-	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >\n" +
-		pc +
-		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
-		"  <BaseURL>../content/testcard/avc3-events/</BaseURL>\n" + 
-		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
-		"  <Representation id=\"704x396p50\" codecs=\"avc3.64001f\" height=\"396\" width=\"704\" frameRate=\"50\" scanType=\"progressive\" bandwidth=\"1572456\"/>\n" +
-		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"440664\"/>\n" +
-		"  <Representation id=\"384x216p25\" codecs=\"avc3.42c015\" height=\"216\" width=\"384\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"283320\"/>\n" + 
-		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>\n" +
-		" </AdaptationSet>\n" +
-		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
-		pc +
-		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
-		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
-		"  <BaseURL>../content/testcard/audio/</BaseURL>\n" +
-		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
-		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
-		" </AdaptationSet>\n" +
-		"</Period>\n";
+	var pc;
+	var template;
+	var context;
 		
-	var template = hbs.handlebars.compile(periodMain);
-	var context = {period_id: p, period_start: sStart, period_offset: offset, period_seg: seg};
-	var html    = template(context);
+	if (prevPeriodID != "") {
+		template = hbs.handlebars.compile(periodContinuity);
+		context = {prevperiod_id: prevPeriodID};
+		pc =  template(context);
+	} else {
+		pc = "";
+	}
+
+	template 	= hbs.handlebars.compile(periodMain);
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, period_offset: offset, period_seg: seg};
+	var complete = template(context);
 	
-	console.log(html);
+	// console.log(complete);
 	
-	return str;
+	return complete;
 }
 
 adXML = function(p, sDuration, sStart, prevPeriodID) {
