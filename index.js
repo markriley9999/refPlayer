@@ -13,8 +13,9 @@ const url = require('url');   // used by electron to load html files
  
 const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
+
 const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
- 
+//hbs.handlebars === require('handlebars');
  
 const Throttle = require('stream-throttle').Throttle;
 
@@ -615,6 +616,12 @@ _getSecs = function(d) {
 		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
 }
 
+//const periodMain 		= require('./dynamic/periods/main-testcard.xml');
+//const periodAd 			= require('./dynamic/periods/ad-bbb.xml');
+//const periodContinuity 	= require('./dynamic/periods/period-continuity.xml');
+
+var periodMain = fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
+
 mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 	var str;
 	var pc = "";
@@ -649,6 +656,12 @@ mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 		" </AdaptationSet>\n" +
 		"</Period>\n";
 		
+	var template = hbs.handlebars.compile(periodMain);
+	var context = {period_id: p, period_start: sStart, period_offset: offset, period_seg: seg};
+	var html    = template(context);
+	
+	console.log(html);
+	
 	return str;
 }
 

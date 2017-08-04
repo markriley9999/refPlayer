@@ -1,0 +1,1 @@
+<SupplementalProperty schemeIdUri="urn:mpeg:dash:period_continuity:2014" value="{{prevperiod_id}}" />
