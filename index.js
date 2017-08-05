@@ -482,7 +482,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 	var currentP 	= getPeriod_floor(utcMinutes * 60 * 1000, sC.periodD, sC.maxP);
 	var lowerP 		= getPeriod_floor((utcMinutes - sC.marginB) * 60 * 1000, sC.periodD, sC.maxP);
-	var upperP 		= getPeriod_round((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
+	var upperP 		= getPeriod_floor((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
 	var numP = (upperP - lowerP) + 1;
 	
 	console.log("CurrentPeriod: " + currentP);
