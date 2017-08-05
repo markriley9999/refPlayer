@@ -1,29 +1,34 @@
-- add config screen
-	- bandwidth throttle
-	- lost packets
-	- defer lic
-	- config UI
-	
+- pass lic paramter - content id
+
+- version info!
+
+- port 80
+
 - create:
 		- add cues!
 		- encrypt content
-	
-- improve cue handling, show cue points
+		- improve cue handling, show cue points
 
 - install confluence page
-
-- pass lic paramter - content id
-
-- port 80
 
 - upload new content
 	
 - retest in fedora
 
-- version info!
-
 - last segment may not be whole!
 
 
+Check Spec:
+------------------
 
 check urn:mpeg:dash:period_continuity:2014 in spec
+timeShiftBufferDepth
+UTCTiming
+
+Qs
+--------------------
+
+1. live playback
+2. start of current live programme
+3. trick mode?
+4. cue signalling

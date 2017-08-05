@@ -9,26 +9,26 @@
 	mediaPresentationDuration="PT1H0.040S"
  
 	minimumUpdatePeriod="PT10S"
-	timeShiftBufferDepth="PT300S"
+	timeShiftBufferDepth="PT0S"
 	availabilityStartTime="{{availabilityStartTime}}"
 	publishTime="{{availabilityStartTime}}"
 	>
 
-	{{{period0}}}
-	{{{period1}}}
-	{{{period2}}}
-	{{{period3}}}
-	{{{period4}}}
-	{{{period5}}}
-	{{{period6}}}
-	{{{period7}}}
-	{{{period8}}}
-	{{{period9}}}
-	{{{period10}}}
-	{{{period11}}}
+{{{period0}}}
+{{{period1}}}
+{{{period2}}}
+{{{period3}}}
+{{{period4}}}
+{{{period5}}}
+{{{period6}}}
+{{{period7}}}
+{{{period8}}}
+{{{period9}}}
+{{{period10}}}
+{{{period11}}}
 
-<UTCTiming
-	schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
-	value="{{timeServer}}"/>
+	<UTCTiming
+		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
+		value="{{timeServer}}"/>
 	
 </MPD>

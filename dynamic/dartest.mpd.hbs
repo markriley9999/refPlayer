@@ -9,7 +9,7 @@
 	mediaPresentationDuration="PT1H0.040S"
  
 	minimumUpdatePeriod="PT10S"
-	timeShiftBufferDepth="PT600S"
+	timeShiftBufferDepth="PT1H0.040S"
 	publishTime="{{availabilityStartTime}}"
 	availabilityStartTime="{{availabilityStartTime}}"
 >
@@ -32,8 +32,8 @@
 	<!-- Period 5: Ad and Main -->	
 {{{period5}}}
 
-<UTCTiming
-	schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
-	value="{{timeServer}}" />
+	<UTCTiming
+		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
+		value="{{timeServer}}" />
 	
 </MPD>

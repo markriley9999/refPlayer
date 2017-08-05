@@ -444,6 +444,10 @@ expressServer.get('/time', function(req, res) {
 	res.send(tISO);	
 });
  
+const configStream = [];
+configStream["/dynamic/dartest.mpd"] = require('./dynamic/dartest.json');
+configStream["/dynamic/mperiod.mpd"] = require('./dynamic/mperiod.json');
+
 expressServer.get('/dynamic/*', function(req, res) {
 	var progStart;
 	var d = new Date();
@@ -453,54 +457,41 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var options = {};
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
+	var sC = [];
 	
 	sendServerLog("GET dynamic: " + useURL);
 
 	console.log("Minutes - " + utcMinutes + "M");
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
-
-	var segsize;
-	var periodD; 
-	var adD; 
-	var maxP;
-	var marginF;	// forward - mins
-	var marginB;	// back - mins
 	
-	if (req.originalUrl === "/dynamic/dartest.mpd") {
-		console.log("*** DAR Test ***");
-
-		segsize 	= 3840;
-		periodD 	= (157 * segsize); // approx 10 mins
-		adD			= (32 * segsize); // approx 2mins
-		maxP 		= 5;
-		marginF 	= 2;	// forward - mins
-		marginB 	= 10;	// back - mins
-		
-		bAdsandMain = true;
-		
-	} else if (req.originalUrl === "/dynamic/mperiod.mpd") {
-		console.log("*** Multi-period Test ***");
-
-		segsize 	= 3840;
-		periodD 	= (79 * segsize); // approx 5 mins
-		maxP 		= 11;
-		marginF 	= 5;	// forward - mins
-		marginB 	= 5;	// back - mins
+	if (configStream[req.originalUrl]) {
+		sC = configStream[req.originalUrl];
+	} else {
+		console.log(" * bad url.");
+		return res.sendStatus(404);
 	}
-
-	var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
-	var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
-	var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
+	
+	sC.segsize 	= parseInt(eval(sC.segsize));
+	sC.periodD 	= parseInt(eval(sC.periodD));
+	sC.maxP 	= parseInt(eval(sC.maxP));
+	sC.adD 		= parseInt(eval(sC.adD));
+	sC.marginF 	= parseInt(eval(sC.marginF));
+	sC.marginB 	= parseInt(eval(sC.marginB));
+	sC.bAdsandMain = eval(sC.bAdsandMain);
+	
+	var currentP 	= getPeriod_floor(utcMinutes * 60 * 1000, sC.periodD, sC.maxP);
+	var lowerP 		= getPeriod_floor((utcMinutes - sC.marginB) * 60 * 1000, sC.periodD, sC.maxP);
+	var upperP 		= getPeriod_round((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
 	var numP = (upperP - lowerP) + 1;
 	
 	console.log("CurrentPeriod: " + currentP);
 	
 	for (var i = lowerP; i <= upperP; i++) {
-		if (bAdsandMain) {
-			options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize);
+		if (sC.bAdsandMain) {
+			options['period' + i] = makeAdAndMainPeriods(i, sC.periodD, sC.adD, sC.segsize);
 		} else {
-			options['period' + i] = makePeriod(i, periodD, segsize);			
+			options['period' + i] = makePeriod(i, sC.periodD, sC.segsize);			
 		}
 	}
 	
@@ -537,12 +528,25 @@ expressServer.get('/dynamic/*', function(req, res) {
     });
 });
 
-getPeriod = function(m, d, mx) {
+getPeriod_floor = function(m, d, mx) {
 	if (m < 0) { 
 		m = 0; 
 	}
 	
 	var p = Math.floor(m / d);
+	if (p > mx) {
+		p = mx;
+	}
+	
+	return p;
+}
+
+getPeriod_round = function(m, d, mx) {
+	if (m < 0) { 
+		m = 0; 
+	}
+	
+	var p = Math.round(m / d);
 	if (p > mx) {
 		p = mx;
 	}
