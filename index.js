@@ -616,10 +616,10 @@ _getSecs = function(d) {
 		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
 }
 
-//const periodAd 			= require('./dynamic/periods/ad-bbb.xml');
 
 const periodMain 		= fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
 const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+const periodAd 			= fs.readFileSync('./dynamic/periods/ad-bbb.xml', 'utf8');
 
 mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 	var pc;
@@ -644,41 +644,25 @@ mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 }
 
 adXML = function(p, sDuration, sStart, prevPeriodID) {
-	var str;
-	var pc = "";
-	
-	// TODO: Use handbars! 
-	str = "<!-- *** Generated Period: Ad *** -->\n";
-	
+	var pc;
+	var template;
+	var context;
+		
 	if (prevPeriodID != "") {
-		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
+		template = hbs.handlebars.compile(periodContinuity);
+		context = {prevperiod_id: prevPeriodID};
+		pc =  template(context);
+	} else {
+		pc = "";
 	}
-	
-	// str += "<Period id=\"ad-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
-	str += "<Period id=\"ad-" + p + "\" start=\"" + sStart + "\">\n";
-	
-	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" frameRate=\"25\" scanType=\"progressive\" mimeType=\"video/mp4\" >\n" +
-		pc + 
-		"  <BaseURL>../content/bigbuckbunny/avc3/</BaseURL>\n" +
-		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"1920x1080p25/IS.mp4\" />\n" +
-		"  <Representation id=\"1920x1080p25\" codecs=\"avc3.640028\" height=\"1080\" width=\"1920\" bandwidth=\"4741120\" />\n" +
-		"  <Representation id=\"896x504p25\" codecs=\"avc3.64001f\" height=\"504\" width=\"896\" bandwidth=\"1416688\" />\n" +
-		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" bandwidth=\"843768\" />\n" +
-		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" bandwidth=\"449480\" />\n" +
-		"  <Representation id=\"1280x720p25\" codecs=\"avc3.640020\" height=\"720\" width=\"1280\" bandwidth=\"2656696\" />\n" +
-		" </AdaptationSet>\n" +
-		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
-		pc + 
-		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
-		"  <BaseURL>../content/bigbuckbunny/audio/</BaseURL>\n" +
-		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"160kbps/IS.mp4\" />\n" +
-		"  <Representation id=\"160kbps\" bandwidth=\"160000\" />\n" +
-		"  <Representation id=\"96kbps\" bandwidth=\"96000\" />\n" +
-		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
-		" </AdaptationSet>\n" +
-		"</Period>\n";
 
-	return str;
+	template 	= hbs.handlebars.compile(periodAd);
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc};
+	var complete = template(context);
+	
+	// console.log(complete);
+	
+	return complete;
 }
 
 expressServer.post('/savelog', function(req, res) {

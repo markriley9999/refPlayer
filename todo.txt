@@ -24,3 +24,6 @@
 
 - last segment may not be whole!
 
+
+
+check urn:mpeg:dash:period_continuity:2014 in spec
