@@ -59,6 +59,7 @@ function SetupEME(video, keySystem, name, options)
 	  return window.btoa(bin).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 	}
 
+	// TODO: Add content id - and add to clearkeyGetLicence call
 	function UpdateSessionFunc(name) {
 	  return function(ev) {
 		clearkeyGetLicence(ev.target, ev.message);

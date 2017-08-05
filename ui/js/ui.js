@@ -46,6 +46,8 @@ playerUI.start = function () {
 	for (var i = 0;  i < li.length; i++) {
 		li[i].onclick = playerUI.onClickMenu(li[i].id);
 	}
+	
+	ipc.send("ipc-get-connectionstatus");
 };
 
 playerUI.onClickMenu = function (id) {

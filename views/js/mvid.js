@@ -1327,6 +1327,21 @@ mVid.cmndJumpToEnd = function () {
 	}
 }
 
+mVid.cmndJumpToStart = function () {
+	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	this.Log.info(playingPlayer.id + ": Jump to start"); 
+
+	if (playingPlayer) {
+		var t = 0;
+		playingPlayer.currentTime = t;
+		if (this.isMainFeaturePlayer(playingPlayer)) {
+			playingPlayer.resumeFrom = t;
+			this.showPlayrange();
+		}
+	}
+}
+
 // Key mapping table
 var keyTable = {};
 
@@ -1366,12 +1381,13 @@ keyTable.entries = [
 	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : getVK('VK_FAST_FWD') 	}, 
 	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : getVK('VK_REWIND') 		}, 
 	{ func : mVid.cmndPlay,			key : 'P', hbbKey : getVK('VK_PLAY') 		}, 
-	{ func : mVid.cmndPause, 		key : 'S', hbbKey : getVK('VK_PAUSE') 		}, 
-	{ func : mVid.cmndReload, 		key : 'L', hbbKey : getVK('VK_RED') 		}, 
+	{ func : mVid.cmndPause, 		key : 'U', hbbKey : getVK('VK_PAUSE') 		}, 
 	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : getVK('VK_RIGHT')		}, 
 	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : getVK('VK_LEFT')		}, 
-	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_BLUE')		}, 
-	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_YELLOW')		}, 
+	{ func : mVid.cmndReload, 		key : 'L', hbbKey : getVK('VK_RED') 		}, 
+	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_GREEN')		}, 
+	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')		}, 
+	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')		}, 
 	
 	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : getVK('VK_1')	}, 
 	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : getVK('VK_2')	}, 

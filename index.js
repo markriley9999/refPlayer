@@ -13,8 +13,9 @@ const url = require('url');   // used by electron to load html files
  
 const express = require('express');         // Includes the Express source code
 const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
+
 const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
- 
+//hbs.handlebars === require('handlebars');
  
 const Throttle = require('stream-throttle').Throttle;
 
@@ -44,7 +45,7 @@ var io = require('socket.io')(server);          // create the sockets io server
  
  var connectedStatus = {
 	port				: 0,
-	addresses 			: [],
+	serverAddresses 	: [],
 	connectedDevices	: 0,
 	currentDeviceUA 	: "",
 	devName 			: ""
@@ -65,44 +66,51 @@ ipc.on('ipc-set-config', function(event, w) {
 	commonConfig._setProps(w);
 })
 
+ipc.on('ipc-get-connectionstatus', function(event, w) { 
+	sendConnectionStatus();
+})
+
 function WINDOW(p, uiurl, w, h, r, c, bMax) {
-	this.uiurl 	= uiurl;
-	this.width 	= w;
-	this.height	= h;
-	this.winObj = null;
-	this.onFocus = r;
-	this.onClosed = c;
+	var self = this;
 	
-	this.createWindow = function () {
-		var that = this;
-		
-		if (!this.winObj) {
-			this.winObj = new browserWindow({
+	self.uiurl 	= uiurl;
+	self.width 	= w;
+	self.height	= h;
+	self.winObj = null;
+	self.onFocus = r;
+	self.onClosed = c;
+	
+	self.createWindow = function () {
+
+	if (!self.winObj) {
+			self.winObj = new browserWindow({
 					parent: p,
-					width: this.width, 
-					height: this.height, 
+					width: self.width, 
+					height: self.height, 
 					icon: 'ui/bitmaps/tv-512.png'
 				}); 
 		 
-			this.winObj.on('focus', function() {
-				if (that.onFocus) {
-					that.onFocus(that.winObj);
+			// TODO: doesn't work :( - see https://github.com/electron/electron/issues/7779
+			self.winObj.once('ready-to-show', () => {
+				if (self.onFocus) {
+					self.onFocus(self.winObj);
 				}
 			});
 			
-			this.winObj.on('closed', function() { // reset the window object when it is closed
-				if (that.onClosed) {
-					that.onClosed(that.winObj);
+			self.winObj.on('closed', function() { // reset the window object when it is closed
+				console.log("-------");
+				if (self.onClosed) {
+					self.onClosed(self.winObj);
 				}
-				that.winObj = null;
+				self.winObj = null;
 			});
 			
 			if (bMax) {
-				this.winObj.maximize();
+				self.winObj.maximize();
 			}
 			
-			this.winObj.loadURL(url.format({ 
-				pathname: path.join(__dirname, this.uiurl),
+			self.winObj.loadURL(url.format({ 
+				pathname: path.join(__dirname, self.uiurl),
 				protocol: 'file:',
 				slashes: true
 			}));	
@@ -150,10 +158,6 @@ function createWindows() {
 	win['config'].createWindow();
 }
 
-function updateUI() {
-	sendConnectionStatus();
-}
-
 function mainUIClosed() {
 	win['allvideoobjs'].closeWin();
 	win['mainvideoobj'].closeWin();
@@ -166,7 +170,7 @@ function mainUIClosed() {
 function init() {
 	var p;
 	
-	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	updateUI,	mainUIClosed, true);
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
 	p = win['log'].getWin();
 	
@@ -186,7 +190,7 @@ function init() {
 		for (var k2 in interfaces[k]) {
 			var address = interfaces[k][k2];
 			if (address.family === 'IPv4' && !address.internal) {
-				connectedStatus.addresses.push(address.address);
+				connectedStatus.serverAddresses.push(address.address);
 			}
 		}
 	}
@@ -195,11 +199,9 @@ function init() {
 	sendServerLog("-----------------------");
 
 	connectedStatus.port = server.address().port;
-	for( var i = 0; i < connectedStatus.addresses.length; i++) {
-		sendServerLog(i + ": " + connectedStatus.addresses[i] + ":" + connectedStatus.port);
+	for( var i = 0; i < connectedStatus.serverAddresses.length; i++) {
+		sendServerLog(i + ": " + connectedStatus.serverAddresses[i] + ":" + connectedStatus.port);
 	}
-	
-	sendConnectionStatus();
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
 	commonConfig.setNetworkErrors(commonConfig.NETERRS.NONE);
@@ -442,6 +444,10 @@ expressServer.get('/time', function(req, res) {
 	res.send(tISO);	
 });
  
+const configStream = [];
+configStream["/dynamic/dartest.mpd"] = require('./dynamic/dartest.json');
+configStream["/dynamic/mperiod.mpd"] = require('./dynamic/mperiod.json');
+
 expressServer.get('/dynamic/*', function(req, res) {
 	var progStart;
 	var d = new Date();
@@ -451,54 +457,41 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var options = {};
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
+	var sC = [];
 	
 	sendServerLog("GET dynamic: " + useURL);
 
 	console.log("Minutes - " + utcMinutes + "M");
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
-
-	var segsize;
-	var periodD; 
-	var adD; 
-	var maxP;
-	var marginF;	// forward - mins
-	var marginB;	// back - mins
 	
-	if (req.originalUrl === "/dynamic/dartest.mpd") {
-		console.log("*** DAR Test ***");
-
-		segsize 	= 3840;
-		periodD 	= (157 * segsize); // approx 10 mins
-		adD			= (32 * segsize); // approx 2mins
-		maxP 		= 5;
-		marginF 	= 2;	// forward - mins
-		marginB 	= 10;	// back - mins
-		
-		bAdsandMain = true;
-		
-	} else if (req.originalUrl === "/dynamic/mperiod.mpd") {
-		console.log("*** Multi-period Test ***");
-
-		segsize 	= 3840;
-		periodD 	= (79 * segsize); // approx 5 mins
-		maxP 		= 11;
-		marginF 	= 5;	// forward - mins
-		marginB 	= 5;	// back - mins
+	if (configStream[req.originalUrl]) {
+		sC = configStream[req.originalUrl];
+	} else {
+		console.log(" * bad url.");
+		return res.sendStatus(404);
 	}
-
-	var currentP 	= getPeriod(utcMinutes * 60 * 1000, periodD, maxP);
-	var lowerP 		= getPeriod((utcMinutes - marginB) * 60 * 1000, periodD, maxP);
-	var upperP 		= getPeriod((utcMinutes + marginF) * 60 * 1000, periodD, maxP);
+	
+	sC.segsize 	= parseInt(eval(sC.segsize));
+	sC.periodD 	= parseInt(eval(sC.periodD));
+	sC.maxP 	= parseInt(eval(sC.maxP));
+	sC.adD 		= parseInt(eval(sC.adD));
+	sC.marginF 	= parseInt(eval(sC.marginF));
+	sC.marginB 	= parseInt(eval(sC.marginB));
+	sC.bAdsandMain = eval(sC.bAdsandMain);
+	
+	var currentP 	= getPeriod_floor(utcMinutes * 60 * 1000, sC.periodD, sC.maxP);
+	var lowerP 		= getPeriod_floor((utcMinutes - sC.marginB) * 60 * 1000, sC.periodD, sC.maxP);
+	var upperP 		= getPeriod_floor((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
 	var numP = (upperP - lowerP) + 1;
 	
 	console.log("CurrentPeriod: " + currentP);
 	
 	for (var i = lowerP; i <= upperP; i++) {
-		if (bAdsandMain) {
-			options['period' + i] = makeAdAndMainPeriods(i, periodD, adD, segsize);
+		if (sC.bAdsandMain) {
+			options['period' + i] = makeAdAndMainPeriods(i, sC.periodD, sC.adD, sC.segsize);
 		} else {
-			options['period' + i] = makePeriod(i, periodD, segsize);			
+			options['period' + i] = makePeriod(i, sC.periodD, sC.segsize);			
 		}
 	}
 	
@@ -535,12 +528,25 @@ expressServer.get('/dynamic/*', function(req, res) {
     });
 });
 
-getPeriod = function(m, d, mx) {
+getPeriod_floor = function(m, d, mx) {
 	if (m < 0) { 
 		m = 0; 
 	}
 	
 	var p = Math.floor(m / d);
+	if (p > mx) {
+		p = mx;
+	}
+	
+	return p;
+}
+
+getPeriod_round = function(m, d, mx) {
+	if (m < 0) { 
+		m = 0; 
+	}
+	
+	var p = Math.round(m / d);
 	if (p > mx) {
 		p = mx;
 	}
@@ -614,79 +620,53 @@ _getSecs = function(d) {
 		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
 }
 
+
+const periodMain 		= fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
+const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+const periodAd 			= fs.readFileSync('./dynamic/periods/ad-bbb.xml', 'utf8');
+
 mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
-	var str;
-	var pc = "";
-	
-	if (prevPeriodID != "") {
-		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
-	}
-	
-	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
-	str = "<!-- *** Generated Period: Main Content *** -->\n";
-	
-	//str += "<Period id=\"main-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
-	str += "<Period id=\"main-" + p + "\" start=\"" + sStart + "\">\n";
-	
-	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" mimeType=\"video/mp4\" >\n" +
-		pc +
-		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
-		"  <BaseURL>../content/testcard/avc3-events/</BaseURL>\n" + 
-		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
-		"  <Representation id=\"704x396p50\" codecs=\"avc3.64001f\" height=\"396\" width=\"704\" frameRate=\"50\" scanType=\"progressive\" bandwidth=\"1572456\"/>\n" +
-		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"440664\"/>\n" +
-		"  <Representation id=\"384x216p25\" codecs=\"avc3.42c015\" height=\"216\" width=\"384\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"283320\"/>\n" + 
-		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" frameRate=\"25\" scanType=\"progressive\" bandwidth=\"834352\"/>\n" +
-		" </AdaptationSet>\n" +
-		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
-		pc +
-		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
-		"  <Role schemeIdUri=\"urn:mpeg:dash:role:2011\" value=\"main\"/>\n" +
-		"  <BaseURL>../content/testcard/audio/</BaseURL>\n" +
-		"  <SegmentTemplate presentationTimeOffset=\"" + offset + "\" startNumber=\"" + seg + "\" timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"$RepresentationID$/IS.mp4\" />\n" +
-		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
-		" </AdaptationSet>\n" +
-		"</Period>\n";
+	var pc;
+	var template;
+	var context;
 		
-	return str;
+	if (prevPeriodID != "") {
+		template = hbs.handlebars.compile(periodContinuity);
+		context = {prevperiod_id: prevPeriodID};
+		pc =  template(context);
+	} else {
+		pc = "";
+	}
+
+	template 	= hbs.handlebars.compile(periodMain);
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, period_offset: offset, period_seg: seg};
+	var complete = template(context);
+	
+	// console.log(complete);
+	
+	return complete;
 }
 
 adXML = function(p, sDuration, sStart, prevPeriodID) {
-	var str;
-	var pc = "";
-	
-	// TODO: This XML should really be in a separate file and loaded into a xml object and manipulated that way 
-	str = "<!-- *** Generated Period: Ad *** -->\n";
-	
+	var pc;
+	var template;
+	var context;
+		
 	if (prevPeriodID != "") {
-		pc = "  <SupplementalProperty schemeIdUri=\"urn:mpeg:dash:period_continuity:2014\" value=\"" + prevPeriodID + "\" />\n";	
+		template = hbs.handlebars.compile(periodContinuity);
+		context = {prevperiod_id: prevPeriodID};
+		pc =  template(context);
+	} else {
+		pc = "";
 	}
-	
-	// str += "<Period id=\"ad-" + p + "\" duration=\"" + sDuration + "\" start=\"" + sStart + "\">\n";
-	str += "<Period id=\"ad-" + p + "\" start=\"" + sStart + "\">\n";
-	
-	str += " <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"1\" sar=\"1:1\" frameRate=\"25\" scanType=\"progressive\" mimeType=\"video/mp4\" >\n" +
-		pc + 
-		"  <BaseURL>../content/bigbuckbunny/avc3/</BaseURL>\n" +
-		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"1920x1080p25/IS.mp4\" />\n" +
-		"  <Representation id=\"1920x1080p25\" codecs=\"avc3.640028\" height=\"1080\" width=\"1920\" bandwidth=\"4741120\" />\n" +
-		"  <Representation id=\"896x504p25\" codecs=\"avc3.64001f\" height=\"504\" width=\"896\" bandwidth=\"1416688\" />\n" +
-		"  <Representation id=\"704x396p25\" codecs=\"avc3.4d401e\" height=\"396\" width=\"704\" bandwidth=\"843768\" />\n" +
-		"  <Representation id=\"512x288p25\" codecs=\"avc3.4d4015\" height=\"288\" width=\"512\" bandwidth=\"449480\" />\n" +
-		"  <Representation id=\"1280x720p25\" codecs=\"avc3.640020\" height=\"720\" width=\"1280\" bandwidth=\"2656696\" />\n" +
-		" </AdaptationSet>\n" +
-		" <AdaptationSet startWithSAP=\"2\" segmentAlignment=\"true\" id=\"3\" codecs=\"mp4a.40.2\" audioSamplingRate=\"48000\" lang=\"eng\" mimeType=\"audio/mp4\" >\n" +
-		pc + 
-		"  <AudioChannelConfiguration schemeIdUri=\"urn:mpeg:dash:23003:3:audio_channel_configuration:2011\" value=\"2\"/>\n" +
-		"  <BaseURL>../content/bigbuckbunny/audio/</BaseURL>\n" +
-		"  <SegmentTemplate timescale=\"1000\" duration=\"3840\" media=\"$RepresentationID$/$Number%06d$.m4s\" initialization=\"160kbps/IS.mp4\" />\n" +
-		"  <Representation id=\"160kbps\" bandwidth=\"160000\" />\n" +
-		"  <Representation id=\"96kbps\" bandwidth=\"96000\" />\n" +
-		"  <Representation id=\"128kbps\" bandwidth=\"128000\" />\n" +
-		" </AdaptationSet>\n" +
-		"</Period>\n";
 
-	return str;
+	template 	= hbs.handlebars.compile(periodAd);
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc};
+	var complete = template(context);
+	
+	// console.log(complete);
+	
+	return complete;
 }
 
 expressServer.post('/savelog', function(req, res) {
@@ -724,7 +704,7 @@ expressServer.post('/getkeys', function(req, res) {
 function sendConnectionStatus() {
 	var obj = { 
 					'port'			: connectedStatus.port,
-					'addresses'		: connectedStatus.addresses, 
+					'addresses'		: connectedStatus.serverAddresses, 
 					'bConnected'	: (connectedStatus.connectedDevices > 0),
 					'devName'		: connectedStatus.devName
 				};

@@ -9,31 +9,31 @@
 	mediaPresentationDuration="PT1H0.040S"
  
 	minimumUpdatePeriod="PT10S"
-	timeShiftBufferDepth="PT600S"
+	timeShiftBufferDepth="PT1H0.040S"
 	publishTime="{{availabilityStartTime}}"
 	availabilityStartTime="{{availabilityStartTime}}"
 >
 
-<!-- Period 0: Ad and Main -->	
+	<!-- Period 0: Ad and Main -->	
 {{{period0}}}
 
-<!-- Period 1: Ad and Main  -->	
+	<!-- Period 1: Ad and Main  -->	
 {{{period1}}}
 
-<!-- Period 2: Ad and Main -->	
+	<!-- Period 2: Ad and Main -->	
 {{{period2}}}
 
-<!-- Period 3: Ad and Main -->	
+	<!-- Period 3: Ad and Main -->	
 {{{period3}}}
 
-<!-- Period 4: Ad and Main -->	
+	<!-- Period 4: Ad and Main -->	
 {{{period4}}}
 
-<!-- Period 5: Ad and Main -->	
+	<!-- Period 5: Ad and Main -->	
 {{{period5}}}
 
-<UTCTiming
-	schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
-	value="{{timeServer}}" />
+	<UTCTiming
+		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
+		value="{{timeServer}}" />
 	
 </MPD>

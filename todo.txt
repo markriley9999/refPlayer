@@ -1,26 +1,40 @@
-- add config screen
-	- bandwidth throttle
-	- lost packets
-	- defer lic
-	- config UI
-	
-- create:
-		- add cues!
-		- encrypt content
-	
-- improve cue handling, show cue points
+- check
+	var currentP 	= getPeriod_floor(utcMinutes * 60 * 1000, sC.periodD, sC.maxP);
+	var lowerP 		= getPeriod_floor((utcMinutes - sC.marginB) * 60 * 1000, sC.periodD, sC.maxP);
+	var upperP 		= getPeriod_floor((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
 
-- install confluence page
 
 - pass lic paramter - content id
 
+- version info!
+
 - port 80
+
+- create:
+		- add cues!
+		- encrypt content
+		- improve cue handling, show cue points
+
+- install confluence page
 
 - upload new content
 	
 - retest in fedora
 
-- version info!
-
 - last segment may not be whole!
 
+
+Check Spec:
+------------------
+
+check urn:mpeg:dash:period_continuity:2014 in spec
+timeShiftBufferDepth
+UTCTiming
+
+Qs
+--------------------
+
+1. live playback
+2. start of current live programme
+3. trick mode?
+4. cue signalling
