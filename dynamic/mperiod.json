@@ -2,8 +2,8 @@
 	"segsize" 		: "3840",
 	"periodD" 		: "(79 * 3840)", 	
 	"maxP" 			: "11",
-	"marginF" 		: "1",					
-	"marginB" 		: "1",					
+	"marginF" 		: "60",					
+	"marginB" 		: "60",					
 
 	"bAdsandMain" 	: "false",
 	"adD"			: "0"

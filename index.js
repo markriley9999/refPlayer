@@ -449,10 +449,15 @@ configStream["/dynamic/dartest.mpd"] = require('./dynamic/dartest.json');
 configStream["/dynamic/mperiod.mpd"] = require('./dynamic/mperiod.json');
 
 expressServer.get('/dynamic/*', function(req, res) {
+	
 	var progStart;
 	var d = new Date();
+	
 	var utcHours = d.getUTCHours();	
 	var utcMinutes = d.getUTCMinutes();
+	var utcSeconds = d.getUTCSeconds();
+	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
+	
 	var useURL = req.originalUrl;
 	var options = {};
 	var timeServer = "http://" + req.headers.host + "/time";
@@ -461,7 +466,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 	sendServerLog("GET dynamic: " + useURL);
 
-	console.log("Minutes - " + utcMinutes + "M");
+	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
 	
@@ -480,9 +485,9 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.marginB 	= parseInt(eval(sC.marginB));
 	sC.bAdsandMain = eval(sC.bAdsandMain);
 	
-	var currentP 	= getPeriod_floor(utcMinutes * 60 * 1000, sC.periodD, sC.maxP);
-	var lowerP 		= getPeriod_floor((utcMinutes - sC.marginB) * 60 * 1000, sC.periodD, sC.maxP);
-	var upperP 		= getPeriod_floor((utcMinutes + sC.marginF) * 60 * 1000, sC.periodD, sC.maxP);
+	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, sC.maxP);
+	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, sC.maxP);
+	var upperP 		= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, sC.maxP);
 	var numP = (upperP - lowerP) + 1;
 	
 	console.log("CurrentPeriod: " + currentP);
