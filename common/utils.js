@@ -16,6 +16,15 @@ var UTILS = function () {
 		return arr[1] + arr[2];
 	}
 
+	self.createContentIdQueryString = function () {
+		return "contid=" + self.createContentId();
+	}
+
+	self.createContentId = function () {
+		var d = new Date();
+		
+		return "ProgrammeT" + d.getUTCHours() + "H";			
+	}
 }
 
 if (typeof module !== 'undefined') {

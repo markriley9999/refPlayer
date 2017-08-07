@@ -24,5 +24,6 @@
 	"src" 	: "content/elephantsdream/client_manifest-all.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "240",
+	"addContentId" : "false",
 	"channelName" : "Ads: 5 Channel4, Main: Elephant's Dream (EBU-TT-D subs)"
 }

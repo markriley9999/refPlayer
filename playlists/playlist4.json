@@ -16,5 +16,6 @@
 	"src" 	: "content/testcard/client_manifest-ctv-events.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "5",
+	"addContentId" : "false",
 	"channelName" : "Ads: 3 ITV Ads, Main: BBC Testcard (5s)"
 }

@@ -336,7 +336,7 @@ expressServer.get('/player.aitx', function(req, res) {
 expressServer.get('/content/*', function(req, res) {
 	// Why seeing 2 gets????
 	
-	sendServerLog("GET content: " + req.originalUrl);
+	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
 
 	// ***** Simulate error condition (505)? *****
@@ -353,7 +353,7 @@ expressServer.get('/content/*', function(req, res) {
 	}
 
 	// Get file on server
-	var file = path.join(__dirname, req.originalUrl);
+	var file = path.join(__dirname, req.path);
 	//console.log(" - file: " + file);
 	
     fs.stat(file, function(err, stats) {
@@ -447,6 +447,7 @@ expressServer.get('/time', function(req, res) {
 const configStream = [];
 configStream["/dynamic/dartest.mpd"] = require('./dynamic/dartest.json');
 configStream["/dynamic/mperiod.mpd"] = require('./dynamic/mperiod.json');
+var archiveMPDs = [];
 
 expressServer.get('/dynamic/*', function(req, res) {
 	
@@ -458,7 +459,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var utcSeconds = d.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
-	var useURL = req.originalUrl;
+	var useURL = req.path;
 	var options = {};
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
@@ -470,11 +471,32 @@ expressServer.get('/dynamic/*', function(req, res) {
 	// console.log("timeServer: " + timeServer);
 	options.timeServer = timeServer;
 	
-	if (configStream[req.originalUrl]) {
-		sC = configStream[req.originalUrl];
+	if (configStream[req.path]) {
+		sC = configStream[req.path];
 	} else {
-		console.log(" * bad url.");
+		console.log(" * bad url. - " + req.path);
 		return res.sendStatus(404);
+	}
+
+	var sContId = commonUtils.createContentId(); 
+	sendServerLog("ContentId: " + sContId);
+	
+	if (req.query.contid) {
+		var cContId = req.query.contid;
+		
+		if (sContId != cContId) {
+			sendServerLog("Client requested non-current content: " + cContId);
+			if (archiveMPDs[cContId]) {				
+				sendServerLog("Found archived MPD, using that. ");
+
+				res.type("application/dash+xml");
+				res.status(200);
+				return res.send(archiveMPDs[cContId]);				
+			} else {				
+				sendServerLog("No previous content archived!");
+				return res.sendStatus(404);				
+			}
+		}
 	}
 	
 	sC.segsize 	= parseInt(eval(sC.segsize));
@@ -529,6 +551,8 @@ expressServer.get('/dynamic/*', function(req, res) {
 			res.type("application/dash+xml");
 			res.status(200);
 			res.send(mpd);
+			
+			archiveMPDs[sContId] = mpd; // Archive the mpd for this 'programme'
 		});
     });
 });
