@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/bbbitvck-mperiod.mpd",
+	"src" 	: "./content/mperiods/bbbitvck-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
 	"addContentId" : "false",

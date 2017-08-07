@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/mix-mperiod.mpd",
+	"src" 	: "./content/mperiods/mix-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
 	"addContentId" : "false",

@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 	: "content/mperiods/testcard-mperiod.mpd",
+	"src" 	: "./content/mperiods/testcard-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
 	"addContentId" : "false",

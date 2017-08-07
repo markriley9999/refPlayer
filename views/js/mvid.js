@@ -1054,12 +1054,10 @@ function onVideoEvent (v) {
 
 				// Start playing buffered content
 				if (v.isMainFeaturePlayer(this)) {
-					v.Log.info(this.id + ": video has ended");
-					/* Uncomment this to call reload at end of content
+					v.Log.info(this.id + ": video has ended - reload player.");
 					if (this.duration > 0) {
 						v.reload(); 
 					}
-					*/
 				} else {
 					v.skipPlayingToNextPlayer();
 					var newPlayingPlayer = v.getCurrentPlayingPlayer();

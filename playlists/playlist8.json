@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 	: "dynamic/mperiod.mpd",
+	"src" 	: "./dynamic/mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
 	"addContentId" : "false",

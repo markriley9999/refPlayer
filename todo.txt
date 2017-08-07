@@ -1,8 +1,3 @@
-- drop throttle to .5
-- add contid into mpd 
-
-- save server side log as well!!!
-
 - pass lic paramter - content id
 
 - version info!
