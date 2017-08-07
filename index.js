@@ -480,6 +480,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 
 	var sContId = commonUtils.createContentId(); 
 	sendServerLog("ContentId: " + sContId);
+	options.title = sContId;
 	
 	if (req.query.contid) {
 		var cContId = req.query.contid;
