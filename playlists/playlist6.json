@@ -3,5 +3,6 @@
 	"src" 	: "content/mperiods/testcard-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
+	"addContentId" : "false",
 	"channelName" : "Multiple Periods (10): Testcard (60s)"
 }

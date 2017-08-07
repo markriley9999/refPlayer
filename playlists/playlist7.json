@@ -3,5 +3,6 @@
 	"src" 	: "content/mperiods/bbbitvck-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
+	"addContentId" : "false",
 	"channelName" : "Multiple Periods (4): BBB (1M) and ITV Clear Key (2M)"
 }

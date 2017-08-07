@@ -3,5 +3,6 @@
 	"src" 	: "dynamic/mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
+	"addContentId" : "false",
 	"channelName" : "Live Dynamic: Starts on the hour (each period 5M)"
 }

@@ -327,12 +327,18 @@ mVid.procPlaylist = function (ch, playlistObj) {
 	
 	c.length = playlistObj.ads.length + 1;
 	c[playlistObj.ads.length] = {};
-	c[playlistObj.ads.length].src 				= playlistObj.src;
+	if (playlistObj.addContentId === "false") {
+		c[playlistObj.ads.length].src = playlistObj.src;
+	} else {
+		c[playlistObj.ads.length].src = playlistObj.src + "?" + commonUtils.createContentIdQueryString();
+	}
+	
 	c[playlistObj.ads.length].type 				= playlistObj.type;
 	c[playlistObj.ads.length].transitionTime 	= playlistObj.transitionTime;
 	c[playlistObj.ads.length].playerId 			= "mVid-mainContent";
+	c[playlistObj.ads.length].addContentId		= playlistObj.addContentId;
 	c[playlistObj.ads.length].channelName		= playlistObj.channelName;
-	
+
 	var pId = "mVid-video0";
 	
 	for (var i = 0; i < playlistObj.ads.length; i++) {
@@ -1048,12 +1054,12 @@ function onVideoEvent (v) {
 
 				// Start playing buffered content
 				if (v.isMainFeaturePlayer(this)) {
-					v.Log.info(this.id + ": video has ended - reload");
-					//this.resumeFrom = 0;
-					//this.currentTime = 0;
+					v.Log.info(this.id + ": video has ended");
+					/* Uncomment this to call reload at end of content
 					if (this.duration > 0) {
 						v.reload(); 
 					}
+					*/
 				} else {
 					v.skipPlayingToNextPlayer();
 					var newPlayingPlayer = v.getCurrentPlayingPlayer();

@@ -3,5 +3,6 @@
 	"src" 	: "content/mperiods/mix-mperiod.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
+	"addContentId" : "false",
 	"channelName" : "Multiple Periods (6): BBB, Ele Dream & Testcard (1M) + Cues"
 }

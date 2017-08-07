@@ -3,5 +3,6 @@
 	"src" 	: "dynamic/dartest.mpd",
 	"type" 	: "application/dash+xml",
 	"transitionTime" : "-1",
+	"addContentId" : "true",
 	"channelName" : "Live Dynamic, Multiperiod: Starts on the hour"
 }
