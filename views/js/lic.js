@@ -1,6 +1,6 @@
-function clearkeyGetLicence(session, msg) {
+function clearkeyGetLicence(session, msg, contentTag) {
 
-	var keyServiceUrl = "/getkeys?test";
+	var keyServiceUrl = "./getkeys?tag=" + contentTag;
 
 
 	// TODO: mVid should be a param
@@ -46,6 +46,7 @@ function clearkeyGetLicence(session, msg) {
 			x.onreadystatechange = function() {
 				x.readyState > 3 && callback && callback(x.responseText, x);
 			};
+			log(' AJAX url: ' + url);
 			log(' AJAX send: ' + arrayBufferToString(data));
 			x.send(new Uint8Array(data));
 		} catch (e) {

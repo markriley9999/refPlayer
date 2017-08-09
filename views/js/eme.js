@@ -1,4 +1,4 @@
-function SetupEME(video, keySystem, name, options)
+function SetupEME(video, keySystem, name, options, contentTag)
 {
 	function e(id) {
 	  return document.getElementById(id);
@@ -60,9 +60,9 @@ function SetupEME(video, keySystem, name, options)
 	}
 
 	// TODO: Add content id - and add to clearkeyGetLicence call
-	function UpdateSessionFunc(name) {
+	function UpdateSessionFunc(name, contentTag) {
 	  return function(ev) {
-		clearkeyGetLicence(ev.target, ev.message);
+		clearkeyGetLicence(ev.target, ev.message, contentTag);
 	  }
 	}
 
@@ -118,7 +118,7 @@ function SetupEME(video, keySystem, name, options)
 			.then(function() {
 				log(name + " ensured MediaKeys available on HTMLMediaElement");
 				var session = video.mediaKeys.createSession();
-				session.addEventListener("message", UpdateSessionFunc(name));
+				session.addEventListener("message", UpdateSessionFunc(name, contentTag));
 				session.addEventListener("keystatuseschange", KeysChange);
 				return session.generateRequest(ev.initDataType, ev.initData);
 			  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"))

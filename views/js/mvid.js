@@ -296,7 +296,7 @@ mVid.start = function () {
 		];
 
 		if ("MediaKeys" in window) {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options);
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag);
 		}
 			
 		that.showBufferingIcon(false);
@@ -327,6 +327,9 @@ mVid.procPlaylist = function (ch, playlistObj) {
 	
 	c.length = playlistObj.ads.length + 1;
 	c[playlistObj.ads.length] = {};
+	
+	this.contentTag = commonUtils.basename(playlistObj.src);
+	
 	if (playlistObj.addContentId === "false") {
 		c[playlistObj.ads.length].src = playlistObj.src;
 	} else {
@@ -1294,14 +1297,14 @@ mVid.cmndSeekFWD = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 	this.Log.info("called : cmndSeekFWD"); 
 
-	playingPlayer.currentTime += 5;
+	playingPlayer.currentTime += 30;
 }
 
 mVid.cmndSeekBACK = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 	this.Log.info("called : cmndSeekBACK"); 
 	
-	playingPlayer.currentTime -= 5;
+	playingPlayer.currentTime -= 30;
 }
 
 mVid.cmndLog = function () {

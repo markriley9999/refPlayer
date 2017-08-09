@@ -626,7 +626,7 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 
 	var fd = new Date(periodD-adD);
 	var fs = new Date((p * periodD) + adD);
-	var seg = Math.floor(((p * periodD) + adD) / sz);
+	var seg = Math.round(((p * periodD) + adD) / sz);
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
@@ -710,25 +710,56 @@ expressServer.post('/savelog', function(req, res) {
 	});
 });
  
-const clearKeyLicense = require('./clearKey/itv-licence.json');
+const licenceTable = [];
 
 expressServer.post('/getkeys', function(req, res) {
 	
 	var lDelay = commonConfig.getDelayLicense();
 	
-	sendServerLog("getkeys: " + JSON.stringify(req.body));
+	console.log("getkeys: " + JSON.stringify(req.body));
+	console.log(" - url: " + req.path);
 	
-	if (lDelay.value != 0) {
-		sendServerLog("getkeys: delay license by " + lDelay.name);
-		setTimeout(function() {
-			res.status(200);
-			res.send(clearKeyLicense);
-		}, lDelay.value);
+	if (req.query.tag) {
+		var tag = req.query.tag;
+		
+		// sendServerLog(" - tag: " + tag);
+		
+		var file = './clearKey/licence-' + tag + '.json';
+		
+		fs.stat(file, function(err, stats) {
+			if (err) {
+				if (err.code === 'ENOENT') {
+					// 404 Error if file not found
+					console.log(" * file does not exist");
+					return res.sendStatus(404);
+				}
+				res.end(err);
+			}
+
+			if (!licenceTable[tag]) {
+				licenceTable[tag] = require(file);
+			}
+			
+			var lic = licenceTable[tag];
+			// sendServerLog("licence: " + JSON.stringify(lic));
+			
+			if (lDelay.value != 0) {
+				
+				sendServerLog("getkeys: delay license by " + lDelay.name);
+				setTimeout(function() {
+					res.status(200);
+					res.send(lic);
+				}, lDelay.value);
+				
+			} else {
+				res.status(200);
+				res.send(lic);		
+			}
+		});
 	} else {
-		res.status(200);
-		res.send(clearKeyLicense);		
+		console.log(" * no tag");
+		return res.sendStatus(404);
 	}
-	
 });
 
 function sendConnectionStatus() {

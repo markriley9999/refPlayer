@@ -25,6 +25,10 @@ var UTILS = function () {
 		
 		return "ProgrammeT" + d.getUTCHours() + "H";			
 	}
+	
+	self.basename = function (n) { 
+		return n.replace(/^(.*[/\\])?/, '').replace(/(\.[^.]*)$/, ''); 
+	}
 }
 
 if (typeof module !== 'undefined') {

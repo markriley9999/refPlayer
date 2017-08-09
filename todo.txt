@@ -1,3 +1,8 @@
+- function basename(prevname) { return prevname.replace(/^(.*[/\\])?/, '').replace(/(\.[^.]*)$/, ''); }
+
+
+- check 2m / 10m bondary
+
 - pass lic paramter - content id
 
 - version info!
@@ -32,3 +37,6 @@ Qs
 2. start of current live programme
 3. trick mode?
 4. cue signalling
+5. how large / how many periods?
+6. how many time will it polled etc?
+7. trickmode?  or just live and beginning?

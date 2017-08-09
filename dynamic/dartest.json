@@ -1,10 +1,10 @@
 {
 	"segsize" 		: "3840",
-	"periodD" 		: "(157 * 3840)", 	
+	"periodD" 		: "600000", 	
 	"maxP" 			: "5",
 	"marginF" 		: "60",					
 	"marginB" 		: "3600",					
 
 	"bAdsandMain" 	: "true",
-	"adD"			: "(32 * 3840)"	
+	"adD"			: "120000"	
 }
