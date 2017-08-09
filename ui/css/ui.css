@@ -1,6 +1,7 @@
 body
 {
-	font-family: "Verdana";
+	font-family: 'Open Sans', sans-serif;
+	/* font-family: "Verdana"; */
 	background-color: #00000f;
 	overflow: hidden;
 }
@@ -36,7 +37,7 @@ body
 	/*width: 100px; */
     list-style-type: none;
 	color: white;
-	font-family: "Verdana";
+	/* font-family: "Verdana"; */
 	font-size: 14px;
 	/* background-color: #d65900; */
 	/* background-color: #1e1e1d; */
