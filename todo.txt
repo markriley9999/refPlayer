@@ -1,9 +1,4 @@
-- function basename(prevname) { return prevname.replace(/^(.*[/\\])?/, '').replace(/(\.[^.]*)$/, ''); }
-
-
 - check 2m / 10m bondary
-
-- pass lic paramter - content id
 
 - version info!
 
@@ -17,7 +12,7 @@
 - install confluence page
 
 - upload new content
-	
+
 - retest in fedora
 
 - last segment may not be whole!
@@ -32,6 +27,8 @@ UTCTiming
 
 Qs
 --------------------
+
+Send manifest to check!
 
 1. live playback
 2. start of current live programme
