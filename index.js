@@ -780,4 +780,4 @@ function sendConfig() {
 } 
 
 
-server.listen(3000); // Socket.io port (hides express inside)
+server.listen(8080); // Socket.io port (hides express inside)

@@ -36,6 +36,7 @@ Qs
 --------------------
 
 Send manifest to check!
+EBU-TT D comment
 
 1. live playback
 2. start of current live programme
