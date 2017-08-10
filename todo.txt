@@ -21,9 +21,16 @@
 Check Spec:
 ------------------
 
-check urn:mpeg:dash:period_continuity:2014 in spec
+check 	urn:mpeg:dash:period_continuity:2014 in spec
+		urn:dvb:dash:period_continuity:2014
+		the @id attribute set to AID.
+		
+		
+		
 timeShiftBufferDepth
 UTCTiming
+- urn:mpeg:dash:utc:http-iso:2014
+
 
 Qs
 --------------------
