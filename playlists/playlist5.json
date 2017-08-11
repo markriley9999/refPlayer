@@ -1,8 +1,17 @@
 {
-	"ads" : [],
-	"src" 	: "./content/mperiods/mix-mperiod.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "-1",
-	"addContentId" : "false",
-	"channelName" : "Multiple Periods (6): BBB, Ele Dream & Testcard (1M) + Cues"
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/mix-mperiod.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Multiple Periods (6): BBB, Ele Dream & Testcard (1m) + Cues",
+
+	"info"				: [	"6 1m Periods:",
+							"  1. Big Buck Bunny",
+							"  2. Elephant/'s Dream (EBU-TT-D)",
+							"  3. Test Card (Inband Events)",
+							"  4. Big Buck Bunny",
+							"  5. Elephant/'s Dream (EBU-TT-D)",
+							"  6. Test Card (Inband Events)"
+						  ]
 }

@@ -213,10 +213,10 @@ mVid.start = function () {
 
 	var currentChannel = getCookie("channel");
 
-	getPlaylist(currentChannel || "1", function(ch, playlistObj) {		
+	getPlaylist(currentChannel || "1", function(ch, playObj) {		
 		var mainVideo;
 
-		that.procPlaylist(ch, playlistObj);
+		that.procPlaylist(ch, playObj);
 
 		mainVideo = e("mVid-mainContent");
 
@@ -320,39 +320,46 @@ mVid.start = function () {
 	});
 };
 
-mVid.procPlaylist = function (ch, playlistObj) {
+mVid.procPlaylist = function (ch, playObj) {
 	var c = content.list;
 	
-	this.Log.info("- New playlist: " + JSON.stringify(playlistObj));
+	// this.Log.info("- New playlist: " + JSON.stringify(playObj));
 	
-	c.length = playlistObj.ads.length + 1;
-	c[playlistObj.ads.length] = {};
+	this.Log.info("-----------------------------------------------------------");
+	this.Log.info("*** Playing Content Summary ***");
+	for (var i = 0; i < playObj.info.length; i++) {
+		this.Log.info(playObj.info[i]);
+	}
+	this.Log.info("-----------------------------------------------------------");
 	
-	this.contentTag = commonUtils.basename(playlistObj.src);
+	c.length = playObj.ads.length + 1;
+	c[playObj.ads.length] = {};
 	
-	if (playlistObj.addContentId === "false") {
-		c[playlistObj.ads.length].src = playlistObj.src;
+	this.contentTag = commonUtils.basename(playObj.src);
+	
+	if (playObj.addContentId === "false") {
+		c[playObj.ads.length].src = playObj.src;
 	} else {
-		c[playlistObj.ads.length].src = playlistObj.src + "?" + commonUtils.createContentIdQueryString();
+		c[playObj.ads.length].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
 	}
 	
-	c[playlistObj.ads.length].type 				= playlistObj.type;
-	c[playlistObj.ads.length].transitionTime 	= playlistObj.transitionTime;
-	c[playlistObj.ads.length].playerId 			= "mVid-mainContent";
-	c[playlistObj.ads.length].addContentId		= playlistObj.addContentId;
-	c[playlistObj.ads.length].channelName		= playlistObj.channelName;
+	c[playObj.ads.length].type 				= playObj.type;
+	c[playObj.ads.length].transitionTime 	= playObj.transitionTime;
+	c[playObj.ads.length].playerId 			= "mVid-mainContent";
+	c[playObj.ads.length].addContentId		= playObj.addContentId;
+	c[playObj.ads.length].channelName		= playObj.channelName;
 
 	var pId = "mVid-video0";
 	
-	for (var i = 0; i < playlistObj.ads.length; i++) {
-		//this.Log.info("- Ad: " + i + " " + playlistObj.ads[i].src);	
-		//this.Log.info("- Ad: " + i + " " + playlistObj.ads[i].type);	
+	for (var i = 0; i < playObj.ads.length; i++) {
+		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].src);	
+		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].type);	
 		c[i] = {};
-		c[i].src 			= playlistObj.ads[i].src;
-		c[i].type 			= playlistObj.ads[i].type;
+		c[i].src 			= playObj.ads[i].src;
+		c[i].type 			= playObj.ads[i].type;
 		c[i].transitionTime = -1;
 		c[i].playerId 		= pId;
-		c[i].channelName	= playlistObj.channelName;
+		c[i].channelName	= playObj.channelName;
 		pId = (pId === "mVid-video0") ? "mVid-video1" : "mVid-video0";
 	}
 	
@@ -366,7 +373,7 @@ mVid.procPlaylist = function (ch, playlistObj) {
 		this.Log.info(" - ");			
 	}
 	
-	e("currentChannel") && (e("currentChannel").innerHTML = "Ch " + ch + " - " + playlistObj.channelName);
+	e("currentChannel") && (e("currentChannel").innerHTML = "Ch " + ch + " - " + playObj.channelName);
 }
 
 mVid.reload = function () {

@@ -1,8 +1,25 @@
 {
-	"ads" : [],
-	"src" 	: "./dynamic/dartest.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "-1",
-	"addContentId" : "true",
-	"channelName" : "Live Dynamic, Multiperiod: Starts on the hour"
+	"ads" 				: [],
+	"src" 				: "./dynamic/dartest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Live Dynamic, Multiperiod: Starts on the hour",
+
+	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
+							"  - Content starts 'on the hour'",
+							"  - Content duration 60m",
+							"  - Split into 12 Periods",
+							"  - Ad uses /'Big Buck Bunny/' content",
+							"  - Ad period, starts every 10m",
+							"  - Ad period lasts 2m",
+							"  - Main uses BBC Test Card content",
+							"  - Main period, starts after Ad",
+							"  - Main period lasts 8m",
+							"  - Periods added to manifest as time progresses",
+							"  - Next Ad period added ~1m before time to start",
+							"  - Period Continuity Flag set",
+							"  - Time shift buffer set to 60m"
+						  ]
+
 }

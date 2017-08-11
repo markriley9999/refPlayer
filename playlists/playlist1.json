@@ -13,9 +13,13 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "./content/bigbuckbunny/client_manifest-common_init.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "240",
-	"addContentId" : "false",
-	"channelName" : "Ads: 3 ITV Ads, Main: Big Buck Bunny"
+	"src" 				: "./content/bigbuckbunny/client_manifest-common_init.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "240",
+	"addContentId" 		: "false",
+	"channelName" 		: "Ads: 3 ITV Ads, Main: Big Buck Bunny",
+	
+	"info"				: [	"3 mp4 (ITV) adverts",
+							"/'Big Buck Bunny/' DASH asset - playing for 240s"
+						  ]
 }

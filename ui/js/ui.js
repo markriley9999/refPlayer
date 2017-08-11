@@ -174,7 +174,10 @@ ipc.on('ipc-connected', function(event, message) {
 		
 		for( var i = 0; i < message.addresses.length; i++) {
 			playerUI.Log._write("NET - " + i + ": " + message.addresses[i] + ":" + message.port, "info");
-		}		
+		}	
+
+		e("version").innerHTML = message.version;
+		
 	} catch(err) {
 		console.log("ipc-playbackOffset: message parse error. " + err.message);	
 	}

@@ -1,8 +1,19 @@
 {
-	"ads" : [],
-	"src" 	: "./dynamic/mperiod.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "-1",
-	"addContentId" : "false",
-	"channelName" : "Live Dynamic: Starts on the hour (each period 5M)"
+	"ads" 				: [],
+	"src" 				: "./dynamic/mperiod.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Live Dynamic: Starts on the hour (each period 5M)",
+	
+	"info"				: [	"Dynamic Manifest:",
+							"  - Content starts 'on the hour'",
+							"  - Content duration 60m",
+							"  - Split into 12 5m Periods",
+							"  - Only 'current' (and possibly next) period present in manifest",
+							"  - Next period added to manifest ~1m before start (of next period)",
+							"  - Period continuity flag set",
+							"  - Time shift buffer set to 0"
+						  ]
+
 }

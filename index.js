@@ -43,13 +43,17 @@ var expressServer = express(); // Active express object
 var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
 var io = require('socket.io')(server);          // create the sockets io server
  
- var connectedStatus = {
+var generalInfo = {
 	port				: 0,
 	serverAddresses 	: [],
 	connectedDevices	: 0,
 	currentDeviceUA 	: "",
-	devName 			: ""
- };
+	devName 			: "",
+	version				: {}
+};
+
+generalInfo.version = require("./version.json");
+
  
 ipc.on('ipc-openwindow', function(event, w) { 
 	if (win[w]) {
@@ -169,6 +173,16 @@ function mainUIClosed() {
 
 function init() {
 	var p;
+
+	console.log("--------------------------------------------------");
+	console.log(generalInfo.version.title + " v" + generalInfo.version.major + "." + generalInfo.version.minor);
+	console.log("--------------------------------------------------");
+	console.log("");
+	console.log(generalInfo.version.info);
+	console.log("");
+	console.log("--------------------------------------------------");
+	console.log("");
+	
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
@@ -190,17 +204,17 @@ function init() {
 		for (var k2 in interfaces[k]) {
 			var address = interfaces[k][k2];
 			if (address.family === 'IPv4' && !address.internal) {
-				connectedStatus.serverAddresses.push(address.address);
+				generalInfo.serverAddresses.push(address.address);
 			}
 		}
 	}
 	
-	sendServerLog("Server (IPv4) Addresses");
-	sendServerLog("-----------------------");
+	console.log("Server (IPv4) Addresses");
+	console.log("-----------------------");
 
-	connectedStatus.port = server.address().port;
-	for( var i = 0; i < connectedStatus.serverAddresses.length; i++) {
-		sendServerLog(i + ": " + connectedStatus.serverAddresses[i] + ":" + connectedStatus.port);
+	generalInfo.port = server.address().port;
+	for( var i = 0; i < generalInfo.serverAddresses.length; i++) {
+		console.log(i + ": " + generalInfo.serverAddresses[i] + ":" + generalInfo.port);
 	}
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
@@ -219,10 +233,10 @@ expressServer.on('activate', function() {
 });
  
 io.sockets.on('connection', function(socket) { // listen for a device connection to the server
-	connectedStatus.connectedDevices++;
+	generalInfo.connectedDevices++;
 
-    console.log(" ---> Device connected: " + connectedStatus.connectedDevices);
-	connectedStatus.devName = commonUtils.extractDevName(connectedStatus.currentDeviceUA);
+    console.log(" ---> Device connected: " + generalInfo.connectedDevices);
+	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
@@ -241,16 +255,16 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 	});
 	
 	socket.on('disconnect', function () {
-		if (connectedStatus.connectedDevices > 0) {
-			connectedStatus.connectedDevices--;
+		if (generalInfo.connectedDevices > 0) {
+			generalInfo.connectedDevices--;
 		}
 		
-		connectedStatus.currentDeviceUA = "";
-		connectedStatus.devName = "";
+		generalInfo.currentDeviceUA = "";
+		generalInfo.devName = "";
 
 		sendConnectionStatus();
 
-	console.log(" ---> Device disconnected: " + connectedStatus.connectedDevices);
+	console.log(" ---> Device disconnected: " + generalInfo.connectedDevices);
 	});
 });
 
@@ -299,9 +313,9 @@ expressServer.post('/adtrans', function(req, res) {
 expressServer.get('/', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!connectedStatus.currentDeviceUA || connectedStatus.currentDeviceUA === UA) {
-		connectedStatus.currentDeviceUA = UA;
-		connectedStatus.devName = commonUtils.extractDevName(connectedStatus.currentDeviceUA);
+	if (!generalInfo.currentDeviceUA || generalInfo.currentDeviceUA === UA) {
+		generalInfo.currentDeviceUA = UA;
+		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		
 		//createWindows();
 		
@@ -764,10 +778,11 @@ expressServer.post('/getkeys', function(req, res) {
 
 function sendConnectionStatus() {
 	var obj = { 
-					'port'			: connectedStatus.port,
-					'addresses'		: connectedStatus.serverAddresses, 
-					'bConnected'	: (connectedStatus.connectedDevices > 0),
-					'devName'		: connectedStatus.devName
+					'port'			: generalInfo.port,
+					'addresses'		: generalInfo.serverAddresses, 
+					'bConnected'	: (generalInfo.connectedDevices > 0),
+					'devName'		: generalInfo.devName,
+					'version'		: "v" + generalInfo.version.major + "." + generalInfo.version.minor
 				};
 				 
 	win['log'].sendToWindow('ipc-connected', obj); 

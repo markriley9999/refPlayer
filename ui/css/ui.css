@@ -27,6 +27,11 @@ body
 	left: 64px;
 }
 
+.versiontext {
+	color: white;
+	font-size: 8px;
+}
+
 .titleitems {
 	position: absolute;
 	left: 200px;

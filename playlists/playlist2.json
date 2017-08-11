@@ -21,9 +21,15 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "./content/elephantsdream/client_manifest-all.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "240",
-	"addContentId" : "false",
-	"channelName" : "Ads: 5 Channel4, Main: Elephant's Dream (EBU-TT-D subs)"
+	"src" 				: "./content/elephantsdream/client_manifest-all.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "240",
+	"addContentId" 		: "false",
+	"channelName" 		: "Ads: 5 Channel4, Main: Elephant's Dream (EBU-TT-D subs)",
+
+	"info"				: [	"5 mp4 (Ch4) adverts",
+							"/'Elephant/'s Dream/' DASH asset - playing for 240s",
+							"EBU-TT-D Subtitles, in main asset"
+						  ]
+
 }

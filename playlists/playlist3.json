@@ -13,9 +13,15 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 	: "./content/itv/clearkey/itv-clearkey.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "600",
-	"addContentId" : "false",
-	"channelName" : "Ads: 3 ITV Ads, Main: Clear Key (Lorraine)"
+	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "600",
+	"addContentId" 		: "false",
+	"channelName" 		: "Ads: 3 ITV Ads, Main: Clear Key (Lorraine)",
+
+	"info"				: [	"3 mp4 (ITV) adverts",
+							"/'Lorraine/' DASH asset - playing for 600s",
+							"Clear Key encrypted (main asset)"
+						  ]
+
 }

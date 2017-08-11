@@ -1,8 +1,13 @@
 {
-	"ads" : [],
-	"src" 	: "./content/mperiods/testcard-mperiod.mpd",
-	"type" 	: "application/dash+xml",
-	"transitionTime" : "-1",
-	"addContentId" : "false",
-	"channelName" : "Multiple Periods (10): Testcard (60s)"
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/testcard-mperiod.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Multiple Periods (10): Testcard (60s)",
+
+	"info"				: [	"10 60s Periods",
+							"Inband Events",
+							"Period Continuity flag"
+						  ]
 }
