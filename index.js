@@ -183,6 +183,7 @@ function init() {
 	console.log("--------------------------------------------------");
 	console.log("");
 	
+	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
