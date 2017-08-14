@@ -528,12 +528,22 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var numP = (upperP - lowerP) + 1;
 	
 	console.log("CurrentPeriod: " + currentP);
+
+	var prevMain;
 	
 	for (var i = lowerP; i <= upperP; i++) {
-		if (sC.bAdsandMain) {
-			options['period' + i] = makeAdAndMainPeriods(i, sC.periodD, sC.adD, sC.segsize);
+		
+		if (i > 0) {
+			prevMain = "main-" + (i-1);	
 		} else {
-			options['period' + i] = makePeriod(i, sC.periodD, sC.segsize);			
+			prevMain = "";
+		}
+	
+		if (sC.bAdsandMain) {
+			options['ad-period' + i] 	= makeAdPeriod(i, sC.periodD, sC.adD, prevMain);
+			options['main-period' + i] 	= makeMainPeriod(i, sC.periodD, sC.adD, sC.segsize, "ad-" + i);
+		} else {
+			options['period' + i] = makeMainPeriod(i, sC.periodD, 0, sC.segsize, prevMain);			
 		}
 	}
 	
@@ -598,29 +608,7 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makePeriod = function(p, d, sz) {
-	var fd = new Date(d);
-	var fs = new Date(p * d);
-	var seg = (p * d) / sz;
-	
-	var sDuration 	= _formatTime(fd);
-	var sStart 		= _formatTime(fs);
-	var offsetS  	= _getSecs(fs);
-	
-	sendServerLog(" - Generated manifest file: Period: " + p + " Duration: " + sDuration + " Start: " + sStart);
-
-	var pPreviousPeriod = "";
-	
-	if (p > 0) {
-		pPreviousPeriod = "main-" + (p-1);	
-	}
-	
-	return mainContentXML(p, sDuration, sStart, offsetS, seg, pPreviousPeriod);
-}
-
-makeAdAndMainPeriods = function(p, periodD, adD, sz) {
-	var str;
-
+makeAdPeriod = function(p, periodD, adD, prev) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
@@ -630,17 +618,13 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	var pPreviousPeriod1 = "";
-	
-	if (p > 0) {
-		pPreviousPeriod1 = "main-" + (p-1);	
-	}
-	
-	str = adXML(p, sAdDuration, sAdStart, pPreviousPeriod1);
+	return adXML(p, sAdDuration, sAdStart, prev);
+}
 
-	var fd = new Date(periodD-adD);
-	var fs = new Date((p * periodD) + adD);
-	var seg = Math.round(((p * periodD) + adD) / sz);
+makeMainPeriod = function(p, periodD, offset, sz, prev) {
+	var fd = new Date(periodD-offset);
+	var fs = new Date((p * periodD) + offset);
+	var seg = Math.round(((p * periodD) + offset) / sz);
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
@@ -648,12 +632,7 @@ makeAdAndMainPeriods = function(p, periodD, adD, sz) {
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (" + offsetS + "S)");
 
-	var pPreviousPeriod2 = "ad-" + p;
-
-	str += "\n";
-	str += mainContentXML(p, sDuration, sStart, offsetS, seg, pPreviousPeriod2);
-	
-	return str;
+	return mainContentXML(p, sDuration, sStart, offsetS, seg, prev);
 }
 
 _formatTime = function(d) {
