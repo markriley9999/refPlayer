@@ -1,3 +1,41 @@
+Fedora 25 onwards
+
+curl https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-install/install | bash
+curl http://duk-test01.digitaluk.co.uk/markriley/refplayer-install/install | bash
+
+#!/bin/bash
+
+
+if ! [ -x "$(command -v git)" ]; then
+
+  echo 'First, installing git'
+  
+  if [ -x "$(command -v dnf)" ]; then
+    sudo dnf install git
+  elif [ -x "$(command -v yum)" ]; then
+    sudo yum install git
+  elif [ -x "$(command -v apt-get)" ]; then
+    sudo apt-get install git
+  elif [ -x "$(command -v zypper)" ]; then
+    sudo zypper install git
+  else
+    echo "Please first install git."
+    exit 1
+  fi
+
+fi
+
+
+git config --global user.name "manufacturer"
+git config --global user.email manufacturer@digitaluk.co.uk
+git clone https://github.com/markriley9999/refPlayer.git refPlayer
+
+cd refPlayer/install
+./install-2.sh
+
+
+Manual Installation
+
 
 1. Install GIT
 
@@ -10,53 +48,101 @@ OpenSUSE?		sudo zypper install git
  
 https://git-scm.com/download/win
 
-Configure GIT
+2. Configure GIT
 
 git config --global user.name "manufacturer"
 git config --global user.email manufacturer@digitaluk.co.uk
 
-Clone code
+3. Clone code
 git clone https://github.com/markriley9999/refPlayer.git refPlayer
 
-Get updates:
+4a. Linux auto installation
+Linux: 
+cd refPlayer/install
+./install-2.sh
+
+Or 
+4b. Continued Manual
+
+5. Get updates:
 git pull https://github.com/markriley9999/refPlayer.git
 
-
-install npm
+6. install npm
 sudo dnf install npm
 
-install nodejs
+7. install nodejs
 sudo dnf install nodejs
 https://nodejs.org/en/
 
-Install modules
+8. Install modules
 sudo npm install
 
-
+9.
 Add sym link:
 ln -s ./node_modules/.bin/electron
 
-Create logs dir
+10. Create logs dir
 mkdir ../logs/
 
 
-Get content:
+11. Get content:
 "http://duk-test01.digitaluk.co.uk/markriley/refplayer-content/refplayer-content.tar.gz"
 "https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-content/refplayer-content.tar.gz"
 
  Windows:
 https://www.gnu.org/software/wget/
-https://www.gnu.org/software/tar/
+https://curl.haxx.se/download.html
 
-./appinstall.sh curl
+
+if required:
+sudo dnf install  curl
 
 curl $URL -o refplayer-content.tar.gz
 
-tar -tf refplayer-content.tar.gz
+12. Extract content
+https://www.gnu.org/software/tar/
 
 tar -xzvf refplayer-content.tar.gz -C ../
 
-rm refplayer-content.tar.gz
+13. Check installation
+total 1188
+drwxrwxrwx 2 root root     0 Aug 14 16:05 ./
+drwxrwxrwx 2 root root     0 Jul  6 15:57 ../
+drwxrwxrwx 2 root root     0 Aug  9 10:31 clearKey/
+drwxrwxrwx 2 root root     0 Aug  7 12:21 common/
+drwxrwxrwx 2 root root     0 Aug 11 19:14 content/
+-rwxrwxrwx 1 root root     0 Aug 14 16:05 dir.txt*
+drwxrwxrwx 2 root root     0 Jul 26 20:16 docs/
+drwxrwxrwx 2 root root     0 Aug  6 00:16 dynamic/
+drwxrwxrwx 2 root root     0 Aug 14 15:58 .git/
+-rwxrwxrwx 1 root root   395 Mar  1 15:52 .gitattributes*
+-rwxrwxrwx 1 root root   837 Jul 26 20:16 .gitignore*
+-rwxrwxrwx 1 root root 21504 Aug 14 11:14 index.js*
+drwxrwxrwx 2 root root     0 Aug 11 13:51 install/
+drwxrwxrwx 2 root root     0 Aug 14 11:53 logs/
+drwxrwxrwx 2 root root     0 Jul 20 12:12 node_modules/
+-rwxrwxrwx 1 root root   433 Jul 26 20:16 package.json*
+drwxrwxrwx 2 root root     0 Aug  7 12:21 playlists/
+-rwxrwxrwx 1 root root   220 Aug 10 16:56 run.sh*
+drwxrwxrwx 2 root root     0 May 30 16:40 scripts/
+-rwxrwxrwx 1 root root   670 Aug 14 14:58 todo.txt*
+drwxrwxrwx 2 root root     0 Aug  9 17:12 ui/
+-rwxrwxrwx 1 root root   113 Aug 10 20:58 version.json*
+drwxrwxrwx 2 root root     0 Jul 13 16:30 views/
+
+14. Run
+./run.sh
+
+to get latest build
+./run.sh update
+
+
+windows 
+electron .
+
+
+
+
 
 
 
