@@ -1,3 +1,6 @@
+Create logs dir
+
+
 - create:
 		- add cues!
 		- encrypt content

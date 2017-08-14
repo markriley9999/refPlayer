@@ -1,3 +1,73 @@
+
+1. Install GIT
+
+Fedora:   		sudo dnf install git
+Red Hat, 
+Fedora, 
+CentOS:		   	sudo yum install git
+Debian/Ubuntu	sudo apt-get install git
+OpenSUSE?		sudo zypper install git
+ 
+https://git-scm.com/download/win
+
+Configure GIT
+
+git config --global user.name "manufacturer"
+git config --global user.email manufacturer@digitaluk.co.uk
+
+Clone code
+git clone https://github.com/markriley9999/refPlayer.git refPlayer
+
+Get updates:
+git pull https://github.com/markriley9999/refPlayer.git
+
+
+install npm
+sudo dnf install npm
+
+install nodejs
+sudo dnf install nodejs
+https://nodejs.org/en/
+
+Install modules
+sudo npm install
+
+
+Add sym link:
+ln -s ./node_modules/.bin/electron
+
+Create logs dir
+mkdir ../logs/
+
+
+Get content:
+"http://duk-test01.digitaluk.co.uk/markriley/refplayer-content/refplayer-content.tar.gz"
+"https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-content/refplayer-content.tar.gz"
+
+ Windows:
+https://www.gnu.org/software/wget/
+https://www.gnu.org/software/tar/
+
+./appinstall.sh curl
+
+curl $URL -o refplayer-content.tar.gz
+
+tar -tf refplayer-content.tar.gz
+
+tar -xzvf refplayer-content.tar.gz -C ../
+
+rm refplayer-content.tar.gz
+
+
+
+
+
+
+
+
+
+
+
 Windows BASH - broken
 Debian - fixed 
 
@@ -87,6 +157,11 @@ git config --global user.email manufacturer@digitaluk.co.uk
 git clone https://github.com/markriley9999/refPlayer.git refPlayer
 git pull https://github.com/markriley9999/refPlayer.git master
 
+
+
+
+
+
 git commit -a
 
 sudo dnf install nodejs
@@ -117,9 +192,4 @@ curl -v https://s3-eu-west-1.amazonaws.com/markriley9999.testbucket/refplayer-co
 
  
  
- Windows:
-https://git-scm.com/download/win
-https://www.gnu.org/software/wget/
-https://www.gnu.org/software/tar/
-https://nodejs.org/en/
 
