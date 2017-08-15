@@ -459,44 +459,32 @@ expressServer.get('/time', function(req, res) {
 	res.send(tISO);	
 });
  
-const configStream = [];
-configStream["/dynamic/dartest.mpd"] = require('./dynamic/dartest.json');
-configStream["/dynamic/mperiod.mpd"] = require('./dynamic/mperiod.json');
-var archiveMPDs = [];
+const configStream 	= [];
+var archiveMPDs 	= [];
+var prevState 		= [];
 
 expressServer.get('/dynamic/*', function(req, res) {
 	
 	var progStart;
-	var d = new Date();
+	var dNow = new Date();
 	
-	var utcHours = d.getUTCHours();	
-	var utcMinutes = d.getUTCMinutes();
-	var utcSeconds = d.getUTCSeconds();
+	var utcHours = dNow.getUTCHours();	
+	var utcMinutes = dNow.getUTCMinutes();
+	var utcSeconds = dNow.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
 	var useURL = req.path;
-	var options = {};
+	var formProps = {};
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
 	var sC = [];
 	
 	sendServerLog("GET dynamic: " + useURL);
 
-	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
-	// console.log("timeServer: " + timeServer);
-	options.timeServer = timeServer;
-	
-	if (configStream[req.path]) {
-		sC = configStream[req.path];
-	} else {
-		console.log(" * bad url. - " + req.path);
-		return res.sendStatus(404);
-	}
-
 	var sContId = commonUtils.createContentId(); 
 	sendServerLog("ContentId: " + sContId);
-	options.title = sContId;
-	
+
+	// Content no longer live?
 	if (req.query.contid) {
 		var cContId = req.query.contid;
 		
@@ -514,19 +502,61 @@ expressServer.get('/dynamic/*', function(req, res) {
 			}
 		}
 	}
+
+	// Create new manifest
+	formProps.title = sContId;
 	
-	sC.segsize 	= parseInt(eval(sC.segsize));
-	sC.periodD 	= parseInt(eval(sC.periodD));
-	sC.maxP 	= parseInt(eval(sC.maxP));
-	sC.adD 		= parseInt(eval(sC.adD));
-	sC.marginF 	= parseInt(eval(sC.marginF));
-	sC.marginB 	= parseInt(eval(sC.marginB));
-	sC.bAdsandMain = eval(sC.bAdsandMain);
+	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
+	// console.log("timeServer: " + timeServer);
+	formProps.timeServer = timeServer;
+	
+	// Load stream config info (sync - one time load)
+	if (!configStream[useURL]) {
+		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
+		
+		console.log("Load config file: " + cfn);
+		
+		if (fs.existsSync(cfn)) {
+			configStream[useURL] = require(cfn);
+		} else {
+			console.log(" * file does not exist");
+			return res.sendStatus(404);
+		}
+	}
+	
+	sC = configStream[useURL];
+
+	sC.segsize 		= parseInt(eval(sC.segsize));
+	sC.periodD 		= parseInt(eval(sC.periodD));
+	sC.maxP 		= parseInt(eval(sC.maxP));
+	sC.adD 			= parseInt(eval(sC.adD));
+	sC.marginF 		= parseInt(eval(sC.marginF));
+	sC.marginB 		= parseInt(eval(sC.marginB));
+	sC.bAdsandMain 	= eval(sC.bAdsandMain);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, sC.maxP);
 	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, sC.maxP);
 	var upperP 		= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, sC.maxP);
-	var numP = (upperP - lowerP) + 1;
+	var numP 		= (upperP - lowerP) + 1;
+
+	// Will the manifest change?
+	if (!prevState[useURL]) {
+		prevState[useURL] = {};
+	}
+	
+	if ((!prevState[useURL].publishTime) || (lowerP != prevState[useURL].lowerP) || (upperP != prevState[useURL].upperP)) {
+		var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
+		sendServerLog("Manifest has changed: publishTime - " + fNow);
+		
+		formProps.publishTime 	= fNow;
+		
+		prevState[useURL].publishTime 	= fNow;
+		prevState[useURL].lowerP 		= lowerP;
+		prevState[useURL].upperP 		= upperP;
+	} else
+	{
+		formProps.publishTime = prevState[useURL].publishTime;
+	}
 	
 	console.log("CurrentPeriod: " + currentP);
 
@@ -541,10 +571,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	
 		if (sC.bAdsandMain) {
-			options['ad-period' + i] 	= makeAdPeriod(i, sC.periodD, sC.adD, prevMain);
-			options['main-period' + i] 	= makeMainPeriod(i, sC.periodD, sC.adD, sC.segsize, "ad-" + i);
+			formProps['ad-period' + i] 	= makeAdPeriod(i, sC.periodD, sC.adD, "" /* prevMain */);
+			formProps['main-period' + i] 	= makeMainPeriod(i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
 		} else {
-			options['period' + i] = makeMainPeriod(i, sC.periodD, 0, sC.segsize, prevMain);			
+			formProps['period' + i] = makeMainPeriod(i, sC.periodD, 0, sC.segsize, prevMain);			
 		}
 	}
 	
@@ -562,14 +592,16 @@ expressServer.get('/dynamic/*', function(req, res) {
 			res.end(err);
 		}
 
-		d.setUTCMinutes(0);
-		d.setUTCSeconds(0);
-		progStart = dateFormat(d.toUTCString(), "isoUtcDateTime");
+		var dAv = dNow;
+		
+		dAv.setUTCMinutes(0);
+		dAv.setUTCSeconds(0);
+		progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
 		//console.log("progStart: " + progStart);
 		
-		options.availabilityStartTime = progStart;
+		formProps.availabilityStartTime = progStart;
 		
-		res.render(file, options, function(err, mpd) { 
+		res.render(file, formProps, function(err, mpd) { 
 			if (err) {
 				res.end(err);
 			}

@@ -29,6 +29,10 @@ var UTILS = function () {
 	self.basename = function (n) { 
 		return n.replace(/^(.*[/\\])?/, '').replace(/(\.[^.]*)$/, ''); 
 	}
+	
+	self.noSuffix = function (n) { 
+		return n.replace(/(\.[^.]*)$/, ''); 
+	}
 }
 
 if (typeof module !== 'undefined') {

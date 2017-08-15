@@ -1,5 +1,4 @@
-Create logs dir
-
+- mutliple adverts
 
 - create:
 		- add cues!
