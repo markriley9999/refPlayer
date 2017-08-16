@@ -29,12 +29,12 @@ mVid.videoEvents = Object.freeze({
   ENCRYPTED			: "encrypted"
 });
 
-mVid.playCount 				= 0;
+mVid.playCount 			= 0;
 
-var content = {};
-content.currentBufferingIdx = 0;
-content.currentPlayingIdx 	= 0;
-content.list = [];
+mVid.cnt = {};
+mVid.cnt.curBuffIdx = 0;
+mVid.cnt.curPlayIdx = 0;
+mVid.cnt.list = [];
 
 // Play states
 const PLAYSTATE_STOP	= 0;
@@ -132,11 +132,11 @@ e = function (id) {
 }
 
 window.onload = function () {
-	try {
+	//try {
 		mVid.start();
-	} catch (error) {
-		mVid.Log.error("FATAL ERROR: " + error.message);
-	}
+	//} catch (error) {
+	//	mVid.Log.error("FATAL ERROR: " + error.message);
+	//}
 }
 
 window.onbeforeunload = function () {
@@ -323,7 +323,7 @@ mVid.start = function () {
 };
 
 mVid.procPlaylist = function (ch, playObj) {
-	var c = content.list;
+	var c = this.cnt.list;
 	
 	// this.Log.info("- New playlist: " + JSON.stringify(playObj));
 	
@@ -662,9 +662,9 @@ mVid.statusTableText = function (playerId, textEntry, text) {
 }
 
 mVid.getCurrentBufferingPlayer = function () {
-	//this.Log.info("getCurrentBufferingPlayer: " + content.list[content.currentBufferingIdx].playerId);
-	var idx = content.currentBufferingIdx;
-	var playerId = content.list[idx].playerId;
+	//this.Log.info("getCurrentBufferingPlayer: " + this.cnt.list[this.cnt.curBuffIdx].playerId);
+	var idx = this.cnt.curBuffIdx;
+	var playerId = this.cnt.list[idx].playerId;
 	var player = e(playerId);
 	
 	if (!player) {
@@ -676,28 +676,28 @@ mVid.getCurrentBufferingPlayer = function () {
 }
 
 mVid.getCurrentPlayingPlayer = function () {
-	//this.Log.info("getCurrentPlayingPlayer: " + content.list[content.currentPlayingIdx].playerId);
-	var idx = content.currentPlayingIdx;
+	//this.Log.info("getCurrentPlayingPlayer: " + this.cnt.list[this.cnt.curPlayIdx].playerId);
+	var idx = this.cnt.curPlayIdx;
 	
-	if (content.list[idx]){
-		return e(content.list[idx].playerId);
+	if (this.cnt.list[idx]){
+		return e(this.cnt.list[idx].playerId);
 	} else {
 		return null;
 	}
 }
 
 mVid.getBufferingContentIdx = function () {
-	//this.Log.info("getBufferingContentIdx: " + content.currentBufferingIdx);
-	return content.currentBufferingIdx;
+	//this.Log.info("getBufferingContentIdx: " + this.cnt.curBuffIdx);
+	return this.cnt.curBuffIdx;
 }
 
 mVid.getPlayingContentIdx = function () {
-	//this.Log.info("getPlayingContentIdx: " + content.currentPlayingIdx);
-	return content.currentPlayingIdx;
+	//this.Log.info("getPlayingContentIdx: " + this.cnt.curPlayIdx);
+	return this.cnt.curPlayIdx;
 }
 
 mVid.getTransitionTime = function () {
-	var i = parseInt(content.list[content.currentPlayingIdx].transitionTime);
+	var i = parseInt(this.cnt.list[this.cnt.curPlayIdx].transitionTime);
 	
 	return (i != -1) ? i : Number.MAX_SAFE_INTEGER;
 }
@@ -706,27 +706,27 @@ mVid.setContentSourceAndLoad = function () {
 	var player;
 
 	player = this.getCurrentBufferingPlayer();
-	this.Log.info(player.id + " setContentSourceAndLoad - currentBufferingIdx: " + content.currentBufferingIdx);
+	this.Log.info(player.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
 	e("encrypted").setAttribute("class", "playerIcon");
 	
-	this.setSourceAndLoad(player, content.list[content.currentBufferingIdx].src, content.list[content.currentBufferingIdx].type);
+	this.setSourceAndLoad(player, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
 
 mVid.skipBufferingToNextPlayer = function () {
-	if (++content.currentBufferingIdx >= content.list.length) {
-		content.currentBufferingIdx = 0;
+	if (++this.cnt.curBuffIdx >= this.cnt.list.length) {
+		this.cnt.curBuffIdx = 0;
 	}
-	this.Log.info("skipBufferingToNextPlayer: " + content.currentBufferingIdx);
-	this.postStatusUpdate("BufferIdx", content.currentBufferingIdx);
+	this.Log.info("skipBufferingToNextPlayer: " + this.cnt.curBuffIdx);
+	this.postStatusUpdate("BufferIdx", this.cnt.curBuffIdx);
 }
 
 mVid.skipPlayingToNextPlayer = function () {
-	if (++content.currentPlayingIdx >= content.list.length) {
-		content.currentPlayingIdx = 0;
+	if (++this.cnt.curPlayIdx >= this.cnt.list.length) {
+		this.cnt.curPlayIdx = 0;
 	}
-	this.Log.info("skipPlayingToNextPlayer: " + content.currentPlayingIdx);
-	this.postStatusUpdate("PlayingIdx", content.currentPlayingIdx);
+	this.Log.info("skipPlayingToNextPlayer: " + this.cnt.curPlayIdx);
+	this.postStatusUpdate("PlayingIdx", this.cnt.curPlayIdx);
 }
 
 mVid.isMainFeaturePlayer = function (player) {

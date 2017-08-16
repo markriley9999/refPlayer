@@ -1,4 +1,3 @@
-- use hard stop at end of content
 - code review player
 - install confluence page
 
