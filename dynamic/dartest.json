@@ -1,4 +1,6 @@
 {
+	"main"			: "./dynamic/periods/main-testcard.xml",
+	
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
 	"maxP" 			: "5",
@@ -6,5 +8,10 @@
 	"marginB" 		: "3600",					
 
 	"bAdsandMain" 	: "true",
-	"adD"			: "120000"	
+	"adD"			: "120000",
+	
+	"ads"			: [
+		"./dynamic/periods/ad-ele.xml",
+		"./dynamic/periods/ad-bbb.xml"
+	]
 }

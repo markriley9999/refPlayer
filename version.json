@@ -1,6 +1,9 @@
 {
-	"title"	: "Reference Player",
-	"major" : "0",
-	"minor" : "02",
-	"info"	: "BETA release"
+	"title"		: "Reference Player",
+	"major" 	: "0",
+	"minor" 	: "03",
+	"comment"	: "BETA release",
+	"notes"		: [	"Added mixed adverts for dynamic content",
+					"Tweaked some tests"
+				  ]
 }

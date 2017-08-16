@@ -1,12 +1,16 @@
 {
+	"main"			: "./dynamic/periods/main-testcard.xml",
+
 	"segsize" 		: "3840",
-	"periodD" 		: "(79 * 3840)", 	
-	"maxP" 			: "11",
+	"periodD" 		: "(32 * 3840)", 	
+	"maxP" 			: "29",
 	"marginF" 		: "60",					
 	"marginB" 		: "60",					
 
 	"bAdsandMain" 	: "false",
-	"adD"			: "0"
+	"adD"			: "0",
+	
+	"ads"			: []
 }
 
 

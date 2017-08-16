@@ -18,7 +18,6 @@
 							"  - Main period lasts 8m",
 							"  - Periods added to manifest as time progresses",
 							"  - Next Ad period added ~1m before time to start",
-							"  - Period Continuity Flag set",
 							"  - Time shift buffer set to 60m"
 						  ]
 

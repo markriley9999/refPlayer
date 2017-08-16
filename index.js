@@ -173,12 +173,17 @@ function mainUIClosed() {
 
 function init() {
 	var p;
-
+	var v = generalInfo.version;
+	
 	console.log("--------------------------------------------------");
-	console.log(generalInfo.version.title + " v" + generalInfo.version.major + "." + generalInfo.version.minor);
+	console.log(v.title + " v" + v.major + "." + v.minor);
 	console.log("--------------------------------------------------");
 	console.log("");
-	console.log(generalInfo.version.info);
+	console.log(v.comment);
+	console.log("");
+	for (var i = 0; i < v.notes.length; i++) {
+		console.log(" - " + v.notes[i]);
+	}
 	console.log("");
 	console.log("--------------------------------------------------");
 	console.log("");
@@ -461,7 +466,7 @@ expressServer.get('/time', function(req, res) {
  
 const configStream 	= [];
 var archiveMPDs 	= [];
-var prevState 		= [];
+var persistState 	= [];
 
 expressServer.get('/dynamic/*', function(req, res) {
 	
@@ -540,22 +545,36 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var numP 		= (upperP - lowerP) + 1;
 
 	// Will the manifest change?
-	if (!prevState[useURL]) {
-		prevState[useURL] = {};
+	if (!persistState[useURL]) {
+		persistState[useURL] = { 
+			adIdx : 0
+		};
 	}
 	
-	if ((!prevState[useURL].publishTime) || (lowerP != prevState[useURL].lowerP) || (upperP != prevState[useURL].upperP)) {
+	if (	(!persistState[useURL].publishTime) 	|| 
+			(lowerP != persistState[useURL].lowerP) || 
+			(upperP != persistState[useURL].upperP)	||
+			(sContId != persistState[useURL].sContId)	) {
 		var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
 		sendServerLog("Manifest has changed: publishTime - " + fNow);
 		
 		formProps.publishTime 	= fNow;
 		
-		prevState[useURL].publishTime 	= fNow;
-		prevState[useURL].lowerP 		= lowerP;
-		prevState[useURL].upperP 		= upperP;
-	} else
-	{
-		formProps.publishTime = prevState[useURL].publishTime;
+		persistState[useURL].publishTime 	= fNow;
+		persistState[useURL].lowerP 		= lowerP;
+		persistState[useURL].upperP 		= upperP;
+		persistState[useURL].sContId		= sContId;
+	} else {
+		if (archiveMPDs[sContId]) {				
+			sendServerLog("Using previously created manifest (no change). ");
+
+			res.type("application/dash+xml");
+			res.status(200);
+			return res.send(archiveMPDs[sContId]);				
+		} else {				
+			sendServerLog("Error: No previously created manifest!");
+			return res.sendStatus(404);				
+		}
 	}
 	
 	console.log("CurrentPeriod: " + currentP);
@@ -571,10 +590,14 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	
 		if (sC.bAdsandMain) {
-			formProps['ad-period' + i] 	= makeAdPeriod(i, sC.periodD, sC.adD, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[persistState[useURL].adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
+
+			if (++persistState[useURL].adIdx >= sC.ads.length) {
+					persistState[useURL].adIdx = 0;
+			}
 		} else {
-			formProps['period' + i] = makeMainPeriod(i, sC.periodD, 0, sC.segsize, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, prevMain);			
 		}
 	}
 	
@@ -641,7 +664,7 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(p, periodD, adD, prev) {
+makeAdPeriod = function(fn, p, periodD, adD, prev) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
@@ -651,10 +674,10 @@ makeAdPeriod = function(p, periodD, adD, prev) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(p, sAdDuration, sAdStart, prev);
+	return adXML(fn, p, sAdDuration, sAdStart, prev);
 }
 
-makeMainPeriod = function(p, periodD, offset, sz, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, prev) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = Math.round(((p * periodD) + offset) / sz);
@@ -665,7 +688,7 @@ makeMainPeriod = function(p, periodD, offset, sz, prev) {
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (" + offsetS + "S)");
 
-	return mainContentXML(p, sDuration, sStart, offsetS, seg, prev);
+	return mainContentXML(fn, p, sDuration, sStart, offsetS, seg, prev);
 }
 
 _formatTime = function(d) {
@@ -677,11 +700,12 @@ _getSecs = function(d) {
 }
 
 
-const periodMain 		= fs.readFileSync('./dynamic/periods/main-testcard.xml', 'utf8');
 const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
-const periodAd 			= fs.readFileSync('./dynamic/periods/ad-bbb.xml', 'utf8');
 
-mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
+const mpMainContent	= [];
+const mpAds			= [];
+
+mainContentXML = function(fn, p, sDuration, sStart, offset, seg, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -694,7 +718,18 @@ mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 		pc = "";
 	}
 
-	template 	= hbs.handlebars.compile(periodMain);
+	if (!mpMainContent[fn]) {
+		console.log("Load main content file: " + fn);
+		
+		if (fs.existsSync(fn)) {
+			mpMainContent[fn] = fs.readFileSync(fn, 'utf8');
+		} else {
+			console.log(" * file does not exist");
+			return false;
+		}
+	}
+
+	template 	= hbs.handlebars.compile(mpMainContent[fn]);
 	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, period_offset: offset, period_seg: seg};
 	var complete = template(context);
 	
@@ -703,7 +738,7 @@ mainContentXML = function(p, sDuration, sStart, offset, seg, prevPeriodID) {
 	return complete;
 }
 
-adXML = function(p, sDuration, sStart, prevPeriodID) {
+adXML = function(fn, p, sDuration, sStart, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -716,7 +751,18 @@ adXML = function(p, sDuration, sStart, prevPeriodID) {
 		pc = "";
 	}
 
-	template 	= hbs.handlebars.compile(periodAd);
+	if (!mpAds[fn]) {
+		console.log("Load ad: " + fn);
+		
+		if (fs.existsSync(fn)) {
+			mpAds[fn] = fs.readFileSync(fn, 'utf8');
+		} else {
+			console.log(" * file does not exist");
+			return false;
+		}
+	}
+
+	template 	= hbs.handlebars.compile(mpAds[fn]);
 	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc};
 	var complete = template(context);
 	
