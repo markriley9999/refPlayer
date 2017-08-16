@@ -4,6 +4,7 @@
 	"minor" 	: "03",
 	"comment"	: "BETA release",
 	"notes"		: [	"Added mixed adverts for dynamic content",
-					"Tweaked some tests"
+					"Tweaked some tests",
+					"Fixed zero offset segment bug"
 				  ]
 }

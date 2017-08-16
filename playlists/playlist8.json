@@ -4,16 +4,14 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Live Dynamic: Starts on the hour (each period 2M)",
+	"channelName" 		: "Live Dynamic: 'Period Continuous' flag set",
 	
 	"info"				: [	"Dynamic Manifest:",
 							"  - Content starts 'on the hour'",
 							"  - Content duration 60m",
 							"  - Split into 30 ~2m Periods",
-							"  - Only 'current' (and possibly next) period present in manifest",
 							"  - Next period added to manifest ~1m before start (of next period)",
-							"  - Period continuity flag set",
-							"  - Time shift buffer set to 0"
+							"  - Period continuity flag set"
 						  ]
 
 }

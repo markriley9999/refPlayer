@@ -5,7 +5,7 @@
 	"periodD" 		: "(32 * 3840)", 	
 	"maxP" 			: "29",
 	"marginF" 		: "60",					
-	"marginB" 		: "60",					
+	"marginB" 		: "3600",					
 
 	"bAdsandMain" 	: "false",
 	"adD"			: "0",

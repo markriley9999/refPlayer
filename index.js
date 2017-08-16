@@ -680,7 +680,7 @@ makeAdPeriod = function(fn, p, periodD, adD, prev) {
 makeMainPeriod = function(fn, p, periodD, offset, sz, prev) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
-	var seg = Math.round(((p * periodD) + offset) / sz);
+	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
