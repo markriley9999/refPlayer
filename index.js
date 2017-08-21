@@ -484,15 +484,16 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
 	var sC = [];
+	var strippedURL = commonUtils.basename(useURL);
 	
-	sendServerLog("GET dynamic: " + useURL);
+	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
 
-	var sContId = commonUtils.createContentId(); 
+	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
 	sendServerLog("ContentId: " + sContId);
 
 	// Content no longer live?
 	if (req.query.contid) {
-		var cContId = req.query.contid;
+		var cContId = strippedURL + "-" + req.query.contid;
 		
 		if (sContId != cContId) {
 			sendServerLog("Client requested non-current content: " + cContId);
