@@ -1,9 +1,9 @@
-https://www.ffmpeg.org/
-https://www.bento4.com/
-
 - dash
+
 - cues
 - schema check
+
+- split content into separate tars!
 
 * Check: The MPD document (named stream.mpd by default by the mp4dash tool) should be served with Content-Type: application/dash+xml and the init and media segments should be served with a Content-Type: video/mp4
  
@@ -11,7 +11,7 @@ https://www.bento4.com/
 
 - code review player
 - install confluence page
-
+- create dash conf page
 
 - create:
 		- add cues!

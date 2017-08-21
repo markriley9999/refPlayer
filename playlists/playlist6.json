@@ -1,13 +1,15 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/mperiods/testcard-mperiod.mpd",
+	"src" 				: "./content/mperiods/ads-itvck-mperiod.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (10): Testcard (60s)",
+	"channelName" 		: "Multiple Periods (4): ITV Ads (1m) and ITV Clear Key (2m)",
 
-	"info"				: [	"10 60s Periods",
-							"Inband Events",
-							"Period Continuity flag"
+	"info"				: [	"4 Periods:",
+							"  1. ITV Ads (1m)",
+							"  2. Lorraine - Clear Key (2m)",
+							"  3. ITV Ads (1m)",
+							"  4. Lorraine - Clear Key (2m)"
 						  ]
 }

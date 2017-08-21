@@ -799,7 +799,7 @@ expressServer.post('/getkeys', function(req, res) {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					// 404 Error if file not found
-					console.log(" * file does not exist");
+					console.log(" * file does not exist: " + file);
 					return res.sendStatus(404);
 				}
 				res.end(err);
