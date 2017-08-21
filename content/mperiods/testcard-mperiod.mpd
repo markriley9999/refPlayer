@@ -9,8 +9,8 @@
 
 	<Period id = "period-0" duration="PT1M1.440S" start="PT0M">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="0" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="0" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -41,8 +41,8 @@
 
 	<Period id = "period-1" duration="PT1M1.440S" start="PT1M1.440S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="61440" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="61440" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -57,16 +57,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-0" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-0" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-0" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-0" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -76,8 +76,8 @@
 
 	<Period id = "period-2" duration="PT1M1.440S" start="PT2M2.880S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="122880" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="122880" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -92,16 +92,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-1" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-1" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="33" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-1" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-1" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="33" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -111,8 +111,8 @@
 
 	<Period id = "period-3" duration="PT1M1.440S" start="PT3M4.320S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="184320" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="184320" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -127,16 +127,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-2" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-2" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="49" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-2" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-2" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="49" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -146,8 +146,8 @@
 
 	<Period id = "period-4" duration="PT1M1.440S" start="PT4M5.760S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="245760" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="245760" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -162,16 +162,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-3" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-3" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="65" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-3" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-3" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="65" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -181,8 +181,8 @@
 
 	<Period id = "period-5" duration="PT1M1.440S" start="PT5M7.200S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="307200" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="307200" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -197,16 +197,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-4" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-4" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="81" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-4" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-4" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="81" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -216,8 +216,8 @@
 
 	<Period id = "period-6" duration="PT1M1.440S" start="PT6M8.640S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="368640" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="368640" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -232,16 +232,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-5" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-5" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="97" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-5" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-5" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="97" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -251,8 +251,8 @@
 
 	<Period id = "period-7" duration="PT1M1.440S" start="PT7M10.080S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="430080" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="430080" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -267,16 +267,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-6" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-6" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="113" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-6" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-6" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="113" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -286,8 +286,8 @@
 
 	<Period id = "period-8" duration="PT1M1.440S" start="PT8M11.520S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="491520" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="491520" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -302,16 +302,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-7" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-7" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="129" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-7" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-7" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="129" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
@@ -321,8 +321,8 @@
 
 	<Period id = "period-9" duration="PT1M1.440S" start="PT9M12.960S">
 	
-		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" id="1" timescale="1000">
-			<Event duration="5000"  presentationTime="552960" id="1" value="&lt;y&gt;123abc&lt;/y&gt;"/>
+		<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
+			<Event duration="5000"  presentationTime="552960" id="1"/>
 		</EventStream>
 		
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" mimeType="video/mp4" >
@@ -337,16 +337,16 @@
 			<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" frameRate="25" scanType="progressive" bandwidth="834352"/>
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-8" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-8" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="145" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
 			<Representation id="128kbps" bandwidth="128000" />
 		</AdaptationSet>
 		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
-			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-8" />
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="6"/>
+			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="period-8" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../testcard/audio/</BaseURL>
 			<SegmentTemplate startNumber="145" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
