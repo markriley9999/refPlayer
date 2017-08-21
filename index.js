@@ -354,7 +354,8 @@ expressServer.get('/player.aitx', function(req, res) {
 });
 
 expressServer.get('/content/*', function(req, res) {
-	// Why seeing 2 gets????
+	// TODO: Why seeing 2 gets????
+	// TODO: Use "application/dash+xml" for mpds
 	
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));

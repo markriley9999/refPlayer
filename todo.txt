@@ -1,3 +1,14 @@
+https://www.ffmpeg.org/
+https://www.bento4.com/
+
+- dash
+- cues
+- schema check
+
+* Check: The MPD document (named stream.mpd by default by the mp4dash tool) should be served with Content-Type: application/dash+xml and the init and media segments should be served with a Content-Type: video/mp4
+ 
+- sanity check mpd using dash site (http://dashif.org/conformance.html)
+
 - code review player
 - install confluence page
 
@@ -11,18 +22,6 @@
 
 
 
-Check Spec:
-------------------
-
-check 	urn:mpeg:dash:period_continuity:2014 in spec
-		urn:dvb:dash:period_continuity:2014
-		the @id attribute set to AID.
-		
-		
-		
-timeShiftBufferDepth
-UTCTiming
-- urn:mpeg:dash:utc:http-iso:2014
 
 
 Qs
