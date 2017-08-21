@@ -547,9 +547,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 
 	// Will the manifest change?
 	if (!persistState[useURL]) {
-		persistState[useURL] = { 
-			adIdx : 0
-		};
+		persistState[useURL] = {};
 	}
 	
 	if (	(!persistState[useURL].publishTime) 	|| 
@@ -581,6 +579,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	console.log("CurrentPeriod: " + currentP);
 
 	var prevMain;
+	var adIdx;
 	
 	for (var i = lowerP; i <= upperP; i++) {
 		
@@ -591,12 +590,9 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	
 		if (sC.bAdsandMain) {
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[persistState[useURL].adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
+			adIdx = (i % sC.ads.length);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
 			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
-
-			if (++persistState[useURL].adIdx >= sC.ads.length) {
-					persistState[useURL].adIdx = 0;
-			}
 		} else {
 			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, prevMain);			
 		}
