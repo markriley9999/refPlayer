@@ -1,17 +1,24 @@
 #!/bin/bash
 
 URL=$1
+FNAME=refplayer-content-$2.tar.gz
+DIR="tmpdl"
 
 echo $URL
+echo $FNAME
 
 ./appinstall.sh curl
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
-curl $URL -o refplayer-content.tar.gz
+if [ ! -d "$DIR" ]; then
+	mkdir $DIR
+fi
 
-tar -tf refplayer-content.tar.gz
+curl $URL/$FNAME -o $DIR/$FNAME
 
-tar -xzvf refplayer-content.tar.gz -C ../
+tar -tf $DIR/$FNAME
 
-rm refplayer-content.tar.gz
+tar -xzvf $DIR/$FNAME -C ../
+
+rm $DIR/$FNAME
 
