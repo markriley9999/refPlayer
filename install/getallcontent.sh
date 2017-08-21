@@ -9,3 +9,4 @@ URL=$1
 ./getcontent.sh $URL "mperiods"
 ./getcontent.sh $URL "sintel"
 ./getcontent.sh $URL "testcard"
+

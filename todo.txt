@@ -1,7 +1,8 @@
 - dash
 
-- cues
 - schema check
+
+- check encryption re-entrancey
 
 - split content into separate tars!
 
@@ -15,7 +16,7 @@
 
 - create:
 		- add cues!
-		- encrypt content
+		- encrypt content (bbb?)
 		- improve cue handling, show cue points
 
 
