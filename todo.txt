@@ -1,3 +1,5 @@
+- upload content!!!!
+
 - dash
 
 - schema check
@@ -6,8 +8,6 @@
 
 - split content into separate tars!
 
-* Check: The MPD document (named stream.mpd by default by the mp4dash tool) should be served with Content-Type: application/dash+xml and the init and media segments should be served with a Content-Type: video/mp4
- 
 - sanity check mpd using dash site (http://dashif.org/conformance.html)
 
 - code review player
@@ -19,9 +19,27 @@
 		- encrypt content (bbb?)
 		- improve cue handling, show cue points
 
+- Timestamp
+
+ffmpeg -i input.mp4 -vf "drawtext=fontfile=font.ttf:
+                        fontsize=45:fontcolor=white:
+                        box=1:boxcolor=black@0.4:
+                        text='Time\: %{pts\:gmtime\:1466507118}'" output.mp4
+
+mp4box.exe -crypt crypt.xml video-clear.mp4 -out video-encrypted.mp4
+
+Split the source video file into two different .mp4 files – one containing only video track and another containing only audio track.
+Encode the file containing only the video track into as many quality levels as needed.
+Encrypt all the different video files and the audio file.
+Package all the required media files – all video files with different bitrate and audio file – into many segments (each in a separate file, representing a slice of the media for a specific duration) and also create a manifest. The DASH video is now ready.
 
 
-
+Confluence
+- Create DASH
+- Encrypt dash
+- Add events
+- Timestamp content
+- Clone dash
 
 
 
