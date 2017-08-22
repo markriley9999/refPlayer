@@ -1,3 +1,5 @@
+- subs offset is wrong!!!
+
 - upload content!!!!
 
 - dash
