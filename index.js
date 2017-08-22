@@ -356,6 +356,15 @@ expressServer.get('/player.aitx', function(req, res) {
 expressServer.get('/content/*', function(req, res) {
 	// TODO: Why seeing 2 gets????
 	// TODO: Use "application/dash+xml" for mpds
+	var suffix = req.path.split('.').pop();
+	var cType;
+	
+	if (suffix === "mpd") {
+		cType = "application/dash+xml";
+	} else {
+		cType = "video/mp4";		
+	}
+	//console.log(" - suffix: " + suffix + " Content-Type: " + cType);
 	
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
@@ -429,7 +438,7 @@ expressServer.get('/content/*', function(req, res) {
 			"Content-Range": "bytes " + start + "-" + end + "/" + total,
 			"Accept-Ranges": "bytes",
 			"Content-Length": chunksize,
-			"Content-Type": "video/mp4"
+			"Content-Type": cType
 		});			
 
 		var stream = fs.createReadStream(file, { start: start, end: end })
