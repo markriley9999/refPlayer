@@ -287,7 +287,7 @@ mVid.start = function () {
 
 		var options = [];
 		const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
-		const videoContentType = 'video/mp4; codecs="avc3.64001F"'; 
+		const videoContentType = 'video/mp4; codecs="avc3.4D4015"'; 
 
 		options = [
 			{

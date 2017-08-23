@@ -110,7 +110,7 @@ function SetupEME(video, keySystem, name, options, contentTag)
 	}
 	
 	video.addEventListener("encrypted", function(ev) {
-		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData" +  arrayBufferToString(ev.initData) + ")");
+		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData: " +  arrayBufferToString(ev.initData) + ")");
 
 		if (!video.bProcessingKey) { 
 			video.bProcessingKey = true;
