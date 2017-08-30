@@ -14,7 +14,7 @@
 							"  - ITV and Ch4 Ads",
 							"  - Ad period, starts every 10m",
 							"  - Ad period lasts 1m",
-							"  - Main uses /'Big Buck Bunny/'",
+							"  - Main uses 'Big Buck Bunny'",
 							"  - Main period, starts after Ad",
 							"  - Main period lasts 9m",
 							"  - Periods added to manifest as time progresses",

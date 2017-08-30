@@ -4,14 +4,12 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (6): BBB, Ele Dream & Testcard (1m) + Cues",
+	"channelName" 		: "Multiple Periods (4): Ele Dream, BBB + Cues",
 
 	"info"				: [	"6 1m Periods:",
 							"  1. Big Buck Bunny",
-							"  2. Elephant/'s Dream (EBU-TT-D)",
-							"  3. Test Card (Inband Events)",
-							"  4. Big Buck Bunny",
-							"  5. Elephant/'s Dream (EBU-TT-D)",
-							"  6. Test Card (Inband Events)"
+							"  2. Elephant's Dream (EBU-TT-D)",
+							"  3. Big Buck Bunny",
+							"  4. Elephant's Dream (EBU-TT-D)"
 						  ]
 }

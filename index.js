@@ -519,7 +519,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	}
 
-	// Create new manifest
+	// Create new manifest?
 	formProps.title = sContId;
 	
 	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");

@@ -4,7 +4,7 @@
 	"segsize" 		: "3840",
 	"periodD" 		: "(32 * 3840)", 	
 	"maxP" 			: "29",
-	"marginF" 		: "60",					
+	"marginF" 		: "120",					
 	"marginB" 		: "3600",					
 
 	"bAdsandMain" 	: "false",
