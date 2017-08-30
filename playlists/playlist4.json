@@ -1,26 +1,17 @@
 {
-	"ads" : [
-		{	
-			"src" 	: "./content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],
-	"src" 				: "./content/testcard/client_manifest-ctv-events.mpd",
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/mix-mperiod.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "5",
+	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 3 ITV Ads, Main: BBC Testcard (5s)",
+	"channelName" 		: "Multiple Periods (6): BBB, Ele Dream & Testcard (1m) + Cues",
 
-	"info"				: [	"3 mp4 (ITV) adverts",
-							"BBC Testcard DASH asset - playing for 5s",
-							"Inband events"
+	"info"				: [	"6 1m Periods:",
+							"  1. Big Buck Bunny",
+							"  2. Elephant/'s Dream (EBU-TT-D)",
+							"  3. Test Card (Inband Events)",
+							"  4. Big Buck Bunny",
+							"  5. Elephant/'s Dream (EBU-TT-D)",
+							"  6. Test Card (Inband Events)"
 						  ]
 }

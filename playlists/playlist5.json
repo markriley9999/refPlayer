@@ -1,17 +1,15 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/mperiods/mix-mperiod.mpd",
+	"src" 				: "./content/mperiods/ads-itvck-mperiod.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (6): BBB, Ele Dream & Testcard (1m) + Cues",
+	"channelName" 		: "Multiple Periods (4): ITV Ads (1m) and ITV Clear Key (2m)",
 
-	"info"				: [	"6 1m Periods:",
-							"  1. Big Buck Bunny",
-							"  2. Elephant/'s Dream (EBU-TT-D)",
-							"  3. Test Card (Inband Events)",
-							"  4. Big Buck Bunny",
-							"  5. Elephant/'s Dream (EBU-TT-D)",
-							"  6. Test Card (Inband Events)"
+	"info"				: [	"4 Periods:",
+							"  1. ITV Ads (1m)",
+							"  2. Lorraine - Clear Key (2m)",
+							"  3. ITV Ads (1m)",
+							"  4. Lorraine - Clear Key (2m)"
 						  ]
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MPD 
+	type="dynamic"
+	xmlns="urn:mpeg:dash:schema:mpd:2011" 
+	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
+	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
+	minBufferTime="PT10S" 
+	maxSegmentDuration="PT3.84S" 
+	mediaPresentationDuration="PT1H0.040S"
+ 
+	minimumUpdatePeriod="PT10S"
+	timeShiftBufferDepth="PT60M"
+	publishTime="{{publishTime}}"
+	availabilityStartTime="{{availabilityStartTime}}"
+	>
+	<ProgramInformation>
+		<Title>{{title}}</Title>
+	</ProgramInformation>
+	
+{{{period0}}}
+{{{period1}}}
+{{{period2}}}
+{{{period3}}}
+{{{period4}}}
+{{{period5}}}
+{{{period6}}}
+{{{period7}}}
+{{{period8}}}
+{{{period9}}}
+{{{period10}}}
+{{{period11}}}
+{{{period12}}}
+{{{period13}}}
+{{{period14}}}
+{{{period15}}}
+{{{period16}}}
+{{{period17}}}
+{{{period18}}}
+{{{period19}}}
+{{{period20}}}
+{{{period21}}}
+{{{period22}}}
+{{{period23}}}
+{{{period24}}}
+{{{period25}}}
+{{{period26}}}
+{{{period27}}}
+{{{period28}}}
+{{{period29}}}
+
+	<UTCTiming
+		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
+		value="{{timeServer}}">
+	</UTCTiming>
+	
+</MPD>

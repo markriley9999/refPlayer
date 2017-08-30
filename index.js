@@ -801,7 +801,7 @@ expressServer.post('/getkeys', function(req, res) {
 	if (req.query.tag) {
 		var tag = req.query.tag;
 		
-		// sendServerLog(" - tag: " + tag);
+		sendServerLog(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';
 		
