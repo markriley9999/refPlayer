@@ -3,7 +3,7 @@
 	"src" 				: "./dynamic/mperiod.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
-	"addContentId" 		: "false",
+	"addContentId" 		: "true",
 	"channelName" 		: "Live Dynamic: 'Period Continuous' flag set",
 	
 	"info"				: [	"Dynamic Manifest:",
