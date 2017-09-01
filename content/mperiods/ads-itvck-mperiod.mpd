@@ -12,8 +12,8 @@
   profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014,urn:mpeg:dash:profile:isoff-live:2011">
 
 <ProgramInformation>
-	<Title>BBB and ITV Clear Key Content</Title>
-	<Source>DUK</Source>
+	<Title>ITV Ads and ITV Clear Key Content</Title>
+	<Source>ITV</Source>
 </ProgramInformation>
 
 <Period duration="PT1M" start="PT0S">
@@ -22,22 +22,26 @@
 		<Event duration="5000"  presentationTime="0" id="1"/>
 	</EventStream>
 	
-	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
-		<BaseURL>../bigbuckbunny/avc3/</BaseURL>
-		<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
-		<Representation id="1920x1080p25" codecs="avc3.640028" height="1080" width="1920" bandwidth="4741120" />
-		<Representation id="896x504p25" codecs="avc3.64001f" height="504" width="896" bandwidth="1416688" />
-		<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" bandwidth="843768" />
-		<Representation id="512x288p25" codecs="avc3.4d4015" height="288" width="512" bandwidth="449480" />
-		<Representation id="1280x720p25" codecs="avc3.640020" height="720" width="1280" bandwidth="2656696" />
-	</AdaptationSet>
-	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
+	<AdaptationSet segmentAlignment="true" lang="eng">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-		<BaseURL>../bigbuckbunny/audio/</BaseURL>
-		<SegmentTemplate timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="160kbps/IS.mp4" />
-		<Representation id="160kbps" bandwidth="160000" />
-		<Representation id="96kbps" bandwidth="96000" />
-		<Representation id="128kbps" bandwidth="128000" />
+		<BaseURL>../adverts/itv/dash/</BaseURL>
+		<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+		<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+		</Representation>
+	</AdaptationSet>
+	<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<BaseURL>../adverts/itv/dash/</BaseURL>
+		<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+		<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4894179">
+		</Representation>
+		<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1552179">
+		</Representation>
+		<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="977809">
+		</Representation>
+		<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="581537">
+		</Representation>
+		<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
+		</Representation>
 	</AdaptationSet>
 </Period>
 
@@ -180,22 +184,26 @@
 		<Event duration="5000"  presentationTime="180000" id="1"/>
 	</EventStream>
 	
-	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" frameRate="25" scanType="progressive" mimeType="video/mp4" >
-		<BaseURL>../bigbuckbunny/avc3/</BaseURL>
-		<SegmentTemplate startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="1920x1080p25/IS.mp4" />
-		<Representation id="1920x1080p25" codecs="avc3.640028" height="1080" width="1920" bandwidth="4741120" />
-		<Representation id="896x504p25" codecs="avc3.64001f" height="504" width="896" bandwidth="1416688" />
-		<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" bandwidth="843768" />
-		<Representation id="512x288p25" codecs="avc3.4d4015" height="288" width="512" bandwidth="449480" />
-		<Representation id="1280x720p25" codecs="avc3.640020" height="720" width="1280" bandwidth="2656696" />
-	</AdaptationSet>
-	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="3" codecs="mp4a.40.2" audioSamplingRate="48000" lang="eng" mimeType="audio/mp4" >
+	<AdaptationSet segmentAlignment="true" lang="eng">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-		<BaseURL>../bigbuckbunny/audio/</BaseURL>
-		<SegmentTemplate startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="160kbps/IS.mp4" />
-		<Representation id="160kbps" bandwidth="160000" />
-		<Representation id="96kbps" bandwidth="96000" />
-		<Representation id="128kbps" bandwidth="128000" />
+		<BaseURL>../adverts/itv/dash/</BaseURL>
+		<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+		<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+		</Representation>
+	</AdaptationSet>
+	<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<BaseURL>../adverts/itv/dash/</BaseURL>
+		<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+		<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4894179">
+		</Representation>
+		<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1552179">
+		</Representation>
+		<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="977809">
+		</Representation>
+		<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="581537">
+		</Representation>
+		<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
+		</Representation>
 	</AdaptationSet>
 </Period>
 
@@ -246,7 +254,7 @@
         value="main">
       </Role>
       <SegmentTemplate
-		startNumber="6"
+		startNumber="11"
         timescale="48000"
         duration="576000"
         initialization="1-9360-1784-001-DVBDASH-CLEARKEY-$RepresentationID$.dash"
@@ -297,7 +305,7 @@
         value="main">
       </Role>
       <SegmentTemplate
-		startNumber="6"
+		startNumber="11"
         timescale="25"
         duration="300"
         initialization="1-9360-1784-001-DVBDASH-CLEARKEY-$RepresentationID$.dash"

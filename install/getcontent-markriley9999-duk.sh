@@ -1,4 +1,5 @@
 #!/bin/bash
 
-./getcontent.sh "http://duk-test01.digitaluk.co.uk/markriley/refplayer-content/refplayer-content.tar.gz"
+URL="http://duk-test01.digitaluk.co.uk/markriley/refplayer-content"
 
+./getallcontent.sh $URL

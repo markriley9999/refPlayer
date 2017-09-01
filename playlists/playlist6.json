@@ -1,13 +1,17 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/mperiods/testcard-mperiod.mpd",
+	"src" 				: "./dynamic/mperiod.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
-	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (10): Testcard (60s)",
-
-	"info"				: [	"10 60s Periods",
-							"Inband Events",
-							"Period Continuity flag"
+	"addContentId" 		: "true",
+	"channelName" 		: "Live Dynamic: 'Period Continuous' flag set",
+	
+	"info"				: [	"Dynamic Manifest:",
+							"  - Content starts 'on the hour'",
+							"  - Content duration 60m",
+							"  - Split into 30 ~2m Periods",
+							"  - Next period added to manifest ~1m before start (of next period)",
+							"  - Period continuity flag set"
 						  ]
+
 }

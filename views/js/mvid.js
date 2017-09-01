@@ -29,12 +29,12 @@ mVid.videoEvents = Object.freeze({
   ENCRYPTED			: "encrypted"
 });
 
-mVid.playCount 				= 0;
+mVid.playCount 			= 0;
 
-var content = {};
-content.currentBufferingIdx = 0;
-content.currentPlayingIdx 	= 0;
-content.list = [];
+mVid.cnt = {};
+mVid.cnt.curBuffIdx = 0;
+mVid.cnt.curPlayIdx = 0;
+mVid.cnt.list = [];
 
 // Play states
 const PLAYSTATE_STOP	= 0;
@@ -132,11 +132,11 @@ e = function (id) {
 }
 
 window.onload = function () {
-	try {
+	//try {
 		mVid.start();
-	} catch (error) {
-		mVid.Log.error("FATAL ERROR: " + error.message);
-	}
+	//} catch (error) {
+	//	mVid.Log.error("FATAL ERROR: " + error.message);
+	//}
 }
 
 window.onbeforeunload = function () {
@@ -149,6 +149,8 @@ mVid.start = function () {
     var appMan 		= null;
 	var that 		= this;
 	var confManager = null;
+	
+	this.EOPlayback = false;
 	
 	this.socket = io();
 
@@ -213,7 +215,7 @@ mVid.start = function () {
 
 	var currentChannel = getCookie("channel");
 
-	getPlaylist(currentChannel || "1", function(ch, playObj) {		
+	getPlaylist(currentChannel || "0", function(ch, playObj) {		
 		var mainVideo;
 
 		that.procPlaylist(ch, playObj);
@@ -265,12 +267,12 @@ mVid.start = function () {
 							that.Log.error("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
 							
 							f.setAttribute("class", "playerIcon flag");
-							that.updateBufferBar(mainVideo.id, "Event: Cue Start");
+							that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
 							//f.innerHTML = "ID: " + cue.id;
 							
 							cue.onexit = function (ev) {
 								f.setAttribute("class", "playerIcon");
-								that.updateBufferBar(mainVideo.id, "Event: Cue End");
+								that.updateBufferStatus(mainVideo.id, "Event: Cue End");
 								//f.innerHTML = "";
 							}
 							return;
@@ -285,7 +287,7 @@ mVid.start = function () {
 
 		var options = [];
 		const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
-		const videoContentType = 'video/mp4; codecs="avc3.64001F"'; 
+		const videoContentType = 'video/mp4; codecs="avc3.4D4015"'; 
 
 		options = [
 			{
@@ -315,13 +317,13 @@ mVid.start = function () {
 				elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
 			}
 			
-			that.updateBufferBars();	
+			that.updateAllBuffersStatus();	
 		}, 1000);	
 	});
 };
 
 mVid.procPlaylist = function (ch, playObj) {
-	var c = content.list;
+	var c = this.cnt.list;
 	
 	// this.Log.info("- New playlist: " + JSON.stringify(playObj));
 	
@@ -486,21 +488,26 @@ mVid.msToTime  = function (timeMS) {
 	return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
 }
 
-mVid.updateBufferBars = function() {
-	this.updateBufferBar("mVid-mainContent", '');
-	this.updateBufferBar("mVid-video0", '');
-	this.updateBufferBar("mVid-video1", '');
+mVid.updateAllBuffersStatus = function() {
+	this.updateBufferStatus("mVid-mainContent", '');
+	this.updateBufferStatus("mVid-video0", '');
+	this.updateBufferStatus("mVid-video1", '');
 } 
 
-mVid.updateBufferBar = function(playerId, annot) {
+mVid.updateBufferStatus = function(playerId, annot) {
+	if (this.EOPlayback) {
+		return;
+	}
+	
 	var playerBuffer 	= e(playerId + "-bufferBar");
 	var headroomBuffer 	= e(playerId + "-headroomBar");
 	var player 			= e(playerId);
-	var buffV 			= 0;
-	var buffO			= 0;
+
 	
 	if (player)
 	{
+		var buffV 			= 0;
+		var buffD			= 0;
 		var buffer 			= player.buffered;
 		var duration 		= player.duration;
 		var offset;
@@ -521,10 +528,12 @@ mVid.updateBufferBar = function(playerId, annot) {
 
 			if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
 				buffV = buffer.end(buffer.length-1);
-				buffO = buffer.end(buffer.length-1) - offset;
-				
+				buffD = buffV - offset;
+				if (buffD < 0) {
+					buffD = 0;
+				}
 				playerBuffer.value 		= buffV;
-				headroomBuffer.value 	= buffO;
+				headroomBuffer.value 	= buffD;
 			} else {
 				playerBuffer.value 		= 0;			
 				headroomBuffer.value 	= 0;			
@@ -564,7 +573,7 @@ mVid.updateBufferBar = function(playerId, annot) {
 	hbObj += "\"id\":" + JSON.stringify(playerId) + ",";
 	if (player)	{
 		hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
-		hbObj += "\"value\":" + JSON.stringify('' + buffO) + ",";
+		hbObj += "\"value\":" + JSON.stringify('' + buffD) + ",";
 		hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
 	} else {
 		hbObj += "\"class\":\"bufferBar\",";
@@ -653,9 +662,9 @@ mVid.statusTableText = function (playerId, textEntry, text) {
 }
 
 mVid.getCurrentBufferingPlayer = function () {
-	//this.Log.info("getCurrentBufferingPlayer: " + content.list[content.currentBufferingIdx].playerId);
-	var idx = content.currentBufferingIdx;
-	var playerId = content.list[idx].playerId;
+	//this.Log.info("getCurrentBufferingPlayer: " + this.cnt.list[this.cnt.curBuffIdx].playerId);
+	var idx = this.cnt.curBuffIdx;
+	var playerId = this.cnt.list[idx].playerId;
 	var player = e(playerId);
 	
 	if (!player) {
@@ -667,28 +676,28 @@ mVid.getCurrentBufferingPlayer = function () {
 }
 
 mVid.getCurrentPlayingPlayer = function () {
-	//this.Log.info("getCurrentPlayingPlayer: " + content.list[content.currentPlayingIdx].playerId);
-	var idx = content.currentPlayingIdx;
+	//this.Log.info("getCurrentPlayingPlayer: " + this.cnt.list[this.cnt.curPlayIdx].playerId);
+	var idx = this.cnt.curPlayIdx;
 	
-	if (content.list[idx]){
-		return e(content.list[idx].playerId);
+	if (this.cnt.list[idx]){
+		return e(this.cnt.list[idx].playerId);
 	} else {
 		return null;
 	}
 }
 
 mVid.getBufferingContentIdx = function () {
-	//this.Log.info("getBufferingContentIdx: " + content.currentBufferingIdx);
-	return content.currentBufferingIdx;
+	//this.Log.info("getBufferingContentIdx: " + this.cnt.curBuffIdx);
+	return this.cnt.curBuffIdx;
 }
 
 mVid.getPlayingContentIdx = function () {
-	//this.Log.info("getPlayingContentIdx: " + content.currentPlayingIdx);
-	return content.currentPlayingIdx;
+	//this.Log.info("getPlayingContentIdx: " + this.cnt.curPlayIdx);
+	return this.cnt.curPlayIdx;
 }
 
 mVid.getTransitionTime = function () {
-	var i = parseInt(content.list[content.currentPlayingIdx].transitionTime);
+	var i = parseInt(this.cnt.list[this.cnt.curPlayIdx].transitionTime);
 	
 	return (i != -1) ? i : Number.MAX_SAFE_INTEGER;
 }
@@ -697,27 +706,27 @@ mVid.setContentSourceAndLoad = function () {
 	var player;
 
 	player = this.getCurrentBufferingPlayer();
-	this.Log.info(player.id + " setContentSourceAndLoad - currentBufferingIdx: " + content.currentBufferingIdx);
+	this.Log.info(player.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
 	e("encrypted").setAttribute("class", "playerIcon");
 	
-	this.setSourceAndLoad(player, content.list[content.currentBufferingIdx].src, content.list[content.currentBufferingIdx].type);
+	this.setSourceAndLoad(player, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
 
 mVid.skipBufferingToNextPlayer = function () {
-	if (++content.currentBufferingIdx >= content.list.length) {
-		content.currentBufferingIdx = 0;
+	if (++this.cnt.curBuffIdx >= this.cnt.list.length) {
+		this.cnt.curBuffIdx = 0;
 	}
-	this.Log.info("skipBufferingToNextPlayer: " + content.currentBufferingIdx);
-	this.postStatusUpdate("BufferIdx", content.currentBufferingIdx);
+	this.Log.info("skipBufferingToNextPlayer: " + this.cnt.curBuffIdx);
+	this.postStatusUpdate("BufferIdx", this.cnt.curBuffIdx);
 }
 
 mVid.skipPlayingToNextPlayer = function () {
-	if (++content.currentPlayingIdx >= content.list.length) {
-		content.currentPlayingIdx = 0;
+	if (++this.cnt.curPlayIdx >= this.cnt.list.length) {
+		this.cnt.curPlayIdx = 0;
 	}
-	this.Log.info("skipPlayingToNextPlayer: " + content.currentPlayingIdx);
-	this.postStatusUpdate("PlayingIdx", content.currentPlayingIdx);
+	this.Log.info("skipPlayingToNextPlayer: " + this.cnt.curPlayIdx);
+	this.postStatusUpdate("PlayingIdx", this.cnt.curPlayIdx);
 }
 
 mVid.isMainFeaturePlayer = function (player) {
@@ -848,8 +857,21 @@ mVid.showPlayrange = function () {
 	e("ad-resume-point").style.left = (x2 - offset) + "px";			
 }
 
+mVid.setEOPlayback = function () {
+	this.Log.info("End of Playback - purging all players");
+	this.EOPlayback = true;
+	this.showBufferingIcon(false);
+	this.purgePlayer("mVid-mainContent");
+	this.purgePlayer("mVid-video0");
+	this.purgePlayer("mVid-video1");
+}
+
 function onVideoEvent (v) {
 	return function (event) {
+		if (v.EOPlayback) {
+			return;
+		}
+		
 		var bufferingPlayer = v.getCurrentBufferingPlayer();
 		var playingPlayer = v.getCurrentPlayingPlayer();
 
@@ -861,7 +883,7 @@ function onVideoEvent (v) {
 		switch(event.type) {
 			case v.videoEvents.LOAD_START:
 				v.Log.info(this.id + ": video has started loading");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				/* TODO: why is this being generated for non buffering content???
 				if (this != bufferingPlayer) {
@@ -877,7 +899,7 @@ function onVideoEvent (v) {
 			case v.videoEvents.LOADED_METADATA:
 				v.Log.info(this.id + ": metadata has loaded");
 				v.statusTableText(this.id, "Buffer", "Started buffering");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				if (this != bufferingPlayer) {
 					v.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
@@ -898,7 +920,7 @@ function onVideoEvent (v) {
 			case v.videoEvents.CAN_PLAY:
 				v.Log.info(this.id + ": video can play");
 				v.statusTableText(this.id, "Buffer", "Enough to start play");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 					
 				// Sanity check
 				if (this != bufferingPlayer) {
@@ -933,7 +955,7 @@ function onVideoEvent (v) {
 			case v.videoEvents.CAN_PLAY_THROUGH:
 				v.Log.info(this.id + ": buffered sufficiently to play-through.");
 				v.statusTableText(this.id, "Buffer", "Can play through");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 
 				// Sanity check
 				if (this != bufferingPlayer) {
@@ -968,7 +990,7 @@ function onVideoEvent (v) {
 				v.Log.info(this.id + ": video is playing");
 				v.statusTableText(this.id, "Play", "Playing");
 				// v.statusTableText(this.id, "Buffer", "Being consumed");
-				v.updateBufferBar(this.id, "");
+				v.updateBufferStatus(this.id, "");
 
 				v.setPlayingState(PLAYSTATE_PLAY);
 				v.showPlayrange();
@@ -998,7 +1020,7 @@ function onVideoEvent (v) {
 			case v.videoEvents.PAUSE:
 				v.Log.info(this.id + ": video is paused");
 				v.statusTableText(this.id, "Play", "Paused");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 
 				// Sanity check
 				if (this != playingPlayer) {
@@ -1012,13 +1034,15 @@ function onVideoEvent (v) {
 					if (v.isMainFeaturePlayer(this)) {
 						v.skipPlayingToNextPlayer();
 						var newPlayingPlayer = v.getCurrentPlayingPlayer();
-
-						v.timeStampStartOfPlay(newPlayingPlayer);
-						if (newPlayingPlayer.bBuffEnoughToPlay) {
-							v.switchPlayerToPlaying(newPlayingPlayer, this);
-						} else {
-							// oh dear - still buffering, not ready to play yet 
-							v.switchPlayerToPlaying(null, this);				
+						
+						if (newPlayingPlayer) {
+							v.timeStampStartOfPlay(newPlayingPlayer);
+							if (newPlayingPlayer.bBuffEnoughToPlay) {
+								v.switchPlayerToPlaying(newPlayingPlayer, this);
+							} else {
+								// oh dear - still buffering, not ready to play yet 
+								v.switchPlayerToPlaying(null, this);				
+							}
 						}
 					}
 				}
@@ -1026,7 +1050,7 @@ function onVideoEvent (v) {
 				
 			case v.videoEvents.SEEKED:
 				v.Log.info(this.id + ": video has seeked");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				if (this != playingPlayer) {
 					v.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
@@ -1036,24 +1060,24 @@ function onVideoEvent (v) {
 			case v.videoEvents.STALLED:
 				v.Log.warn(this.id + ": has stalled");
 				v.showBufferingIcon(true);
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
 			case v.videoEvents.WAITING:
 				v.Log.warn(this.id + ": is waiting");
 				v.showBufferingIcon(true);
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
 			case v.videoEvents.RESIZE:
 				v.Log.info(this.id + ": resize called");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
 			case v.videoEvents.ENDED:
 				v.statusTableText(this.id, "Buffer", "---");
 				v.Log.info(this.id + ": video has ended");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				
 				v.showBufferingIcon(true);
 				v.setPlayingState(PLAYSTATE_STOP);
@@ -1064,10 +1088,10 @@ function onVideoEvent (v) {
 
 				// Start playing buffered content
 				if (v.isMainFeaturePlayer(this)) {
-					v.Log.info(this.id + ": video has ended - reload player.");
-					if (this.duration > 0) {
-						v.reload(); 
-					}
+					v.Log.info(this.id + ": video has ended - stop everything.");
+					v.setEOPlayback();
+					v.cmndLog();
+					return;
 				} else {
 					v.skipPlayingToNextPlayer();
 					var newPlayingPlayer = v.getCurrentPlayingPlayer();
@@ -1126,7 +1150,7 @@ function onVideoEvent (v) {
 						if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY_THROUGH) {
 							v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 						}
-						v.updateBufferBar(this.id, "Preload next ad");
+						v.updateBufferStatus(this.id, "Preload next ad");
 					}
 				}
 				
@@ -1155,7 +1179,7 @@ function onVideoEvent (v) {
 						this.resumeFrom += v.getTransitionTime();
 						this.bPlayPauseTransition = false;
 						this.pause();
-						v.updateBufferBar(this.id, "Play advert");
+						v.updateBufferStatus(this.id, "Play advert");
 					}
 				}
 
@@ -1171,13 +1195,13 @@ function onVideoEvent (v) {
 				
 			case v.videoEvents.ERROR:
 				v.Log.error(this.id + ": video error: " + event.srcElement.error.code + " - " + v.eventErrorCodesMappingTable[event.srcElement.error.code]);
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
 			case v.videoEvents.ENCRYPTED:
 				e("encrypted").setAttribute("class", "playerIcon encrypted");
 				v.Log.warn(this.id + ": ENCRYPTED");
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 
 			case v.videoEvents.SUSPEND:
@@ -1189,7 +1213,7 @@ function onVideoEvent (v) {
 			case v.videoEvents.DURATION_CHANGE:
 			case v.videoEvents.RATE_CHANGE:
 			case v.videoEvents.VOLUME_CHANGE:
-				v.updateBufferBar(this.id, "Event: " + event.type);
+				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 
 			default:
@@ -1207,7 +1231,11 @@ mVid.resetStallTimer = function () {
 
 mVid.OnCatchStall = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
-	
+
+	if (!playingPlayer) {
+		return;
+	}
+		
 	if (!playingPlayer.bPlayPauseTransition) {
 		this.Log.warn("Check Stall timer triggered!");
 		this.Log.warn(" --- Network state: " + this.networkStateMappingTable[playingPlayer.networkState]);
@@ -1256,6 +1284,11 @@ mVid.OnKeyDown = function (e) {
 
 mVid.cmndFastForward = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+	
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndFastForward"); 
 
 	if (playingPlayer) playingPlayer.playbackRate = 4;	
@@ -1264,6 +1297,11 @@ mVid.cmndFastForward = function () {
 	
 mVid.cmndRewind = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndRewind"); 
 	
 	if (playingPlayer) playingPlayer.playbackRate = -4;	
@@ -1272,6 +1310,11 @@ mVid.cmndRewind = function () {
 	
 mVid.cmndPlay = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndPlay"); 
 	
 	if (playingPlayer) {
@@ -1286,6 +1329,11 @@ mVid.cmndPlay = function () {
 	
 mVid.cmndPause = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndPause"); 
 	
 	if (playingPlayer && !playingPlayer.paused) {
@@ -1302,6 +1350,11 @@ mVid.cmndReload = function () {
 
 mVid.cmndSeekFWD = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndSeekFWD"); 
 
 	playingPlayer.currentTime += 30;
@@ -1309,6 +1362,11 @@ mVid.cmndSeekFWD = function () {
 
 mVid.cmndSeekBACK = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
+
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info("called : cmndSeekBACK"); 
 	
 	playingPlayer.currentTime -= 30;
@@ -1329,6 +1387,10 @@ mVid.cmndLog = function () {
 mVid.cmndJumpToEnd = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info(playingPlayer.id + ": Jump to end"); 
 
 	if (playingPlayer) {
@@ -1344,6 +1406,10 @@ mVid.cmndJumpToEnd = function () {
 mVid.cmndJumpToStart = function () {
 	var playingPlayer = this.getCurrentPlayingPlayer();
 
+	if (!playingPlayer) {
+		return;
+	}
+	
 	this.Log.info(playingPlayer.id + ": Jump to start"); 
 
 	if (playingPlayer) {
@@ -1403,6 +1469,7 @@ keyTable.entries = [
 	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')		}, 
 	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')		}, 
 	
+	{ func : function() {this.setChannel(0)},	key : '0',	hbbKey : getVK('VK_0')	}, 
 	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : getVK('VK_1')	}, 
 	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : getVK('VK_2')	}, 
 	{ func : function() {this.setChannel(3)},	key : '3',	hbbKey : getVK('VK_3')	}, 

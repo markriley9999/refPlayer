@@ -62,7 +62,7 @@ function SetupEME(video, keySystem, name, options, contentTag)
 	// TODO: Add content id - and add to clearkeyGetLicence call
 	function UpdateSessionFunc(name, contentTag) {
 	  return function(ev) {
-		clearkeyGetLicence(ev.target, ev.message, contentTag);
+		clearkeyGetLicence(ev.target, ev.message, contentTag, video);
 	  }
 	}
 
@@ -110,10 +110,10 @@ function SetupEME(video, keySystem, name, options, contentTag)
 	}
 	
 	video.addEventListener("encrypted", function(ev) {
-		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData" +  arrayBufferToString(ev.initData) + ")");
+		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData: " +  arrayBufferToString(ev.initData) + ")");
 
-		if (!video.bEncrypted) { 
-			video.bEncrypted = true;
+		if (!video.bProcessingKey) { 
+			video.bProcessingKey = true;
 			EnsureMediaKeysCreated(video, keySystem, options, ev)
 			.then(function() {
 				log(name + " ensured MediaKeys available on HTMLMediaElement");

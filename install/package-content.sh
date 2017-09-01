@@ -1,6 +1,13 @@
 #!/bin/bash
 
-tar -czvf refplayer-content.tar.gz ../content/
+NAME=$1
+
+if [ ! -d "tmp/" ]; then
+	mkdir tmp/
+fi
+
+tar -czvf tmp/refplayer-content-$NAME.tar.gz ../content/$NAME
+tar -tf tmp/refplayer-content-$NAME.tar.gz
 
 
 

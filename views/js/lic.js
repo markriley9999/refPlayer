@@ -1,4 +1,4 @@
-function clearkeyGetLicence(session, msg, contentTag) {
+function clearkeyGetLicence(session, msg, contentTag, video) {
 
 	var keyServiceUrl = "./getkeys?tag=" + contentTag;
 
@@ -24,6 +24,7 @@ function clearkeyGetLicence(session, msg, contentTag) {
 		}
 
 		session.update(bView).then(function() {
+			video.bProcessingKey = false;
 			log(' Session updated');
 		}).catch(
 			function(error) {

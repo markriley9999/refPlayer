@@ -354,7 +354,17 @@ expressServer.get('/player.aitx', function(req, res) {
 });
 
 expressServer.get('/content/*', function(req, res) {
-	// Why seeing 2 gets????
+	// TODO: Why seeing 2 gets????
+	// TODO: Use "application/dash+xml" for mpds
+	var suffix = req.path.split('.').pop();
+	var cType;
+	
+	if (suffix === "mpd") {
+		cType = "application/dash+xml";
+	} else {
+		cType = "video/mp4";		
+	}
+	//console.log(" - suffix: " + suffix + " Content-Type: " + cType);
 	
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
@@ -428,7 +438,7 @@ expressServer.get('/content/*', function(req, res) {
 			"Content-Range": "bytes " + start + "-" + end + "/" + total,
 			"Accept-Ranges": "bytes",
 			"Content-Length": chunksize,
-			"Content-Type": "video/mp4"
+			"Content-Type": cType
 		});			
 
 		var stream = fs.createReadStream(file, { start: start, end: end })
@@ -483,15 +493,16 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var timeServer = "http://" + req.headers.host + "/time";
 	var bAdsandMain = false;
 	var sC = [];
+	var strippedURL = commonUtils.basename(useURL);
 	
-	sendServerLog("GET dynamic: " + useURL);
+	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
 
-	var sContId = commonUtils.createContentId(); 
+	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
 	sendServerLog("ContentId: " + sContId);
 
 	// Content no longer live?
 	if (req.query.contid) {
-		var cContId = req.query.contid;
+		var cContId = strippedURL + "-" + req.query.contid;
 		
 		if (sContId != cContId) {
 			sendServerLog("Client requested non-current content: " + cContId);
@@ -508,7 +519,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	}
 
-	// Create new manifest
+	// Create new manifest?
 	formProps.title = sContId;
 	
 	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
@@ -546,9 +557,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 
 	// Will the manifest change?
 	if (!persistState[useURL]) {
-		persistState[useURL] = { 
-			adIdx : 0
-		};
+		persistState[useURL] = {};
 	}
 	
 	if (	(!persistState[useURL].publishTime) 	|| 
@@ -580,6 +589,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	console.log("CurrentPeriod: " + currentP);
 
 	var prevMain;
+	var adIdx;
 	
 	for (var i = lowerP; i <= upperP; i++) {
 		
@@ -590,12 +600,9 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	
 		if (sC.bAdsandMain) {
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[persistState[useURL].adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
+			adIdx = (i % sC.ads.length);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
 			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
-
-			if (++persistState[useURL].adIdx >= sC.ads.length) {
-					persistState[useURL].adIdx = 0;
-			}
 		} else {
 			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, prevMain);			
 		}
@@ -794,7 +801,7 @@ expressServer.post('/getkeys', function(req, res) {
 	if (req.query.tag) {
 		var tag = req.query.tag;
 		
-		// sendServerLog(" - tag: " + tag);
+		sendServerLog(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';
 		
@@ -802,7 +809,7 @@ expressServer.post('/getkeys', function(req, res) {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					// 404 Error if file not found
-					console.log(" * file does not exist");
+					console.log(" * file does not exist: " + file);
 					return res.sendStatus(404);
 				}
 				res.end(err);
