@@ -1,0 +1,75 @@
+
+*********************************************************************************************
+BBB
+*********************************************************************************************
+
+copy first bbb av-cat.mp4 then:
+
+..\..\mp4box.exe -cat bbb.mp4 -cat bbb.mp4 -cat bbb.mp4 -cat bbb.mp4 -cat bbb.mp4 av-cat.mp4
+
+---- Timestamp ----
+
+..\..\ffmpeg.exe -i av-cat.mp4 -vf "drawtext=fontfile=arialbd.ttf:fontsize=60:fontcolor=white:box=1:boxcolor=black@0.4:x=w-250:y=25:text='%{pts\:gmtime\:0\:%H\\\:%M\\\:%S}'" av-tstamp.mp4
+
+
+---- Split AV ----
+
+
+..\..\ffmpeg.exe -i av-tstamp.mp4 -an -c copy video_only.mp4
+..\..\ffmpeg.exe -i av-tstamp.mp4 -map 0:1 -c copy audio_only.m4a
+
+
+---- Create Video Representations ----
+
+
+..\..\ffmpeg.exe -i audio_only.m4a -c:a aac -b:a 128k -ac 2 aac-audio.m4a
+
+
+..\..\ffmpeg.exe -i video_only.mp4 -s 1920x1080 -c:v libx264 -b:v 4630k -r 25 -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset fast -movflags +faststart int_4741120.mp4
+
+..\..\ffmpeg.exe -i video_only.mp4 -s 896x504 -c:v libx264 -b:v 1384k -r 25 -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset fast -movflags +faststart int_1416688.mp4
+
+..\..\ffmpeg.exe -i video_only.mp4 -s 704x396 -c:v libx264 -b:v 823k -r 25 -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset fast -movflags +faststart int_843768.mp4
+
+..\..\ffmpeg.exe -i video_only.mp4 -s 512x288 -c:v libx264 -b:v 438k -r 25 -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset fast -movflags +faststart int_449480.mp4
+
+..\..\ffmpeg.exe -i video_only.mp4 -s 1280x720 -c:v libx264 -b:v 2594k -r 25 -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset fast -movflags +faststart int_2656696.mp4
+
+
+
+---- DASHify ----
+
+..\..\MP4Box.exe -dash 3840 -rap -frag-rap -bs-switching inband -profile dashavc264:live -segment-name $RepresentationID$-$Bandwidth$/SEG$Number$ -out bbb-clear.mpd aac-audio.m4a int_4741120.mp4 int_1416688.mp4 int_843768.mp4 int_449480.mp4 int_2656696.mp4
+
+*************** Encrypted ***********************************************
+
+---- Initial DASHify - single file!!!!! ----
+
+..\..\MP4Box.exe -dash 3840 -rap -frag-rap -bs-switching inband -single-file int_4741120.mp4 int_1416688.mp4 int_843768.mp4 int_449480.mp4 int_2656696.mp4
+
+
+---- Encrypt ----
+
+..\..\mp4box.exe -crypt crypt.xml aac-audio.m4a -out encr_audio.m4a
+
+..\..\mp4box.exe -crypt crypt.xml int_4741120_dash.mp4 -out encr_4741120.mp4
+
+..\..\mp4box.exe -crypt crypt.xml int_1416688_dash.mp4 -out encr_1416688.mp4
+
+..\..\mp4box.exe -crypt crypt.xml int_843768_dash.mp4 -out encr_843768.mp4
+
+..\..\mp4box.exe -crypt crypt.xml int_449480_dash.mp4 -out encr_449480.mp4
+
+..\..\mp4box.exe -crypt crypt.xml int_2656696_dash.mp4 -out encr_2656696.mp4
+
+
+---- DASHify ----
+
+..\..\MP4Box.exe -dash 3840 -rap -frag-rap -bs-switching inband -profile dashavc264:live -segment-name ENC-$RepresentationID$-$Bandwidth$/SEG$Number$ -out bbb-clearkey.mpd encr_4741120.mp4 encr_1416688.mp4 encr_843768.mp4 encr_449480.mp4 encr_2656696.mp4 encr_audio.m4a
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------

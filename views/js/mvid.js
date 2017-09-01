@@ -215,7 +215,7 @@ mVid.start = function () {
 
 	var currentChannel = getCookie("channel");
 
-	getPlaylist(currentChannel || "1", function(ch, playObj) {		
+	getPlaylist(currentChannel || "0", function(ch, playObj) {		
 		var mainVideo;
 
 		that.procPlaylist(ch, playObj);
@@ -287,7 +287,7 @@ mVid.start = function () {
 
 		var options = [];
 		const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
-		const videoContentType = 'video/mp4; codecs="avc3.64001F"'; 
+		const videoContentType = 'video/mp4; codecs="avc3.4D4015"'; 
 
 		options = [
 			{
@@ -1469,6 +1469,7 @@ keyTable.entries = [
 	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')		}, 
 	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')		}, 
 	
+	{ func : function() {this.setChannel(0)},	key : '0',	hbbKey : getVK('VK_0')	}, 
 	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : getVK('VK_1')	}, 
 	{ func : function() {this.setChannel(2)},	key : '2',	hbbKey : getVK('VK_2')	}, 
 	{ func : function() {this.setChannel(3)},	key : '3',	hbbKey : getVK('VK_3')	}, 

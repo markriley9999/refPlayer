@@ -1,15 +1,17 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/mperiods/ads-itvck-mperiod.mpd",
+	"src" 				: "./dynamic/mperiod.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
-	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (4): ITV Ads (1m) and ITV Clear Key (2m)",
-
-	"info"				: [	"4 Periods:",
-							"  1. ITV Ads (1m)",
-							"  2. Lorraine - Clear Key (2m)",
-							"  3. ITV Ads (1m)",
-							"  4. Lorraine - Clear Key (2m)"
+	"addContentId" 		: "true",
+	"channelName" 		: "Live Dynamic: 'Period Continuous' flag set",
+	
+	"info"				: [	"Dynamic Manifest:",
+							"  - Content starts 'on the hour'",
+							"  - Content duration 60m",
+							"  - Split into 30 ~2m Periods",
+							"  - Next period added to manifest ~1m before start (of next period)",
+							"  - Period continuity flag set"
 						  ]
+
 }
