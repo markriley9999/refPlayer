@@ -14,11 +14,15 @@
   </AdaptationSet>
   <AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
    <SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="bbb-clear_set2_init.mp4"/>
+   <Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+   </Representation>
    <Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
    </Representation>
    <Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
    </Representation>
    <Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+   </Representation>
+   <Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
    </Representation>
   </AdaptationSet>
  </Period>
