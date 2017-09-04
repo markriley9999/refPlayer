@@ -109,8 +109,19 @@ function SetupEME(video, keySystem, name, options, contentTag)
 		return str;
 	}
 	
+	function arrayBufferToHexString(buffer){
+		var arr = new Uint8Array(buffer);
+		var str = "";
+		for (var i = 0; i < arr.length; i++) {
+			str += "0x" + arr[i].toString(16) + " ";
+		}
+		return str;
+	}
+	
 	video.addEventListener("encrypted", function(ev) {
-		log(name + " got encrypted event - (initDataType: " + ev.initDataType + ", initData: " +  arrayBufferToString(ev.initData) + ")");
+		log(name + " got encrypted event - initDataType: " + ev.initDataType);
+		log(" - initData: " +  arrayBufferToString(ev.initData));
+		log(" - initData: " +  arrayBufferToHexString(ev.initData));
 
 		if (!video.bProcessingKey) { 
 			video.bProcessingKey = true;
