@@ -1,9 +1,9 @@
+- add all reps back!!!!
+	
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
 	- ask GPAC and BBC!!!!
 	- try multi instead of inband!!!  bad!!!!
 
-- add all reps back????
-	
 - subs offset is wrong?  Check on Pana - or raise Pana ticket (+time)
 
 - upload content!!!!
