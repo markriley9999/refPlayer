@@ -1,8 +1,10 @@
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
 	- ask GPAC and BBC!!!!
 	- try multi instead of inband!!!  bad!!!!
+
+- add all reps back????
 	
-- subs offset is wrong!!!
+- subs offset is wrong?  Check on Pana - or raise Pana ticket (+time)
 
 - upload content!!!!
 
@@ -14,13 +16,9 @@
 
 - schema check
 
-- check encryption re-entrancey
-
-- split content into separate tars!
-
 - sanity check mpd using dash site (http://dashif.org/conformance.html)
 
-- code review player
+- code review player - jslint
 - install confluence page
 - create dash conf page
 
@@ -29,19 +27,6 @@
 		- encrypt content (bbb?)
 		- improve cue handling, show cue points
 
-- Timestamp
-
-ffmpeg -i input.mp4 -vf "drawtext=fontfile=font.ttf:
-                        fontsize=45:fontcolor=white:
-                        box=1:boxcolor=black@0.4:
-                        text='Time\: %{pts\:gmtime\:1466507118}'" output.mp4
-
-mp4box.exe -crypt crypt.xml video-clear.mp4 -out video-encrypted.mp4
-
-Split the source video file into two different .mp4 files – one containing only video track and another containing only audio track.
-Encode the file containing only the video track into as many quality levels as needed.
-Encrypt all the different video files and the audio file.
-Package all the required media files – all video files with different bitrate and audio file – into many segments (each in a separate file, representing a slice of the media for a specific duration) and also create a manifest. The DASH video is now ready.
 
 
 Confluence
