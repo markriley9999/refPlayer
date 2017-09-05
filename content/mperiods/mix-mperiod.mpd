@@ -11,7 +11,7 @@
 	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
 		<Event duration="5000"  presentationTime="60000" id="1"/>
 	</EventStream>
-	
+
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/avc3/</BaseURL>
@@ -43,7 +43,7 @@
 	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
 		<Event duration="5000"  presentationTime="0" id="1"/>
 	</EventStream>
-	
+
 	<AdaptationSet segmentAlignment="true" lang="und">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -55,7 +55,7 @@
 	<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../bbb/</BaseURL>
-		<SegmentTemplate startNumber="1" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="bbb-clear_set2_init.mp4"/>
+		<SegmentTemplate startNumber="1" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
 		<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
 		</Representation>
 		<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
@@ -70,7 +70,7 @@
 	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
 		<Event duration="5000"  presentationTime="240000" id="1"/>
 	</EventStream>
-	
+
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/avc3/</BaseURL>
@@ -102,7 +102,7 @@
 	<EventStream schemeIdUri="http://hbbtv1.test/_TESTSUITE/TESTS/org.hbbtv_DASH-EVENT0180/DASH-EVENT0180.xsd" value="&lt;y&gt;123abc&lt;/y&gt;" timescale="1000">
 		<Event duration="5000"  presentationTime="180000" id="1"/>
 	</EventStream>
-	
+
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -114,7 +114,7 @@
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="bbb-clear_set2_init.mp4"/>
+			<SegmentTemplate startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
 			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
 			</Representation>
 			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
@@ -125,4 +125,3 @@
 </Period>
 
 </MPD>
-

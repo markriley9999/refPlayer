@@ -21,4 +21,3 @@ tar -tf $DIR/$FNAME
 tar -xzvf $DIR/$FNAME -C ../
 
 rm $DIR/$FNAME
-

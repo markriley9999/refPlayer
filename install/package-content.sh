@@ -7,8 +7,5 @@ if [ ! -d "tmp/" ]; then
 	mkdir tmp/
 fi
 
-tar -czvf tmp/refplayer-content-$DASHNAME.tar.gz ../content/$NAME
+tar -czvf tmp/refplayer-content-$DASHNAME.tar.gz --exclude={*.mpd,*.xml,*.txt} ../content/$NAME
 tar -tf tmp/refplayer-content-$DASHNAME.tar.gz
-
-
-
