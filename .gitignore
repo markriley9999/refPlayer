@@ -56,3 +56,4 @@ views/OLD-dash.hbs
 *.dash
 logs
 *.gz
+tmp

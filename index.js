@@ -316,7 +316,7 @@ expressServer.post('/adtrans', function(req, res) {
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressServer.get('/', function(req, res) {
+expressServer.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
 	if (!generalInfo.currentDeviceUA || generalInfo.currentDeviceUA === UA) {
@@ -346,9 +346,13 @@ expressServer.get('/', function(req, res) {
 });
 
 expressServer.get('/player.aitx', function(req, res) {
-	res.render('playerait.hbs', {url: req.headers.host}, function(err, html) { 
+	var srv = "http://" + req.headers.host + "/";
+	
+	// console.log("get ait: " + srv);
+	res.render('playerait.hbs', {url: srv}, function(err, html) { 
 		res.type("application/vnd.dvb.ait+xml");
 		res.status(200);
+		// console.log(html);
         res.send(html);
     });
 });
