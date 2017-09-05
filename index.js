@@ -222,6 +222,11 @@ function init() {
 	for( var i = 0; i < generalInfo.serverAddresses.length; i++) {
 		console.log(i + ": " + generalInfo.serverAddresses[i] + ":" + generalInfo.port);
 	}
+
+	
+	console.log("App URL:");
+	console.log("  <server_ip>:" + generalInfo.port + "/index.html");
+	console.log("  <server_ip>:" + generalInfo.port + "/player.aitx");
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
 	commonConfig.setNetworkErrors(commonConfig.NETERRS.NONE);
