@@ -557,6 +557,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.adD 			= parseInt(eval(sC.adD));
 	sC.marginF 		= parseInt(eval(sC.marginF));
 	sC.marginB 		= parseInt(eval(sC.marginB));
+	
+	sC.Atimescale	= parseInt(eval(sC.Atimescale));
+	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+	
 	sC.bAdsandMain 	= eval(sC.bAdsandMain);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, sC.maxP);
@@ -611,9 +615,9 @@ expressServer.get('/dynamic/*', function(req, res) {
 		if (sC.bAdsandMain) {
 			adIdx = (i % sC.ads.length);
 			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, "" /* "ad-" + i */);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, "" /* "ad-" + i */);
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, prevMain);			
 		}
 	}
 	
@@ -693,18 +697,19 @@ makeAdPeriod = function(fn, p, periodD, adD, prev) {
 	return adXML(fn, p, sAdDuration, sAdStart, prev);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, prev) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
-	var offsetS  	= _getSecs(fs);
+	var AoffsetS  	= Math.round(_getSecs(fs) * Atimescale / 1000);
+	var VoffsetS  	= Math.round(_getSecs(fs) * Vtimescale / 1000);
 	
-	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (" + offsetS + "S)");
+	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, offsetS, seg, prev);
+	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prev);
 }
 
 _formatTime = function(d) {
@@ -712,7 +717,7 @@ _formatTime = function(d) {
 }
 
 _getSecs = function(d) {
-		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) /* + (d.getMilliseconds() / 1000) */;
+		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) + (d.getMilliseconds() / 1000);
 }
 
 
@@ -721,7 +726,7 @@ const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.x
 const mpMainContent	= [];
 const mpAds			= [];
 
-mainContentXML = function(fn, p, sDuration, sStart, offset, seg, prevPeriodID) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -746,7 +751,7 @@ mainContentXML = function(fn, p, sDuration, sStart, offset, seg, prevPeriodID) {
 	}
 
 	template 	= hbs.handlebars.compile(mpMainContent[fn]);
-	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, period_offset: offset, period_seg: seg};
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, period_seg: seg};
 	var complete = template(context);
 	
 	// console.log(complete);
