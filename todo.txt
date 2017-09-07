@@ -1,7 +1,28 @@
-- test git 2
+Commit
+Test Linux
+Update confluence with version and known issues 
+Assign hisense and seraphic 
+Raise Panasonic 
 
-- add all reps back!!!!
-	
+Pana video only clear key test 
+Test tpv new release 
+
+Test lg 
+
+
+-	maxWidth/maxHeight are incorrect. They should be the max of the width/height.
+-	ContentProtection element is in the wrong place according to the schema so the manifest won’t validate
+-	The presentationTimeOffset doesn’t look right. This is supposed to be in terms of timescale, you need to multiply up.
+
+- Test install
+
+- Vestel tickets
+- Panasonic issues
+- Seraphic ticket 
+- Hisense
+
+- Test LG
+
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
 	- ask GPAC and BBC!!!!
 	- try multi instead of inband!!!  bad!!!!
