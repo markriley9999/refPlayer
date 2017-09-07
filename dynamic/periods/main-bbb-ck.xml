@@ -1,11 +1,11 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/bbb/</BaseURL>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
-			<SegmentTemplate presentationTimeOffset="{{period_offset}}" startNumber="{{period_seg}}" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1397003">
@@ -19,11 +19,11 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/bbb/</BaseURL>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
-			<SegmentTemplate presentationTimeOffset="{{period_offset}}" startNumber="{{period_seg}}" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{Aoffset}}" startNumber="{{period_seg}}" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
