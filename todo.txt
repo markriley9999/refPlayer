@@ -1,12 +1,7 @@
-Commit
-Test Linux
-Update confluence with version and known issues 
 Assign hisense and seraphic 
-Raise Panasonic 
 
 Pana video only clear key test 
 Test tpv new release 
-
 Test lg 
 
 
