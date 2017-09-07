@@ -375,7 +375,7 @@ mVid.procPlaylist = function (ch, playObj) {
 		this.Log.info(" - ");			
 	}
 	
-	e("currentChannel") && (e("currentChannel").innerHTML = "Ch " + ch + " - " + playObj.channelName);
+	e("currentChannel") && (e("currentChannel").innerHTML = "Test " + ch + " - " + playObj.channelName);
 }
 
 mVid.reload = function () {
