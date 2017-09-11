@@ -59,7 +59,6 @@ function SetupEME(video, keySystem, name, options, contentTag)
 	  return window.btoa(bin).replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_");
 	}
 
-	// TODO: Add content id - and add to clearkeyGetLicence call
 	function UpdateSessionFunc(name, contentTag) {
 	  return function(ev) {
 		clearkeyGetLicence(ev.target, ev.message, contentTag, video);
@@ -80,10 +79,7 @@ function SetupEME(video, keySystem, name, options, contentTag)
 
 	var ensurePromise;
 
-	function EnsureMediaKeysCreated(video, keySystem, options, encryptedEvent) {
-	  // We may already have a MediaKeys object if we initialized EME for a
-	  // different MSE SourceBuffer's "encrypted" event, or the initialization
-	  // may still be in progress.
+	function EnsureMediaKeysCreated(video, keySystem, options) {
 	  if (ensurePromise) {
 		return ensurePromise;
 	  }
@@ -125,7 +121,7 @@ function SetupEME(video, keySystem, name, options, contentTag)
 
 		if (!video.bProcessingKey) { 
 			video.bProcessingKey = true;
-			EnsureMediaKeysCreated(video, keySystem, options, ev)
+			EnsureMediaKeysCreated(video, keySystem, options)
 			.then(function() {
 				log(name + " ensured MediaKeys available on HTMLMediaElement");
 				var session = video.mediaKeys.createSession();

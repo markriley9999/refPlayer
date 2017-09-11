@@ -1,43 +1,21 @@
-Assign hisense and seraphic 
+Seg align dar tests!!!!!!!!!!!
+all periods in all mpds seg aligned!!!!!
 
-Pana video only clear key test 
+clearkey tidy
+clear key lg seq
+
+jslint
+
 Test tpv new release 
 Test lg 
-
-
--	maxWidth/maxHeight are incorrect. They should be the max of the width/height.
--	ContentProtection element is in the wrong place according to the schema so the manifest won’t validate
--	The presentationTimeOffset doesn’t look right. This is supposed to be in terms of timescale, you need to multiply up.
-
-- Test install
-
-- Vestel tickets
-- Panasonic issues
-- Seraphic ticket 
-- Hisense
-
-- Test LG
 
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
 	- ask GPAC and BBC!!!!
 	- try multi instead of inband!!!  bad!!!!
 
-- subs offset is wrong?  Check on Pana - or raise Pana ticket (+time)
-
-- upload content!!!!
-
-- recheck mpds
-
-- check mpds update timings!!!!!!!!!
-
-- dash
-
-- schema check
-
 - sanity check mpd using dash site (http://dashif.org/conformance.html)
 
 - code review player - jslint
-- install confluence page
 - create dash conf page
 
 - create:

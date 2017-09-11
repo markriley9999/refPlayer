@@ -2,7 +2,7 @@
 	"main"			: "./dynamic/periods/main-bbb.xml",
 	
 	"segsize" 		: "3840",
-	"periodD" 		: "600000", 	
+	"periodD" 		: "(156 * 3840)", 	
 	"maxP" 			: "5",
 	"marginF" 		: "120",					
 	"marginB" 		: "3600",					
@@ -11,7 +11,7 @@
 	"Vtimescale"	: "12800",
 	
 	"bAdsandMain" 	: "true",
-	"adD"			: "60000",
+	"adD"			: "(15 * 3840)",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",
