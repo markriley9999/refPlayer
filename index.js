@@ -500,7 +500,6 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var useURL = req.path;
 	var formProps = {};
 	var timeServer = "http://" + req.headers.host + "/time";
-	var bAdsandMain = false;
 	var sC = [];
 	var strippedURL = commonUtils.basename(useURL);
 	
@@ -553,19 +552,31 @@ expressServer.get('/dynamic/*', function(req, res) {
 
 	sC.segsize 		= parseInt(eval(sC.segsize));
 	sC.periodD 		= parseInt(eval(sC.periodD));
-	sC.maxP 		= parseInt(eval(sC.maxP));
 	sC.adD 			= parseInt(eval(sC.adD));
 	sC.marginF 		= parseInt(eval(sC.marginF));
 	sC.marginB 		= parseInt(eval(sC.marginB));
 	
 	sC.Atimescale	= parseInt(eval(sC.Atimescale));
 	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+
+	var bAdsandMain = (sC.ads.length > 0);
+
+	sC.segAlign = eval(sC.segAlign);
+	if (sC.segAlign) {
+		console.log("- non aligned periodD: " + sC.periodD);
+		
+		sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+		
+		console.log("- aligned periodD: " + sC.periodD);		
+	}
+		
+	const progDuration	= (60 * 60 * 1000);
+	var maxP = Math.floor((progDuration / sC.periodD) - 1);
+	// console.log("- maxP: " + maxP);
 	
-	sC.bAdsandMain 	= eval(sC.bAdsandMain);
-	
-	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, sC.maxP);
-	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, sC.maxP);
-	var upperP 		= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, sC.maxP);
+	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
+	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
+	var upperP 		= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
 	var numP 		= (upperP - lowerP) + 1;
 
 	// Will the manifest change?
@@ -612,7 +623,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 			prevMain = "";
 		}
 	
-		if (sC.bAdsandMain) {
+		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
 			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
 			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, "" /* "ad-" + i */);

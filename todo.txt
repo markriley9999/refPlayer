@@ -1,13 +1,4 @@
-Seg align dar tests!!!!!!!!!!!
-all periods in all mpds seg aligned!!!!!
-
-clearkey tidy
-clear key lg seq
-
 jslint
-
-Test tpv new release 
-Test lg 
 
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
 	- ask GPAC and BBC!!!!

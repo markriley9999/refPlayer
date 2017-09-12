@@ -2,15 +2,15 @@
 	"main"			: "./dynamic/periods/main-bbb-ck.xml",
 
 	"segsize" 		: "3840",
-	"periodD" 		: "(32 * 3840)", 	
-	"maxP" 			: "29",
+	"periodD" 		: "120000", 	
+	"segAlign"		: "true",
+
 	"marginF" 		: "120",					
 	"marginB" 		: "3600",					
 
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"bAdsandMain" 	: "false",
 	"adD"			: "0",
 	
 	"ads"			: []

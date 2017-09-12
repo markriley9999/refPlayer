@@ -1,13 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "0",
-	"minor" 	: "07",
+	"minor" 	: "08",
 	"comment"	: "BETA release",
 	"notes"		: [	
-					"New Clear Key content and DASH ads",
-					"Added mixed adverts for dynamic content",
-					"Tweaked some tests",
-					"Fixed zero offset segment bug",
-					"Video objects destroyed at end of playback"
+					"Aligned ads in dynamic manifests",
+					"Tidied EME code"
 				  ]
 }
