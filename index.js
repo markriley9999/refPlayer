@@ -571,8 +571,8 @@ expressServer.get('/dynamic/*', function(req, res) {
 	}
 		
 	const progDuration	= (60 * 60 * 1000);
-	var maxP = Math.floor((progDuration / sC.periodD) - 1);
-	// console.log("- maxP: " + maxP);
+	var maxP = Math.round((progDuration / sC.periodD) - 1);
+	console.log("- maxP: " + maxP);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
 	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
