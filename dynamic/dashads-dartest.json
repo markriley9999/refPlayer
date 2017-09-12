@@ -11,7 +11,7 @@
 	"Vtimescale"	: "12800",
 	
 	"bAdsandMain" 	: "true",
-	"adD"			: "(15 * 3840)",
+	"adD"			: "60000",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",
