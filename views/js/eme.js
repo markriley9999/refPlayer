@@ -112,28 +112,30 @@ function SetupEME(video, keySystem, name, options, contentTag)
 		}
 		return str;
 	}
-	
-	video.addEventListener("encrypted", function(ev) {
+
+	function onEncrypted(ev) {
 		log(name + " got encrypted event - initDataType: " + ev.initDataType);
 		log(" - initData: " +  arrayBufferToString(ev.initData));
 		log(" - initData: " +  arrayBufferToHexString(ev.initData));
 
 		if (!video.bProcessingKey) { 
 			video.bProcessingKey = true;
-			EnsureMediaKeysCreated(video, keySystem, options)
-			.then(function() {
-				log(name + " ensured MediaKeys available on HTMLMediaElement");
-				var session = video.mediaKeys.createSession();
-				session.addEventListener("message", UpdateSessionFunc(name, contentTag));
-				session.addEventListener("keystatuseschange", KeysChange);
-				return session.generateRequest(ev.initDataType, ev.initData);
-			  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"))
-
-			  .then(function() {
+			
+			var session = video.mediaKeys.createSession();
+			session.addEventListener("message", UpdateSessionFunc(name, contentTag));
+			session.addEventListener("keystatuseschange", KeysChange);
+			session.generateRequest(ev.initDataType, ev.initData).then(function() {
 				log(name + " generated request");
 			  }, bail(name + " Failed to generate request."));
 		} else {
-			logerr(name + "Error: multiple encrypted events!");
+			log(name + "Multiple encrypted events!");
 		}
-	});
+	}
+	
+	
+	EnsureMediaKeysCreated(video, keySystem, options).then(function() {
+		log(name + " ensured MediaKeys available on HTMLMediaElement");
+		video.addEventListener("encrypted", onEncrypted);
+	  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"));
+
 }
