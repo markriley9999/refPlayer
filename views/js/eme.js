@@ -4,7 +4,6 @@ function SetupEME(video, keySystem, name, options, contentTag)
 	  return document.getElementById(id);
 	}
 
-	// TODO: mVid should be a param
 	function log(msg) {
 		mVid.Log.info("EME: " + msg);
 	}
