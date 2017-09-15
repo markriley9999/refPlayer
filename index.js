@@ -503,6 +503,8 @@ expressServer.get('/dynamic/*', function(req, res) {
 	var sC = [];
 	var strippedURL = commonUtils.basename(useURL);
 	
+	var bAllPeriods = false;
+	
 	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
 
 	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
@@ -527,6 +529,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 		}
 	}
 
+	if (req.query.allperiods) {
+		bAllPeriods = req.query.allperiods === "1";
+	}
+	
 	// Create new manifest?
 	formProps.title = sContId;
 	
@@ -575,8 +581,18 @@ expressServer.get('/dynamic/*', function(req, res) {
 	console.log("- maxP: " + maxP);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
-	var lowerP 		= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
-	var upperP 		= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
+	
+	var lowerP;
+	var upperP;
+	
+	if (!bAllPeriods) {
+		lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
+		upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
+	} else {
+		lowerP = 0;
+		upperP = maxP;
+	}
+	
 	var numP 		= (upperP - lowerP) + 1;
 
 	// Will the manifest change?
@@ -715,8 +731,10 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, pr
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
-	var AoffsetS  	= Math.round(_getSecs(fs) * Atimescale / 1000);
-	var VoffsetS  	= Math.round(_getSecs(fs) * Vtimescale / 1000);
+	
+	var alignedOffset = (seg-1) * sz;
+	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
+	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
@@ -725,10 +743,6 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, pr
 
 _formatTime = function(d) {
 	return "PT" + d.getHours() + "H" + d.getMinutes() + "M" + d.getSeconds() + "." + d.getMilliseconds() + "S";
-}
-
-_getSecs = function(d) {
-		return ((((d.getHours() * 60) + d.getMinutes()) * 60) + d.getSeconds()) + (d.getMilliseconds() / 1000);
 }
 
 

@@ -254,7 +254,7 @@
         value="main">
       </Role>
       <SegmentTemplate
-		presentationTimeOffset="5760"
+		presentationTimeOffset="5760000"
 		startNumber="11"
         timescale="48000"
         duration="576000"
@@ -306,6 +306,7 @@
         value="main">
       </Role>
       <SegmentTemplate
+		presentationTimeOffset="3000"
 		startNumber="11"
         timescale="25"
         duration="300"
