@@ -4,12 +4,12 @@ function clearkeyGetLicence(session, msg, contentTag, video) {
 
 
 	// TODO: mVid should be a param
-	function log(msg) {
-		mVid.Log.info("Licence: " + msg);
+	function log(m) {
+		mVid.Log.info("Licence: " + m);
 	}
 
 	function logerr(msg) {
-		mVid.Log.error("Licence: " + msg);
+		mVid.Log.error("Licence: " + m);
 	}
 
 	function callback(licenseString, xhr) {
@@ -39,21 +39,21 @@ function clearkeyGetLicence(session, msg, contentTag, video) {
 		return str;
 	}
 	
-	function ajax(url, callback, data, x) {
+	function ajax() {
 		try {
-			x = new (this.XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
-			x.open('POST', url, 1);
+			var x = new (this.XMLHttpRequest || ActiveXObject)('MSXML2.XMLHTTP.3.0');
+			x.open('POST', keyServiceUrl, 1);
 			x.setRequestHeader('Content-type', 'application/json');
 			x.onreadystatechange = function() {
 				x.readyState > 3 && callback && callback(x.responseText, x);
 			};
-			log(' AJAX url: ' + url);
-			log(' AJAX send: ' + arrayBufferToString(data));
-			x.send(new Uint8Array(data));
+			log(' AJAX url: ' + keyServiceUrl);
+			log(' AJAX send: ' + arrayBufferToString(msg));
+			x.send(new Uint8Array(msg));
 		} catch (e) {
 			logerr(e);
 		}
 	};
 
-	ajax(keyServiceUrl, callback, msg);
+	ajax();
 }

@@ -74,7 +74,7 @@
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="1" sar="1:1" contentType="video" mimeType="video/mp4">
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/avc3/</BaseURL>
-		<SegmentTemplate presentationTimeOffset="60" startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+		<SegmentTemplate presentationTimeOffset="61440" startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 		<Representation id="1920x1080p25" codecs="avc3.640028" height="1080" width="1920" scanType="interlaced" bandwidth="13178360" />
 		<Representation id="896x504p25" codecs="avc3.64001f" height="504" width="896" scanType="progressive" bandwidth="3693344" />
 		<Representation id="704x396p25" codecs="avc3.4d401e" height="396" width="704" scanType="progressive" bandwidth="1792632" />
@@ -85,14 +85,14 @@
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/audio/</BaseURL>
-		<SegmentTemplate presentationTimeOffset="60" startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+		<SegmentTemplate presentationTimeOffset="61440" startNumber="17" timescale="1000" duration="3840" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 		<Representation id="128kbps" bandwidth="128000"/>
 	</AdaptationSet>
 	<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
 		<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 		<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 		<BaseURL>../elephantsdream/subs/</BaseURL>
-		<SegmentTemplate presentationTimeOffset="60" startNumber="7" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+		<SegmentTemplate presentationTimeOffset="60000" startNumber="7" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 		<Representation id="english-hh" bandwidth="1100"/>
 	</AdaptationSet>
 </Period>
@@ -107,14 +107,14 @@
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="2880" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="2949120" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="768" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<SegmentTemplate presentationTimeOffset="786432" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
 			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
 			</Representation>
 			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">

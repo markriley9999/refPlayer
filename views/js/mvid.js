@@ -297,7 +297,7 @@ mVid.start = function () {
 			}
 		];
 
-		if ("MediaKeys" in window) {
+		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
 			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag);
 		}
 			

@@ -1,3 +1,7 @@
+- Add event (option)
+
+
+fix ad transition timing
 jslint
 
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
