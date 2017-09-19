@@ -1,8 +1,8 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
-		<EventStream schemeIdUri="tag:rdmedia.bbc.co.uk,2014:events/ballposition" value="1" timescale="1000">
-			<Event duration="2500"  presentationTime="{{evPresentationTime}}" id="61"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
+			<Event duration="10000"  presentationTime="{{evPresentationTime}}" id="1"/>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">

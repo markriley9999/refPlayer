@@ -720,7 +720,7 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
 	
-	var evOffset = Math.floor(((p * periodD) + 2660) / 1000 * eTimescale);
+	var evOffset = Math.floor((p * periodD * eTimescale) / 1000);
 	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
