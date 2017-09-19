@@ -739,7 +739,7 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	var alignedOffset = (seg-1) * sz;
 	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
 	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
-	var evOffset 	= Math.round((alignedOffset * eTimescale) / 1000);
+	var evOffset 	= Math.round(alignedOffset * eTimescale / 1000);
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
