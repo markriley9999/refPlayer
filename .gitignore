@@ -57,3 +57,5 @@ views/OLD-dash.hbs
 logs
 *.gz
 tmp
+*.m4s-noemsg
+*.bak
