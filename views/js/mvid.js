@@ -365,7 +365,7 @@ mVid.setUpCues = function () {
 					
 					var cue = track.cues[i];
 
-					if (cue !== null) {
+					if ((cue !== null) && (cue.startTime > 0)) {
 						x =  (coef * cue.startTime) + c.left;
 						
 						if (!that.cueImages[idx]) {

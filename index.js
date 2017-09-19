@@ -644,9 +644,9 @@ expressServer.get('/dynamic/*', function(req, res) {
 		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
 			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, "" /* "ad-" + i */);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */);
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain);			
 		}
 	}
 	
@@ -728,7 +728,7 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
@@ -739,10 +739,11 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, pr
 	var alignedOffset = (seg-1) * sz;
 	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
 	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
+	var evOffset 	= Math.round((alignedOffset * eTimescale) / 1000);
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prev);
+	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev);
 }
 
 _formatTime = function(d) {
@@ -755,7 +756,7 @@ const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.x
 const mpMainContent	= [];
 const mpAds			= [];
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prevPeriodID) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -780,7 +781,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, pre
 	}
 
 	template 	= hbs.handlebars.compile(mpMainContent[fn]);
-	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, period_seg: seg};
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg};
 	var complete = template(context);
 	
 	// console.log(complete);
