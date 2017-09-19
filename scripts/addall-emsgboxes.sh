@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EMSGNAME=emsg-bbcballpos.bin
+EMSGNAME=emsg-duk.bin
 
 ./add-emsgbox.sh ../content/bbb/1-130975/SEG1.m4s ../content/bbb/$EMSGNAME
 ./add-emsgbox.sh ../content/bbb/ENC-6-137036/SEG1.m4s ../content/bbb/$EMSGNAME
