@@ -36,6 +36,9 @@ mVid.cnt.curBuffIdx = 0;
 mVid.cnt.curPlayIdx = 0;
 mVid.cnt.list = [];
 
+mVid.cueImages = [];
+
+
 // Play states
 const PLAYSTATE_STOP	= 0;
 const PLAYSTATE_PLAY	= 1;
@@ -233,55 +236,8 @@ mVid.start = function () {
 			mainVideo.addEventListener(that.videoEvents[i], onVideoEvent(that));
 		}
 
-		// Cues
-		mainVideo.textTracks.onaddtrack = function (event) {
-			var textTrack = event.track;
-
-			// TODO: Fix this!
-			// cuechange event is registered and cues in activeCues list are checked when event occurs
-			textTrack.oncuechange = function () {
-
-				that.Log.error("*** textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
-				if (textTrack.cues.length > 0) {
-
-					for (var i = 0; i < textTrack.cues.length; ++i) {
-
-						var cue = textTrack.cues[i];
-
-						if (cue !== null) {
-							that.Log.error("*** Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
-						}
-					}
-				}
-
-				if (textTrack.activeCues.length > 0) {
-
-					for (var i = 0; i < textTrack.activeCues.length; ++i) {
-
-						var cue = textTrack.activeCues[i];
-
-						if (cue !== null) {
-							var f = e("flag");
-							
-							that.Log.error("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
-							that.Log.error("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id);
-							
-							f.setAttribute("class", "playerIcon flag");
-							that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
-							//f.innerHTML = "ID: " + cue.id;
-							
-							cue.onexit = function (ev) {
-								f.setAttribute("class", "playerIcon");
-								that.updateBufferStatus(mainVideo.id, "Event: Cue End");
-								//f.innerHTML = "";
-							}
-							return;
-						}
-					}
-				}
-			}
-		};		
-		
+		that.setUpCues();
+				
 		// Clear key
 		const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
@@ -318,6 +274,7 @@ mVid.start = function () {
 			}
 			
 			that.updateAllBuffersStatus();	
+
 		}, 1000);	
 	});
 };
@@ -376,6 +333,93 @@ mVid.procPlaylist = function (ch, playObj) {
 	}
 	
 	e("currentChannel") && (e("currentChannel").innerHTML = "Test " + ch + " - " + playObj.channelName);
+}
+
+mVid.setUpCues = function () {
+
+	var mainVideo = e("mVid-mainContent");
+	var that = this;
+	
+	function showCues () {
+		
+		var p = that.getCurrentPlayingPlayer();
+		var imgobj = e("ad-start-point");
+		
+		var c = e("playbackBar").getBoundingClientRect();
+		var offset = imgobj.getBoundingClientRect().width / 2;
+
+		var x;
+		var coef = (c.width / p.duration);
+
+		var tracks = p.textTracks;
+		var track;
+		var idx;
+		
+		for (var t = 0; t < tracks.length; t++) {
+			track = tracks[t];
+			
+			if ((track.kind === "metadata") && (track.cues.length > 0)) {
+
+				for (var i = 0; i < track.cues.length; ++i) {
+					idx = "idx" + t + "-" + i;
+					
+					var cue = track.cues[i];
+
+					if (cue !== null) {
+						x =  (coef * cue.startTime) + c.left;
+						
+						if (!that.cueImages[idx]) {
+							that.cueImages[idx] = imgobj.cloneNode(true);
+							e("playrange").appendChild(that.cueImages[idx]);
+						}
+						
+						that.cueImages[idx].style.left 	= (x - offset) + "px";
+						that.Log.info("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " text: " + cue.getCueAsHTML().textContent);				
+					}
+				}
+			}
+		}
+	}
+
+	window.setInterval( function() {
+		showCues();	
+	}, 10000);	
+		
+	mainVideo.textTracks.onaddtrack = function (event) {
+		var textTrack = event.track;
+		var cue;
+		
+		textTrack.oncuechange = function () {
+
+			showCues();
+
+			that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+
+			if (textTrack.activeCues.length > 0) {
+
+				for (var i = 0; i < textTrack.activeCues.length; ++i) {
+
+					cue = textTrack.activeCues[i];
+
+					if (cue !== null) {
+						var f = e("flag");
+						
+						f.setAttribute("class", "playerIcon flag");
+						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
+						//f.innerHTML = "ID: " + cue.id;
+						
+						cue.onexit = function (ev) {
+							f.setAttribute("class", "playerIcon");
+							that.updateBufferStatus(mainVideo.id, "Event: Cue End");
+							//f.innerHTML = "";
+						}
+						return;
+					}
+				}
+			}
+		}
+	};		
+	
 }
 
 mVid.reload = function () {

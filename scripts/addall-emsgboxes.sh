@@ -1,0 +1,12 @@
+#!/bin/bash
+
+EMSGNAME=emsg-bbcballpos.bin
+
+./add-emsgbox.sh ../content/bbb/1-130975/SEG1.m4s ../content/bbb/$EMSGNAME
+./add-emsgbox.sh ../content/bbb/ENC-6-137036/SEG1.m4s ../content/bbb/$EMSGNAME
+
+./add-emsgbox.sh ../content/adverts/itv/dash/1-128000/SEG1.m4s ../content/adverts/itv/dash/$EMSGNAME
+ 
+./add-emsgbox.sh ../content/adverts/ch4/dash/1-128000/SEG1.m4s ../content/adverts/ch4/dash/$EMSGNAME
+
+

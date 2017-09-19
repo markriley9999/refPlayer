@@ -1,3 +1,14 @@
+- events
+	- add to ch4
+	- add to main?
+	- mod emsg
+		- time
+		- msg
+		- id?
+	- add emsg to itv, ch4 and main
+	
+- docouple lic / eme from mvid
+
 - Add event (option)
 
 

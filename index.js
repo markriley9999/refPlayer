@@ -565,6 +565,8 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.Atimescale	= parseInt(eval(sC.Atimescale));
 	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
 
+	sC.Etimescale	= 1000; // TODO: hardcoded...
+	
 	var bAdsandMain = (sC.ads.length > 0);
 
 	sC.segAlign = eval(sC.segAlign);
@@ -641,7 +643,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */);
 			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, "" /* "ad-" + i */);
 		} else {
 			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, prevMain);			
@@ -711,17 +713,19 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, prev) {
+makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
 	
+	var evOffset = Math.floor(((p * periodD) + 2660) / 1000 * eTimescale);
+	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, prev);
+	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev);
 }
 
 makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, prev) {
@@ -784,7 +788,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, pre
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, prevPeriodID) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -809,7 +813,7 @@ adXML = function(fn, p, sDuration, sStart, prevPeriodID) {
 	}
 
 	template 	= hbs.handlebars.compile(mpAds[fn]);
-	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc};
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime};
 	var complete = template(context);
 	
 	// console.log(complete);
