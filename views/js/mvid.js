@@ -353,7 +353,6 @@ mVid.setUpCues = function () {
 
 		var tracks = p.textTracks;
 		var track;
-		var idx;
 		
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
@@ -361,19 +360,17 @@ mVid.setUpCues = function () {
 			if ((track.kind === "metadata") && (track.cues.length > 0)) {
 
 				for (var i = 0; i < track.cues.length; ++i) {
-					idx = "idx" + t + "-" + i;
-					
 					var cue = track.cues[i];
 
 					if ((cue !== null) && (cue.startTime > 0)) {
 						x =  (coef * cue.startTime) + c.left;
 						
-						if (!that.cueImages[idx]) {
-							that.cueImages[idx] = imgobj.cloneNode(true);
-							e("playrange").appendChild(that.cueImages[idx]);
+						if (!that.cueImages[x]) {
+							that.cueImages[x] = imgobj.cloneNode(true);
+							e("playrange").appendChild(that.cueImages[x]);
 						}
 						
-						that.cueImages[idx].style.left 	= (x - offset) + "px";
+						that.cueImages[x].style.left = (x - offset) + "px";
 						that.Log.info("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " text: " + cue.getCueAsHTML().textContent);				
 					}
 				}
