@@ -569,15 +569,32 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 	var bAdsandMain = (sC.ads.length > 0);
 
-	sC.segAlign = eval(sC.segAlign);
-	if (sC.segAlign) {
+	
+	if ((sC.adD > 0) && (sC.adSegAlign != "none")) {
+		console.log("- non aligned adD: " + sC.adD);
+		
+		if (sC.adSegAlign === "round") {
+			sC.adD = Math.round(sC.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (round): " + sC.adD);		
+		} else if (sC.adSegAlign === "floor") {
+			sC.adD = Math.floor(sC.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (floor): " + sC.adD);		
+		}		
+	} 
+
+	if (sC.segAlign != "none") {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
-		sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
-		
-		console.log("- aligned periodD: " + sC.periodD);		
-	}
-		
+		if (sC.segAlign === "round") {
+			sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			console.log("- aligned periodD (round): " + sC.periodD);		
+		} else if (sC.segAlign === "floor") {
+			sC.periodD = (Math.floor((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			console.log("- aligned periodD (floor): " + sC.periodD);		
+		}		
+	} 
+
+	
 	const progDuration	= (60 * 60 * 1000);
 	var maxP = Math.round((progDuration / sC.periodD) - 1);
 	console.log("- maxP: " + maxP);

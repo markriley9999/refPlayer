@@ -3,7 +3,7 @@
 	
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
-	"segAlign"		: "round",
+	"segAlign"		: "none",
 
 	"marginF" 		: "120",					
 	"marginB" 		: "3600",					
@@ -12,7 +12,7 @@
 	"Vtimescale"	: "12800",
 	
 	"adD"			: "60000",
-	"adSegAlign"	: "round",
+	"adSegAlign"	: "none",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",

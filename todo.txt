@@ -1,3 +1,5 @@
+- add round / trunc seg alignment option
+
 - events
 	- add to ch4
 	- add to main?
