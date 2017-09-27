@@ -4,7 +4,8 @@ CMD=$1
 
 if [ "$CMD" == "update" ]; then
   echo " - Update code"
-  git pull https://github.com/markriley9999/refPlayer.git
+  git stash  
+  git pull
   echo " - (Re)install node modules"
   sudo npm install
 fi
