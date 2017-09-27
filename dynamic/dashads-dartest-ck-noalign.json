@@ -3,7 +3,7 @@
 	
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
-	"segAlign"		: "none",
+	"segAlign"		: "round",
 
 	"marginF" 		: "120",					
 	"marginB" 		: "3600",					
@@ -11,7 +11,7 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "60000",
+	"adD"			: "60202",
 	"adSegAlign"	: "none",
 	
 	"ads"			: [

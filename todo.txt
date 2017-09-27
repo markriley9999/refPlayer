@@ -1,20 +1,12 @@
-- add round / trunc seg alignment option
+- seg / offset sync
 
-- events
-	- add to ch4
-	- add to main?
-	- mod emsg
-		- time
-		- msg
-		- id?
-	- add emsg to itv, ch4 and main
+- check event (use inband)
 	
 - docouple lic / eme from mvid
 
-- Add event (option)
+- small end segs
+- seg timeline mpd
 
-
-fix ad transition timing
 jslint
 
 - AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
@@ -26,10 +18,6 @@ jslint
 - code review player - jslint
 - create dash conf page
 
-- create:
-		- add cues!
-		- encrypt content (bbb?)
-		- improve cue handling, show cue points
 
 
 
