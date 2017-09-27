@@ -11,7 +11,7 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "60202",
+	"adD"			: "60000",
 	"adSegAlign"	: "none",
 	
 	"ads"			: [

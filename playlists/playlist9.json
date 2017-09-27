@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Multiperiod, non-aligned segments, Clear Key (main), Ads",
+	"channelName" 		: "Live Dynamic: Multiperiod, partial final ad segment, Clear Key (main)",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Clear Key (main content)",
