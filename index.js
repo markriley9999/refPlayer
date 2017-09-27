@@ -1,6 +1,7 @@
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
+const chalk = require('chalk');
 
 const electron = require('electron');   // include electron
 const electronApp = electron.app;                // give access to electron functions
@@ -302,10 +303,10 @@ expressServer.post('/log', function(req, res) {
 function sendServerLog(msg) {
 	var logObj = { 
 					'cssClass': 'debug', 
-					'logText': 	"--- SERVER: " + msg + " ---"
+					'logText': 	" - server: " + msg + " ---"
 				 };
 				 
-	console.log("* " + msg);
+	console.log(chalk.yellow(msg));
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
