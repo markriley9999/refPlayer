@@ -1,9 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "01",
+	"minor" 	: "02",
 	"comment"	: "Formal release",
 	"notes"		: [	
+					"Added Events",
 					"Aligned ads in dynamic manifests",
 					"Tidied EME code"
 				  ]
