@@ -1,6 +1,7 @@
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
+const chalk = require('chalk');
 
 const electron = require('electron');   // include electron
 const electronApp = electron.app;                // give access to electron functions
@@ -302,10 +303,10 @@ expressServer.post('/log', function(req, res) {
 function sendServerLog(msg) {
 	var logObj = { 
 					'cssClass': 'debug', 
-					'logText': 	"--- SERVER: " + msg + " ---"
+					'logText': 	" - server: " + msg + " ---"
 				 };
 				 
-	console.log("* " + msg);
+	console.log(chalk.yellow(msg));
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
@@ -565,17 +566,36 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.Atimescale	= parseInt(eval(sC.Atimescale));
 	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
 
+	sC.Etimescale	= 1000; // TODO: hardcoded...
+	
 	var bAdsandMain = (sC.ads.length > 0);
 
-	sC.segAlign = eval(sC.segAlign);
-	if (sC.segAlign) {
+	
+	if ((sC.adD > 0) && (sC.adSegAlign != "none")) {
+		console.log("- non aligned adD: " + sC.adD);
+		
+		if (sC.adSegAlign === "round") {
+			sC.adD = Math.round(sC.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (round): " + sC.adD);		
+		} else if (sC.adSegAlign === "floor") {
+			sC.adD = Math.floor(sC.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (floor): " + sC.adD);		
+		}		
+	} 
+
+	if (sC.segAlign != "none") {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
-		sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
-		
-		console.log("- aligned periodD: " + sC.periodD);		
-	}
-		
+		if (sC.segAlign === "round") {
+			sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			console.log("- aligned periodD (round): " + sC.periodD);		
+		} else if (sC.segAlign === "floor") {
+			sC.periodD = (Math.floor((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			console.log("- aligned periodD (floor): " + sC.periodD);		
+		}		
+	} 
+
+	
 	const progDuration	= (60 * 60 * 1000);
 	var maxP = Math.round((progDuration / sC.periodD) - 1);
 	console.log("- maxP: " + maxP);
@@ -641,10 +661,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, "" /* "ad-" + i */);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */);
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain);			
 		}
 	}
 	
@@ -711,20 +731,22 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, prev) {
+makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
 	
+	var evOffset = Math.floor((p * periodD * eTimescale) / 1000);
+	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, prev);
+	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
@@ -735,10 +757,11 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, pr
 	var alignedOffset = (seg-1) * sz;
 	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
 	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
+	var evOffset 	= Math.round(alignedOffset * eTimescale / 1000);
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prev);
+	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev);
 }
 
 _formatTime = function(d) {
@@ -751,7 +774,7 @@ const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.x
 const mpMainContent	= [];
 const mpAds			= [];
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, prevPeriodID) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -776,7 +799,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, pre
 	}
 
 	template 	= hbs.handlebars.compile(mpMainContent[fn]);
-	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, period_seg: seg};
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg};
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -784,7 +807,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, pre
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, prevPeriodID) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
@@ -809,7 +832,7 @@ adXML = function(fn, p, sDuration, sStart, prevPeriodID) {
 	}
 
 	template 	= hbs.handlebars.compile(mpAds[fn]);
-	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc};
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime};
 	var complete = template(context);
 	
 	// console.log(complete);

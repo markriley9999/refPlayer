@@ -1,5 +1,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
+			<Event duration="10000"  presentationTime="{{evPresentationTime}}" id="1"/>
+		</EventStream>
+		
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			{{{period_continuity}}}

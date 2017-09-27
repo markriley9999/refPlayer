@@ -11,8 +11,8 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "60000",
-	"adSegAlign"	: "round",
+	"adD"			: "60202",
+	"adSegAlign"	: "none",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",

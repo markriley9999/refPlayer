@@ -1,18 +1,24 @@
 {
 	"ads" 				: [],
-	"src" 				: "./dynamic/mperiod-ck.mpd",
+	"src" 				: "./dynamic/dashads-dartest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Clear Key, 'Period Continuous' flag set",
-	
-	"info"				: [	"Dynamic Manifest:",
-							"  - Clear Key",
+	"channelName" 		: "Live Dynamic: Multiperiod, ITV and Ch4 Ads",
+
+	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Content starts 'on the hour'",
 							"  - Content duration 60m",
-							"  - Split into 30 ~2m Periods",
-							"  - Next period added to manifest ~1m before start (of next period)",
-							"  - Period continuity flag set"
+							"  - Split into 12 Periods",
+							"  - ITV and Ch4 Ads",
+							"  - Ad period, starts every 10m",
+							"  - Ad period lasts 1m",
+							"  - Main uses 'Big Buck Bunny'",
+							"  - Main period, starts after Ad",
+							"  - Main period lasts 9m",
+							"  - Periods added to manifest as time progresses",
+							"  - Next Ad period added ~1m before time to start",
+							"  - Time shift buffer set to 60m"
 						  ]
 
 }
