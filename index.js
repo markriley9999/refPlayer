@@ -3,20 +3,19 @@ const ip = require("ip");
 const fs = require('fs');
 const chalk = require('chalk');
 
-const electron = require('electron');   // include electron
-const electronApp = electron.app;                // give access to electron functions
+const electron = require('electron');   
+const electronApp = electron.app;                
  
-const browserWindow = electron.BrowserWindow;   // electron window functions
-const ipc = electron.ipcMain;                   // talk between the electron threads
+const browserWindow = electron.BrowserWindow;   
+const ipc = electron.ipcMain;                   
  
-const path = require('path'); // used by electron to load html files
-const url = require('url');   // used by electron to load html files
+const path = require('path'); 
+const url = require('url');   
  
-const express = require('express');         // Includes the Express source code
-const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
+const express = require('express');         
+const bodyParser = require('body-parser');  
 
-const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
-//hbs.handlebars === require('handlebars');
+const hbs = require('hbs');                 
  
 const Throttle = require('stream-throttle').Throttle;
 
@@ -27,6 +26,8 @@ var commonUtils = new UTILS();
 
 const CONFIG = require('./common/configobj.js');
 var commonConfig = new CONFIG();
+
+const mp4boxModule = require('mp4box');
 
 
 var win = {};
@@ -52,6 +53,9 @@ var generalInfo = {
 	devName 			: "",
 	version				: {}
 };
+
+var bDumpSegInfo = false;
+
 
 generalInfo.version = require("./version.json");
 
@@ -363,6 +367,8 @@ expressServer.get('/player.aitx', function(req, res) {
     });
 });
 
+var mp4box = new mp4boxModule.MP4Box();
+
 expressServer.get('/content/*', function(req, res) {
 	// TODO: Why seeing 2 gets????
 	// TODO: Use "application/dash+xml" for mpds
@@ -404,6 +410,15 @@ expressServer.get('/content/*', function(req, res) {
 				return res.sendStatus(404);
 			}
 			res.end(err);
+		}
+		
+		if (bDumpSegInfo) {
+			var arrayBuffer = new Uint8Array(fs.readFileSync(file)).buffer;
+			arrayBuffer.fileStart = 0;
+
+			mp4box.appendBuffer(arrayBuffer);
+			console.log(mp4box.getInfo());		
+			mp4box.flush();
 		}
 		
 		var range = req.headers.range;
