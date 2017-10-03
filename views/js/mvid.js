@@ -83,6 +83,11 @@ const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in o
 const HAVE_FUTURE_DATA	= 3; 	// enough data to start playback
 const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream without interruption till the end.
 
+
+// Events
+const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
+const event_value = "1"
+
 mVid.startTime = Date.now();
 
 mVid.Log = {};
@@ -339,10 +344,16 @@ mVid.setUpCues = function () {
 
 	var mainVideo = e("mVid-mainContent");
 	var that = this;
+	var trackDispatchType = event_schemeIdUri + " " + event_value;
 	
 	function showCues () {
 		
 		var p = that.getCurrentPlayingPlayer();
+		
+		if (!p) {
+			return;
+		}
+		
 		var imgobj = e("ad-start-point");
 		
 		var c = e("playbackBar").getBoundingClientRect();
@@ -353,11 +364,17 @@ mVid.setUpCues = function () {
 
 		var tracks = p.textTracks;
 		var track;
-		
+
+		function arrayBufferToString(buffer) {
+			var arr = new Uint8Array(buffer);
+			var str = String.fromCharCode.apply(String, arr);
+			return str;
+		}
+			
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
 			
-			if ((track.kind === "metadata") && (track.cues.length > 0)) {
+			if (track && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
 
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
@@ -371,7 +388,7 @@ mVid.setUpCues = function () {
 						}
 						
 						that.cueImages[x].style.left = (x - offset) + "px";
-						that.Log.info("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " text: " + cue.getCueAsHTML().textContent);				
+						that.Log.info("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
 					}
 				}
 			}
