@@ -18,7 +18,7 @@
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="sintel_set2_init.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4655707">
 			</Representation>
 			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2609528">
