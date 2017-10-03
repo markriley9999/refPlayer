@@ -21,14 +21,14 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/bbb/bbb-clearkey.mpd",
+	"src" 				: "./content/sintel/sintel-clearkey.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "600",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 5 Ch4 Ads, Main: Clear Key (BBB)",
+	"channelName" 		: "Ads: 5 Ch4 Ads, Main: Clear Key (Sintel)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
-							"'Big Buck Bunny' DASH asset - playing for 600s",
+							"'Sintel' DASH asset - playing for 600s",
 							"Clear Key encrypted (main asset)"
 						  ]
 
