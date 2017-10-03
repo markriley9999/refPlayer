@@ -1,0 +1,121 @@
+--- Concat and Trim to 1 (and 10s) hr ---
+
+..\..\ffmpeg.exe.lnk -f concat -i catlist.txt -c copy -t 3900 catsource.mkv
+..\..\ffmpeg.exe.lnk -f concat -i catlist.txt -c copy -t 1200 catsource.mkv - short
+
+
+--- extract raw video ---
+
+..\..\ffmpeg.exe.lnk -i catsource.mkv -c copy -f h264 video.h264
+
+
+--- extract raw audio ---
+
+..\..\ffmpeg.exe.lnk -i catsource.mkv -c copy -map 0:a:0 -vn audio.ac3
+
+--- Convery ac3 to aac ---
+
+..\..\ffmpeg.exe.lnk -i audio.ac3 -c:a aac -b:a 128k audio.aac
+
+
+--- set audio fps 25 ---
+				
+..\..\ffmpeg.exe.lnk -i audio.aac -filter:a "atempo=25/24" -c:a aac -b:a 128k -ac 2 audio.m4a
+
+
+--- set video fps to 25 ---
+
+..\..\ffmpeg.exe.lnk -fflags +genpts -r 25 -i video.h264 -c copy video.mp4
+
+
+--- Sanity Check ---
+
+..\..\ffmpeg.exe.lnk -i video.mp4 -i audio.m4a -c copy checkpt_1.mp4
+
+
+--- Timestamp ---
+
+..\..\ffmpeg.exe.lnk -i video.mp4 -vf "drawtext=fontfile=arialbd.ttf:fontsize=60:fontcolor=white:box=1:boxcolor=black@0.4:x=w-500:y=25:text='%{pts\:gmtime\:0\:%H\\\:%M\\\:%S}'" vtimestmp.mp4
+
+
+--- Sanity Check ---
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -i audio.m4a -c copy checkpt_2.mp4
+
+
+--- scale reps and set gops ---
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf scale=1920:1080 -c:v libx264 -b:v 4630k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_1.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf scale=1280:720 -c:v libx264 -b:v 2594k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_2.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf scale=896:504 -c:v libx264 -b:v 1384k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_3.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf scale=704:396 -c:v libx264 -b:v 823k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_4.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf scale=512:288 -c:v libx264 -b:v 438k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_5.mp4
+
+--- or crop ---
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf "scale=-1:1080, crop=1920:1080" -c:v libx264 -b:v 4630k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_1.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf "scale=-1:720, crop=1280:720" -c:v libx264 -b:v 2594k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_2.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf "scale=-1:504, crop=896:504" -c:v libx264 -b:v 1384k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_3.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf "scale=-1:396, crop=704:396" -c:v libx264 -b:v 823k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_4.mp4
+
+..\..\ffmpeg.exe.lnk -i vtimestmp.mp4 -vf "scale=-1:288, crop=512:288" -c:v libx264 -b:v 438k -x264opts keyint=96:min-keyint=96:no-scenecut -profile:v main -preset medium -movflags +faststart valigned_5.mp4
+
+
+
+
+..\..\ffmpeg.exe.lnk -i valigned_5.mp4 -i audio.m4a -c copy checkpt_3.mp4
+..\..\ffmpeg.exe.lnk -i valigned_1.mp4 -i audio.m4a -c copy checkpt_4.mp4
+
+
+--- dash ---
+
+..\..\MP4Box.exe.lnk -dash 3840 -rap  -frag-rap -bs-switching inband -profile dashavc264:live -segment-name $RepresentationID$-$Bandwidth$/SEG$Number$ -out sintel.mpd audio.m4a valigned_1.mp4 valigned_2.mp4 valigned_3.mp4 valigned_4.mp4 valigned_5.mp4 
+
+..\..\MP4Box.exe.lnk -dash 3840 -rap  -frag-rap -bs-switching inband -profile dashavc264:live -segment-name $RepresentationID$-$Bandwidth$/SEG$Number$ -out sintel.mpd audio.m4a valigned_4.mp4 valigned_5.mp4 - short
+
+--- Check frames ---
+
+..\..\ffprobe.exe.lnk -show_frames -print_format compact valigned_1.mp4 > frames_1.txt
+..\..\ffprobe.exe.lnk -show_frames -print_format compact valigned_2.mp4 > frames_2.txt
+..\..\ffprobe.exe.lnk -show_frames -print_format compact valigned_3.mp4 > frames_3.txt
+..\..\ffprobe.exe.lnk -show_frames -print_format compact valigned_4.mp4 > frames_4.txt
+..\..\ffprobe.exe.lnk -show_frames -print_format compact valigned_5.mp4 > frames_5.txt
+
+cat frames_1.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print $2 * 1000 / 3840, i; ++i }'
+cat frames_2.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print $2 * 1000 / 3840, i; ++i }'
+cat frames_3.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print $2 * 1000 / 3840, i; ++i }'
+cat frames_4.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print $2 * 1000 / 3840, i; ++i }'
+cat frames_5.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print $2 * 1000 / 3840, i; ++i }'
+
+
+--- encrypt --- 			
+
+---- Initially DASHify - single file!!!!! ----
+
+..\..\MP4Box.exe.lnk -dash 3840 -rap -frag-rap -bs-switching inband -single-file valigned_1.mp4 valigned_2.mp4 valigned_3.mp4 valigned_4.mp4 valigned_5.mp4
+
+
+--- Encrypt ---
+
+..\..\mp4box.exe.lnk -crypt crypt.xml audio.m4a -out encr_audio.m4a
+..\..\mp4box.exe.lnk -crypt crypt.xml valigned_1_dash.mp4 -out encr_1.mp4		
+..\..\mp4box.exe.lnk -crypt crypt.xml valigned_2_dash.mp4 -out encr_2.mp4		
+..\..\mp4box.exe.lnk -crypt crypt.xml valigned_3_dash.mp4 -out encr_3.mp4		
+..\..\mp4box.exe.lnk -crypt crypt.xml valigned_4_dash.mp4 -out encr_4.mp4		
+..\..\mp4box.exe.lnk -crypt crypt.xml valigned_5_dash.mp4 -out encr_5.mp4		
+
+
+--- DASHify ---
+			
+..\..\MP4Box.exe.lnk -dash 3840 -rap  -frag-rap -bs-switching inband -profile dashavc264:live -segment-name ENC-$RepresentationID$-$Bandwidth$/SEG$Number$ -out sintel-clearkey.mpd encr_audio.m4a encr_1.mp4 encr_2.mp4 encr_3.mp4 encr_4.mp4 encr_5.mp4 			
+			
+			
+			
+			

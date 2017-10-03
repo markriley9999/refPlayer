@@ -1,3 +1,22 @@
+- read x264 docs
+- read ffmpeg docs
+
+- Look at following tests, coverage etc
+	org.hbbtv_00027213
+	org.hbbtv_00027215
+	org.hbbtv_00027216
+	org.hbbtv_00027223
+	org.hbbtv_00027224
+- use in conjunction with ref player
+
+- new version of ffmpeg!!!!  mp4box!!!!
+
+- mp4box seg analysyis node
+
+- cat bbc bbb and encrypt???
+
+
+
 - seg / offset sync
 
 - check event (use inband)

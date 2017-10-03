@@ -1,5 +1,5 @@
 {
-	"main"			: "./dynamic/periods/main-bbb-ck.xml",
+	"main"			: "./dynamic/periods/main-sintel-ck.xml",
 
 	"segsize" 		: "3840",
 	"periodD" 		: "120000", 	
