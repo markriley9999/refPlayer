@@ -1,4 +1,5 @@
 - make sure sintel and bbb manifests are compliant!!!!
+- package and upload content - and test
 - install gstreamer
 - pana eme drm ticket!  ITVHub
 - vestel events
