@@ -370,7 +370,7 @@ mVid.setUpCues = function () {
 			var str = String.fromCharCode.apply(String, arr);
 			return str;
 		}
-			
+
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
 			
@@ -379,6 +379,9 @@ mVid.setUpCues = function () {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
+					// extract data property represented as ArrayBuffer
+					var dataView = new Uint8Array(cue.data);
+  
 					if ((cue !== null) && (cue.startTime > 0)) {
 						x =  (coef * cue.startTime) + c.left;
 						
