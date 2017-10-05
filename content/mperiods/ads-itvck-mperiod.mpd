@@ -18,11 +18,11 @@
 
 <Period duration="PT1M" start="PT0S">
 
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="0" id="1"/>
-		</EventStream>
-	
-		<AdaptationSet segmentAlignment="true" lang="eng">
+	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
+		<Event duration="10000"  presentationTime="0" id="1"/>
+	</EventStream>
+
+	<AdaptationSet segmentAlignment="true" lang="eng">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 		<BaseURL>../adverts/itv/dash/</BaseURL>
 		<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
@@ -48,10 +48,6 @@
 
 <Period duration="PT2M" start="PT1M">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-		<Event duration="10000"  presentationTime="0" id="1"/>
-	</EventStream>
-		
     <BaseURL>../itv/clearkey/dash/</BaseURL>
     <AdaptationSet
       group="1"
@@ -182,7 +178,7 @@
 <Period duration="PT1M" start="PT3M">
 
 	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-		<Event duration="10000"  presentationTime="0" id="1"/>
+		<Event duration="10000"  presentationTime="180000" id="1"/>
 	</EventStream>
 		
 	<AdaptationSet segmentAlignment="true" lang="eng">
@@ -211,10 +207,6 @@
 
 <Period duration="PT2M" start="PT4M">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-		<Event duration="10000"  presentationTime="0" id="1"/>
-	</EventStream>
-		
 	<BaseURL>../itv/clearkey/dash/</BaseURL>
     <AdaptationSet
       group="1"
