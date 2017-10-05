@@ -4,12 +4,12 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (4): Ele Dream, BBB + Cues",
+	"channelName" 		: "Multiple Periods (4): Ele Dream, Sintel",
 
 	"info"				: [	"4 1m Periods:",
-							"  1. Big Buck Bunny",
+							"  1. Sintel",
 							"  2. Elephant's Dream (EBU-TT-D)",
-							"  3. Big Buck Bunny",
+							"  3. Sintel",
 							"  4. Elephant's Dream (EBU-TT-D)"
 						  ]
 }
