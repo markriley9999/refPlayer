@@ -13,13 +13,13 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/sintel/sintel.mpd",
+	"src" 				: "./content/bbb/bbb-clear.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "240",
 	"addContentId" 		: "false",
 	"channelName" 		: "Ads: 3 ITV Ads, Main: Big Buck Bunny",
 	
 	"info"				: [	"3 mp4 (ITV) adverts",
-							"'Sintel' DASH asset - playing for 240s"
+							"Main DASH asset - playing for 240s"
 						  ]
 }
