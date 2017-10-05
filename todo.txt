@@ -1,16 +1,11 @@
-- read x264 docs
-- read ffmpeg docs
-
-- Look at following tests, coverage etc
-	org.hbbtv_00027213
-	org.hbbtv_00027215
-	org.hbbtv_00027216
-	org.hbbtv_00027223
-	org.hbbtv_00027224
-- use in conjunction with ref player
-
-- new version of ffmpeg!!!!  mp4box!!!!
-
+- make sure sintel and bbb manifests are compliant!!!!
+- install gstreamer
+- pana eme drm ticket!  ITVHub
+- vestel events
+- hisense clearkey + ebu-tt d
+- ebu-tt-d timestamp file
+- utctime - head!!!!
+- spurious events!!!
 - mp4box seg analysyis node
 
 - cat bbc bbb and encrypt???
