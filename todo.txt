@@ -1,4 +1,11 @@
-- make sure sintel and bbb manifests are compliant!!!!
+- small seg
+	- events
+	- static
+	- package
+	- playlists
+	- clearkey version
+	- compliant mpds!
+
 - package and upload content - and test
 - install gstreamer
 - pana eme drm ticket!  ITVHub
