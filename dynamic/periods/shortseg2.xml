@@ -11,6 +11,7 @@
 			<BaseURL>../content/shortseg/</BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP2_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
+				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">

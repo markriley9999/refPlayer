@@ -3,13 +3,14 @@
 	type="static"
 	xmlns="urn:mpeg:dash:schema:mpd:2011" 
 	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
+	xmlns:cenc="urn:mpeg:cenc:2013"
 	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
 	minBufferTime="PT10S" 
 	maxSegmentDuration="PT3.84S" 
 	mediaPresentationDuration="PT1H"
 >
 	<ProgramInformation>
-		<Title>shortseg</Title>
+		<Title>shortseg-ck</Title>
 	</ProgramInformation>
 	
 	<!-- Ad 0 -->	
@@ -54,35 +55,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="11520" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="552960" startNumber="4" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="552960" startNumber="4" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="147456" startNumber="4" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="147456" startNumber="4" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<!-- Ad 1 -->	
 	<!-- *** Generated Period: Ad *** -->
@@ -126,35 +129,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="610560" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="29306880" startNumber="160" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="29306880" startNumber="160" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="7815168" startNumber="160" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="7815168" startNumber="160" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<!-- Ad 2 -->	
 	<!-- *** Generated Period: Ad *** -->
@@ -198,35 +203,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="1209600" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="58060800" startNumber="316" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="58060800" startNumber="316" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="15482880" startNumber="316" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="15482880" startNumber="316" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<!-- Ad 3 -->	
 	<!-- *** Generated Period: Ad *** -->
@@ -270,35 +277,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="1808640" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="86814720" startNumber="472" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="86814720" startNumber="472" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="23150592" startNumber="472" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="23150592" startNumber="472" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<!-- Ad 4 -->	
 	<!-- *** Generated Period: Ad *** -->
@@ -342,35 +351,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="2407680" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="115568640" startNumber="628" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="115568640" startNumber="628" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="30818304" startNumber="628" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="30818304" startNumber="628" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<!-- Ad 5 -->	
 	<!-- *** Generated Period: Ad *** -->
@@ -414,35 +425,37 @@
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
 			<Event duration="10000"  presentationTime="3006720" id="1"/>
 		</EventStream>
-		
+	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="144322560" startNumber="784" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			<SegmentTemplate presentationTimeOffset="144322560" startNumber="784" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="38486016" startNumber="784" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
+			<SegmentTemplate presentationTimeOffset="38486016" startNumber="784" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2605213">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1394426">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831820">
 			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
 	</Period>
-	
+
 
 	<UTCTiming
 		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
