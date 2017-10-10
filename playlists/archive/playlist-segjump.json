@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./segjump/sintel.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Test - SegJump",
+	
+	"info"				: [	"Test - SegJump"
+						  ]
+}
