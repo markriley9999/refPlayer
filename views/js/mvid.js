@@ -140,11 +140,11 @@ e = function (id) {
 }
 
 window.onload = function () {
-	//try {
+	try {
 		mVid.start();
-	//} catch (error) {
-	//	mVid.Log.error("FATAL ERROR: " + error.message);
-	//}
+	} catch (error) {
+		mVid.Log.error("FATAL ERROR: " + error.message);
+	}
 }
 
 window.onbeforeunload = function () {
