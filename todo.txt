@@ -3,13 +3,16 @@
 	- static
 	- package
 	- playlists
-	- clearkey version
+- clearkey version
 	- compliant mpds!
 
-- package and upload content - and test
-- install gstreamer
-- pana eme drm ticket!  ITVHub
-- vestel events
+- ebu-tt-d timestamp file
+- utctime - head!!!!
+- spurious events!!!
+
+
+- clearkey - check encrypted params!  re-open Panasonic!!!
+- package, BACKUP and upload content - and test
 - hisense clearkey + ebu-tt d
 - ebu-tt-d timestamp file
 - utctime - head!!!!

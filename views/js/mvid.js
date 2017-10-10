@@ -221,8 +221,8 @@ mVid.start = function () {
 		return "";
 	}
 
-	var currentChannel = getCookie("channel");
-
+	var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
+	
 	getPlaylist(currentChannel || "0", function(ch, playObj) {		
 		var mainVideo;
 

@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/sintel/sintel-mix.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Mixed rep segments (sintel)",
+	
+	"info"				: [	"Mixed rep segments (sintel)"
+						  ]
+}

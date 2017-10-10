@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/bbb/bbb-clear-mix.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Mixed rep segments (bbb)",
+	
+	"info"				: [	"Mixed rep segments (bbb)"
+						  ]
+}
