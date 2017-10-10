@@ -6,6 +6,8 @@ URL=$1
 
 ./getcontent.sh $URL "shortseg"
 
+./getcontent.sh $URL "subs"
+
 ./getcontent.sh $URL "sintel-init"
 ./getcontent.sh $URL "sintel-1"
 ./getcontent.sh $URL "sintel-2"

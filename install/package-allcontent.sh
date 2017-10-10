@@ -4,6 +4,8 @@
 
 ./package-content.sh "shortseg"
 
+./package-content.sh "subs"
+
 ./package-content.sh "sintel/init"
 ./package-content.sh "sintel/1"
 ./package-content.sh "sintel/2"

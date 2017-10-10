@@ -850,6 +850,7 @@ _formatTime = function(d) {
 
 
 const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+const subsSnake			= fs.readFileSync('./dynamic/periods/subs-snake.xml', 'utf8');
 
 const mpMainContent	= [];
 const mpAds			= [];
@@ -858,7 +859,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	var pc;
 	var template;
 	var context;
-		
+	
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
 		context = {prevperiod_id: prevPeriodID};
@@ -891,6 +892,7 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 	var pc;
 	var template;
 	var context;
+	var sbs;
 		
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
@@ -900,6 +902,10 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 		pc = "";
 	}
 
+	template = hbs.handlebars.compile(subsSnake);
+	context = {};
+	sbs =  template(context);
+		
 	if (!mpAds[fn]) {
 		console.log("Load ad: " + fn);
 		
@@ -912,7 +918,7 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 	}
 
 	template 	= hbs.handlebars.compile(mpAds[fn]);
-	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime};
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime, subs: sbs};
 	var complete = template(context);
 	
 	// console.log(complete);
