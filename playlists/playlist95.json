@@ -4,8 +4,9 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Short Final Seg",
+	"channelName" 		: "Short Final Seg (Clear Key)",
 
-	"info"				: [	"Short Final Seg"
+	"info"				: [	"Short Final Seg",
+							"Clear Key"
 						  ]
 }
