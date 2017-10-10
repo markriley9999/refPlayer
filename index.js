@@ -499,6 +499,71 @@ expressServer.get('/time', function(req, res) {
 	res.send(tISO);	
 });
  
+
+const configSegJump 	= [];
+var segCount = 0;
+
+expressServer.get('/segjump/*', function(req, res) {
+	
+	var useURL = req.path;
+	var formProps = {};
+	var sC = [];
+	
+	sendServerLog("GET segjump: " + useURL);
+
+	// Load stream config info (sync - one time load)
+	if (!configSegJump[useURL]) {
+		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
+		
+		console.log("Load config file: " + cfn);
+		
+		if (fs.existsSync(cfn)) {
+			configSegJump[useURL] = require(cfn);
+		} else {
+			console.log(" * file does not exist");
+			return res.sendStatus(404);
+		}
+	}
+	
+	sC = configSegJump[useURL];
+
+	sC.segsize 		= parseInt(eval(sC.segsize));
+	
+	sC.Atimescale	= parseInt(eval(sC.Atimescale));
+	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+
+	var ss = ++segCount;
+	var alignedOffset = (ss-1) * sC.segsize;
+	var ao = Math.round(alignedOffset * sC.Atimescale / 1000);
+	var vo = Math.round(alignedOffset * sC.Vtimescale / 1000);
+	
+	// Get file on server
+	var file = path.join(__dirname, useURL + ".hbs");
+	console.log(" - file: " + file);
+
+	fs.stat(file, function(err, stats) {
+		if (err) {
+			if (err.code === 'ENOENT') {
+				// 404 Error if file not found
+				console.log(" * file does not exist");
+				return res.sendStatus(404);
+			}
+			res.end(err);
+		}
+
+		res.render(file, { Aoffset: ao, Voffset: vo, StartSeg: ss }, function(err, mpd) { 
+			if (err) {
+				res.end(err);
+			}
+			
+			res.type("application/dash+xml");
+			res.status(200);
+			res.send(mpd);
+		});
+    });
+});
+
+
 const configStream 	= [];
 var archiveMPDs 	= [];
 var persistState 	= [];
