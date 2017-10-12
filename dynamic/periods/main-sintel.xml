@@ -1,8 +1,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="{{evPresentationTime}}" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -12,7 +14,6 @@
 			<BaseURL>../content/sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="{{Aoffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
