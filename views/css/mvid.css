@@ -195,6 +195,14 @@ progress::-moz-progress-bar {
 	display: block;
 }
 
+#cuedata {
+	background-color: blue;
+	color: white;
+	position: absolute;
+	opacity: 0.75;
+	font-size: 100%;	
+}
+
 .centre {
     display: block;
     margin: 0 auto;
