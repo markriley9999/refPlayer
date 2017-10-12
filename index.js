@@ -371,7 +371,6 @@ var mp4box = new mp4boxModule.MP4Box();
 
 expressServer.get('/content/*', function(req, res) {
 	// TODO: Why seeing 2 gets????
-	// TODO: Use "application/dash+xml" for mpds
 	var suffix = req.path.split('.').pop();
 	var cType;
 	
@@ -646,7 +645,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.Atimescale	= parseInt(eval(sC.Atimescale));
 	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
 
-	sC.Etimescale	= 1000; // TODO: hardcoded...
+	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
 	
 	var bAdsandMain = (sC.ads.length > 0);
 
@@ -845,7 +844,7 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 }
 
 _formatTime = function(d) {
-	return "PT" + d.getHours() + "H" + d.getMinutes() + "M" + d.getSeconds() + "." + d.getMilliseconds() + "S";
+	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + d.getUTCMilliseconds() + "S";
 }
 
 
