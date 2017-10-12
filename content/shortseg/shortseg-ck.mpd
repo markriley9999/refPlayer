@@ -17,8 +17,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-0" start="PT0H0M0.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="0" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="0" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -27,7 +29,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP2_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -52,8 +53,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-0" start="PT0H0M11.680S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="11520" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="552960" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -64,7 +67,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="552960" startNumber="4" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -91,8 +93,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-1" start="PT0H9M59.200S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="599200" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="28761600" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -101,7 +105,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP1_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -126,8 +129,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-1" start="PT0H10M10.880S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="610560" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="29306880" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -138,7 +143,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="29306880" startNumber="160" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -165,8 +169,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-2" start="PT0H19M58.400S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="1198400" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="57523200" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -175,7 +181,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP2_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -200,8 +205,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-2" start="PT0H20M10.80S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="1209600" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="58060800" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -212,7 +219,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="58060800" startNumber="316" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -239,8 +245,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-3" start="PT0H29M57.600S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="1797600" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="86284800" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -249,7 +257,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP1_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -274,8 +281,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-3" start="PT0H30M9.280S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="1808640" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="86814720" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -286,7 +295,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="86814720" startNumber="472" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -313,8 +321,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-4" start="PT0H39M56.800S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="2396800" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="115046400" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -323,7 +333,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP2_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -348,8 +357,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-4" start="PT0H40M8.480S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="2407680" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="115568640" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -360,7 +371,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="115568640" startNumber="628" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -387,8 +397,10 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-5" start="PT0H49M56.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="2996000" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="143808000" id="1">
+				Period Boundary - Short Final Seg
+			</Event>
 		</EventStream>
 		
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -397,7 +409,6 @@
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP1_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -422,8 +433,10 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-5" start="PT0H50M7.680S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
-			<Event duration="10000"  presentationTime="3006720" id="1"/>
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="144322560" id="1">
+				Period Boundary - Main Content
+			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
@@ -434,7 +447,6 @@
 			<BaseURL>../sintel/</BaseURL>
 			<SegmentTemplate presentationTimeOffset="144322560" startNumber="784" media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
-				<InbandEventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" />
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
@@ -455,11 +467,5 @@
 			</Representation>
 		</AdaptationSet>
 	</Period>
-
-
-	<UTCTiming
-		schemeIdUri="urn:mpeg:dash:utc:http-iso:2014"
-		value="http://localhost:8080/time">
-	</UTCTiming>
 	
 </MPD>
