@@ -29,6 +29,8 @@ var commonConfig = new CONFIG();
 
 const mp4boxModule = require('mp4box');
 
+var argv = require('minimist')(process.argv.slice(2));
+
 
 var win = {};
 win['log'] 			= null;
@@ -53,8 +55,6 @@ var generalInfo = {
 	devName 			: "",
 	version				: {}
 };
-
-var bDumpSegInfo = false;
 
 
 generalInfo.version = require("./version.json");
@@ -91,7 +91,11 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	
 	self.createWindow = function () {
 
-	if (!self.winObj) {
+		if (!runOptions.bShowGUI) {
+			return;
+		}
+		
+		if (!self.winObj) {
 			self.winObj = new browserWindow({
 					parent: p,
 					width: self.width, 
@@ -176,9 +180,25 @@ function mainUIClosed() {
 	win['config'].closeWin();
 }
 
+var runOptions = {};
+
+
+
 function init() {
 	var p;
 	var v = generalInfo.version;
+	
+	console.dir(argv);
+	
+	runOptions.bShowGUI 	= !argv.headless;
+	runOptions.bSegDump 	= argv.segdump;
+	
+	if (argv.help) {
+		console.log("-headless   Run with no GUI.");
+		console.log("-segdump    Dump segment information.");
+		electronApp.quit();
+		return;
+	}
 	
 	console.log("--------------------------------------------------");
 	console.log(v.title + " v" + v.major + "." + v.minor);
@@ -194,6 +214,14 @@ function init() {
 	console.log("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
+	
+	if (!runOptions.bShowGUI) {
+		console.log("--- Headless Mode ---");
+	}
+	
+	if (runOptions.bSegDump) {
+		console.log("--- Dump Segment Info ---");
+	}
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
@@ -329,7 +357,7 @@ expressServer.post('/adtrans', function(req, res) {
 expressServer.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!generalInfo.currentDeviceUA || generalInfo.currentDeviceUA === UA) {
+	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		
@@ -411,7 +439,7 @@ expressServer.get('/content/*', function(req, res) {
 			res.end(err);
 		}
 		
-		if (bDumpSegInfo) {
+		if (runOptions.bSegDump) {
 			var arrayBuffer = new Uint8Array(fs.readFileSync(file)).buffer;
 			arrayBuffer.fileStart = 0;
 
