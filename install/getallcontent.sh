@@ -23,6 +23,8 @@ URL=$1
 ./getcontent.sh $URL "sintel-ENC-5"
 ./getcontent.sh $URL "sintel-ENC-6"
 
+./getcontent.sh $URL "sintel-MIX"
+
 ./getcontent.sh $URL "bbb-init"
 ./getcontent.sh $URL "bbb-1-130975"
 ./getcontent.sh $URL "bbb-2-4641286"
@@ -37,5 +39,7 @@ URL=$1
 ./getcontent.sh $URL "bbb-ENC-4-446784"
 ./getcontent.sh $URL "bbb-ENC-5-2612761"
 ./getcontent.sh $URL "bbb-ENC-6-137036"
+
+./getcontent.sh $URL "bbb-MIX"
 
 ./getcontent.sh $URL "itv"

@@ -21,6 +21,7 @@
 ./package-content.sh "sintel/ENC-5"
 ./package-content.sh "sintel/ENC-6"
 
+./package-content.sh "sintel/MIX"
 
 ./package-content.sh "bbb/init"
 ./package-content.sh "bbb/1-130975"
@@ -36,5 +37,7 @@
 ./package-content.sh "bbb/ENC-4-446784"
 ./package-content.sh "bbb/ENC-5-2612761"
 ./package-content.sh "bbb/ENC-6-137036"
+
+./package-content.sh "bbb/MIX"
 
 ./package-content.sh "itv"
