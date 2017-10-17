@@ -9,7 +9,7 @@
 	mediaPresentationDuration="PT1H"
 >
 	<ProgramInformation>
-		<Title>dashads-dartest</Title>
+		<Title>dashads-dartest-subs</Title>
 	</ProgramInformation>
 	
 	<!-- Ad 0 -->	
@@ -44,6 +44,13 @@
 			</Representation>
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
 			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
 		</AdaptationSet>
 
 	</Period>
@@ -120,6 +127,13 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
 			</Representation>
 		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
 
 	</Period>
 
@@ -194,6 +208,13 @@
 			</Representation>
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
 			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
 		</AdaptationSet>
 
 	</Period>
@@ -270,6 +291,13 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
 			</Representation>
 		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
 
 	</Period>
 
@@ -345,6 +373,13 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
 			</Representation>
 		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
 
 	</Period>
 
@@ -419,6 +454,13 @@
 			</Representation>
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
 			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="5" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
 		</AdaptationSet>
 
 	</Period>
