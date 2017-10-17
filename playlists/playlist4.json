@@ -1,15 +1,20 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/mperiods/mix-mperiod.mpd",
+	"src" 				: "./content/mperiods/dashads-dartest-ck-subs.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Multiple Periods (4): Ele Dream, Sintel",
+	"channelName" 		: "Static Multiple Periods, Subs, Clear Key",
 
-	"info"				: [	"4 1m Periods:",
-							"  1. Sintel",
-							"  2. Elephant's Dream (EBU-TT-D)",
-							"  3. Sintel",
-							"  4. Elephant's Dream (EBU-TT-D)"
+	"info"				: [	"Static Manifest (Adverts and Main Content):",
+							"  - Content duration 60m",
+							"  - Split into 12 Periods",
+							"  - ITV and Ch4 Ads",
+							"  - Ad period, starts every 10m",
+							"  - Ad period lasts 1m",
+							"  - Main period, starts after Ad",
+							"  - Main period lasts 9m",
+							"  - Clear Key (main content)",
+							"  - Subs (main content)"
 						  ]
 }
