@@ -37,5 +37,4 @@
 ./package-content.sh "bbb/ENC-5-2612761"
 ./package-content.sh "bbb/ENC-6-137036"
 
-./package-content.sh "elephantsdream"
 ./package-content.sh "itv"
