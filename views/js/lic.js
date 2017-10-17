@@ -1,15 +1,15 @@
-function clearkeyGetLicence(session, msg, contentTag, video) {
+function clearkeyGetLicence(session, msg, contentTag, video, logObj) {
 
 	var keyServiceUrl = "./getkeys?tag=" + contentTag;
 
 
 	// TODO: mVid should be a param
 	function log(m) {
-		mVid.Log.info("Licence: " + m);
+		logObj.info("Licence: " + m);
 	}
 
 	function logerr(msg) {
-		mVid.Log.error("Licence: " + m);
+		logObj.error("Licence: " + m);
 	}
 
 	function callback(licenseString, xhr) {

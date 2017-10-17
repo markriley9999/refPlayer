@@ -259,7 +259,7 @@ mVid.start = function () {
 		];
 
 		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag);
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log);
 		}
 			
 		that.showBufferingIcon(false);
