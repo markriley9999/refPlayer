@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Short Final Seg",
+	"channelName" 		: "Static, Multi Period: Short Final Seg",
 
 	"info"				: [	"Short Final Seg"
 						  ]

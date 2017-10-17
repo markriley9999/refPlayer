@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Multiperiod, ITV and Ch4 Ads (Subs)",
+	"channelName" 		: "Dynamic M-Periods - ITV and Ch4 Ads (Subs)",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Content starts 'on the hour'",

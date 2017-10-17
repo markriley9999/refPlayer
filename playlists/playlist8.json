@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Multiperiod, Clear Key (main), ITV and Ch4 Ads",
+	"channelName" 		: "Dynamic M-Periods - Clear Key (main), ITV and Ch4 Ads",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Clear Key (main content)",

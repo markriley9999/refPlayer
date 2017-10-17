@@ -23,12 +23,12 @@
 	],
 	"src" 				: "./content/sintel/sintel-clearkey.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "600",
+	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 5 Ch4 Ads, Main: Clear Key (Sintel)",
+	"channelName" 		: "3 Video Objs - Ads: 5, Main: Clear Key (Sintel)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
-							"'Sintel' DASH asset - playing for 600s",
+							"'Sintel' DASH asset - playing for 120s",
 							"Clear Key encrypted (main asset)"
 						  ]
 

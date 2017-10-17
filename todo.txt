@@ -1,23 +1,36 @@
-- small seg
-	- events
-	- static
-	- package
-	- playlists
-- clearkey version
-	- compliant mpds!
+- remove ele dream
+- playlist shuffle
 
-- ebu-tt-d timestamp file
+static events!!!!  not working  --- Pana starting on subs breaks events!!!!!!!!!!!!
+
+- mp4box seg analysyis node
+- headless
+- time section
+- dash events
+
+
+
+
+	
+add subs to static bbb and sintel (10 min mpd!!!!)
+remove ele dream
+shuffle main tests
+
 - utctime - head!!!!
-- spurious events!!!
+
+
+
+
+https://digitaluk.atlassian.net/browse/FVCHIS-378
+https://digitaluk.atlassian.net/browse/FVCHIS-377
+
+- run headless
+
+
 
 
 - clearkey - check encrypted params!  re-open Panasonic!!!
 - package, BACKUP and upload content - and test
-- hisense clearkey + ebu-tt d
-- ebu-tt-d timestamp file
-- utctime - head!!!!
-- spurious events!!!
-- mp4box seg analysyis node
 
 - cat bbc bbb and encrypt???
 

@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: 'Period Continuous' flag set",
+	"channelName" 		: "Dynamic M-Periods - 'Period Continuous' flag set",
 	
 	"info"				: [	"Dynamic Manifest:",
 							"  - Content starts 'on the hour'",

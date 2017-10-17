@@ -15,12 +15,12 @@
 	],
 	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 3 ITV Ads, Main: Clear Key (Lorraine)",
+	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV)",
 
 	"info"				: [	"3 mp4 (ITV) adverts",
-							"'Lorraine' DASH asset - playing for 600s",
+							"'Lorraine' DASH asset - playing for 120s",
 							"Clear Key encrypted (main asset)"
 						  ]
 

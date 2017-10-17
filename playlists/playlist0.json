@@ -25,7 +25,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 5 Channel4, Main: Big Buck Bunny (EBU-TT-D 'snake' subs)",
+	"channelName" 		: "3 Video Objs - Ads: 5, Main: BBB (subs)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
 							"'Big Buck Bunny' DASH asset - playing for 120s",
