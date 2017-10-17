@@ -10,4 +10,4 @@ if [ "$CMD" == "update" ]; then
   sudo npm install
 fi
 
-./electron .
+./electron .  "$@"
