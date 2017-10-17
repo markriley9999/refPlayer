@@ -740,10 +740,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */, sC.adSubs);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */, sC.subs);
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain, sC.subs);			
 		}
 	}
 	
@@ -810,7 +810,7 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
+makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev, subs) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
@@ -822,10 +822,10 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev);
+	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev, subs);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev, subs) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
@@ -840,7 +840,7 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev);
+	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev, subs);
 }
 
 _formatTime = function(d) {
@@ -849,15 +849,34 @@ _formatTime = function(d) {
 
 
 const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
-const subsSnake			= fs.readFileSync('./dynamic/periods/subs-snake.xml', 'utf8');
 
-const mpMainContent	= [];
-const mpAds			= [];
+var cachedXML = {};
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID) {
+cachedXML.mainContent	= [];
+cachedXML.mainSubs		= [];
+cachedXML.ads			= [];
+cachedXML.adSubs		= [];
+
+
+loadAndCache = function(fn, c) {
+	if (!c[fn]) {
+		console.log("Load file: " + fn);
+		
+		if (fs.existsSync(fn)) {
+			c[fn] = fs.readFileSync(fn, 'utf8');
+		} else {
+			console.log(" * file does not exist");
+			return false;
+		}
+	}
+	return true;
+}
+
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
+	var sbs = "";
 	
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
@@ -867,19 +886,18 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		pc = "";
 	}
 
-	if (!mpMainContent[fn]) {
-		console.log("Load main content file: " + fn);
-		
-		if (fs.existsSync(fn)) {
-			mpMainContent[fn] = fs.readFileSync(fn, 'utf8');
-		} else {
-			console.log(" * file does not exist");
-			return false;
-		}
+	if (subs && loadAndCache(subs, cachedXML.mainSubs)) {
+		template = hbs.handlebars.compile(cachedXML.mainSubs[subs]);
+		context = {};
+		sbs =  template(context);
+	}
+	
+	if (!loadAndCache(fn, cachedXML.mainContent)) {
+		return false;
 	}
 
-	template 	= hbs.handlebars.compile(mpMainContent[fn]);
-	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg};
+	template 	= hbs.handlebars.compile(cachedXML.mainContent[fn]);
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg, subs: sbs};
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -887,11 +905,11 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
-	var sbs;
+	var sbs = "";
 		
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
@@ -901,22 +919,17 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 		pc = "";
 	}
 
-	template = hbs.handlebars.compile(subsSnake);
-	context = {};
-	sbs =  template(context);
-		
-	if (!mpAds[fn]) {
-		console.log("Load ad: " + fn);
-		
-		if (fs.existsSync(fn)) {
-			mpAds[fn] = fs.readFileSync(fn, 'utf8');
-		} else {
-			console.log(" * file does not exist");
-			return false;
-		}
+	if (subs && loadAndCache(subs, cachedXML.adSubs)) {
+		template = hbs.handlebars.compile(cachedXML.adSubs[subs]);
+		context = {};
+		sbs =  template(context);
+	}
+	
+	if (!loadAndCache(fn, cachedXML.ads)) {
+		return false;
 	}
 
-	template 	= hbs.handlebars.compile(mpAds[fn]);
+	template 	= hbs.handlebars.compile(cachedXML.ads[fn]);
 	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime, subs: sbs};
 	var complete = template(context);
 	
