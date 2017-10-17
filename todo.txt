@@ -14,13 +14,5 @@ https://digitaluk.atlassian.net/browse/FVCHIS-378
 https://digitaluk.atlassian.net/browse/FVCHIS-377
 
 
-- cat bbc bbb and encrypt???
-
 jslint
-
-
-
-- AVC  [DASH] Could not merge AVC|H264 SPS from different files (same SPS ID used) - disabling bitstream switching
-	- ask GPAC and BBC!!!!
-	- try multi instead of inband!!!  bad!!!!
 
