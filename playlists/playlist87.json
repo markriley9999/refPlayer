@@ -13,15 +13,13 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
+	"src" 				: "./content/bbb/bbb-clear.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "240",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 3 ITV Ads, Main: Clear Key (Lorraine)",
-
+	"channelName" 		: "Ads: 3 ITV Ads, Main: Big Buck Bunny",
+	
 	"info"				: [	"3 mp4 (ITV) adverts",
-							"'Lorraine' DASH asset - playing for 600s",
-							"Clear Key encrypted (main asset)"
+							"Main DASH asset - playing for 240s"
 						  ]
-
 }

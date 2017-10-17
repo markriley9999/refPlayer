@@ -1,35 +1,20 @@
 {
-	"ads" : [
-		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{	
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_AMV_SYPR030_030_001_93613_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/MUM-HATD170-020_1462888808_93626_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],
-	"src" 				: "./content/sintel/sintel-clearkey.mpd",
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/dashads-dartest-ck-subs.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "600",
+	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 5 Ch4 Ads, Main: Clear Key (Sintel)",
+	"channelName" 		: "Static Multiple Periods, Subs, Clear Key",
 
-	"info"				: [	"5 mp4 (Ch4) adverts",
-							"'Sintel' DASH asset - playing for 600s",
-							"Clear Key encrypted (main asset)"
+	"info"				: [	"Static Manifest (Adverts and Main Content):",
+							"  - Content duration 60m",
+							"  - Split into 12 Periods",
+							"  - ITV and Ch4 Ads",
+							"  - Ad period, starts every 10m",
+							"  - Ad period lasts 1m",
+							"  - Main period, starts after Ad",
+							"  - Main period lasts 9m",
+							"  - Clear Key (main content)",
+							"  - Subs (main content)"
 						  ]
-
 }
