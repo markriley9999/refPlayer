@@ -1,0 +1,25 @@
+{
+	"ads" : [
+		{	
+			"src" 	: "./content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./content/bbb/bbb-clear.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "240",
+	"addContentId" 		: "false",
+	"channelName" 		: "Ads: 3 ITV Ads, Main: Big Buck Bunny",
+	
+	"info"				: [	"3 mp4 (ITV) adverts",
+							"Main DASH asset - playing for 240s"
+						  ]
+}

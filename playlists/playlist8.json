@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Multiperiod, Clear Key (main), ITV and Ch4 Ads",
+	"channelName" 		: "Dynamic M-Periods - Clear Key (main), ITV and Ch4 Ads",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Clear Key (main content)",
@@ -14,7 +14,6 @@
 							"  - ITV and Ch4 Ads",
 							"  - Ad period, starts every 10m",
 							"  - Ad period lasts 1m",
-							"  - Main uses 'Big Buck Bunny'",
 							"  - Main period, starts after Ad",
 							"  - Main period lasts 9m",
 							"  - Periods added to manifest as time progresses",

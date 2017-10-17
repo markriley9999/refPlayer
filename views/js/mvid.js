@@ -83,6 +83,11 @@ const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in o
 const HAVE_FUTURE_DATA	= 3; 	// enough data to start playback
 const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream without interruption till the end.
 
+
+// Events
+const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
+const event_value = "1"
+
 mVid.startTime = Date.now();
 
 mVid.Log = {};
@@ -135,11 +140,11 @@ e = function (id) {
 }
 
 window.onload = function () {
-	//try {
+	try {
 		mVid.start();
-	//} catch (error) {
-	//	mVid.Log.error("FATAL ERROR: " + error.message);
-	//}
+	} catch (error) {
+		mVid.Log.error("FATAL ERROR: " + error.message);
+	}
 }
 
 window.onbeforeunload = function () {
@@ -216,8 +221,8 @@ mVid.start = function () {
 		return "";
 	}
 
-	var currentChannel = getCookie("channel");
-
+	var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
+	
 	getPlaylist(currentChannel || "0", function(ch, playObj) {		
 		var mainVideo;
 
@@ -254,7 +259,7 @@ mVid.start = function () {
 		];
 
 		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag);
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log);
 		}
 			
 		that.showBufferingIcon(false);
@@ -339,10 +344,22 @@ mVid.setUpCues = function () {
 
 	var mainVideo = e("mVid-mainContent");
 	var that = this;
+	var trackDispatchType = event_schemeIdUri + " " + event_value;
 	
+	function arrayBufferToString(buffer) {
+		var arr = new Uint8Array(buffer);
+		var str = String.fromCharCode.apply(String, arr);
+		return str;
+	}
+
 	function showCues () {
 		
 		var p = that.getCurrentPlayingPlayer();
+		
+		if (!p) {
+			return;
+		}
+		
 		var imgobj = e("ad-start-point");
 		
 		var c = e("playbackBar").getBoundingClientRect();
@@ -353,25 +370,34 @@ mVid.setUpCues = function () {
 
 		var tracks = p.textTracks;
 		var track;
-		
+
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
 			
-			if ((track.kind === "metadata") && (track.cues.length > 0)) {
+			if (track && (track.kind === 'metadata') && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
+
+				that.Log.info("Show Cues: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
-					if ((cue !== null) && (cue.startTime > 0)) {
-						x =  (coef * cue.startTime) + c.left;
-						
-						if (!that.cueImages[x]) {
-							that.cueImages[x] = imgobj.cloneNode(true);
-							e("playrange").appendChild(that.cueImages[x]);
+					// extract data property represented as ArrayBuffer
+					var dataView = new Uint8Array(cue.data);
+					
+					if ((cue !== null) && (cue.endTime > cue.startTime)) {
+						if (cue.startTime > 0) {
+							x =  (coef * cue.startTime) + c.left;
+							
+							if (!that.cueImages[x]) {
+								that.cueImages[x] = imgobj.cloneNode(true);
+								e("playrange").appendChild(that.cueImages[x]);
+							}
+							
+							that.cueImages[x].style.left = (x - offset) + "px";
+							that.Log.info("Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
 						}
-						
-						that.cueImages[x].style.left = (x - offset) + "px";
-						that.Log.info("Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " text: " + cue.getCueAsHTML().textContent);				
+					} else {
+						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
 					}
 				}
 			}
@@ -385,30 +411,37 @@ mVid.setUpCues = function () {
 	mainVideo.textTracks.onaddtrack = function (event) {
 		var textTrack = event.track;
 		var cue;
+
+		if ((textTrack.kind === 'subtitles') || (textTrack.kind === 'captions')) {
+			textTrack.mode = 'showing';
+			that.Log.info("Set textTrack mode to showing");	
+		}
 		
 		textTrack.oncuechange = function () {
 
 			showCues();
-
+			
 			that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
 
-			if (textTrack.activeCues.length > 0) {
+			if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType) && (textTrack.activeCues.length > 0)) {
 
 				for (var i = 0; i < textTrack.activeCues.length; ++i) {
 
 					cue = textTrack.activeCues[i];
 
-					if (cue !== null) {
+					if (cue && (cue.endTime > cue.startTime)) {
 						var f = e("flag");
+						var cd = e("cuedata");
 						
+						that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));							
 						f.setAttribute("class", "playerIcon flag");
 						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
-						//f.innerHTML = "ID: " + cue.id;
+						cd.innerHTML = "Cue Event: " + arrayBufferToString(cue.data);
 						
 						cue.onexit = function (ev) {
 							f.setAttribute("class", "playerIcon");
 							that.updateBufferStatus(mainVideo.id, "Event: Cue End");
-							//f.innerHTML = "";
+							cd.innerHTML = "";
 						}
 						return;
 					}

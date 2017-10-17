@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/dashads-dartest-ck.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Static Multiperiod (Clear Key), ITV and Ch4 Ads",
+
+	"info"				: [	"Multiperiod, ITV and Ch4 Ads"
+						  ]
+}

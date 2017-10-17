@@ -1,15 +1,17 @@
-function SetupEME(video, keySystem, name, options, contentTag)
+function SetupEME(video, keySystem, name, options, contentTag, logObj)
 {
+	const DRMSystemID = "0x1077efecc0b24d02ace33c1e52e2fb4b";
+	
 	function e(id) {
 	  return document.getElementById(id);
 	}
 
 	function log(msg) {
-		mVid.Log.info("EME: " + msg);
+		logObj.info("EME: " + msg);
 	}
 
 	function logerr(msg) {
-		mVid.Log.error("EME: " + msg);
+		logObj.error("EME: " + msg);
 	}
 
 	function bail(message)
@@ -60,7 +62,7 @@ function SetupEME(video, keySystem, name, options, contentTag)
 
 	function UpdateSessionFunc(name, contentTag) {
 	  return function(ev) {
-		clearkeyGetLicence(ev.target, ev.message, contentTag, video);
+		clearkeyGetLicence(ev.target, ev.message, contentTag, video, logObj);
 	  }
 	}
 
@@ -113,22 +115,55 @@ function SetupEME(video, keySystem, name, options, contentTag)
 		return str;
 	}
 
+	function arrayBufferExtractHexNumber(buffer, start, size){
+		var arr = new Uint8Array(buffer);
+		var str = "0x";
+		
+		if (start + size > arr.length) {
+			size = arr.length - start;
+		}
+		
+		for (var i = start; i < start + size; i++) {
+			str += ('00' + arr[i].toString(16)).slice(-2);
+		}
+		return str;
+	}
+
+	function checkDRMSystemId(initData) {
+		var sysId = arrayBufferExtractHexNumber(initData, 12, 16);
+		var bCheckOk;
+		log("Extracted DRM System Id: " + sysId);
+		
+		bCheckOk = (sysId === DRMSystemID);
+		if (bCheckOk) {
+			log(" - ClearKey DRM requested.")
+		} else
+		{
+			log(" - Unknown DRM requested.")
+		}
+		
+		return bCheckOk;
+	}
+	
 	function onEncrypted(ev) {
 		log(name + " got encrypted event - initDataType: " + ev.initDataType);
 		log(" - initData: " +  arrayBufferToString(ev.initData));
 		log(" - initData: " +  arrayBufferToHexString(ev.initData));
-
-		if (!video.bProcessingKey) { 
-			video.bProcessingKey = true;
-			
-			var session = video.mediaKeys.createSession();
-			session.addEventListener("message", UpdateSessionFunc(name, contentTag));
-			session.addEventListener("keystatuseschange", KeysChange);
-			session.generateRequest(ev.initDataType, ev.initData).then(function() {
-				log(name + " generated request");
-			  }, bail(name + " Failed to generate request."));
-		} else {
-			log(name + "Multiple encrypted events!");
+		
+		if (checkDRMSystemId(ev.initData))
+		{
+			if (!video.bProcessingKey) { 
+				video.bProcessingKey = true;
+				
+				var session = video.mediaKeys.createSession();
+				session.addEventListener("message", UpdateSessionFunc(name, contentTag));
+				session.addEventListener("keystatuseschange", KeysChange);
+				session.generateRequest(ev.initDataType, ev.initData).then(function() {
+					log(name + " generated request");
+				  }, bail(name + " Failed to generate request."));
+			} else {
+				log(name + "Multiple encrypted events!");
+			}
 		}
 	}
 	

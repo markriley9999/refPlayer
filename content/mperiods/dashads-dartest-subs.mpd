@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MPD 
+	type="static"
+	xmlns="urn:mpeg:dash:schema:mpd:2011" 
+	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
+	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
+	minBufferTime="PT10S" 
+	maxSegmentDuration="PT3.84S" 
+	mediaPresentationDuration="PT1H"
+>
+	<ProgramInformation>
+		<Title>dashads-dartest-subs</Title>
+	</ProgramInformation>
+	
+	<!-- Ad 0 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-0" start="PT0H0M0.0S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="0" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4894179">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1552179">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="977809">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="581537">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 0 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-0" start="PT0H1M1.440S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="2949120" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="2949120" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="786432" startNumber="17" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+
+
+	<!-- Ad 1 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-1" start="PT0H9M59.40S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="28753920" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4391391">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1384120">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="870316">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="522585">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 1 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-1" start="PT0H11M0.480S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="31703040" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="31703040" startNumber="173" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="8454144" startNumber="173" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+
+
+	<!-- Ad 2 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-2" start="PT0H19M58.80S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="57507840" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4894179">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1552179">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="977809">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="581537">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 2 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-2" start="PT0H20M59.520S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="60456960" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="60456960" startNumber="329" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="16121856" startNumber="329" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+
+
+	<!-- Ad 3 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-3" start="PT0H29M57.120S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="86261760" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4391391">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1384120">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="870316">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="522585">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 3 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-3" start="PT0H30M58.560S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="89210880" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="89210880" startNumber="485" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="23789568" startNumber="485" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+
+
+	<!-- Ad 4 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-4" start="PT0H39M56.160S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="115015680" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/itv/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4894179">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1552179">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="977809">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="581537">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2799535">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 4 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-4" start="PT0H40M57.600S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="117964800" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="117964800" startNumber="641" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="31457280" startNumber="641" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+
+
+	<!-- Ad 5 -->	
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="ad-5" start="PT0H49M55.200S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="143769600" id="1">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream>
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" startWithSAP="1" bandwidth="128000">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			
+			<BaseURL>../adverts/ch4/dash/</BaseURL>
+			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="manifest_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4391391">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1384120">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="870316">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="522585">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2490488">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../subs/</BaseURL>
+			<SegmentTemplate startNumber="1" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<Representation id="snake" bandwidth="1100"/>
+		</AdaptationSet>
+
+	</Period>
+
+	<!-- Main 5 -->	
+	<!-- *** Generated Period: Main Content *** -->
+	<Period id="main-5" start="PT0H50M56.640S">
+	
+		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="146718720" id="1">
+				Period Boundary - Main Content
+			</Event>
+		</EventStream>
+	
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="146718720" startNumber="797" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
+			</Representation>
+		</AdaptationSet>
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+			
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+			<BaseURL>../bbb/</BaseURL>
+			<SegmentTemplate presentationTimeOffset="39124992" startNumber="797" media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/bbb-clear_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4641286">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1391654">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="831650">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="441426">
+			</Representation>
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
+			</Representation>
+		</AdaptationSet>
+
+	</Period>
+	
+</MPD>

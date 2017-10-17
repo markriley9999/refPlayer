@@ -1,26 +1,34 @@
 {
 	"ads" : [
+		{
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
+			"type" 	: "video/mp4"
+		},
 		{	
-			"src" 	: "./content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_AMV_SYPR030_030_001_93613_17.mp4", 
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "./content/adverts/itv/wcrbmwa311030_bmw_f45_f45activetourer_30_f076_1200.mp4", 
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+			"src" 	: "./content/adverts/ch4/MUM-HATD170-020_1462888808_93626_17.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
+	"src" 				: "./content/sintel/sintel-clearkey.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "Ads: 3 ITV Ads, Main: Clear Key (Lorraine)",
+	"channelName" 		: "3 Video Objs - Ads: 5, Main: Clear Key (Sintel)",
 
-	"info"				: [	"3 mp4 (ITV) adverts",
-							"'Lorraine' DASH asset - playing for 600s",
+	"info"				: [	"5 mp4 (Ch4) adverts",
+							"'Sintel' DASH asset - playing for 120s",
 							"Clear Key encrypted (main asset)"
 						  ]
 

@@ -3,20 +3,19 @@ const ip = require("ip");
 const fs = require('fs');
 const chalk = require('chalk');
 
-const electron = require('electron');   // include electron
-const electronApp = electron.app;                // give access to electron functions
+const electron = require('electron');   
+const electronApp = electron.app;                
  
-const browserWindow = electron.BrowserWindow;   // electron window functions
-const ipc = electron.ipcMain;                   // talk between the electron threads
+const browserWindow = electron.BrowserWindow;   
+const ipc = electron.ipcMain;                   
  
-const path = require('path'); // used by electron to load html files
-const url = require('url');   // used by electron to load html files
+const path = require('path'); 
+const url = require('url');   
  
-const express = require('express');         // Includes the Express source code
-const bodyParser = require('body-parser');  // Express middle-ware that allows parsing of post bodys
+const express = require('express');         
+const bodyParser = require('body-parser');  
 
-const hbs = require('hbs');                 // hbs is a Handlebars template renderer for Express
-//hbs.handlebars === require('handlebars');
+const hbs = require('hbs');                 
  
 const Throttle = require('stream-throttle').Throttle;
 
@@ -27,6 +26,10 @@ var commonUtils = new UTILS();
 
 const CONFIG = require('./common/configobj.js');
 var commonConfig = new CONFIG();
+
+const mp4boxModule = require('mp4box');
+
+var argv = require('minimist')(process.argv.slice(2));
 
 
 var win = {};
@@ -52,6 +55,7 @@ var generalInfo = {
 	devName 			: "",
 	version				: {}
 };
+
 
 generalInfo.version = require("./version.json");
 
@@ -87,7 +91,11 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	
 	self.createWindow = function () {
 
-	if (!self.winObj) {
+		if (!runOptions.bShowGUI) {
+			return;
+		}
+		
+		if (!self.winObj) {
 			self.winObj = new browserWindow({
 					parent: p,
 					width: self.width, 
@@ -172,9 +180,25 @@ function mainUIClosed() {
 	win['config'].closeWin();
 }
 
+var runOptions = {};
+
+
+
 function init() {
 	var p;
 	var v = generalInfo.version;
+	
+	console.dir(argv);
+	
+	runOptions.bShowGUI 	= !argv.headless;
+	runOptions.bSegDump 	= argv.segdump;
+	
+	if (argv.help) {
+		console.log("-headless   Run with no GUI.");
+		console.log("-segdump    Dump segment information.");
+		electronApp.quit();
+		return;
+	}
 	
 	console.log("--------------------------------------------------");
 	console.log(v.title + " v" + v.major + "." + v.minor);
@@ -190,6 +214,14 @@ function init() {
 	console.log("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
+	
+	if (!runOptions.bShowGUI) {
+		console.log("--- Headless Mode ---");
+	}
+	
+	if (runOptions.bSegDump) {
+		console.log("--- Dump Segment Info ---");
+	}
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
 	
@@ -325,7 +357,7 @@ expressServer.post('/adtrans', function(req, res) {
 expressServer.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!generalInfo.currentDeviceUA || generalInfo.currentDeviceUA === UA) {
+	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		
@@ -363,9 +395,10 @@ expressServer.get('/player.aitx', function(req, res) {
     });
 });
 
+var mp4box = new mp4boxModule.MP4Box();
+
 expressServer.get('/content/*', function(req, res) {
 	// TODO: Why seeing 2 gets????
-	// TODO: Use "application/dash+xml" for mpds
 	var suffix = req.path.split('.').pop();
 	var cType;
 	
@@ -404,6 +437,15 @@ expressServer.get('/content/*', function(req, res) {
 				return res.sendStatus(404);
 			}
 			res.end(err);
+		}
+		
+		if (runOptions.bSegDump) {
+			var arrayBuffer = new Uint8Array(fs.readFileSync(file)).buffer;
+			arrayBuffer.fileStart = 0;
+
+			mp4box.appendBuffer(arrayBuffer);
+			console.log(mp4box.getInfo());		
+			mp4box.flush();
 		}
 		
 		var range = req.headers.range;
@@ -484,6 +526,71 @@ expressServer.get('/time', function(req, res) {
 	res.send(tISO);	
 });
  
+
+const configSegJump 	= [];
+var segCount = 0;
+
+expressServer.get('/segjump/*', function(req, res) {
+	
+	var useURL = req.path;
+	var formProps = {};
+	var sC = [];
+	
+	sendServerLog("GET segjump: " + useURL);
+
+	// Load stream config info (sync - one time load)
+	if (!configSegJump[useURL]) {
+		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
+		
+		console.log("Load config file: " + cfn);
+		
+		if (fs.existsSync(cfn)) {
+			configSegJump[useURL] = require(cfn);
+		} else {
+			console.log(" * file does not exist");
+			return res.sendStatus(404);
+		}
+	}
+	
+	sC = configSegJump[useURL];
+
+	sC.segsize 		= parseInt(eval(sC.segsize));
+	
+	sC.Atimescale	= parseInt(eval(sC.Atimescale));
+	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+
+	var ss = ++segCount;
+	var alignedOffset = (ss-1) * sC.segsize;
+	var ao = Math.round(alignedOffset * sC.Atimescale / 1000);
+	var vo = Math.round(alignedOffset * sC.Vtimescale / 1000);
+	
+	// Get file on server
+	var file = path.join(__dirname, useURL + ".hbs");
+	console.log(" - file: " + file);
+
+	fs.stat(file, function(err, stats) {
+		if (err) {
+			if (err.code === 'ENOENT') {
+				// 404 Error if file not found
+				console.log(" * file does not exist");
+				return res.sendStatus(404);
+			}
+			res.end(err);
+		}
+
+		res.render(file, { Aoffset: ao, Voffset: vo, StartSeg: ss }, function(err, mpd) { 
+			if (err) {
+				res.end(err);
+			}
+			
+			res.type("application/dash+xml");
+			res.status(200);
+			res.send(mpd);
+		});
+    });
+});
+
+
 const configStream 	= [];
 var archiveMPDs 	= [];
 var persistState 	= [];
@@ -566,7 +673,7 @@ expressServer.get('/dynamic/*', function(req, res) {
 	sC.Atimescale	= parseInt(eval(sC.Atimescale));
 	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
 
-	sC.Etimescale	= 1000; // TODO: hardcoded...
+	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
 	
 	var bAdsandMain = (sC.ads.length > 0);
 
@@ -661,10 +768,10 @@ expressServer.get('/dynamic/*', function(req, res) {
 	
 		if (bAdsandMain) {
 			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */);
-			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */);
+			formProps['ad-period' + i] 		= makeAdPeriod(sC.ads[adIdx], i, sC.periodD, sC.adD, sC.Etimescale, "" /* prevMain */, sC.adSubs);
+			formProps['main-period' + i] 	= makeMainPeriod(sC.main, i, sC.periodD, sC.adD, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, "" /* "ad-" + i */, sC.subs);
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain);			
+			formProps['period' + i] = makeMainPeriod(sC.main, i, sC.periodD, 0, sC.segsize, sC.Atimescale, sC.Vtimescale, sC.Etimescale, prevMain, sC.subs);			
 		}
 	}
 	
@@ -731,7 +838,7 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
+makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev, subs) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
@@ -743,10 +850,10 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, prev) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev);
+	return adXML(fn, p, sAdDuration, sAdStart, evOffset, prev, subs);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, prev, subs) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
@@ -761,24 +868,44 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev);
+	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, prev, subs);
 }
 
 _formatTime = function(d) {
-	return "PT" + d.getHours() + "H" + d.getMinutes() + "M" + d.getSeconds() + "." + d.getMilliseconds() + "S";
+	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + d.getUTCMilliseconds() + "S";
 }
 
 
 const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
 
-const mpMainContent	= [];
-const mpAds			= [];
+var cachedXML = {};
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID) {
+cachedXML.mainContent	= [];
+cachedXML.mainSubs		= [];
+cachedXML.ads			= [];
+cachedXML.adSubs		= [];
+
+
+loadAndCache = function(fn, c) {
+	if (!c[fn]) {
+		console.log("Load file: " + fn);
+		
+		if (fs.existsSync(fn)) {
+			c[fn] = fs.readFileSync(fn, 'utf8');
+		} else {
+			console.log(" * file does not exist");
+			return false;
+		}
+	}
+	return true;
+}
+
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
-		
+	var sbs = "";
+	
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
 		context = {prevperiod_id: prevPeriodID};
@@ -787,19 +914,18 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		pc = "";
 	}
 
-	if (!mpMainContent[fn]) {
-		console.log("Load main content file: " + fn);
-		
-		if (fs.existsSync(fn)) {
-			mpMainContent[fn] = fs.readFileSync(fn, 'utf8');
-		} else {
-			console.log(" * file does not exist");
-			return false;
-		}
+	if (subs && loadAndCache(subs, cachedXML.mainSubs)) {
+		template = hbs.handlebars.compile(cachedXML.mainSubs[subs]);
+		context = {};
+		sbs =  template(context);
+	}
+	
+	if (!loadAndCache(fn, cachedXML.mainContent)) {
+		return false;
 	}
 
-	template 	= hbs.handlebars.compile(mpMainContent[fn]);
-	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg};
+	template 	= hbs.handlebars.compile(cachedXML.mainContent[fn]);
+	context 	= {period_id: "main-" + p, period_start: sStart, period_continuity: pc, Aoffset: AoffsetS, Voffset: VoffsetS, evPresentationTime: evPresTime, period_seg: seg, subs: sbs};
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -807,10 +933,11 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
+	var sbs = "";
 		
 	if (prevPeriodID != "") {
 		template = hbs.handlebars.compile(periodContinuity);
@@ -820,19 +947,18 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, prevPeriodID) {
 		pc = "";
 	}
 
-	if (!mpAds[fn]) {
-		console.log("Load ad: " + fn);
-		
-		if (fs.existsSync(fn)) {
-			mpAds[fn] = fs.readFileSync(fn, 'utf8');
-		} else {
-			console.log(" * file does not exist");
-			return false;
-		}
+	if (subs && loadAndCache(subs, cachedXML.adSubs)) {
+		template = hbs.handlebars.compile(cachedXML.adSubs[subs]);
+		context = {};
+		sbs =  template(context);
+	}
+	
+	if (!loadAndCache(fn, cachedXML.ads)) {
+		return false;
 	}
 
-	template 	= hbs.handlebars.compile(mpAds[fn]);
-	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime};
+	template 	= hbs.handlebars.compile(cachedXML.ads[fn]);
+	context 	= {period_id: "ad-" + p, period_start: sStart, period_continuity: pc, evPresentationTime: evPresTime, subs: sbs};
 	var complete = template(context);
 	
 	// console.log(complete);

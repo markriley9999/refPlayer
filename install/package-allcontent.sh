@@ -2,6 +2,27 @@
 
 ./package-content.sh "adverts"
 
+./package-content.sh "shortseg"
+
+./package-content.sh "subs"
+
+./package-content.sh "sintel/init"
+./package-content.sh "sintel/1"
+./package-content.sh "sintel/2"
+./package-content.sh "sintel/3"
+./package-content.sh "sintel/4"
+./package-content.sh "sintel/5"
+./package-content.sh "sintel/6"
+
+./package-content.sh "sintel/ENC-1"
+./package-content.sh "sintel/ENC-2"
+./package-content.sh "sintel/ENC-3"
+./package-content.sh "sintel/ENC-4"
+./package-content.sh "sintel/ENC-5"
+./package-content.sh "sintel/ENC-6"
+
+./package-content.sh "sintel/MIX"
+
 ./package-content.sh "bbb/init"
 ./package-content.sh "bbb/1-130975"
 ./package-content.sh "bbb/2-4641286"
@@ -17,5 +38,6 @@
 ./package-content.sh "bbb/ENC-5-2612761"
 ./package-content.sh "bbb/ENC-6-137036"
 
-./package-content.sh "elephantsdream"
+./package-content.sh "bbb/MIX"
+
 ./package-content.sh "itv"
