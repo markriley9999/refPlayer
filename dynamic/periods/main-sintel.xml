@@ -32,5 +32,6 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
 			</Representation>
 		</AdaptationSet>
+{{{subs}}}
 	</Period>
 	

@@ -34,4 +34,5 @@
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
+{{{subs}}}
 	</Period>

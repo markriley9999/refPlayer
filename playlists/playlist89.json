@@ -1,10 +1,10 @@
 {
 	"ads" 				: [],
-	"src" 				: "./dynamic/dashads-dartest-subs.mpd",
+	"src" 				: "./dynamic/dashads-dartest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Live Dynamic: Multiperiod, ITV and Ch4 Ads (Subs)",
+	"channelName" 		: "Live Dynamic: Multiperiod, ITV and Ch4 Ads",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Content starts 'on the hour'",

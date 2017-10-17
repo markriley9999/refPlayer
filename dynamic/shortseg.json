@@ -1,5 +1,6 @@
 {
 	"main"			: "./dynamic/periods/main-sintel.xml",
+	"subs"			: "",
 	
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
@@ -17,5 +18,6 @@
 	"ads"			: [
 		"./dynamic/periods/shortseg2.xml",
 		"./dynamic/periods/shortseg1.xml"
-	]
+	],
+	"adSubs"		: ""
 }

@@ -1,5 +1,5 @@
 {
-	"main"			: "./dynamic/periods/main-bbb-ck.xml",
+	"main"			: "./dynamic/periods/main-bbb.xml",
 	"subs"			: "",
 	
 	"segsize" 		: "3840",
@@ -13,11 +13,11 @@
 	"Vtimescale"	: "12800",
 	
 	"adD"			: "60000",
-	"adSegAlign"	: "none",
+	"adSegAlign"	: "round",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",
 		"./dynamic/periods/ad-ch4.xml"
 	],
-	"adSubs"		: ""
+	"adSubs"		: "./dynamic/periods/subs-snake.xml"
 }

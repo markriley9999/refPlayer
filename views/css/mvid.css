@@ -199,7 +199,6 @@ progress::-moz-progress-bar {
 	background-color: blue;
 	color: white;
 	position: absolute;
-	opacity: 0.75;
 	font-size: 100%;	
 }
 
