@@ -9,11 +9,7 @@ echo $CNT
 
 mkdir ../logs/
 
-if [ "$CNT" == "aws" ]; then
-  ./getcontent-markriley9999-aws.sh
-else
-  ./getcontent-markriley9999-duk.sh
-fi
+./getcontent-duk-aws.sh
 
 echo --- Install Complete! ---
 echo Type:
