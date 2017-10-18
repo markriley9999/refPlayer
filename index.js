@@ -188,14 +188,14 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	console.dir(argv);
+	//console.dir(argv);
 	
 	runOptions.bShowGUI 	= !argv.headless;
 	runOptions.bSegDump 	= argv.segdump;
 	
 	if (argv.help) {
-		console.log("-headless   Run with no GUI.");
-		console.log("-segdump    Dump segment information.");
+		console.log("--headless   Run with no GUI.");
+		console.log("--segdump    Dump segment information.");
 		electronApp.quit();
 		return;
 	}

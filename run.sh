@@ -2,7 +2,7 @@
 
 CMD=$1
 
-if [ "$CMD" == "update" ]; then
+if [ "$CMD" == "--update" ]; then
   echo " - Update code"
   git stash  
   git pull
