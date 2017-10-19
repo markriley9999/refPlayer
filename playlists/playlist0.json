@@ -3,25 +3,9 @@
 		{
 			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
 			"type" 	: "video/mp4"
-		},
-		{	
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_AMV_SYPR030_030_001_93613_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/MUM-HATD170-020_1462888808_93626_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
-			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/bbb/bbb-clear-subs.mpd",
+	"src" 				: "http://itvpnpctv.content.itv.com/2-4229-0016-001/20/1/VAR015/2-4229-0016-001_20_1_VAR015.ism/.mpd?hdnea=st=1508415437~exp=1508437037~acl=/*~hmac=599af76b3a63adb395b5c677eca9631f8979de42ed8f2f61ca0dd9244f762449",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
