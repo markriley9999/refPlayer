@@ -1,4 +1,7 @@
-
+git - only extract branch
+	- login
+	
+	
 static events!!!!  not working  --- Pana starting on subs breaks events!!!!!!!!!!!!
 
 - time section

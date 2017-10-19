@@ -21,9 +21,8 @@ if ! [ -x "$(command -v git)" ]; then
 fi
 
 
-git config --global user.name "manufacturer"
-git config --global user.email manufacturer@digitaluk.co.uk
-git clone https://github.com/markriley9999/refPlayer.git refPlayer
+git clone --branch release --single-branch https://github.com/markriley9999/refPlayer.git --depth 1
+
 
 cd refPlayer/install
 ./install-2.sh $@
