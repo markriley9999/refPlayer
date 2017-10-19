@@ -1,6 +1,7 @@
 TEST GIT
 TEST 2
 TEST 3
+TEST 4
 
 git - only extract branch
 	- login
