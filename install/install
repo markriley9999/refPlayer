@@ -21,7 +21,7 @@ if ! [ -x "$(command -v git)" ]; then
 fi
 
 
-git clone --branch release --single-branch https://github.com/markriley9999/refPlayer.git --depth 1
+git clone --branch FormalRelease --single-branch https://github.com/markriley9999/refPlayer.git --depth 1
 		   
 		   
 cd refPlayer/install
