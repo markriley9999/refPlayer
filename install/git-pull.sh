@@ -2,6 +2,6 @@
 
 cd ..
 
-git pull https://github.com/markriley9999/refPlayer.git
+git pull
 
 cd install/
