@@ -1,4 +1,3 @@
-ccccc
 
 git - only extract branch
 	- login
