@@ -1,5 +1,5 @@
 #!/bin/bash
 
-URL="https://s3.eu-west-2.amazonaws.com/refplayer-content"
+URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
 ./getallcontent.sh $URL
