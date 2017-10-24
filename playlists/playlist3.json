@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Static M-Periods -  Partial (4 frames) final 'ad' segment",
+	"channelName" 		: "Static M-Periods -  Partial final 'ad' segment",
 
 	"info"				: [	"Short Final Seg"
 						  ]
