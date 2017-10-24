@@ -1,6 +1,6 @@
 function clearkeyGetLicence(session, msg, contentTag, video, logObj) {
 
-	var keyServiceUrl = "http://itvpnp.live.ott.irdeto.com/ClearKey/getkeys?CrmId=itvpnp&AccountId=itvpnp\&ContentId=2-4229-0016-001_20";
+	var keyServiceUrl = "./getkeys?tag=" + contentTag;
 
 
 	// TODO: mVid should be a param

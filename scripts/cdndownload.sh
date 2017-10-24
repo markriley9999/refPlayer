@@ -10,6 +10,7 @@ OPRENAME=$7
 FIRSTSEG=$8
 LASTSEG=$9
 PAD=${10}
+COOKIE=${11}
 
 TIMESTAMP=$(date +%s)
 
@@ -22,7 +23,7 @@ echo Last seg = $LASTSEG
 DIR="content/"$ODIR
 mkdir -p $DIR
 
-curl -v -o $DIR$INITFILE -A "$UA" $BASEURL$INITURL
+curl -v -o $DIR$INITFILE -A "$UA" --cookie $COOKIE $BASEURL$INITURL
 
 TOTALFS=0
 COUNTER=$FIRSTSEG
@@ -40,7 +41,7 @@ while [  $COUNTER -le $LASTSEG ]; do
 	
 	echo --- URL = $URL
 	echo --- FILENAME = $FILENAME
-	curl -v -o "$FILENAME" -A "$UA" $URL
+	curl -v -o "$FILENAME" -A "$UA" --cookie $COOKIE $URL
 	
 	FILESIZE=$(stat -c%s "$FILENAME")
 	let TOTALFS=TOTALFS+FILESIZE
