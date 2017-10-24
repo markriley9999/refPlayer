@@ -1,7 +1,7 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "51",
+	"minor" 	: "52",
 	"comment"	: "Formal release",
 	"notes"		: [	
 					"Added Events",
