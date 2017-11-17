@@ -7,7 +7,7 @@ if [ "$CMD" == "--update" ]; then
   git stash
   git pull
   echo " - (Re)install node modules"
-  sudo npm install
+  npm install
   echo Done.
   exit 0
 fi
