@@ -10,5 +10,5 @@ if "%CMD%" == "--update" (
   npm install
   echo Done.
 ) else (
-	electron . %*
+	npm start %*
 )

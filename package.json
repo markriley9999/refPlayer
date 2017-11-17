@@ -5,7 +5,7 @@
   "description": "HBBTV Reference Player",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "./node_modules/.bin/electron ."
   },
   "dependencies": {
     "body-parser": "^1.16.1",
