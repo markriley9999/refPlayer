@@ -12,4 +12,4 @@ if [ "$CMD" == "--update" ]; then
   exit 0
 fi
 
-./electron .  "$@"
+npm start "$@"
