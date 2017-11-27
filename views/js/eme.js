@@ -168,7 +168,7 @@ function SetupEME(video, keySystem, name, options, contentTag, logObj)
 	}
 	
 	
-	EnsureMediaKeysCreated(video, keySystem, options).then(function() {
+	return EnsureMediaKeysCreated(video, keySystem, options).then(function() {
 		log(name + " ensured MediaKeys available on HTMLMediaElement");
 		video.addEventListener("encrypted", onEncrypted);
 	  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"));

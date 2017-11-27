@@ -258,16 +258,19 @@ mVid.start = function () {
 			}
 		];
 
-		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log);
-		}
-			
 		that.showBufferingIcon(false);
 		that.setPlayingState(PLAYSTATE_STOP);
 		
 		document.addEventListener("keydown", that.OnKeyDown.bind(that));
-		
-		that.setContentSourceAndLoad();
+
+		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+				that.setContentSourceAndLoad();				
+			});
+		} else {
+			that.setContentSourceAndLoad();
+		}
+			
 		that.resetStallTimer();
 		
 		window.setInterval( function() {
