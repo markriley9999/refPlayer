@@ -7,11 +7,11 @@
 	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
 	minBufferTime="PT10S" 
 	maxSegmentDuration="PT3.84S" 
-	mediaPresentationDuration="PT59M55.200S"
+	mediaPresentationDuration="PT60M"
 >
 
 	<ProgramInformation>
-		<Title>segtimeline-sintel</Title>
+		<Title>segtimeline</Title>
 	</ProgramInformation>
 
 	<Period>
@@ -49,7 +49,7 @@
 					<S d="184320" r="2" t="144691200" />					
 					<S d="7680"/>				
 
-					<S d="184320" r="152" t="145428480" />	
+					<S d="184320" r="154" t="145428480" />	<!-- Add 2 addtional segs to push over 60M --> 
 					
 				</SegmentTimeline>
 			</SegmentTemplate>
