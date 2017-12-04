@@ -15,96 +15,65 @@
 	</ProgramInformation>
 
 	<Period>
-		<AdaptationSet segmentAlignment="true" lang="eng">
-			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
-			<SegmentTemplate media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$$Time$.m4s" startNumber="1" initialization="DASH_set1_init.mp4">
 
 				<SegmentTimeline>
-				
-					<S d="184320" r="2" t="0" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="152" t="737280" />									
-
-					<S d="184320" r="2" t="28938240" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="152" t="29675520" />									
-
-					<S d="184320" r="2" t="57876480" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="152" t="58613760" />									
-
-					<S d="184320" r="2" t="86814720" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="152" t="87552000" />									
-
-					<S d="184320" r="2" t="115752960" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="152" t="116490240" />									
-
-					<S d="184320" r="2" t="144691200" />					
-					<S d="7680"/>				
-
-					<S d="184320" r="154" t="145428480" />	<!-- Add 2 addtional segs to push over 60M --> 
-					
+					<S t="0" d="3840" r="14"/>
+					<S d="2400"/>
+					<S d="3840" r="154"/>
+					<S d="2400"/>
+					<S d="3840" r="154"/>
+					<S d="2400"/>
+					<S d="3840" r="154"/>
+					<S d="2400"/>
+					<S d="3840" r="154"/>
+					<S d="2400"/>
+					<S d="3840" r="154"/>
+					<S d="2400"/>
+					<S d="3840" r="142"/>
+					<S d="2960"/>
 				</SegmentTimeline>
+				
 			</SegmentTemplate>
-
-			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
+			
+			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4666651">
+			</Representation>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2611497">
+			</Representation>
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1393461">
+			</Representation>
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="828843">
+			</Representation>
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440330">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
-			<SegmentTemplate media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" initialization="init/sintel_set2_init.mp4">
-
+		
+		<AdaptationSet segmentAlignment="true" lang="eng">
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$$Time$.m4s" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
+			
 				<SegmentTimeline>
-				
-					<S d="49152" r="2" t="0" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="196608" />									
-					
-					<S d="49152" r="2" t="7716864" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="7913472" />									
-					
-					<S d="49152" r="2" t="15433728" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="15630336" />									
-					
-					<S d="49152" r="2" t="23150592" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="23347200" />									
-					
-					<S d="49152" r="2" t="30867456" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="31064064" />									
-					
-					<S d="49152" r="2" t="38584320" />					
-					<S d="2048"/>				
-					
-					<S d="49152" r="152" t="38780928" />									
-
+					<S t="0" d="3840" r="154"/>
+					<S d="3819"/>
+					<S d="3840" r="154"/>
+					<S d="3819"/>
+					<S d="3840" r="153"/>
+					<S d="3820"/>
+					<S d="3840" r="154"/>
+					<S d="3819"/>
+					<S d="3840" r="154"/>
+					<S d="3819"/>
+					<S d="3840" r="153"/>
+					<S d="3820"/>
+					<S d="3840" r="2"/>
+					<S d="2048"/>
 				</SegmentTimeline>
-						
+				
+			
 			</SegmentTemplate>
-
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
-			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
-			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1389181">
-			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="826576">
-			</Representation>
-			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="440538">
+			
+			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130530">
 			</Representation>
 		</AdaptationSet>
 	</Period>
