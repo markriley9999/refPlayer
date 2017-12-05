@@ -40,4 +40,12 @@
 
 ./package-content.sh "bbb/MIX"
 
+./package-content.sh "segtimeline/init"
+./package-content.sh "segtimeline/1"
+./package-content.sh "segtimeline/2"
+./package-content.sh "segtimeline/3"
+./package-content.sh "segtimeline/4"
+./package-content.sh "segtimeline/5"
+./package-content.sh "segtimeline/6"
+
 ./package-content.sh "itv"

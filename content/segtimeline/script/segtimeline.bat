@@ -24,9 +24,9 @@ ffmpeg -y -f concat -i cat-v5.txt -c copy -t 3600 tmp\av5.mp4
 
 
 
-ffprobe -show_frames -print_format compact tmp\av5.mp4 > tmp\frames.txt
+ffprobe -show_frames -print_format compact tmp\v4.mp4 > tmp\frames.txt
 
-
+rem cat frames.txt | awk -F '|' '($2 == "media_type=video") {if ($4 == "key_frame=1") print $6}' | awk -F '=' '{ print ($2 - i) * 1000, j; i = $2; j++ }'
 
 
 
