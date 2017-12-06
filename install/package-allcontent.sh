@@ -48,4 +48,11 @@
 ./package-content.sh "segtimeline/5"
 ./package-content.sh "segtimeline/6"
 
+./package-content.sh "segtimeline/ENC-1"
+./package-content.sh "segtimeline/ENC-2"
+./package-content.sh "segtimeline/ENC-3"
+./package-content.sh "segtimeline/ENC-4"
+./package-content.sh "segtimeline/ENC-5"
+./package-content.sh "segtimeline/ENC-6"
+
 ./package-content.sh "itv"
