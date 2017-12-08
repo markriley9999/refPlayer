@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/segtimeline/segtimeline-ev-clearkey.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Static: Segment timeline and events",
+
+	"info"				: [	"Ads start every 10 minutes",
+							"Ads last 1 minute",
+							"Main content lasts ~9 minutes"
+						  ]
+}
