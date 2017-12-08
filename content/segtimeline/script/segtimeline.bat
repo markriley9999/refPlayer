@@ -2,16 +2,16 @@ REM --- prep content ---
 
 mkdir tmp
 
-call prep.bat ch4-ads ch4-ads.mp4 60
-call prep.bat itv-ads itv-ads.mp4 60
+call prep.bat ch4-ads rawcontent\ch4-ads.mp4 60
+call prep.bat itv-ads rawcontent\itv-ads.mp4 60
 
 
 REM --- 25 fps! ---
-ffmpeg -y -i sintel-24fps.mp4  -filter_complex "[0:v]setpts=24/25*PTS[v];[0:a]atempo=25/24[a]" -map "[v]" -map "[a]" -r 25 -t 537.600 sintel.mp4
+ffmpeg -y -i rawcontent\sintel-24fps.mp4  -filter_complex "[0:v]setpts=24/25*PTS[v];[0:a]atempo=25/24[a]" -map "[v]" -map "[a]" -r 25 -t 537.600 rawcontent\sintel.mp4
 
 
-call prep.bat sintel sintel.mp4 537.600
-call prep.bat bbb bbb-30fps.mp4 537.600
+call prep.bat sintel rawcontent\sintel.mp4 537.600
+call prep.bat bbb rawcontent\bbb-30fps.mp4 537.600
 
 
 ffmpeg -y -f concat -i cat-v1.txt -c copy -t 3600 tmp\v1.mp4 

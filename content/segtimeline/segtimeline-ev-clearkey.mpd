@@ -95,20 +95,32 @@
 			<SegmentTemplate timescale="1000" media="ENC-$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
 			
 				<SegmentTimeline>
-					<S t="0" d="3840" r="154"/>
+					<S t="0" d="3840" r="14"/>
 					<S d="3819"/>
-					<S d="3840" r="154"/>
+					<S d="3840" r="138"/>
 					<S d="3819"/>
-					<S d="3840" r="153"/>
+					<S d="3840" r="14"/>
+					<S d="3830"/>
+					<S d="3840" r="138"/>
+					<S d="3819"/>
+					<S d="3840" r="13"/>
+					<S d="3819"/>
+					<S d="3840" r="138"/>
 					<S d="3820"/>
-					<S d="3840" r="154"/>
+					<S d="3840" r="14"/>
+					<S d="3830"/>
+					<S d="3840" r="138"/>
 					<S d="3819"/>
-					<S d="3840" r="154"/>
+					<S d="3840" r="14"/>
 					<S d="3819"/>
-					<S d="3840" r="153"/>
+					<S d="3840" r="138"/>
+					<S d="3819"/>
+					<S d="3840" r="13"/>
+					<S d="3830"/>
+					<S d="3840" r="138"/>
 					<S d="3820"/>
 					<S d="3840" r="2"/>
-					<S d="2048"/>
+					<S d="2154"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
