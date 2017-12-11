@@ -14,7 +14,6 @@ if [ ! -d "$DIR" ]; then
 	mkdir $DIR
 fi
 
-curl $URL/$FNAME -o $DIR/$FNAME
 http_code=$(curl --write-out '\n%{http_code}\n' $URL/$FNAME -o $DIR/$FNAME | tail -n 1)
 
 if [ $http_code -ne 200 ]; then
