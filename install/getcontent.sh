@@ -15,9 +15,17 @@ if [ ! -d "$DIR" ]; then
 fi
 
 curl $URL/$FNAME -o $DIR/$FNAME
+http_code=$(curl --write-out '\n%{http_code}\n' $URL/$FNAME -o $DIR/$FNAME | tail -n 1)
+
+if [ $http_code -ne 200 ]; then
+	echo "***" \[$http_code\] "Server Error ***"
+	exit 1
+fi
 
 tar -tf $DIR/$FNAME
 
 tar -xzvf $DIR/$FNAME -C ../
 
 rm $DIR/$FNAME
+
+exit 0
