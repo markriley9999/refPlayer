@@ -1,11 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "52",
+	"minor" 	: "53",
 	"comment"	: "Formal release",
 	"notes"		: [	
-					"Added Events",
-					"New Content",
+					"Segtimeline content",
 					"Tidied Event Handling"
 				  ]
 }
