@@ -2,7 +2,7 @@
 
 set NAME=%1
 
-echo %1 | sed 's#/#\-#g' > tmp.out
+echo %1| sed 's#/#\-#g' > tmp.out
 set /p DASHNAME= < tmp.out
 rm tmp.out
 
