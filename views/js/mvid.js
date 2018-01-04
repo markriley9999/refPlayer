@@ -363,7 +363,7 @@ mVid.setUpCues = function () {
 			return;
 		}
 		
-		var imgobj = e("ad-start-point");
+		var imgobj = e("ev-arrow");
 		
 		var c = e("playbackBar").getBoundingClientRect();
 		var offset = imgobj.getBoundingClientRect().width / 2;
@@ -391,13 +391,14 @@ mVid.setUpCues = function () {
 					if ((cue !== null) && (cue.endTime > cue.startTime)) {
 						if (cue.startTime > 0) {
 							x =  (coef * cue.startTime) + c.left;
-							imgIndex = Math.floor(x / 16);
+							imgIndex = Math.floor(x / 4);
 							
 							if (!that.cueImages[imgIndex]) {
 								that.cueImages[imgIndex] = imgobj.cloneNode(true);
 								e("playrange").appendChild(that.cueImages[imgIndex]);
 							}
 							
+							that.cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							that.cueImages[imgIndex].style.left = (x - offset) + "px";
 							that.Log.info("Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
 						}

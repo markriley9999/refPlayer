@@ -225,6 +225,10 @@ progress::-moz-progress-bar {
 	opacity: 0.75;
 }
 
+.hidden {
+	visibility: hidden;
+}
+
 .hilite {
 	background-color: orange;
 }
