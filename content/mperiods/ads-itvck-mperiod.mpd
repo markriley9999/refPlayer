@@ -179,7 +179,7 @@
 <Period duration="PT1M" start="PT3M">
 
 	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-		<Event duration="480000"  presentationTime="8640000" id="1">
+		<Event duration="480000"  presentationTime="0" id="2">
 				Period Boundary - Ad Break
 		</Event>
 	</EventStream>

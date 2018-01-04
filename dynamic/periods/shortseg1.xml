@@ -2,7 +2,7 @@
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="1">
+			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
 				Period Boundary - Short Final Seg
 			</Event>
 		</EventStream>

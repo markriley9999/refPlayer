@@ -7,7 +7,7 @@
 	minBufferTime="PT10S" 
 	maxSegmentDuration="PT3.84S" 
 	mediaPresentationDuration="PT1H0.040S"
- >
+>
  
 	<ProgramInformation>
 		<Title>mperiod</Title>
@@ -54,7 +54,7 @@
 	<Period id="main-1" start="PT0H1M59.40S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="5713920" id="1">
+			<Event duration="480000"  presentationTime="0" id="2">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -91,7 +91,7 @@
 	<Period id="main-2" start="PT0H3M58.80S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="11427840" id="1">
+			<Event duration="480000"  presentationTime="0" id="3">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -128,7 +128,7 @@
 	<Period id="main-3" start="PT0H5M57.120S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="17141760" id="1">
+			<Event duration="480000"  presentationTime="0" id="4">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -165,7 +165,7 @@
 	<Period id="main-4" start="PT0H7M56.160S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="22855680" id="1">
+			<Event duration="480000"  presentationTime="0" id="5">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -202,7 +202,7 @@
 	<Period id="main-5" start="PT0H9M55.200S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="28569600" id="1">
+			<Event duration="480000"  presentationTime="0" id="6">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -239,7 +239,7 @@
 	<Period id="main-6" start="PT0H11M54.240S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="34283520" id="1">
+			<Event duration="480000"  presentationTime="0" id="7">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -276,7 +276,7 @@
 	<Period id="main-7" start="PT0H13M53.280S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="39997440" id="1">
+			<Event duration="480000"  presentationTime="0" id="8">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -313,7 +313,7 @@
 	<Period id="main-8" start="PT0H15M52.320S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="45711360" id="1">
+			<Event duration="480000"  presentationTime="0" id="9">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -350,7 +350,7 @@
 	<Period id="main-9" start="PT0H17M51.360S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="51425280" id="1">
+			<Event duration="480000"  presentationTime="0" id="10">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -387,7 +387,7 @@
 	<Period id="main-10" start="PT0H19M50.400S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="57139200" id="1">
+			<Event duration="480000"  presentationTime="0" id="11">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -424,7 +424,7 @@
 	<Period id="main-11" start="PT0H21M49.440S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="62853120" id="1">
+			<Event duration="480000"  presentationTime="0" id="12">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -461,7 +461,7 @@
 	<Period id="main-12" start="PT0H23M48.480S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="68567040" id="1">
+			<Event duration="480000"  presentationTime="0" id="13">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -498,7 +498,7 @@
 	<Period id="main-13" start="PT0H25M47.520S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="74280960" id="1">
+			<Event duration="480000"  presentationTime="0" id="14">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -535,7 +535,7 @@
 	<Period id="main-14" start="PT0H27M46.560S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="79994880" id="1">
+			<Event duration="480000"  presentationTime="0" id="15">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -572,7 +572,7 @@
 	<Period id="main-15" start="PT0H29M45.600S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="85708800" id="1">
+			<Event duration="480000"  presentationTime="0" id="16">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -609,7 +609,7 @@
 	<Period id="main-16" start="PT0H31M44.640S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="91422720" id="1">
+			<Event duration="480000"  presentationTime="0" id="17">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -646,7 +646,7 @@
 	<Period id="main-17" start="PT0H33M43.680S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="97136640" id="1">
+			<Event duration="480000"  presentationTime="0" id="18">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -683,7 +683,7 @@
 	<Period id="main-18" start="PT0H35M42.720S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="102850560" id="1">
+			<Event duration="480000"  presentationTime="0" id="19">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -720,7 +720,7 @@
 	<Period id="main-19" start="PT0H37M41.760S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="108564480" id="1">
+			<Event duration="480000"  presentationTime="0" id="20">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -757,7 +757,7 @@
 	<Period id="main-20" start="PT0H39M40.800S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="114278400" id="1">
+			<Event duration="480000"  presentationTime="0" id="21">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -794,7 +794,7 @@
 	<Period id="main-21" start="PT0H41M39.840S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="119992320" id="1">
+			<Event duration="480000"  presentationTime="0" id="22">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -831,7 +831,7 @@
 	<Period id="main-22" start="PT0H43M38.880S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="125706240" id="1">
+			<Event duration="480000"  presentationTime="0" id="23">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -868,7 +868,7 @@
 	<Period id="main-23" start="PT0H45M37.920S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="131420160" id="1">
+			<Event duration="480000"  presentationTime="0" id="24">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -905,7 +905,7 @@
 	<Period id="main-24" start="PT0H47M36.960S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="137134080" id="1">
+			<Event duration="480000"  presentationTime="0" id="25">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -942,7 +942,7 @@
 	<Period id="main-25" start="PT0H49M36.0S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="142848000" id="1">
+			<Event duration="480000"  presentationTime="0" id="26">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -979,7 +979,7 @@
 	<Period id="main-26" start="PT0H51M35.40S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="148561920" id="1">
+			<Event duration="480000"  presentationTime="0" id="27">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -1016,7 +1016,7 @@
 	<Period id="main-27" start="PT0H53M34.80S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="154275840" id="1">
+			<Event duration="480000"  presentationTime="0" id="28">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -1053,7 +1053,7 @@
 	<Period id="main-28" start="PT0H55M33.120S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="159989760" id="1">
+			<Event duration="480000"  presentationTime="0" id="29">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
@@ -1090,7 +1090,7 @@
 	<Period id="main-29" start="PT0H57M32.160S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="165703680" id="1">
+			<Event duration="480000"  presentationTime="0" id="30">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
