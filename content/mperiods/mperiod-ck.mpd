@@ -8,8 +8,7 @@
 	minBufferTime="PT10S" 
 	maxSegmentDuration="PT3.84S" 
 	mediaPresentationDuration="PT1H0.040S"
->
-
+ 	>
 	<ProgramInformation>
 		<Title>mperiod-ck</Title>
 	</ProgramInformation>
@@ -25,7 +24,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -34,7 +44,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -64,7 +85,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-0" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -73,7 +105,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-0" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -103,7 +146,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-1" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -112,7 +166,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-1" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -142,7 +207,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-2" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -151,7 +227,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-2" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -181,7 +268,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-3" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -190,7 +288,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-3" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -220,7 +329,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-4" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -229,7 +349,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-4" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -259,7 +390,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-5" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -268,7 +410,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-5" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -298,7 +451,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-6" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -307,7 +471,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-6" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -337,7 +512,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-7" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -346,7 +532,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-7" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -376,7 +573,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-8" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -385,7 +593,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-8" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -415,7 +634,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-9" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -424,7 +654,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-9" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -454,7 +695,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-10" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -463,7 +715,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-10" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -493,7 +756,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-11" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -502,7 +776,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-11" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -532,7 +817,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-12" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -541,7 +837,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-12" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -571,7 +878,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-13" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -580,7 +898,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-13" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -610,7 +939,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-14" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -619,7 +959,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-14" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -649,7 +1000,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-15" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -658,7 +1020,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-15" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -688,7 +1061,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-16" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -697,7 +1081,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-16" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -727,7 +1122,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-17" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -736,7 +1142,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-17" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -766,7 +1183,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-18" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -775,7 +1203,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-18" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -805,7 +1244,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-19" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -814,7 +1264,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-19" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -844,7 +1305,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-20" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -853,7 +1325,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-20" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -883,7 +1366,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-21" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -892,7 +1386,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-21" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -922,7 +1427,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-22" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -931,7 +1447,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-22" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -961,7 +1488,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-23" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -970,7 +1508,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-23" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1000,7 +1549,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-24" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1009,7 +1569,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-24" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1039,7 +1610,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-25" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1048,7 +1630,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-25" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1078,7 +1671,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-26" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1087,7 +1691,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-26" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1117,7 +1732,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-27" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1126,7 +1752,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-27" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1156,7 +1793,18 @@
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-28" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1165,7 +1813,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			<SupplementalProperty schemeIdUri="urn:dvb:dash:period_continuity:2014" value="main-28" />
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -1183,5 +1842,5 @@
 		</AdaptationSet>
 
 	</Period>
-	
+
 </MPD>
