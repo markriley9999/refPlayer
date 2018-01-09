@@ -2,14 +2,25 @@
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="1">
+			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/sintel/</BaseURL>
@@ -18,7 +29,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/sintel/</BaseURL>
