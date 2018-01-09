@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "53",
-	"comment"	: "Formal release",
+	"minor" 	: "54",
+	"comment"	: "Interim release",
 	"notes"		: [	
 					"Segtimeline content",
-					"Tidied Event Handling"
+					"Relative Events Fix",
+					"ContentProtection element added to mpds"
 				  ]
 }
