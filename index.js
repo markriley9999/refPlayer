@@ -370,7 +370,9 @@ expressServer.get('/*.html', function(req, res) {
 		win['ad1videoobj'].reload();
 		win['adtrans'].reload();
 		
-		res.render('index.hbs', function(err, html) { // render the dash playback file using the title and src variables to setup page
+		res.render('index.hbs', 
+			{version: "v" + generalInfo.version.major + "." + generalInfo.version.minor}, 
+			function(err, html) { 
 			res.status(200);
 			res.send(html);
 			//console.log("UserAgent: " + req.headers['user-agent']);
