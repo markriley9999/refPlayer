@@ -60,10 +60,15 @@ p {
 	color: green;
 }
 
+#versionInfo {
+	font-size: 75%;
+	left: 80px;
+}
+
 .status-container {
 	width: fit-content; 
 	height: fit-content; 
-	top: 0px;
+	top: 20px;
 	left: 0px;
 	background-color: orange;
 	color: white;
@@ -223,6 +228,10 @@ progress::-moz-progress-bar {
 	background-color: transparent;
 	position: fixed;
 	opacity: 0.75;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 .hilite {

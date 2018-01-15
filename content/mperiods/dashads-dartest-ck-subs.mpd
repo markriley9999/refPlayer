@@ -61,13 +61,24 @@
 	<Period id="main-0" start="PT0H1M1.440S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="2949120" id="1">
+			<Event duration="480000"  presentationTime="0" id="2">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -85,7 +96,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -102,7 +124,7 @@
 	<Period id="ad-1" start="PT0H9M59.40S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="28753920" id="1">
+			<Event duration="480000"  presentationTime="0" id="3">
 				Period Boundary - Ad Break
 			</Event>
 		</EventStream>
@@ -145,13 +167,24 @@
 	<Period id="main-1" start="PT0H11M0.480S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="31703040" id="1">
+			<Event duration="480000"  presentationTime="0" id="4">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -169,7 +202,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -186,7 +230,7 @@
 	<Period id="ad-2" start="PT0H19M58.80S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="57507840" id="1">
+			<Event duration="480000"  presentationTime="0" id="5">
 				Period Boundary - Ad Break
 			</Event>
 		</EventStream>
@@ -229,13 +273,24 @@
 	<Period id="main-2" start="PT0H20M59.520S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="60456960" id="1">
+			<Event duration="480000"  presentationTime="0" id="6">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -253,7 +308,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -270,7 +336,7 @@
 	<Period id="ad-3" start="PT0H29M57.120S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="86261760" id="1">
+			<Event duration="480000"  presentationTime="0" id="7">
 				Period Boundary - Ad Break
 			</Event>
 		</EventStream>
@@ -313,13 +379,24 @@
 	<Period id="main-3" start="PT0H30M58.560S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="89210880" id="1">
+			<Event duration="480000"  presentationTime="0" id="8">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -337,7 +414,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -354,7 +442,7 @@
 	<Period id="ad-4" start="PT0H39M56.160S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="115015680" id="1">
+			<Event duration="480000"  presentationTime="0" id="9">
 				Period Boundary - Ad Break
 			</Event>
 		</EventStream>
@@ -397,13 +485,24 @@
 	<Period id="main-4" start="PT0H40M57.600S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="117964800" id="1">
+			<Event duration="480000"  presentationTime="0" id="10">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -421,7 +520,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -438,7 +548,7 @@
 	<Period id="ad-5" start="PT0H49M55.200S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="143769600" id="1">
+			<Event duration="480000"  presentationTime="0" id="11">
 				Period Boundary - Ad Break
 			</Event>
 		</EventStream>
@@ -481,13 +591,24 @@
 	<Period id="main-5" start="PT0H50M56.640S">
 	
 		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="146718720" id="1">
+			<Event duration="480000"  presentationTime="0" id="12">
 				Period Boundary - Main Content
 			</Event>
 		</EventStream>
 	
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -505,7 +626,18 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
