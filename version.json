@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "1",
 	"minor" 	: "55",
-	"comment"	: "Interim release",
+	"comment"	: "Formal release",
 	"notes"		: [	
 					"Segtimeline content",
 					"Relative Events Fix",
