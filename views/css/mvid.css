@@ -246,6 +246,18 @@ progress::-moz-progress-bar {
 	background-color: blue;
 }
 
+.nosubs {
+	background-color: transparent;
+}
+
+.subsoff {
+	background-color: grey;
+}
+
+.subson {
+	background-color: orange;
+}
+
 .playerBufferingIcon {
     width: 100px;  
     height: 100px;  
