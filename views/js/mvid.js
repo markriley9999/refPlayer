@@ -403,6 +403,13 @@ mVid.setUpCues = function () {
 						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
 					}
 				}
+			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
+				var s = e("subs");
+				if (track.mode === 'showing') {
+					s.setAttribute("class", "playerIcon subson");
+				} else {
+					s.setAttribute("class", "playerIcon subsoff");
+				}
 			}
 		}
 	}
@@ -415,11 +422,6 @@ mVid.setUpCues = function () {
 		var textTrack = event.track;
 		var cue;
 
-		if ((textTrack.kind === 'subtitles') || (textTrack.kind === 'captions')) {
-			textTrack.mode = 'showing';
-			that.Log.info("Set textTrack mode to showing");	
-		}
-		
 		textTrack.oncuechange = function () {
 
 			showCues();
@@ -786,6 +788,7 @@ mVid.setContentSourceAndLoad = function () {
 	this.Log.info(player.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
 	e("encrypted").setAttribute("class", "playerIcon");
+	e("subs").setAttribute("class", "playerIcon nosubs");
 	
 	this.setSourceAndLoad(player, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
