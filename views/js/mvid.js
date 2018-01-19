@@ -385,9 +385,6 @@ mVid.setUpCues = function () {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
-					// extract data property represented as ArrayBuffer
-					var dataView = new Uint8Array(cue.data);
-					
 					if ((cue !== null) && (cue.endTime > cue.startTime)) {
 						if (cue.startTime > 0) {
 							x =  (coef * cue.startTime) + c.left;
