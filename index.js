@@ -1013,7 +1013,7 @@ expressServer.post('/savelog', function(req, res) {
 	console.log("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
-	fs.writeFile("./logs/" + req.query.filename, req.body, function(err) {
+	fs.writeFile("./logs/" + req.query.filename, "CLIENT IP: " + req.ip + "\n" + req.body, function(err) {
 		if(err) {
 			console.log(err);
 		}
