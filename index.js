@@ -43,8 +43,14 @@ win['config']		= null;
 
 
 var expressServer = express(); // Active express object
- 
-var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
+
+const httpsOpts = {
+  key: fs.readFileSync('ssl/server/private/refPlayer-nopass.key.pem'),
+  cert: fs.readFileSync('ssl/server/certs/refPlayer.cert.pem')
+};
+
+var server = require('https').createServer(httpsOpts, expressServer); // use the electron server to create a sockets io server
+
 var io = require('socket.io')(server);          // create the sockets io server
  
 var generalInfo = {
@@ -1091,4 +1097,5 @@ function sendConfig() {
 } 
 
 
-server.listen(8080); // Socket.io port (hides express inside)
+server.listen(8082);
+

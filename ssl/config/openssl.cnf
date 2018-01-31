@@ -63,7 +63,7 @@ default_md          = sha256
   
 # Extension to add when the -x509 option is used.
 x509_extensions     = v3_ca
-  
+ 
 [ req_distinguished_name ]
 # See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
 countryName                     = Country Name (2 letter code)
@@ -115,7 +115,13 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer:always
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
-  
+subjectAltName = @alt_names
+
+[alt_names]
+IP    = 192.168.56.128
+DNS.1 = *.cloud.digitaluk.co.uk
+DNS.2 = cloud.digitaluk.co.uk
+
 [ crl_ext ]
 # Extension for CRLs (`man x509v3_config`).
 authorityKeyIdentifier=keyid:always
