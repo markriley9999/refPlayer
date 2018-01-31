@@ -18,5 +18,6 @@ echo "**** Sign Certifcate ****"
 echo
 ./signServer.sh
 
+./removePW.sh
 ./setPermissions.sh
 
