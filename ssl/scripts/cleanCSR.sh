@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/refPlayer/ssl/
+cd ..
 
 sudo rm -fr server/
 

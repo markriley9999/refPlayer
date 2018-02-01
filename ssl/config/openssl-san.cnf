@@ -1,7 +1,8 @@
 [ ca ]
 # `man ca`
 default_ca = CA_default
-  
+SAN = "DNS:*.cloud.digitaluk.co.uk,IP:192.168.143.28"
+ 
 [ CA_default ]
 # Directory and file locations.
 dir               = root
@@ -63,7 +64,7 @@ default_md          = sha256
   
 # Extension to add when the -x509 option is used.
 x509_extensions     = v3_ca
- 
+
 [ req_distinguished_name ]
 # See <https://en.wikipedia.org/wiki/Certificate_signing_request>.
 countryName                     = Country Name (2 letter code)
@@ -73,7 +74,7 @@ localityName                    = Locality Name
 organizationalUnitName          = Organizational Unit Name
 commonName                      = Common Name
 emailAddress                    = Email Address
-  
+
 # Optionally, specify some defaults.
 countryName_default             = GB
 stateOrProvinceName_default     = England
@@ -81,8 +82,8 @@ localityName_default            = London
 0.organizationName_default      = DigitalUK
 organizationalUnitName_default  = IT
 emailAddress_default            = mark.riley@digitaluk.co.uk
-commonName_default				= ---Manufacturer--- Reference Player Root CA
- 
+commonName_default				= --- Manufacturer --- Reference Player Test Server
+
 [ v3_ca ]
 # Extensions for a typical CA (`man x509v3_config`).
 subjectKeyIdentifier = hash
@@ -116,12 +117,7 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer:always
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
-#subjectAltName = @alt_names
-
-#[alt_names]
-#IP    = 192.168.56.128
-#DNS.1 = *.cloud.digitaluk.co.uk
-#DNS.2 = cloud.digitaluk.co.uk
+subjectAltName=${ENV::SAN}
 
 [ crl_ext ]
 # Extension for CRLs (`man x509v3_config`).
