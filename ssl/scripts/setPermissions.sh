@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/refPlayer/ssl/
+cd ..
 
 chmod 700 root/private
 chmod 400 root/private/ca.key.pem

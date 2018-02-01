@@ -45,7 +45,7 @@ win['config']		= null;
 var expressServer = express(); // Active express object
 
 const httpsOpts = {
-  key: fs.readFileSync('ssl/server/private/refPlayer-nopass.key.pem'),
+  key: fs.readFileSync('ssl/server/private/refPlayer.key.pem'),
   cert: fs.readFileSync('ssl/server/certs/refPlayer.cert.pem')
 };
 
