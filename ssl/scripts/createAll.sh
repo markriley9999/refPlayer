@@ -18,6 +18,7 @@ echo "      - IP address 'IP:[addrress]', eg 'IP:192.168.143.28'"
 echo
 
 read -p "SAN: " SAN
+#export SAN="DNS:*.cloud.digitaluk.co.uk,IP:192.168.143.28"
 
 if [ -z "$SAN" ]; then
 	echo "Error: must enter SAN details!"
@@ -25,7 +26,6 @@ if [ -z "$SAN" ]; then
 fi
 
 export SAN
-#export SAN="DNS:*.cloud.digitaluk.co.uk,IP:192.168.143.28"
 echo "SubjectAltName: " $SAN
 
 
@@ -34,6 +34,7 @@ echo "**** Create Server CSR ****"
 echo
 ./createCSR.sh 
 
+
 read -p "Press enter to continue"
 echo "**** Sign Certifcate ****"
 echo
@@ -41,3 +42,4 @@ echo
 
 ./setPermissions.sh
 
+./showCert.sh

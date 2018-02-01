@@ -14,7 +14,8 @@ echo 1000 > root/tmp/serial
 mkdir -p server/certs
 
 openssl ca -config config/openssl-san.cnf \
-      -extensions server_cert -days 9135 -notext -md sha256 -policy policy_loose \
+      -extensions server_cert \
+	  -days 9135 -notext -md sha256 -policy policy_loose \
       -in server/csr/refPlayer.csr.pem \
       -out server/certs/refPlayer.cert.pem
        

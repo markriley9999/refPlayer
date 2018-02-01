@@ -1,7 +1,7 @@
 [ ca ]
 # `man ca`
 default_ca = CA_default
-SAN = "DNS:*.cloud.digitaluk.co.uk,IP:192.168.143.28"
+#SAN = "DNS:*.cloud.digitaluk.co.uk,IP:192.168.143.28"
  
 [ CA_default ]
 # Directory and file locations.
@@ -64,6 +64,14 @@ default_md          = sha256
   
 # Extension to add when the -x509 option is used.
 x509_extensions     = v3_ca
+
+req_extensions		= req_attributes
+
+[req_attributes]
+subjectAltName=${ENV::SAN}
+
+
+
 
 [ req_distinguished_name ]
 # See <https://en.wikipedia.org/wiki/Certificate_signing_request>.

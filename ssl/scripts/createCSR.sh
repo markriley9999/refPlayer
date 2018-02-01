@@ -23,6 +23,7 @@ echo " - Create Server Certificate -"
 echo
 
 openssl req -config config/openssl-san.cnf \
+	  -extensions server_cert \
       -key server/private/refPlayer.key.pem \
       -new -sha256 -out server/csr/refPlayer.csr.pem
 
