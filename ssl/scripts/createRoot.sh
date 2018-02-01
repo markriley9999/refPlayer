@@ -1,14 +1,8 @@
 #!/bin/bash
 
-cd ~/refPlayer/ssl/
+cd ..
 
 mkdir -p root/certs root/crl root/newcerts root/private
-
-touch root/index.txt.attr
-touch root/index.txt
-
-echo 1000 > root/serial
-
 
 # Create key
 echo

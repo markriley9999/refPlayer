@@ -62,3 +62,4 @@ tmp
 docs/~$presentationTimeOffset.xlsx
 todo.txt
 todo.txt
+*.pem
