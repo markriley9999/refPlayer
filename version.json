@@ -1,9 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "56d",
+	"minor" 	: "60d",
 	"comment"	: "Development release",
 	"notes"		: [	
+					"HTTPS support", 
 					"Subtitle Icon"
 				  ]
 }
