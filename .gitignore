@@ -63,3 +63,9 @@ docs/~$presentationTimeOffset.xlsx
 todo.txt
 todo.txt
 *.pem
+ssl/root/index.txt
+ssl/root/index.txt.attr
+ssl/root/index.txt.attr.old
+ssl/root/index.txt.old
+ssl/root/serial
+ssl/root/serial.old
