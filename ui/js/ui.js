@@ -171,11 +171,22 @@ ipc.on('ipc-connected', function(event, message) {
 		e("connected").innerHTML = message.bConnected ? "Connected" : "Not Connected";
 		//e("serverip").innerHTML = "Server Address: " + message.serverIP;
 		e("devname").innerHTML = "Device Name: " + message.devName;
+
+		playerUI.Log._write("  Server (IPv4) Addresses", "info");
 		
 		for( var i = 0; i < message.addresses.length; i++) {
-			playerUI.Log._write("NET - " + i + ": " + message.addresses[i] + ":" + message.port, "info");
-		}	
+			playerUI.Log._write("  NET " + i + ": " + message.addresses[i], "info");
+		}
 
+		playerUI.Log._write("  URLs:", "info");
+		playerUI.Log._write("  http://<server_ip>:" + message.port + "/index.html", "info");
+		playerUI.Log._write("  http://<server_ip>:" + message.port + "/player.aitx", "info");
+		
+		if (message.bHTTPSEnabled) {
+			playerUI.Log._write("  https://<server_ip>:" + message.httpsPort + "/index.html", "info");
+			playerUI.Log._write("  https://<server_ip>:" + message.httpsPort + "/player.aitx", "info");
+		}
+	
 		e("version").innerHTML = message.version;
 		
 	} catch(err) {
