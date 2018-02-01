@@ -2,12 +2,14 @@
 
 cd ..
 
-rm -f root/index.txt* root/serial*
+rm -f root/tmp/index.txt* root/tmp/serial*
 
-touch root/index.txt.attr
-touch root/index.txt
+mkdir -p root/tmp/
 
-echo 1000 > root/serial
+touch root/tmp/index.txt.attr
+touch root/tmp/index.txt
+
+echo 1000 > root/tmp/serial
  
 mkdir -p server/certs
 
