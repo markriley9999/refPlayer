@@ -22,6 +22,7 @@ if ! [ -x "$(command -v git)" ]; then
 fi
 
 
+# Clone from master
 git clone --branch master https://github.com/markriley9999/refPlayer.git
 		   
 		   
