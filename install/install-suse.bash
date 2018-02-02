@@ -1,16 +1,16 @@
 #!/bin/bash
 
-sudo zypper install git
+sudo zypper install -y git
 git clone --branch master https://github.com/markriley9999/refPlayer.git
 
 
-sudo zypper install libgtk*
-sudo zypper install libXss*
-sudo zypper install libgconf*
-sudo zypper install libnss*
-sudo zypper install libasound*
-sudo zypper install xauth 
-sudo zypper install xorg-x11-server
+sudo zypper install -y libgtk*
+sudo zypper install -y libXss*
+sudo zypper install -y libgconf*
+sudo zypper install -y libnss*
+sudo zypper install -y libasound*
+sudo zypper install -y xauth 
+sudo zypper install -y xorg-x11-server
 
 curl -o refPlayer/xvfb-run.sh http://ftp.engsas.de/tipsandtricks/xvfb/xvfb-run.opensuse
 chmod +x refPlayer/xvfb-run.sh
