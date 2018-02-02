@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 sudo zypper install -y git
 git clone --branch master https://github.com/markriley9999/refPlayer.git
 

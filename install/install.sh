@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 if ! [ -x "$(command -v git)" ]; then
 
   echo 'First, installing git'
