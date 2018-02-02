@@ -7,13 +7,13 @@ if ! [ -x "$(command -v $APP)" ]; then
   echo Installing: $APP
   
   if [ -x "$(command -v dnf)" ]; then
-    sudo dnf install $APP
+    sudo dnf -y install $APP
   elif [ -x "$(command -v yum)" ]; then
-    sudo yum install $APP
+    sudo yum -y install $APP
   elif [ -x "$(command -v apt-get)" ]; then
-    sudo apt-get install $APP
+    sudo apt-get -y install $APP
   elif [ -x "$(command -v zypper)" ]; then
-    sudo zypper install $APP
+    sudo zypper install -y $APP
   else
     echo Cannot install $APP
     exit 1
