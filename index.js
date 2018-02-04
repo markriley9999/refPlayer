@@ -277,11 +277,11 @@ function init() {
 	}
 
 	console.log("URLs:");
-	console.log("  http://<server_ip>:" + generalInfo.port + "/index.html");
-	console.log("  http://<server_ip>:" + generalInfo.port + "/player.aitx");
+	console.log("  http://[server_ip]:" + generalInfo.port + "/index.html");
+	console.log("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
 	if (generalInfo.bHTTPSEnabled) {
-		console.log("  https://<server_ip>:" + generalInfo.httpsPort + "/index.html");
-		console.log("  https://<server_ip>:" + generalInfo.httpsPort + "/player.aitx");
+		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
+		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
 	}
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
