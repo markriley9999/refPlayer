@@ -179,12 +179,12 @@ ipc.on('ipc-connected', function(event, message) {
 		}
 
 		playerUI.Log._write("  URLs:", "info");
-		playerUI.Log._write("  http://<server_ip>:" + message.port + "/index.html", "info");
-		playerUI.Log._write("  http://<server_ip>:" + message.port + "/player.aitx", "info");
+		playerUI.Log._write("  http://[server_ip]:" + message.port + "/index.html", "info");
+		playerUI.Log._write("  http://[server_ip]:" + message.port + "/player.aitx", "info");
 		
 		if (message.bHTTPSEnabled) {
-			playerUI.Log._write("  https://<server_ip>:" + message.httpsPort + "/index.html", "info");
-			playerUI.Log._write("  https://<server_ip>:" + message.httpsPort + "/player.aitx", "info");
+			playerUI.Log._write("  https://[server_ip]:" + message.httpsPort + "/index.html", "info");
+			playerUI.Log._write("  https://[server_ip]:" + message.httpsPort + "/player.aitx", "info");
 		}
 	
 		e("version").innerHTML = message.version;
