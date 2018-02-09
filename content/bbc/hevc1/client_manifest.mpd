@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MPD 
+	type="static" 
+	xmlns="urn:mpeg:dash:schema:mpd:2011" 
+	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
+	minBufferTime="PT1.143S" 
+	maxSegmentDuration="PT4S" 
+	mediaPresentationDuration="PT5M32S"
+>
+    <!-- BBC UHD HEVC with HLG HDR Live Test Stream -->
+    <!-- Email dash@rd.bbc.co.uk -->
+    <!-- Copyright (c) British Broadcasting Corporation MMXVI.  All rights reserved.-->
+    <!-- This stream is made available for engineering test purposes only. -->
+    <!-- Redistribution and public display are not permitted. -->
+    <ProgramInformation>
+        <Title>BBC HEVC UHD Test Stream</Title>
+        <Source>BBC</Source>
+        <Copyright>(c) British Broadcasting Corporation MMXVI.  All rights reserved</Copyright>
+    </ProgramInformation>
+    <UTCTiming schemeIdUri="urn:mpeg:dash:utc:http-xsdate:2014" value="http://time.akamai.com/?iso"/>
+    <Period start="PT0S">
+        <AdaptationSet startWithSAP="2" segmentAlignment="true" par="16:9" sar="1:1" id="1" mimeType="video/mp4" scanType="progressive" contentType="video" >
+                <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+                <InbandEventStream schemeIdUri="tag:rdmedia.bbc.co.uk,2014:events/ballposition" value="1"/>
+                <SegmentTemplate startNumber="379546738" presentationTimeOffset="136636825320000" timescale="90000" duration="360000" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
+                <Representation frameRate="50" bandwidth="30000000" codecs="hev1.2.4.L153.00.00.B0" width="3840" id="3840x2160p50" height="2160" />
+                <Representation frameRate="50" bandwidth="10000000" codecs="hev1.2.4.L123.00.00.B0" width="1920" id="1920x1080p50" height="1080" />
+        </AdaptationSet>
+        <AdaptationSet startWithSAP="2" segmentAlignment="true" audioSamplingRate="48000" codecs="mp4a.40.2" id="3" mimeType="audio/mp4" lang="eng" contentType="audio" >
+                <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+                    <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+                <SegmentTemplate startNumber="379546738" presentationTimeOffset="136636825320000" timescale="90000" duration="360000" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
+                <Representation bandwidth="192000" id="192kbps" />
+        </AdaptationSet>
+    </Period>
+</MPD>

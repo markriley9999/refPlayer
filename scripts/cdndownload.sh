@@ -10,6 +10,7 @@ OPRENAME=$7
 FIRSTSEG=$8
 LASTSEG=$9
 PAD=${10}
+WT=${11}
 
 TIMESTAMP=$(date +%s)
 
@@ -41,10 +42,18 @@ while [  $COUNTER -le $LASTSEG ]; do
 	echo --- URL = $URL
 	echo --- FILENAME = $FILENAME
 	curl -v -o "$FILENAME" -A "$UA" $URL
+
+	CHECK=$(egrep -o "HTTP Status 404 - Segment not yet available" $FILENAME)
+	
+	if [ "$CHECK" == "" ]; then
+		let COUNTER=COUNTER+1 		
+	else
+		echo "--- HTTP Status 404 - Segment not yet available - wait and try again"
+		sleep $WT
+	fi
 	
 	FILESIZE=$(stat -c%s "$FILENAME")
 	let TOTALFS=TOTALFS+FILESIZE
-	let COUNTER=COUNTER+1 		
 done
 
 let SEGCT=LASTSEG-FIRSTSEG+1

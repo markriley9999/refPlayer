@@ -1,0 +1,10 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/bbc/hevc1/client_manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "BBC UHD Test Content",
+
+	"info"				: []
+}
