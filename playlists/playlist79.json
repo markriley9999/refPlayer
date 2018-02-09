@@ -1,8 +1,29 @@
 {
-	"ads" 				: [],
+	"ads" : [
+		{
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{	
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_AMV_SYPR030_030_001_93613_17.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/ch4/MUM-HATD170-020_1462888808_93626_17.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/ch4/CH4_31_02_50_CH4154DGGEN00021I01_002_1462888026_93623_17.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
 	"src" 				: "./content/bbc/hevc1/client_manifest.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "-1",
+	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
 	"channelName" 		: "BBC UHD Test Content",
 
