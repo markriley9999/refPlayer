@@ -2,6 +2,11 @@
 
 CMD=$1
 
+if [ -e title.txt ]; then
+    cat title.txt
+fi
+
+
 if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
   echo " - Update code"
   git stash
