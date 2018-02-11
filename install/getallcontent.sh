@@ -61,4 +61,4 @@ URL=$1
 
 ./getcontent.sh $URL "itv"
 
-#./getcontent.sh $URL "bbc/hevc1"
+#./getcontent.sh $URL "bbc-hevc1"
