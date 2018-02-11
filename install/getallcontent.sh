@@ -60,3 +60,5 @@ URL=$1
 ./getcontent.sh $URL "segtimeline-ENC-6"
 
 ./getcontent.sh $URL "itv"
+
+#./getcontent.sh $URL "bbc/hevc1"
