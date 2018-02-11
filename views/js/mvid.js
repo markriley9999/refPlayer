@@ -206,6 +206,10 @@ mVid.start = function () {
 	
 	this.showPlayrange();
 	
+	if (location.protocol === 'https:') {
+		e("padlock").setAttribute("class", "playerIcon showsecure");
+	}
+
 	getCookie = function (cname) {
 		var name = cname + "=";
 		var ca = document.cookie.split(';');
@@ -267,8 +271,11 @@ mVid.start = function () {
 			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
 				that.setContentSourceAndLoad();				
 			});
+			that.bEMESupport = true;
 		} else {
 			that.setContentSourceAndLoad();
+			e("encrypted").setAttribute("class", "playerIcon noeme");
+			that.bEMESupport = false;
 		}
 			
 		that.resetStallTimer();
@@ -787,7 +794,10 @@ mVid.setContentSourceAndLoad = function () {
 	player = this.getCurrentBufferingPlayer();
 	this.Log.info(player.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
-	e("encrypted").setAttribute("class", "playerIcon");
+	if (this.bEMESupport) {
+		e("encrypted").setAttribute("class", "playerIcon");
+	}
+	
 	e("subs").setAttribute("class", "playerIcon nosubs");
 	
 	this.setSourceAndLoad(player, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
@@ -1279,7 +1289,9 @@ function onVideoEvent (v) {
 				break;
 				
 			case v.videoEvents.ENCRYPTED:
-				e("encrypted").setAttribute("class", "playerIcon encrypted");
+				if (v.bEMESupport) {
+					e("encrypted").setAttribute("class", "playerIcon encrypted");
+				}
 				v.Log.warn(this.id + ": ENCRYPTED");
 				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
