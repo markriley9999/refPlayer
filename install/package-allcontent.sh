@@ -56,3 +56,5 @@
 ./package-content.sh "segtimeline/ENC-6"
 
 ./package-content.sh "itv"
+
+./package-content.sh "bbc/hevc1"
