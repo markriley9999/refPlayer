@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 CNT=$1
 
@@ -8,7 +9,7 @@ echo $CNT
 ./git-pull.sh
 ./node-setup.sh
 
-mkdir ../logs/
+mkdir -p ../logs/
 
 ./getcontent-duk-aws.sh
 
