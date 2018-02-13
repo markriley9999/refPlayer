@@ -25,8 +25,6 @@ URL=$1
 ./getcontent.sh $URL "sintel-ENC-5"
 ./getcontent.sh $URL "sintel-ENC-6"
 
-./getcontent.sh $URL "sintel-MIX"
-
 ./getcontent.sh $URL "bbb-init"
 ./getcontent.sh $URL "bbb-1-130975"
 ./getcontent.sh $URL "bbb-2-4641286"
@@ -42,23 +40,4 @@ URL=$1
 ./getcontent.sh $URL "bbb-ENC-5-2612761"
 ./getcontent.sh $URL "bbb-ENC-6-137036"
 
-./getcontent.sh $URL "bbb-MIX"
-
-./getcontent.sh $URL "segtimeline-init"
-./getcontent.sh $URL "segtimeline-1"
-./getcontent.sh $URL "segtimeline-2"
-./getcontent.sh $URL "segtimeline-3"
-./getcontent.sh $URL "segtimeline-4"
-./getcontent.sh $URL "segtimeline-5"
-./getcontent.sh $URL "segtimeline-6"
-
-./getcontent.sh $URL "segtimeline-ENC-1"
-./getcontent.sh $URL "segtimeline-ENC-2"
-./getcontent.sh $URL "segtimeline-ENC-3"
-./getcontent.sh $URL "segtimeline-ENC-4"
-./getcontent.sh $URL "segtimeline-ENC-5"
-./getcontent.sh $URL "segtimeline-ENC-6"
-
 ./getcontent.sh $URL "itv"
-
-#./getcontent.sh $URL "bbc-hevc1"
