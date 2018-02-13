@@ -142,7 +142,7 @@ function SetupEME(video, keySystem, name, options, contentTag, logObj)
 			log(" - Unknown DRM requested.")
 		}
 		
-		return true; // !!!! QUICK HACK !!!!! bCheckOk;
+		return bCheckOk;
 	}
 	
 	function onEncrypted(ev) {
