@@ -17,7 +17,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "ITV Family Guy (EME Clear Key only)",
+	"channelName" 		: "ITV Family Guy (Remote Hosted - EME Clear Key only)",
 
-	"info"				: []
+	"info"				: ["http content"]
 }
