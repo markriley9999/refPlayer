@@ -1,4 +1,5 @@
 const remote = require('electron').remote;
+const MAXROWS = 600;
 
 var graph = {};
 
@@ -89,6 +90,11 @@ graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
 									ev,
 									annotation
 								]);		
+								
+		if (chartObj.chartData.getNumberOfRows() > MAXROWS) {
+			chartObj.chartData.removeRow(0);
+		}
+		
 		chartObj.chart.draw(chartObj.chartData, chartObj.chartOptions);
 		//console.log(annotation);
 	}
