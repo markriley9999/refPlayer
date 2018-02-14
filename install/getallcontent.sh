@@ -40,4 +40,4 @@ URL=$1
 ./getcontent.sh $URL "bbb-ENC-5-2612761"
 ./getcontent.sh $URL "bbb-ENC-6-137036"
 
-./getcontent.sh $URL "itv"
+./getcontent.sh $URL "itv-clearkey"
