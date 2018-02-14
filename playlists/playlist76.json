@@ -17,7 +17,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "ITV Victoria",
+	"channelName" 		: "ITV Victoria (Remote Hosted)",
 
 	"info"				: ["http"]
 }
