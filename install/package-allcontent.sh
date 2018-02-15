@@ -55,4 +55,7 @@
 ./package-content.sh "segtimeline/ENC-5"
 ./package-content.sh "segtimeline/ENC-6"
 
-./package-content.sh "itv"
+./package-content.sh "itv/clearkey"
+./package-content.sh "itv/familyguy"
+
+./package-content.sh "bbc/hevc1"

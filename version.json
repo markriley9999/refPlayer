@@ -1,11 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "55",
-	"comment"	: "Formal release",
+	"minor" 	: "7",
+	"comment"	: "Development release",
 	"notes"		: [	
-					"Segtimeline content",
-					"Relative Events Fix",
-					"ContentProtection element added to mpds"
+					"HTTPS support", 
+					"Subtitle, https Icon"
 				  ]
 }

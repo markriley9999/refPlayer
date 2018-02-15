@@ -242,8 +242,28 @@ progress::-moz-progress-bar {
 	background-color: green;
 }
 
+.noeme {
+	background-color: red;
+}
+
 .flag {
 	background-color: blue;
+}
+
+.nosubs {
+	background-color: transparent;
+}
+
+.subsoff {
+	background-color: grey;
+}
+
+.subson {
+	background-color: orange;
+}
+
+.showsecure {
+	background-color: green;
 }
 
 .playerBufferingIcon {

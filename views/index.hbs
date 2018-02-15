@@ -4,7 +4,7 @@
 	<head>
 		<meta 	http-equiv="Content-Type" content="application/vnd.hbbtv.xml+xhtml; utf-8" />
 
-		<script type="text/javascript" src="http://cdn.dashjs.org/latest/dash.all.debug.js"></script>
+		<script type="text/javascript" src="https://cdn.dashjs.org/latest/dash.all.debug.js"></script>
         <script src="/socket.io/socket.io.js" charset="utf-8"></script> <!-- needed for sockets io to be able to detect the client -->
 
         <script type="text/javascript" src="common/utils.js"></script>		
@@ -71,13 +71,15 @@
 				</div>
 				<p style="height:10px"/>
 				<div class="centre fitwidth">
+					<img src="bitmaps/flag.png" 			id="flag" 			class="playerIcon"></img>
+					<img src="bitmaps/subs.png" 			id="subs" 			class="playerIcon"></img>
 					<img src="bitmaps/player_rew2.png" 		id="player-rew" 	class="playerIcon"></img>				
 					<img src="bitmaps/player_play2.png" 	id="player-play" 	class="playerIcon"></img>				
 					<img src="bitmaps/player_fwd2.png" 		id="player-fwd" 	class="playerIcon"></img>				
 					<img src="bitmaps/player_pause2.png" 	id="player-pause" 	class="playerIcon"></img>				
 					<img src="bitmaps/player_stop2.png" 	id="player-stop" 	class="playerIcon"></img>				
 					<img src="bitmaps/key.png" 				id="encrypted" 		class="playerIcon"></img>				
-					<img src="bitmaps/flag.png" 			id="flag" 			class="playerIcon"></img>
+					<img src="bitmaps/padlock.png" 			id="padlock"		class="playerIcon"></img>
 					<p id="cuedata"></p>
 				</div>
 			</div>

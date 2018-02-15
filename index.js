@@ -4,7 +4,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 const electron = require('electron');   
-const electronApp = electron.app;                
+const app = electron.app;                
  
 const browserWindow = electron.BrowserWindow;   
 const ipc = electron.ipcMain;                   
@@ -42,23 +42,41 @@ win['adtrans']		= null;
 win['config']		= null;
 
 
-var expressServer = express(); // Active express object
- 
-var server = require('http').createServer(expressServer); // use the electron server to create a sockets io server
-var io = require('socket.io')(server);          // create the sockets io server
- 
+var expressSrv = express(); // Active express object
+
 var generalInfo = {
 	port				: 0,
+	bHTTPSEnabled		: false,
+	httpsPort			: 0,
 	serverAddresses 	: [],
 	connectedDevices	: 0,
 	currentDeviceUA 	: "",
 	devName 			: "",
-	version				: {}
+	version				: require("./version.json")
 };
 
 
-generalInfo.version = require("./version.json");
+var http = require('http').createServer(expressSrv);
+var https;
 
+try {
+	const httpsOpts = {
+	  key: fs.readFileSync('ssl/server/private/refPlayer.key.pem'),
+	  cert: fs.readFileSync('ssl/server/certs/refPlayer.cert.pem')
+	};
+	generalInfo.bHTTPSEnabled = true;
+	https = require('https').createServer(httpsOpts, expressSrv); 
+} catch (error) {
+	https = require('https').createServer(expressSrv); 
+}
+
+
+const ioLib = require('socket.io');
+
+var ioHttp 	= ioLib(http);
+var ioHttps = ioLib(https);        
+ 
+ 
  
 ipc.on('ipc-openwindow', function(event, w) { 
 	if (win[w]) {
@@ -196,7 +214,7 @@ function init() {
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
 		console.log("--segdump    Dump segment information.");
-		electronApp.quit();
+		app.quit();
 		return;
 	}
 	
@@ -251,32 +269,47 @@ function init() {
 	console.log("Server (IPv4) Addresses");
 	console.log("-----------------------");
 
-	generalInfo.port = server.address().port;
+	generalInfo.port 		= http.address().port;
+	generalInfo.httpsPort 	= https.address().port;
+
 	for( var i = 0; i < generalInfo.serverAddresses.length; i++) {
-		console.log(i + ": " + generalInfo.serverAddresses[i] + ":" + generalInfo.port);
+		console.log(i + ": " + generalInfo.serverAddresses[i]);
 	}
 
-	
-	console.log("App URL:");
-	console.log("  <server_ip>:" + generalInfo.port + "/index.html");
-	console.log("  <server_ip>:" + generalInfo.port + "/player.aitx");
+	console.log("URLs:");
+	console.log("  http://[server_ip]:" + generalInfo.port + "/index.html");
+	console.log("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
+	if (generalInfo.bHTTPSEnabled) {
+		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
+		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
+	}
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
 	commonConfig.setNetworkErrors(commonConfig.NETERRS.NONE);
 	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.NONE);
 }
  
-electronApp.on('ready', init); 
+app.on('ready', init); 
  
-electronApp.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
+app.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
     if (process.platform !== 'darwin')
-        electronApp.quit();
+        app.quit();
 });
  
-expressServer.on('activate', function() {
+expressSrv.on('activate', function() {
 });
- 
-io.sockets.on('connection', function(socket) { // listen for a device connection to the server
+
+ioHttp.sockets.on('connection', function(s) {
+	socketConnect(s);
+});
+
+ioHttps.sockets.on('connection', function(s) {
+	socketConnect(s);
+});
+	
+	
+function socketConnect(socket) {
+	
 	generalInfo.connectedDevices++;
 
     console.log(" ---> Device connected: " + generalInfo.connectedDevices);
@@ -310,23 +343,23 @@ io.sockets.on('connection', function(socket) { // listen for a device connection
 
 	console.log(" ---> Device disconnected: " + generalInfo.connectedDevices);
 	});
-});
+}
 
-expressServer.use(express.static('public')); // put static files in the public folder to make them available on web pages
-expressServer.use(bodyParser.urlencoded({ extended: false })); 
-expressServer.use(bodyParser.text({type: 'text/plain'})); 
-expressServer.use(bodyParser.json());
+expressSrv.use(express.static('public')); // put static files in the public folder to make them available on web pages
+expressSrv.use(bodyParser.urlencoded({ extended: false })); 
+expressSrv.use(bodyParser.text({type: 'text/plain'})); 
+expressSrv.use(bodyParser.json());
 
-//expressServer.use(express.static('views'));
-expressServer.use('/common', express.static('common'));
-expressServer.use('/css', express.static('views/css'));
-expressServer.use('/bitmaps', express.static('views/bitmaps'));
-expressServer.use('/js', express.static('views/js'));
-expressServer.use('/playlists', express.static('playlists'));
+//expressSrv.use(express.static('views'));
+expressSrv.use('/common', express.static('common'));
+expressSrv.use('/css', express.static('views/css'));
+expressSrv.use('/bitmaps', express.static('views/bitmaps'));
+expressSrv.use('/js', express.static('views/js'));
+expressSrv.use('/playlists', express.static('playlists'));
   
-expressServer.set('view-engine', 'hbs'); 
+expressSrv.set('view-engine', 'hbs'); 
 
-expressServer.post('/log', function(req, res) {
+expressSrv.post('/log', function(req, res) {
 	win['log'].sendToWindow('ipc-log', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
@@ -342,19 +375,19 @@ function sendServerLog(msg) {
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
-expressServer.post('/status', function(req, res) {
+expressSrv.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressServer.post('/adtrans', function(req, res) {
+expressSrv.post('/adtrans', function(req, res) {
 	win['adtrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressServer.get('/*.html', function(req, res) {
+expressSrv.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
 	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
@@ -385,7 +418,7 @@ expressServer.get('/*.html', function(req, res) {
 	}
 });
 
-expressServer.get('/player.aitx', function(req, res) {
+expressSrv.get('/player.aitx', function(req, res) {
 	var srv = "http://" + req.headers.host + "/";
 	
 	// console.log("get ait: " + srv);
@@ -399,7 +432,7 @@ expressServer.get('/player.aitx', function(req, res) {
 
 var mp4box = new mp4boxModule.MP4Box();
 
-expressServer.get('/content/*', function(req, res) {
+expressSrv.get('/content/*', function(req, res) {
 	// TODO: Why seeing 2 gets????
 	var suffix = req.path.split('.').pop();
 	var cType;
@@ -514,7 +547,7 @@ expressServer.get('/content/*', function(req, res) {
 	
 });
 
-expressServer.get('/time', function(req, res) {
+expressSrv.get('/time', function(req, res) {
 	var tISO;
 
 	var d = new Date();
@@ -532,7 +565,7 @@ expressServer.get('/time', function(req, res) {
 const configSegJump 	= [];
 var segCount = 0;
 
-expressServer.get('/segjump/*', function(req, res) {
+expressSrv.get('/segjump/*', function(req, res) {
 	
 	var useURL = req.path;
 	var formProps = {};
@@ -597,7 +630,7 @@ const configStream 	= [];
 var archiveMPDs 	= [];
 var persistState 	= [];
 
-expressServer.get('/dynamic/*', function(req, res) {
+expressSrv.get('/dynamic/*', function(req, res) {
 	
 	var progStart;
 	var dNow = new Date();
@@ -1009,11 +1042,11 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) 
 	return complete;
 }
 
-expressServer.post('/savelog', function(req, res) {
+expressSrv.post('/savelog', function(req, res) {
 	console.log("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
-	fs.writeFile("./logs/" + req.query.filename, req.body, function(err) {
+	fs.writeFile("./logs/" + req.query.filename, "CLIENT IP: " + req.ip + "\n" + req.body, function(err) {
 		if(err) {
 			console.log(err);
 		}
@@ -1022,7 +1055,7 @@ expressServer.post('/savelog', function(req, res) {
  
 const licenceTable = [];
 
-expressServer.post('/getkeys', function(req, res) {
+expressSrv.post('/getkeys', function(req, res) {
 	
 	var lDelay = commonConfig.getDelayLicense();
 	
@@ -1075,6 +1108,8 @@ expressServer.post('/getkeys', function(req, res) {
 function sendConnectionStatus() {
 	var obj = { 
 					'port'			: generalInfo.port,
+					'bHTTPSEnabled'	: generalInfo.bHTTPSEnabled,
+					'httpsPort'		: generalInfo.httpsPort,
 					'addresses'		: generalInfo.serverAddresses, 
 					'bConnected'	: (generalInfo.connectedDevices > 0),
 					'devName'		: generalInfo.devName,
@@ -1091,4 +1126,6 @@ function sendConfig() {
 } 
 
 
-server.listen(8080); // Socket.io port (hides express inside)
+http.listen(8080);
+https.listen(8082);
+

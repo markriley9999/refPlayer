@@ -159,6 +159,7 @@ mVid.start = function () {
 	var confManager = null;
 	
 	this.EOPlayback = false;
+	this.bAttemptStallRecovery = false;
 	
 	this.socket = io();
 
@@ -206,6 +207,10 @@ mVid.start = function () {
 	
 	this.showPlayrange();
 	
+	if (location.protocol === 'https:') {
+		e("padlock").setAttribute("class", "playerIcon showsecure");
+	}
+
 	getCookie = function (cname) {
 		var name = cname + "=";
 		var ca = document.cookie.split(';');
@@ -267,8 +272,11 @@ mVid.start = function () {
 			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
 				that.setContentSourceAndLoad();				
 			});
+			that.bEMESupport = true;
 		} else {
 			that.setContentSourceAndLoad();
+			e("encrypted").setAttribute("class", "playerIcon noeme");
+			that.bEMESupport = false;
 		}
 			
 		that.resetStallTimer();
@@ -385,9 +393,6 @@ mVid.setUpCues = function () {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
-					// extract data property represented as ArrayBuffer
-					var dataView = new Uint8Array(cue.data);
-					
 					if ((cue !== null) && (cue.endTime > cue.startTime)) {
 						if (cue.startTime > 0) {
 							x =  (coef * cue.startTime) + c.left;
@@ -406,6 +411,13 @@ mVid.setUpCues = function () {
 						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
 					}
 				}
+			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
+				var s = e("subs");
+				if (track.mode === 'showing') {
+					s.setAttribute("class", "playerIcon subson");
+				} else {
+					s.setAttribute("class", "playerIcon subsoff");
+				}
 			}
 		}
 	}
@@ -418,11 +430,6 @@ mVid.setUpCues = function () {
 		var textTrack = event.track;
 		var cue;
 
-		if ((textTrack.kind === 'subtitles') || (textTrack.kind === 'captions')) {
-			textTrack.mode = 'showing';
-			that.Log.info("Set textTrack mode to showing");	
-		}
-		
 		textTrack.oncuechange = function () {
 
 			showCues();
@@ -788,7 +795,11 @@ mVid.setContentSourceAndLoad = function () {
 	player = this.getCurrentBufferingPlayer();
 	this.Log.info(player.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
-	e("encrypted").setAttribute("class", "playerIcon");
+	if (this.bEMESupport) {
+		e("encrypted").setAttribute("class", "playerIcon");
+	}
+	
+	e("subs").setAttribute("class", "playerIcon nosubs");
 	
 	this.setSourceAndLoad(player, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
@@ -834,6 +845,7 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		
 		// Running on a non hbbtv device?
 		if (!this.app) {
+			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
 			dashjs.MediaPlayerFactory.create(player, source);
 		}
 		//this.setPreload(player, "auto");
@@ -1279,7 +1291,9 @@ function onVideoEvent (v) {
 				break;
 				
 			case v.videoEvents.ENCRYPTED:
-				e("encrypted").setAttribute("class", "playerIcon encrypted");
+				if (v.bEMESupport) {
+					e("encrypted").setAttribute("class", "playerIcon encrypted");
+				}
 				v.Log.warn(this.id + ": ENCRYPTED");
 				v.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
@@ -1326,13 +1340,17 @@ mVid.OnCatchStall = function () {
 				break;
 				
 			case 1:
-				this.Log.warn("Stalled: re-call LOAD, in an attempt to recover");
-				playingPlayer.load();
+				if (this.bAttemptStallRecovery) {
+					this.Log.warn("Stalled: re-call LOAD, in an attempt to recover");
+					playingPlayer.load();
+				}
 				break;
 
 			case 2:
-				this.Log.warn("Stalled: re-call PLAY, in an attempt to recover");
-				playingPlayer.play();
+				if (this.bAttemptStallRecovery) {
+					this.Log.warn("Stalled: re-call PLAY, in an attempt to recover");
+					playingPlayer.play();
+				}
 				break;
 		}
 		if (this.stallCount++ > 2) this.stallCount = 1; // Note we go back to 1, not 0

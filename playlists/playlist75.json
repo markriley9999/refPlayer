@@ -1,0 +1,10 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://s3.eu-west-2.amazonaws.com/duk-testcontent/sintel/sintel.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Sintel (Remote Hosted)",
+
+	"info"				: []
+}

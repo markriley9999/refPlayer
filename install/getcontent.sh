@@ -10,27 +10,47 @@ echo $FNAME
 ./appinstall.sh curl
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
-if [ ! -d "$DIR" ]; then
-	mkdir $DIR
-fi
+mkdir -p $DIR
 
-http_code=$(curl --speed-limit 5 --speed-time 30 --write-out '\n%{http_code}\n' $URL/$FNAME -o $DIR/$FNAME | tail -n 1)
-if [ $? -ne 0 ]; then
-	exit 1
-fi
+COUNTER=0
+WAITT=4
+MAXATTEMPTS=5
 
-if [ $http_code -ne 200 ]; then
-	echo "***" \[$http_code\] "Server Error ***"
-	exit 1
-fi
+while [  $COUNTER -lt $MAXATTEMPTS ]; do
 
-tar -tf $DIR/$FNAME
-if [ $? -ne 0 ]; then
-	exit 1
-fi
+	if [ $COUNTER -gt 0 ]; then
+		echo " - backoff wait: "$WAITT"s"
+		sleep $WAITT
+		let WAITT=WAITT*2
+	fi
+	
+	http_code=$(curl --speed-limit 5 --speed-time 30 --write-out '\n%{http_code}\n' $URL/$FNAME -o $DIR/$FNAME | tail -n 1)
 
-tar -xzvf $DIR/$FNAME -C ../
+	if [ $? -eq 0 ]; then
+		# happy path
+		if [ $http_code -eq 200 ]; then
+			#happy path
+			tar -tf $DIR/$FNAME
+			if [ $? -eq 0 ]; then
+				# happy path
+				tar -xzvf $DIR/$FNAME -C ../
 
-rm $DIR/$FNAME
+				rm $DIR/$FNAME
 
-exit 0
+				echo "--- Success ---"
+				exit 0
+			fi
+
+		else
+			echo "***" \[$http_code\] "Server Error ***"
+		fi
+
+	fi
+	
+	let COUNTER=COUNTER+1
+	echo "Download failed, attempt "$COUNTER
+	
+done
+
+echo "!!! Aborting: Content download failed."
+exit 1

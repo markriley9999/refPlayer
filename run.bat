@@ -1,5 +1,7 @@
 @echo off
 
+if exist title.txt type title.txt
+
 set CMD=%1
 
 if "%CMD%" == "--update" (
