@@ -12,6 +12,7 @@ echo $CNT
 mkdir -p ../logs/
 
 ./getcontent-duk-aws.sh
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
 
 echo --- Install Complete! ---
 echo Type:

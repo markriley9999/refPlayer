@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "1",
 	"minor" 	: "7",
-	"comment"	: "Development release",
+	"comment"	: "Formal release",
 	"notes"		: [	
 					"HTTPS support", 
 					"Subtitle, https Icon"
