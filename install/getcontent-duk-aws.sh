@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 CMD=$1
 
 URL="http://refplayer-content.cloud.digitaluk.co.uk"
