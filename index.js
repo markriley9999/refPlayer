@@ -525,7 +525,9 @@ expressSrv.get('/content/*', function(req, res) {
 			"Content-Range": "bytes " + start + "-" + end + "/" + total,
 			"Accept-Ranges": "bytes",
 			"Content-Length": chunksize,
-			"Content-Type": cType
+			"Content-Type": cType,
+			"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+			"Access-Control-Allow-Origin": "*"
 		});			
 
 		var stream = fs.createReadStream(file, { start: start, end: end })
