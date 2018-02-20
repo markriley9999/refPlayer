@@ -419,7 +419,7 @@ expressSrv.get('/*.html', function(req, res) {
 });
 
 expressSrv.get('/player.aitx', function(req, res) {
-	var srv = "http://" + req.headers.host + "/";
+	var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 	
 	// console.log("get ait: " + srv);
 	res.render('playerait.hbs', {url: srv}, function(err, html) { 
