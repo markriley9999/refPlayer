@@ -842,7 +842,10 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		source.setAttribute("src", src);
 		player.bBuffEnoughToPlay = false;
 		player.bEncrypted = false;
-		
+
+		// Allow CORS - untested 
+		player.setAttribute("crossOrigin", "anonymous");
+	
 		// Running on a non hbbtv device?
 		if (!this.app) {
 			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
