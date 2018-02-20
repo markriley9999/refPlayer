@@ -76,7 +76,7 @@ mVid.networkStateMappingTable = [
 	"3 = NETWORK_NO_SOURCE" //no source in a supported format can be spotted
 ];
 
-// Media ready state - used for sanity checking state - TODO: use array, eg 0, HAVE_NOTHING, "HAVE_NOTHING"
+// Media ready state - used for sanity checking state
 const HAVE_NOTHING 		= 0;	// no data
 const HAVE_METADATA 	= 1;	// duration, width, height and other metadata of the video have been fetched.
 const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in order to start or continue playback.
@@ -85,7 +85,9 @@ const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream w
 
 
 // Events
-const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
+//const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
+const event_schemeIdUri = "urn:scte:scte35:2014:xml+bin"
+
 const event_value = "1"
 
 mVid.startTime = Date.now();
