@@ -241,14 +241,14 @@ function init() {
 		console.log("--- Dump Segment Info ---");
 	}
 	
-	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
 	
 	p = win['log'].getWin();
 	
-	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1400,	700,	null, null, true);
-	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1400, 	800,	null, null, true);
-	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null, null, true);
-	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null, null, true);
+	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1216,	700,	null, null, false);
+	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1216, 	800,	null, null, false);
+	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1216, 	800,	null, null, false);
+	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1216, 	800,	null, null, false);
 	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null, null, false);
 	win['config']		= new WINDOW(p,	'ui/config.html',		335, 	650,	null, null, false);
 
