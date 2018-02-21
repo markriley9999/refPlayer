@@ -1,9 +1,10 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "7",
-	"comment"	: "Formal release",
+	"minor" 	: "8d",
+	"comment"	: "Development release",
 	"notes"		: [	
+					"SCTE Events", 
 					"HTTPS support", 
 					"Subtitle, https Icon"
 				  ]

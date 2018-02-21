@@ -210,6 +210,8 @@ function init() {
 	
 	runOptions.bShowGUI 	= !argv.headless;
 	runOptions.bSegDump 	= argv.segdump;
+	runOptions.bEventAbs	= argv.eventabs;
+	
 	
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
@@ -240,6 +242,12 @@ function init() {
 	if (runOptions.bSegDump) {
 		console.log("--- Dump Segment Info ---");
 	}
+	
+	if (runOptions.bEventAbs) {
+		console.log(chalk.red("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---"));
+	}
+
+	console.log("");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
 	
@@ -419,7 +427,7 @@ expressSrv.get('/*.html', function(req, res) {
 });
 
 expressSrv.get('/player.aitx', function(req, res) {
-	var srv = "http://" + req.headers.host + "/";
+	var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 	
 	// console.log("get ait: " + srv);
 	res.render('playerait.hbs', {url: srv}, function(err, html) { 
@@ -909,8 +917,12 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
 	
-	/* var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   Absolute calc - this is wrong, use relative */
-	var evOffset = 0;
+	if (!runOptions.bEventAbs) {
+		var evOffset = 0;
+	} else {
+		// NOT COMPLIANT!
+		var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+	}
 	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
@@ -929,8 +941,13 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	var alignedOffset = (seg-1) * sz;
 	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
 	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
-	/* var evOffset 	= Math.round(alignedOffset * eTimescale / 1000);	Absolute calc - this is wrong, use relative */
-	var evOffset	= 0;
+	
+	if (!runOptions.bEventAbs) {
+		var evOffset = 0;
+	} else {
+		// NOT COMPLIANT!
+		var evOffset = Math.round(alignedOffset * eTimescale / 1000);	// Absolute calc - this is wrong, use relative
+	}
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
