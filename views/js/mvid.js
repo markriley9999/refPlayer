@@ -387,11 +387,16 @@ mVid.setUpCues = function () {
 
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
+
+			if (track)
+			{
+				that.Log.info("Track #" + t); 
+				that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+			}
 			
 			if (track && (track.kind === 'metadata') && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
-
-				that.Log.info("Show Cues: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
-
+				that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
+			
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
@@ -407,7 +412,7 @@ mVid.setUpCues = function () {
 							
 							that.cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							that.cueImages[imgIndex].style.left = (x - offset) + "px";
-							that.Log.info("Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
+							that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
 						}
 					} else {
 						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
@@ -430,15 +435,17 @@ mVid.setUpCues = function () {
 		
 	mainVideo.textTracks.onaddtrack = function (event) {
 		var textTrack = event.track;
-		var cue;
 
-		textTrack.oncuechange = function () {
-
-			showCues();
+		if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType)) {
 			
-			that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+			showCues();
 
-			if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType) && (textTrack.activeCues.length > 0)) {
+			textTrack.oncuechange = function () {
+				var cue;
+
+				showCues();
+				
+				that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
 
 				for (var i = 0; i < textTrack.activeCues.length; ++i) {
 
