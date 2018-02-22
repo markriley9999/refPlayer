@@ -13,7 +13,7 @@
 	"Vtimescale"	: "12800",
 	
 	"adD"			: "60000",
-	"adSegAlign"	: "round",
+	"adSegAlign"	: "none",
 	
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",

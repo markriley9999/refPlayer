@@ -3,12 +3,14 @@
 	type="static"
 	xmlns="urn:mpeg:dash:schema:mpd:2011" 
 	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
+	xmlns:scte35="urn:scte:scte35:2014:xml+bin"
 	xmlns:cenc="urn:mpeg:cenc:2013"
 	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
 	minBufferTime="PT10S" 
 	maxSegmentDuration="PT3.84S" 
 	mediaPresentationDuration="PT1H"
 >
+
 	<ProgramInformation>
 		<Title>dashads-dartest-ck-subs</Title>
 	</ProgramInformation>
@@ -17,12 +19,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-0" start="PT0H0M0.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="1">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="1"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+						
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -58,14 +70,24 @@
 
 	<!-- Main 0 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-0" start="PT0H1M1.440S">
+	<Period id="main-0" start="PT0H1M0.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="2">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="2"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -121,14 +143,24 @@
 
 	<!-- Ad 1 -->	
 	<!-- *** Generated Period: Ad *** -->
-	<Period id="ad-1" start="PT0H9M59.40S">
+	<Period id="ad-1" start="PT0H10M1.440S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="3">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="3"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+			
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -164,14 +196,24 @@
 
 	<!-- Main 1 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-1" start="PT0H11M0.480S">
+	<Period id="main-1" start="PT0H11M1.440S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="4">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="4"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -227,14 +269,24 @@
 
 	<!-- Ad 2 -->	
 	<!-- *** Generated Period: Ad *** -->
-	<Period id="ad-2" start="PT0H19M58.80S">
+	<Period id="ad-2" start="PT0H20M2.880S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="5">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="5"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+						
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -270,14 +322,24 @@
 
 	<!-- Main 2 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-2" start="PT0H20M59.520S">
+	<Period id="main-2" start="PT0H21M2.880S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="6">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="6"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -294,7 +356,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="16121856" startNumber="329" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="16171008" startNumber="330" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1397003">
@@ -323,7 +385,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="60456960" startNumber="329" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="60641280" startNumber="330" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
@@ -333,14 +395,24 @@
 
 	<!-- Ad 3 -->	
 	<!-- *** Generated Period: Ad *** -->
-	<Period id="ad-3" start="PT0H29M57.120S">
+	<Period id="ad-3" start="PT0H30M4.320S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="7">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="7"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+			
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -376,14 +448,24 @@
 
 	<!-- Main 3 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-3" start="PT0H30M58.560S">
+	<Period id="main-3" start="PT0H31M4.320S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="8">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="8"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -400,7 +482,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="23789568" startNumber="485" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="23887872" startNumber="487" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1397003">
@@ -429,7 +511,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="89210880" startNumber="485" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="89579520" startNumber="487" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
@@ -439,14 +521,24 @@
 
 	<!-- Ad 4 -->	
 	<!-- *** Generated Period: Ad *** -->
-	<Period id="ad-4" start="PT0H39M56.160S">
+	<Period id="ad-4" start="PT0H40M5.760S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="9">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="9"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+						
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -482,14 +574,24 @@
 
 	<!-- Main 4 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-4" start="PT0H40M57.600S">
+	<Period id="main-4" start="PT0H41M5.760S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="10">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="10"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -506,7 +608,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="31457280" startNumber="641" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="31555584" startNumber="643" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1397003">
@@ -535,7 +637,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="117964800" startNumber="641" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="118333440" startNumber="643" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
@@ -545,14 +647,24 @@
 
 	<!-- Ad 5 -->	
 	<!-- *** Generated Period: Ad *** -->
-	<Period id="ad-5" start="PT0H49M55.200S">
+	<Period id="ad-5" start="PT0H50M7.200S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="11">
 				Period Boundary - Ad Break
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="2880000" id="11"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+			
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
@@ -588,14 +700,24 @@
 
 	<!-- Main 5 -->	
 	<!-- *** Generated Period: Main Content *** -->
-	<Period id="main-5" start="PT0H50M56.640S">
+	<Period id="main-5" start="PT0H51M7.200S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="12">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="12"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+				
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 
 			<ContentProtection 
@@ -612,7 +734,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="39124992" startNumber="797" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="39272448" startNumber="800" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="1397003">
@@ -641,7 +763,7 @@
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="146718720" startNumber="797" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="147271680" startNumber="800" media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
 		</AdaptationSet>
