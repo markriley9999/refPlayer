@@ -609,15 +609,13 @@ mVid.updateBufferStatus = function(playerId, annot) {
 			headroomBuffer.setAttribute("class", "bufferBarActive");	
 		}
 		
-		offset = (player.paused) ? 0 : player.currentTime;
-		
 		if (duration && (duration > 0)) {
 			playerBuffer.max = duration;
 			headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
 
 			if ((buffer.length > 0) && (player.currentTime < player.duration) /* !player.ended */) {
 				buffV = buffer.end(buffer.length-1);
-				buffD = buffV - offset;
+				buffD = buffV - player.currentTime;
 				if (buffD < 0) {
 					buffD = 0;
 				}
