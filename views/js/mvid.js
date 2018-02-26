@@ -236,6 +236,9 @@ mVid.start = function () {
 		that.procPlaylist(ch, playObj);
 
 		mainVideo = e("mVid-mainContent");
+		
+		// Allow CORS 
+		mainVideo.setAttribute("crossOrigin", "anonymous");
 
 		mainVideo.resumeFrom 			= 0;
 		mainVideo.bPlayPauseTransition 	= false;
@@ -513,9 +516,24 @@ mVid.displayBrowserInfo = function () {
 mVid.createPlayer = function (playerId) {
 	this.Log.info("createPlayer: " + playerId);
 
+	if (e(playerId)) {
+		this.Log.warn("createPlayer: " + playerId + " Already exists - will not create new!");
+		return e(playerId);
+	}
+	
 	var player = document.createElement("video");	
 	
+	if (!player)
+	{
+		this.Log.warn("createPlayer: " + playerId + " Creation failed!");
+		return null;
+	}
+	
     player.setAttribute("id", playerId);
+
+	// Allow CORS 
+	player.setAttribute("crossOrigin", "anonymous");
+	
 	player.style.display = "none";
 	
 	var source = document.createElement("source");
@@ -851,9 +869,6 @@ mVid.setSourceAndLoad = function (player, src, type) {
 		player.bBuffEnoughToPlay = false;
 		player.bEncrypted = false;
 
-		// Allow CORS - untested 
-		player.setAttribute("crossOrigin", "anonymous");
-	
 		// Running on a non hbbtv device?
 		if (!this.app) {
 			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
