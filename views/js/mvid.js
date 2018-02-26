@@ -171,6 +171,13 @@ mVid.start = function () {
 	this.Log.info("app loaded");
 
 	this.displayBrowserInfo();
+
+	this.bOverrideSubs = commonUtils.getUrlVars()["subs"] || '0';
+	
+	if (this.bOverrideSubs)
+	{
+        this.Log.warn("Force substitles on");
+	}
 	
     try {
 		if (oipfObjectFactory.isObjectSupported('application/oipfApplicationManager')) {
@@ -423,6 +430,12 @@ mVid.setUpCues = function () {
 				}
 			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
 				var s = e("subs");
+				
+				// Force subs on?
+				if (that.bOverrideSubs == '1'){
+					track.mode = 'showing';
+				}
+				
 				if (track.mode === 'showing') {
 					s.setAttribute("class", "playerIcon subson");
 				} else {
