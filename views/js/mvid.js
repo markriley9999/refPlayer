@@ -454,11 +454,12 @@ mVid.setUpCues = function () {
 					if (cue && (cue.endTime > cue.startTime)) {
 						var f = e("flag");
 						var cd = e("cuedata");
+						var s = arrayBufferToString(cue.data);
 						
 						that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));							
 						f.setAttribute("class", "playerIcon flag");
 						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
-						cd.innerHTML = "Cue Event: " + arrayBufferToString(cue.data);
+						cd.innerHTML = "Cue Event: " + window.atob(s.replace(/\s/g,'').substr(1)) + " (" + s + ")";
 						
 						cue.onexit = function (ev) {
 							f.setAttribute("class", "playerIcon");
