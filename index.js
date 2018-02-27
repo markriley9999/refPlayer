@@ -1077,9 +1077,18 @@ const licenceTable = [];
 expressSrv.post('/getkeys', function(req, res) {
 	
 	var lDelay = commonConfig.getDelayLicense();
+	var licReq = req.body;
+	var kid;
 	
-	console.log("getkeys: " + JSON.stringify(req.body));
+	console.log("getkeys: " + JSON.stringify(licReq));
 	console.log(" - url: " + req.path);
+	
+	try {
+		kid = licReq.kids[0];
+	} catch (err) {
+		console.log(" * malformed licence request.");
+		return res.sendStatus(400);
+	}
 	
 	if (req.query.tag) {
 		var tag = req.query.tag;
@@ -1103,7 +1112,12 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 			
 			var lic = licenceTable[tag];
-			// sendServerLog("licence: " + JSON.stringify(lic));
+			sendServerLog("licence: " + JSON.stringify(lic));
+			
+			if (lic.keys[0].kid !=  kid) {
+				sendServerLog(" * illegal kid.");
+				return res.sendStatus(403);
+			}
 			
 			if (lDelay.value != 0) {
 				
