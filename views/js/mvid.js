@@ -172,11 +172,11 @@ mVid.start = function () {
 
 	this.displayBrowserInfo();
 
-	this.bOverrideSubs = commonUtils.getUrlVars()["subs"] || '0';
+	this.bOverrideSubs = commonUtils.getUrlVars()["subs"] || false;
 	
 	if (this.bOverrideSubs)
 	{
-        this.Log.warn("Force substitles on");
+        this.Log.warn("Force subtitles on");
 	}
 	
     try {
@@ -432,7 +432,7 @@ mVid.setUpCues = function () {
 				var s = e("subs");
 				
 				// Force subs on?
-				if (that.bOverrideSubs == '1'){
+				if (that.bOverrideSubs){
 					track.mode = 'showing';
 				}
 				
