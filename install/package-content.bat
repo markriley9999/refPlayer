@@ -11,5 +11,5 @@ echo DASHNAME: %DASHNAME%
 
 mkdir tmp
 
-tar -czvf "tmp/windows-refplayer-content-%DASHNAME%.tar.gz" --exclude={*.mpd,*.xml,*.txt,*.bin} "../content/%NAME%"
-tar -tf "tmp/windows-refplayer-content-%DASHNAME%.tar.gz"
+tar -czvf "tmp/refplayer-content-%DASHNAME%.tar.gz" --exclude={*.mpd,*.xml,*.txt,*.bin} "../content/%NAME%"
+tar -tf "tmp/refplayer-content-%DASHNAME%.tar.gz"
