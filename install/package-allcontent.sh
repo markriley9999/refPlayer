@@ -6,6 +6,14 @@
 
 ./package-content.sh "subs"
 
+./package-content.sh "adtest/init"
+./package-content.sh "adtest/1"
+./package-content.sh "adtest/2"
+./package-content.sh "adtest/3"
+./package-content.sh "adtest/4"
+./package-content.sh "adtest/5"
+./package-content.sh "adtest/6"
+
 ./package-content.sh "sintel/init"
 ./package-content.sh "sintel/1"
 ./package-content.sh "sintel/2"
