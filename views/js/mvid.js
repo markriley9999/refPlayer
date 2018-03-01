@@ -48,6 +48,12 @@ const PLAYSTATE_FWD		= 4;
 
 const STALL_TIMEOUT_MS = 10000;
 
+const AD_TRANS_TIMEOUT_MS	= 100;
+const AD_TRANS_THRESHOLD_MS = 3000;
+
+const AD_START_THRESHOLD_S 	= 10;
+const AD_START_TIMEOUT_MS	= 100;
+
 const PRELOAD_NEXT_AD_S = 5;
 
 // Icon table
@@ -250,7 +256,7 @@ mVid.start = function () {
 		mainVideo.resumeFrom 			= 0;
 		mainVideo.bPlayPauseTransition 	= false;
 		mainVideo.bBuffEnoughToPlay 	= false;
-		that.transitionThresholdMS 		= 1000;
+		that.transitionThresholdMS 		= AD_TRANS_THRESHOLD_MS;
 		that.bShowBufferingIcon			= false;
 		
 		
@@ -569,8 +575,6 @@ mVid.createVideo = function (videoId) {
 
 	video.bPlayPauseTransition = false;
 	video.resumeFrom = 0;
-	
-	this.timeStampStartOfPlay(video);
 	
 	return video;
 }
@@ -945,6 +949,8 @@ mVid.timeStampStartOfPlay = function (video) {
 		video.timestampStartPlay 	= Date.now();
 		video.bTimePlayTransition 	= true;
 		this.statusTableText(video.id, "Play trans", "");
+		
+		this.startAdTransitionTimer();
 	}
 }
 	
@@ -1213,10 +1219,6 @@ function onVideoEvent (v) {
 				v.showBufferingIcon(true);
 				v.setPlayingState(PLAYSTATE_STOP);
 
-				if (this == playingVideo) {
-					v.Log.warn(this.id + ": end playback event for inactive (not playing) video object!");			
-				}
-
 				// Start playing buffered content
 				if (v.isMainFeatureVideo(this)) {
 					v.Log.info(this.id + ": video has ended - stop everything.");
@@ -1239,88 +1241,61 @@ function onVideoEvent (v) {
 
 			case v.videoEvents.TIME_UPDATE:
 				var tNow = Math.floor(this.currentTime);
-				if (tNow === this.tOld) 
+
+				// Only do this once a second
+				if (tNow != this.tOld) 
 				{
-					break;
-				}
-				this.tOld = tNow;				
-				
-				v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
-				v.updatePlaybackBar(this.id);
-		
-				// Check if gone off end!
-				if (this.currentTime > this.duration) {
-						v.Log.error("Current Time > Duration - content should have ended!");
-						//v.reload();
-				}
-				
-				// Start buffering next programme?
-				if (bBufferingWhilstAttemptingToPlay) {
-					var duration 	= this.duration;
-					var bufferEnd 	= v.getBufferedAmount(this);
-					var bPreloadNextAd = false;
-					
+					// Sanity check
 					if (this === playingVideo) {
-						if (v.isMainFeatureVideo(this)) {
-							if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime())) {
-							bPreloadNextAd = true;
-							// not needed???? v.setPreload(playingVideo, "none");
+						this.tOld = tNow;				
+						
+						v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
+						v.updatePlaybackBar(this.id);
+				
+						// Time for adverts?
+						if (v.isMainFeatureVideo(playingVideo)) {
+							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionTime()) {
+								v.startAdStartTimer();
 							}
-						} else {
-							if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
-								bPreloadNextAd = true;
-							}					
 						}
+
+						// Check if gone off end!
+						if (this.currentTime > this.duration) {
+								v.Log.error("Current Time > Duration - content should have ended!");
+						}
+						
+						// Start buffering next programme?
+						if (bBufferingWhilstAttemptingToPlay) {
+							var duration 	= this.duration;
+							var bufferEnd 	= v.getBufferedAmount(this);
+							var bPreloadNextAd = false;
+							
+							if (v.isMainFeatureVideo(this)) {
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime())) {
+								bPreloadNextAd = true;
+								// not needed???? v.setPreload(playingVideo, "none");
+								}
+							} else {
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
+									bPreloadNextAd = true;
+								}					
+							}
+							
+							if (bPreloadNextAd) {
+								v.Log.info(this.id + ": Commence buffering for next item");			
+								v.skipBufferingToNextVideo(); // Get ready to buffer next video
+								v.setContentSourceAndLoad();
+
+								if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY_THROUGH) {
+									v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
+								}
+								v.updateBufferStatus(this.id, "Preload next ad");
+							}
+						}
+						
+						v.resetStallTimer();
 					}
 					
-					if (bPreloadNextAd) {
-						v.Log.info(this.id + ": Commence buffering for next item");			
-						v.skipBufferingToNextVideo(); // Get ready to buffer next video
-						v.setContentSourceAndLoad();
-
-						if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY_THROUGH) {
-							v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
-						}
-						v.updateBufferStatus(this.id, "Preload next ad");
-					}
-				}
-				
-				// Now check playback
-				var transTimeMS = Math.floor((this.currentTime * 1000) - this.startPlaybackPointMS);
-				if ((this == playingVideo) && this.bTimePlayTransition && (transTimeMS >= v.transitionThresholdMS)) {
-					this.bTimePlayTransition = false;
-					var playTransMS = Date.now() - this.timestampStartPlay - v.transitionThresholdMS;
-					playTransMS = (playTransMS > 0) ? playTransMS : 0;
-					v.statusTableText(this.id, "Play trans", playTransMS + "ms");
-					v.postAdTrans(this.id, playTransMS);
-				}
-				
-				// Time for adverts?
-				if ((this == playingVideo) && v.isMainFeatureVideo(playingVideo)) {
-					if ((this.currentTime - this.resumeFrom) >= v.getTransitionTime()) {
-						v.Log.warn(this.id + ": transition main content");
-						
-						// Check to see if we're buffering the right video object
-						if (bBufferingWhilstAttemptingToPlay) {
-							v.Log.error(this.id + ": still buffering current video (should be prebuffering next!)");
-							v.skipBufferingToNextVideo(); // Get ready to buffer next video
-							v.setContentSourceAndLoad();						
-						}
-						
-						this.resumeFrom += v.getTransitionTime();
-						this.bPlayPauseTransition = false;
-						this.pause();
-						v.updateBufferStatus(this.id, "Play advert");
-					}
-				}
-
-				if (this === playingVideo) {
-					v.resetStallTimer();
-				}
-				
-				// Sanity check
-				if (this != playingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 				break;
 				
@@ -1352,6 +1327,60 @@ function onVideoEvent (v) {
 			default:
 				//do nothing
 		}
+	}
+}
+
+mVid.getCurrentTime = function (v) {
+	return v.currentTime;
+}
+
+mVid.startAdTransitionTimer = function () {
+	if (this.adTimerId) clearTimeout(this.adTimerId);
+	this.adTimerId = setTimeout(this.OnCheckAdTransition.bind(this), AD_TRANS_TIMEOUT_MS);
+}
+
+mVid.OnCheckAdTransition = function () {
+	var vid = this.getCurrentPlayingVideo();
+	
+	if (!vid.bTimePlayTransition) {
+		return;
+	}
+	
+	var transTimeMS = Math.floor((this.getCurrentTime(vid) * 1000) - vid.startPlaybackPointMS);
+
+	if (transTimeMS >= this.transitionThresholdMS) {
+		vid.bTimePlayTransition = false;
+		var playTransMS = Date.now() - vid.timestampStartPlay - this.transitionThresholdMS;
+		playTransMS = (playTransMS > 0) ? playTransMS : 0;
+		this.statusTableText(vid.id, "Play trans", playTransMS + "ms");
+		this.postAdTrans(vid.id, playTransMS);
+	} else {
+		this.adTimerId = setTimeout(this.OnCheckAdTransition.bind(this), AD_TRANS_TIMEOUT_MS);
+	}
+}
+
+mVid.startAdStartTimer = function () {
+	if (this.adStartTimerId) clearTimeout(this.adStartTimerId);
+	this.adStartTimerId = setTimeout(this.OnCheckAdStart.bind(this), AD_START_TIMEOUT_MS);
+}
+
+mVid.OnCheckAdStart = function () {
+	var vid = this.getCurrentPlayingVideo();
+
+	if (!this.isMainFeatureVideo(vid)) {
+		return;
+	}
+	
+	// Time for adverts?
+	if ((this.getCurrentTime(vid) - vid.resumeFrom) >= this.getTransitionTime()) {
+		this.Log.warn(vid.id + ": transition main content");
+				
+		vid.resumeFrom += this.getTransitionTime();
+		vid.bPlayPauseTransition = false;
+		vid.pause();
+		this.updateBufferStatus(vid.id, "Play advert");
+	} else {
+		this.adStartTimerId = setTimeout(this.OnCheckAdStart.bind(this), AD_START_TIMEOUT_MS);
 	}
 }
 
