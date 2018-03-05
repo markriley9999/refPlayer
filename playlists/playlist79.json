@@ -25,7 +25,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
-	"channelName" 		: "(BBC) UHD with Ad Insertion Test Content",
+	"channelName" 		: "(BBC) UHD HLG with Ad Insertion Test Content",
 
 	"info"				: []
 }
