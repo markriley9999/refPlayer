@@ -25,7 +25,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
-	"channelName" 		: "3 Video Objs - Ads: 5, Main: BBB and Sintel (Subs)",
+	"channelName" 		: "3 Video Objs - Frame Count Check - Ads: 5, Main: BBB and Sintel (Subs)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
 							"'Big Buck Bunny + Sintel' DASH asset - playing for 60s",
