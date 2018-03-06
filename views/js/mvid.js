@@ -48,13 +48,16 @@ const PLAYSTATE_FWD		= 4;
 
 const STALL_TIMEOUT_MS = 10000;
 
-const AD_TRANS_TIMEOUT_MS	= 100;
+const AD_TRANS_TIMEOUT_MS	= 40;
 const AD_TRANS_THRESHOLD_MS = 3000;
 
 const AD_START_THRESHOLD_S 	= 10;
-const AD_START_TIMEOUT_MS	= 100;
+const AD_START_TIMEOUT_MS	= 40;
 
 const PRELOAD_NEXT_AD_S = 5;
+
+const CONTENT_FPS = 25;
+
 
 // Icon table
 mVid.playIconTable = [
@@ -178,7 +181,8 @@ mVid.start = function () {
 
 	this.displayBrowserInfo();
 
-	this.bOverrideSubs = commonUtils.getUrlVars()["subs"] || false;
+	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
+	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
 	
 	if (this.bOverrideSubs)
 	{
@@ -828,8 +832,12 @@ mVid.getPlayingContentIdx = function () {
 
 mVid.getTransitionTime = function () {
 	var i = parseInt(this.cnt.list[this.cnt.curPlayIdx].transitionTime);
+	var obj = {};
 	
-	return (i != -1) ? i : Number.MAX_SAFE_INTEGER;
+	obj.bEnabled = (i != -1);
+	obj.v = (i != -1) ? i : Number.MAX_SAFE_INTEGER;
+	
+	return obj;
 }
 
 mVid.setContentSourceAndLoad = function () {
@@ -878,9 +886,23 @@ mVid.setSourceAndLoad = function (video, src, type) {
 	this.statusTableText(video.id, "Type", type);
 	
 	var source = e(video.id + "-source");
-
-	if (source.getAttribute("type") == "" || !this.isMainFeatureVideo(video))
+	
+	var bSetSource = true;
+	
+	if (this.isMainFeatureVideo(video)) 
 	{
+		if (source.getAttribute("type") != "") {
+			bSetSource = false;
+			if (video.currentTime != video.resumeFrom) {
+				if (this.bCheckResume) {
+					this.Log.warn(video.id + " video.currentTime - realign from " + video.currentTime + " to " + video.resumeFrom);
+					video.currentTime = video.resumeFrom;
+				}
+			}
+		}
+	}
+	 
+	if (bSetSource) {
 		source.setAttribute("type", type);	
 		source.setAttribute("src", src);
 		video.bBuffEnoughToPlay = false;
@@ -983,7 +1005,7 @@ mVid.showPlayrange = function () {
 		x2 = c.right;			
 	} else {
 		var coef = (c.width / p.duration);
-		var t = this.getTransitionTime();
+		var t = this.getTransitionTime().v;
 		x1 =  (coef * p.resumeFrom) + c.left;
 		var endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
 		
@@ -1254,7 +1276,7 @@ function onVideoEvent (v) {
 				
 						// Time for adverts?
 						if (v.isMainFeatureVideo(playingVideo)) {
-							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionTime()) {
+							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionTime().v) {
 								v.startAdStartTimer();
 							}
 						}
@@ -1271,9 +1293,9 @@ function onVideoEvent (v) {
 							var bPreloadNextAd = false;
 							
 							if (v.isMainFeatureVideo(this)) {
-								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime())) {
-								bPreloadNextAd = true;
-								// not needed???? v.setPreload(playingVideo, "none");
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime().v)) {
+									bPreloadNextAd = true;
+									// not needed???? v.setPreload(playingVideo, "none");
 								}
 							} else {
 								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
@@ -1372,11 +1394,17 @@ mVid.OnCheckAdStart = function () {
 	}
 	
 	// Time for adverts?
-	if ((this.getCurrentTime(vid) - vid.resumeFrom) >= this.getTransitionTime()) {
+	if ((this.getCurrentTime(vid) - vid.resumeFrom) >= this.getTransitionTime().v) {
 		this.Log.warn(vid.id + ": transition main content");
 				
-		vid.resumeFrom += this.getTransitionTime();
+		vid.resumeFrom += this.getTransitionTime().v;
 		vid.bPlayPauseTransition = false;
+		
+		if (vid.currentTime != vid.resumeFrom) {
+			var dt = vid.currentTime - vid.resumeFrom;			
+			this.Log.warn(vid.id + " Paused  " + dt + "s past point, frames " + (dt * CONTENT_FPS));
+		}
+		
 		vid.pause();
 		this.updateBufferStatus(vid.id, "Play advert");
 	} else {
@@ -1563,7 +1591,16 @@ mVid.cmndJumpToEnd = function () {
 		var t = playingVideo.duration * 0.9;
 		playingVideo.currentTime = t;
 		if (this.isMainFeatureVideo(playingVideo)) {
-			playingVideo.resumeFrom = t;
+			var trans =  this.getTransitionTime();
+			
+			if (trans.bEnabled) {
+				var tt = trans.v;
+			
+				playingVideo.resumeFrom = Math.floor(t / tt) * tt;
+			} else {
+				playingVideo.resumeFrom = t;
+			}
+			
 			this.showPlayrange();
 		}
 	}
