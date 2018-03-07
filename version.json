@@ -1,7 +1,7 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "10d",
+	"minor" 	: "11d",
 	"comment"	: "Development release",
 	"notes"		: [	
 					"SCTE Events", 
