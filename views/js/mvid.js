@@ -181,8 +181,10 @@ mVid.start = function () {
 
 	this.displayBrowserInfo();
 
+	// Parse query params
 	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
+	this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
 	
 	if (this.bOverrideSubs)
 	{
@@ -461,7 +463,42 @@ mVid.setUpCues = function () {
 		
 	mainVideo.textTracks.onaddtrack = function (event) {
 		var textTrack = event.track;
+		
+		function parseSCTE(d) {
+			var s = arrayBufferToString(d);
+			var r;
+			
+			/* --- Example scte data --- *
+			s = "<scte35:Signal xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"><scte35:Binary>   	\
+                                                /TWFpbiBDb250ZW50									\
+                                        </scte35:Binary></scte35:Signal>							\
+			"; 
+			******************************/
+				
+			that.Log.info("Parse SCTE: data: " + s);
 
+			try {
+				if (that.bFullSCTE) {
+					if (window.DOMParser) {
+						var parser = new DOMParser();
+						var x = parser.parseFromString(s, "text/xml");
+						var bn = x.getElementsByTagNameNS("urn:scte:scte35:2014:xml+bin", "Binary")[0].childNodes[0].nodeValue;
+						r = window.atob(bn.replace(/\s/g,'').substr(1));
+					} else {
+						r = "No DOMParser object";
+					}
+				} else {
+					r = window.atob(s.replace(/\s/g,'').substr(1));
+				}
+			} catch (err) {
+				r = "Event Data Error";
+			}
+			
+			that.Log.info("Parsed SCTE: " + r);
+
+			return r;
+		}
+		
 		if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType)) {
 			
 			showCues();
@@ -480,12 +517,12 @@ mVid.setUpCues = function () {
 					if (cue && (cue.endTime > cue.startTime)) {
 						var f = e("flag");
 						var cd = e("cuedata");
-						var s = arrayBufferToString(cue.data);
+						var s = parseSCTE(cue.data);
 						
 						that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));							
 						f.setAttribute("class", "playerIcon flag");
 						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
-						cd.innerHTML = "Cue Event: " + window.atob(s.replace(/\s/g,'').substr(1)) + " (" + s + ")";
+						cd.innerHTML = "Cue Event: " + s;
 						
 						cue.onexit = function (ev) {
 							f.setAttribute("class", "playerIcon");
