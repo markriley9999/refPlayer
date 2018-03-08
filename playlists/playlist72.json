@@ -21,15 +21,17 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/adtest/adtest.mpd",
+	"src" 				: "./content/adtest/adtest-subs-ck.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
-	"channelName" 		: "3 Video Objs - Frame Count Check - Ads: 5",
+	"channelName" 		: "3 Video Objs - Frame Count Check - Ads: 5 (Clear Key, subs)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
 							"'Big Buck Bunny + Sintel' DASH asset - playing for 60s",
-							"Main content stamped with frame number (count up and down)"
+							"Main content stamped with frame number (count up and down)",
+							"Clear Key",
+							"Subtitles"
 						  ]
 
 }
