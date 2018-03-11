@@ -1,6 +1,12 @@
-var mVid = {};
-
+// --- Some helpers first --- //
 var commonUtils = new UTILS();
+
+e = function (id) {
+  return document.getElementById(id);
+}
+
+// --- MAIN OBJECT --- //
+var mVid = {};
 
 mVid.videoEvents = Object.freeze({
   LOAD_START		: "loadstart",
@@ -92,6 +98,14 @@ const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in o
 const HAVE_FUTURE_DATA	= 3; 	// enough data to start playback
 const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream without interruption till the end.
 
+// Windowed video objects
+var windowVideoObjects = [];
+
+mVid.windowVideoObjects = {
+	"mVid-video0" : 		{ top : "96px", 	left	: "240px", 	width	: "480px", 	height : "320px", bcol	: "blue" },
+	"mVid-video1" : 		{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "green" },
+	"mVid-mainContent" : 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
+}
 
 // Events
 //const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
@@ -146,24 +160,6 @@ mVid.Log._write = function(message, cssClass) {
 };
 
 
-e = function (id) {
-  return document.getElementById(id);
-}
-
-window.onload = function () {
-	try {
-		mVid.start();
-	} catch (error) {
-		mVid.Log.error("FATAL ERROR: " + error.message);
-	}
-}
-
-window.onbeforeunload = function () {
-	mVid.Log.warn("Unload page");
-	mVid.cmndLog();
-	mVid.socket.disconnect();
-}
-
 mVid.start = function () {
     var appMan 		= null;
 	var that 		= this;
@@ -185,6 +181,7 @@ mVid.start = function () {
 	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
 	this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
+	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
 	
 	if (this.bOverrideSubs)
 	{
@@ -254,22 +251,11 @@ mVid.start = function () {
 
 		that.procPlaylist(ch, playObj);
 
-		mainVideo = e("mVid-mainContent");
+		mainVideo = that.createVideo("mVid-mainContent");
 		
-		// Allow CORS 
-		mainVideo.setAttribute("crossOrigin", "anonymous");
-
-		mainVideo.resumeFrom 			= 0;
-		mainVideo.bPlayPauseTransition 	= false;
-		mainVideo.bBuffEnoughToPlay 	= false;
-		that.transitionThresholdMS 		= AD_TRANS_THRESHOLD_MS;
-		that.bShowBufferingIcon			= false;
-		
-		
-		for(var i in that.videoEvents) {
-			mainVideo.addEventListener(that.videoEvents[i], onVideoEvent(that));
-		}
-
+		that.transitionThresholdMS 	= AD_TRANS_THRESHOLD_MS;
+		that.bShowBufferingIcon		= false;
+				
 		that.setUpCues();
 				
 		// Clear key
@@ -371,6 +357,15 @@ mVid.procPlaylist = function (ch, playObj) {
 		this.Log.info(" - " + c[i].transitionTime);	
 		this.Log.info(" - ");			
 	}
+	
+	if (playObj.special_jumptomain === "true") {
+		this.Log.info(" * SpecialMode: Jump to main, skipping initial adverts. *");	
+		
+		this.cnt.curBuffIdx = playObj.ads.length;
+		this.cnt.curPlayIdx = playObj.ads.length;
+	}
+	
+	this.bPurgeMain = (playObj.special_purgemain === "true") || false;
 	
 	e("currentChannel") && (e("currentChannel").innerHTML = "Test " + ch + " - " + playObj.channelName);
 }
@@ -594,12 +589,16 @@ mVid.createVideo = function (videoId) {
 	// Allow CORS 
 	video.setAttribute("crossOrigin", "anonymous");
 	
-	video.style.display = "none";
+	if (!this.bWindowedObjs) {
+		video.style.display = "none";
+		video.setAttribute("poster", "bitmaps/bground.jpg");
+	}
 	
 	var source = document.createElement("source");
 	
     source.setAttribute("id", videoId + "-source");
     source.setAttribute("preload", "auto");
+    source.setAttribute("loop", "false");
 	
 	video.appendChild(source);
 
@@ -615,7 +614,21 @@ mVid.createVideo = function (videoId) {
 	this.statusTableText(videoId, "Pos", "---");
 
 	video.bPlayPauseTransition = false;
-	video.resumeFrom = 0;
+	video.resumeFrom 			= 0;
+	video.bBuffEnoughToPlay 	= false;
+	video.bPlayEventFired		= false;
+	
+	if (this.bWindowedObjs) {
+		video.style.display 	= "block";
+		video.style.top  		= this.windowVideoObjects[videoId].top;
+		video.style.left 		= this.windowVideoObjects[videoId].left;
+		video.style.width		= this.windowVideoObjects[videoId].width;
+		video.style.height 		= this.windowVideoObjects[videoId].height;
+		video.style.backgroundColor	= this.windowVideoObjects[videoId].bcol;
+		video.style.position	= "absolute";
+		
+		e("player-container").style.backgroundColor = "cyan";
+	}
 	
 	return video;
 }
@@ -928,7 +941,7 @@ mVid.setSourceAndLoad = function (video, src, type) {
 	
 	if (this.isMainFeatureVideo(video)) 
 	{
-		if (source.getAttribute("type") != "") {
+		if (source.type) {
 			bSetSource = false;
 			if (video.currentTime != video.resumeFrom) {
 				if (this.bCheckResume) {
@@ -944,7 +957,8 @@ mVid.setSourceAndLoad = function (video, src, type) {
 		source.setAttribute("src", src);
 		video.bBuffEnoughToPlay = false;
 		video.bEncrypted = false;
-
+		video.bPlayEventFired = false;
+		
 		// Running on a non hbbtv device?
 		if (!this.app) {
 			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
@@ -989,7 +1003,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	// Set the display CSS property of the previous media element to none.
-	if (previousVideo) {
+	if (previousVideo && !this.bWindowedObjs) {
 		previousVideo.style.display = "none";
 	}
 	
@@ -998,7 +1012,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	// Purge previous video
-	if (previousVideo && !this.isMainFeatureVideo(previousVideo)) {
+	if (previousVideo && (!this.isMainFeatureVideo(previousVideo) || this.bPurgeMain)) {
 		this.purgeVideo(previousVideo.id);
 	}
 }
@@ -1191,8 +1205,9 @@ function onVideoEvent (v) {
 				v.setPlayingState(PLAYSTATE_PLAY);
 				v.showPlayrange();
 				
-				// Sanity check
-				if (this != playingVideo) {
+				if (this == playingVideo) {
+					this.bPlayEventFired = true;
+				} else {
 					v.Log.error(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 
@@ -1204,6 +1219,23 @@ function onVideoEvent (v) {
 					this.startPlaybackPointMS = this.currentTime * 1000;
 				} else {
 					this.bPlayPauseTransition = false;
+				}
+				
+				if (v.bPurgeMain) {
+					// Special case - recalculate resume points, this is used for dynamic content (when also using multiple video objects!!!)
+					if (v.isMainFeatureVideo(this) && (this == playingVideo)) {
+						var trans =  v.getTransitionTime();
+												
+						if (trans.bEnabled) {
+							var tt = trans.v;
+						
+							this.resumeFrom = Math.floor(this.currentTime / tt) * tt;
+						} else {
+							this.resumeFrom = 0;
+						}
+						v.showPlayrange();
+						v.Log.info("* SpecialMode " + this.id + ": recalculate resumefrom point. " + this.resumeFrom + "S *");
+					}
 				}
 				
 				// Sanity check
@@ -1304,8 +1336,7 @@ function onVideoEvent (v) {
 				// Only do this once a second
 				if (tNow != this.tOld) 
 				{
-					// Sanity check
-					if (this === playingVideo) {
+					if ((this === playingVideo) && this.bPlayEventFired) {
 						this.tOld = tNow;				
 						
 						v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
@@ -1720,4 +1751,29 @@ keyTable.entries = [
 	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : getVK('VK_8')	}, 
 	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	}, 
 ];
+
+
+
+
+
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+window.onload = function () {
+	try {
+		mVid.start();
+	} catch (error) {
+		mVid.Log.error("FATAL ERROR: " + error.message);
+	}
+}
+
+window.onbeforeunload = function () {
+	mVid.Log.warn("Unload page");
+	mVid.cmndLog();
+	mVid.socket.disconnect();
+}
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+
 		
