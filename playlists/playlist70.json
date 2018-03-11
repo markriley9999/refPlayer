@@ -17,7 +17,7 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./dynamic/dashads-dartest.mpd",
+	"src" 				: "./dynamic/dashads-blankads.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "601.44",
 	"addContentId" 		: "false",

@@ -1,20 +1,24 @@
-<?xml version="1.0"?>
-<MPD 
-	type="static"
-	xmlns="urn:mpeg:dash:schema:mpd:2011" 
-	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
-	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
-	minBufferTime="PT10S" 
-	maxSegmentDuration="PT3.84S" 
-	mediaPresentationDuration="PT0H1M0.000S" 
->
+	<!-- *** Generated Period: Ad *** -->
+	<Period id="{{period_id}}" start="{{period_start}}">
+	
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
+				Period Boundary - Ad Break
+			</Event>
+		</EventStream-->
 
-	<ProgramInformation>
-		<Title>blankads</Title>
-	</ProgramInformation>
-
-	<Period duration="PT0H1M0.000S">
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="{{evPresentationTime}}" duration="2880000" id="{{evId}}"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
+		</EventStream>
+			
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			<BaseURL>../content/blankads/</BaseURL>
 			<SegmentTemplate timescale="12800" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="49152" initialization="init/blankads_init.mp4"/>
 			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="920043">
 			</Representation>
@@ -28,4 +32,3 @@
 			</Representation>
 		</AdaptationSet>
 	</Period>
-</MPD>

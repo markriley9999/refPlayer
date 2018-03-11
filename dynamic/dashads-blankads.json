@@ -1,0 +1,22 @@
+{
+	"main"			: "./dynamic/periods/main-sintel.xml",
+	"subs"			: "",
+	
+	"segsize" 		: "3840",
+	"periodD" 		: "600000", 	
+	"segAlign"		: "round",
+
+	"marginF" 		: "120",					
+	"marginB" 		: "3600",					
+
+	"Atimescale"	: "48000",
+	"Vtimescale"	: "12800",
+	
+	"adD"			: "60000",
+	"adSegAlign"	: "none",
+	
+	"ads"			: [
+		"./dynamic/periods/blankads.xml"
+	],
+	"adSubs"		: ""
+}
