@@ -20,7 +20,7 @@
 	"src" 				: "./dynamic/dashads-blankads.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "601.44",
-	"addContentId" 		: "false",
+	"addContentId" 		: "true",
 	"channelName" 		: "3 Video Objs - Ads: 5, Main: BBB and Sintel (Subs)",
 
 	"info"				: [	"5 mp4 (Ch4) adverts",
