@@ -17,18 +17,26 @@
 			</Event> 
 		</EventStream>
 			
+		<AdaptationSet segmentAlignment="true" lang="und">
+			<BaseURL>../content/blankads/</BaseURL>
+			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<SegmentTemplate timescale="44100" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="169344" initialization="$RepresentationID$/SEG.mp4"/>
+			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="44100" startWithSAP="1" bandwidth="73485">
+			</Representation>
+		</AdaptationSet>
+
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
 			<BaseURL>../content/blankads/</BaseURL>
-			<SegmentTemplate timescale="12800" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="49152" initialization="init/blankads_init.mp4"/>
-			<Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="920043">
+			<SegmentTemplate timescale="12800" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="49152" initialization="init/blankads_set2_init.mp4"/>
+			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="575519">
 			</Representation>
-			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="778448">
+			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="520448">
 			</Representation>
-			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="515709">
+			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401F" width="896" height="504" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="353257">
 			</Representation>
-			<Representation id="4" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="387052">
+			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401E" width="704" height="396" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="268295">
 			</Representation>
-			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="258733">
+			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="182138">
 			</Representation>
 		</AdaptationSet>
 	</Period>

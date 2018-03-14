@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./dynamic/dashads-blankads.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Dynamic: Blank ads",
+
+	"info"				: [	"Blank Ads"
+						  ]
+}
