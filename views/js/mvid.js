@@ -54,11 +54,11 @@ const PLAYSTATE_FWD		= 4;
 
 const STALL_TIMEOUT_MS = 10000;
 
-const AD_TRANS_TIMEOUT_MS	= 40;
+const AD_TRANS_TIMEOUT_MS	= 20;
 const AD_TRANS_THRESHOLD_MS = 3000;
 
 const AD_START_THRESHOLD_S 	= 10;
-const AD_START_TIMEOUT_MS	= 40;
+const AD_START_TIMEOUT_MS	= 20;
 
 const PRELOAD_NEXT_AD_S = 5;
 
@@ -103,7 +103,7 @@ var windowVideoObjects = [];
 
 mVid.windowVideoObjects = {
 	"mVid-video0" : 		{ top : "96px", 	left	: "240px", 	width	: "480px", 	height : "320px", bcol	: "blue" },
-	"mVid-video1" : 		{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "green" },
+	"mVid-video1" : 		{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "darkcyan" },
 	"mVid-mainContent" : 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
 }
 
@@ -317,34 +317,42 @@ mVid.procPlaylist = function (ch, playObj) {
 	}
 	this.Log.info("-----------------------------------------------------------");
 	
-	c.length = playObj.ads.length + 1;
-	c[playObj.ads.length] = {};
+	var lt = playObj.ads.length;
+	
+	c.length = lt + 1;
+	c[lt] = {};
 	
 	this.contentTag = commonUtils.basename(playObj.src);
 	
 	if (playObj.addContentId === "false") {
-		c[playObj.ads.length].src = playObj.src;
+		c[lt].src = playObj.src;
 	} else {
-		c[playObj.ads.length].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
+		c[lt].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
 	}
 	
-	c[playObj.ads.length].type 				= playObj.type;
-	c[playObj.ads.length].transitionTime 	= playObj.transitionTime;
-	c[playObj.ads.length].videoId 			= "mVid-mainContent";
-	c[playObj.ads.length].addContentId		= playObj.addContentId;
-	c[playObj.ads.length].channelName		= playObj.channelName;
+	c[lt].type 				= playObj.type;
+	c[lt].transitionTime 	= playObj.transitionTime;
+	c[lt].transitionOffsetMS = playObj.special_transition_c || 0;
+	c[lt].videoId 			= "mVid-mainContent";
+	c[lt].addContentId		= playObj.addContentId;
+	c[lt].channelName		= playObj.channelName;
 
+	if (c[lt].transitionOffsetMS != 0) {
+		this.Log.info(" * SpecialMode: Additional ad transition offset of: " + c[lt].transitionOffsetMS + "ms *");	
+	}
+	
 	var pId = "mVid-video0";
 	
-	for (var i = 0; i < playObj.ads.length; i++) {
+	for (var i = 0; i < lt; i++) {
 		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].src);	
 		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].type);	
 		c[i] = {};
-		c[i].src 			= playObj.ads[i].src;
-		c[i].type 			= playObj.ads[i].type;
-		c[i].transitionTime = -1;
-		c[i].videoId 		= pId;
-		c[i].channelName	= playObj.channelName;
+		c[i].src 				= playObj.ads[i].src;
+		c[i].type 				= playObj.ads[i].type;
+		c[i].transitionTime 	= -1;
+		c[i].transitionOffsetMS = 0;
+		c[i].videoId 			= pId;
+		c[i].channelName		= playObj.channelName;
 		pId = (pId === "mVid-video0") ? "mVid-video1" : "mVid-video0";
 	}
 	
@@ -361,8 +369,8 @@ mVid.procPlaylist = function (ch, playObj) {
 	if (playObj.special_jumptomain === "true") {
 		this.Log.info(" * SpecialMode: Jump to main, skipping initial adverts. *");	
 		
-		this.cnt.curBuffIdx = playObj.ads.length;
-		this.cnt.curPlayIdx = playObj.ads.length;
+		this.cnt.curBuffIdx = lt;
+		this.cnt.curPlayIdx = lt;
 	}
 	
 	this.bPurgeMain = (playObj.special_purgemain === "true") || false;
@@ -613,10 +621,11 @@ mVid.createVideo = function (videoId) {
 	this.statusTableText(videoId, "Type", "---");
 	this.statusTableText(videoId, "Pos", "---");
 
-	video.bPlayPauseTransition = false;
-	video.resumeFrom 			= 0;
-	video.bBuffEnoughToPlay 	= false;
-	video.bPlayEventFired		= false;
+	video.bPlayPauseTransition 		= false;
+	video.resumeFrom 				= 0;
+	video.bBuffEnoughToPlay 		= false;
+	video.bPlayEventFired			= false;
+	video.bAdTransStartedPolling	= false;
 	
 	if (this.bWindowedObjs) {
 		video.style.display 	= "block";
@@ -880,13 +889,28 @@ mVid.getPlayingContentIdx = function () {
 	return this.cnt.curPlayIdx;
 }
 
-mVid.getTransitionTime = function () {
-	var i = parseInt(this.cnt.list[this.cnt.curPlayIdx].transitionTime);
+mVid.getTransitionPoint = function () {
+	var c = this.cnt.list[this.cnt.curPlayIdx];
+	
+	var i = parseFloat(c.transitionTime);
+	var o = parseFloat(c.transitionOffsetMS) / 1000;
+	
 	var obj = {};
 	
 	obj.bEnabled = (i != -1);
-	obj.v = (i != -1) ? i : Number.MAX_SAFE_INTEGER;
 	
+	if (obj.bEnabled) {
+		obj.v 			= i;
+		obj.offset 		= o;
+		obj.total		= o+i;
+	} else {
+		obj.v 			= Number.MAX_SAFE_INTEGER;
+		obj.offset 		= 0;
+		obj.total		= Number.MAX_SAFE_INTEGER;
+	}
+	
+	// this.Log.info("getTransitionPoint - value: " + obj.v + " offset: " + obj.offset + " total: " + obj.total);
+
 	return obj;
 }
 
@@ -1056,7 +1080,7 @@ mVid.showPlayrange = function () {
 		x2 = c.right;			
 	} else {
 		var coef = (c.width / p.duration);
-		var t = this.getTransitionTime().v;
+		var t = this.getTransitionPoint().v;
 		x1 =  (coef * p.resumeFrom) + c.left;
 		var endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
 		
@@ -1224,7 +1248,7 @@ function onVideoEvent (v) {
 				if (v.bPurgeMain) {
 					// Special case - recalculate resume points, this is used for dynamic content (when also using multiple video objects!!!)
 					if (v.isMainFeatureVideo(this) && (this == playingVideo)) {
-						var trans =  v.getTransitionTime();
+						var trans =  v.getTransitionPoint();
 												
 						if (trans.bEnabled) {
 							var tt = trans.v;
@@ -1343,8 +1367,9 @@ function onVideoEvent (v) {
 						v.updatePlaybackBar(this.id);
 				
 						// Time for adverts?
-						if (v.isMainFeatureVideo(playingVideo)) {
-							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionTime().v) {
+						if (v.isMainFeatureVideo(playingVideo) && !this.bAdTransStartedPolling) {
+							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionPoint().v) {
+								this.bAdTransStartedPolling = true;
 								v.startAdStartTimer();
 							}
 						}
@@ -1361,7 +1386,7 @@ function onVideoEvent (v) {
 							var bPreloadNextAd = false;
 							
 							if (v.isMainFeatureVideo(this)) {
-								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime().v)) {
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionPoint().v)) {
 									bPreloadNextAd = true;
 									// not needed???? v.setPreload(playingVideo, "none");
 								}
@@ -1462,19 +1487,22 @@ mVid.OnCheckAdStart = function () {
 	}
 	
 	// Time for adverts?
-	if ((this.getCurrentTime(vid) - vid.resumeFrom) >= this.getTransitionTime().v) {
-		this.Log.warn(vid.id + ": transition main content");
+	var transPt = this.getCurrentTime(vid) - (vid.resumeFrom + this.getTransitionPoint().total);
+	
+	if (transPt >= 0) {
+		this.Log.info(vid.id + ": transition from main content to ads");
 				
-		vid.resumeFrom += this.getTransitionTime().v;
+		vid.resumeFrom += this.getTransitionPoint().v;
 		vid.bPlayPauseTransition = false;
+		vid.pause(); // This will trigger adverts events, via 'pause' event
 		
-		if (vid.currentTime != vid.resumeFrom) {
-			var dt = vid.currentTime - vid.resumeFrom;			
-			this.Log.warn(vid.id + " Paused  " + dt + "s past point, frames " + (dt * CONTENT_FPS));
+		if (transPt > 0) {
+			this.Log.warn(vid.id + " Paused  " + transPt + "s past point, frames " + (transPt * CONTENT_FPS));
 		}
 		
-		vid.pause();
 		this.updateBufferStatus(vid.id, "Play advert");
+		
+		vid.bAdTransStartedPolling = false;
 	} else {
 		this.adStartTimerId = setTimeout(this.OnCheckAdStart.bind(this), AD_START_TIMEOUT_MS);
 	}
@@ -1659,7 +1687,7 @@ mVid.cmndJumpToEnd = function () {
 		var t = playingVideo.duration * 0.9;
 		playingVideo.currentTime = t;
 		if (this.isMainFeatureVideo(playingVideo)) {
-			var trans =  this.getTransitionTime();
+			var trans =  this.getTransitionPoint();
 			
 			if (trans.bEnabled) {
 				var tt = trans.v;
