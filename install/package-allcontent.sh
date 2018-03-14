@@ -21,6 +21,8 @@
 ./package-content.sh "adtest/ENC-5"
 ./package-content.sh "adtest/ENC-6"
 
+./package-content.sh "blankads"
+
 ./package-content.sh "sintel/init"
 ./package-content.sh "sintel/1"
 ./package-content.sh "sintel/2"
