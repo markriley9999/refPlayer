@@ -1,6 +1,12 @@
-var mVid = {};
-
+// --- Some helpers first --- //
 var commonUtils = new UTILS();
+
+e = function (id) {
+  return document.getElementById(id);
+}
+
+// --- MAIN OBJECT --- //
+var mVid = {};
 
 mVid.videoEvents = Object.freeze({
   LOAD_START		: "loadstart",
@@ -48,11 +54,11 @@ const PLAYSTATE_FWD		= 4;
 
 const STALL_TIMEOUT_MS = 10000;
 
-const AD_TRANS_TIMEOUT_MS	= 40;
+const AD_TRANS_TIMEOUT_MS	= 20;
 const AD_TRANS_THRESHOLD_MS = 3000;
 
 const AD_START_THRESHOLD_S 	= 10;
-const AD_START_TIMEOUT_MS	= 40;
+const AD_START_TIMEOUT_MS	= 20;
 
 const PRELOAD_NEXT_AD_S = 5;
 
@@ -92,6 +98,14 @@ const HAVE_CURRENT_DATA = 2;	// There has not been sufficiently data loaded in o
 const HAVE_FUTURE_DATA	= 3; 	// enough data to start playback
 const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream without interruption till the end.
 
+// Windowed video objects
+var windowVideoObjects = [];
+
+mVid.windowVideoObjects = {
+	"mVid-video0" : 		{ top : "96px", 	left	: "240px", 	width	: "480px", 	height : "320px", bcol	: "blue" },
+	"mVid-video1" : 		{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "darkcyan" },
+	"mVid-mainContent" : 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
+}
 
 // Events
 //const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
@@ -146,24 +160,6 @@ mVid.Log._write = function(message, cssClass) {
 };
 
 
-e = function (id) {
-  return document.getElementById(id);
-}
-
-window.onload = function () {
-	try {
-		mVid.start();
-	} catch (error) {
-		mVid.Log.error("FATAL ERROR: " + error.message);
-	}
-}
-
-window.onbeforeunload = function () {
-	mVid.Log.warn("Unload page");
-	mVid.cmndLog();
-	mVid.socket.disconnect();
-}
-
 mVid.start = function () {
     var appMan 		= null;
 	var that 		= this;
@@ -185,6 +181,7 @@ mVid.start = function () {
 	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
 	this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
+	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
 	
 	if (this.bOverrideSubs)
 	{
@@ -254,22 +251,11 @@ mVid.start = function () {
 
 		that.procPlaylist(ch, playObj);
 
-		mainVideo = e("mVid-mainContent");
+		mainVideo = that.createVideo("mVid-mainContent");
 		
-		// Allow CORS 
-		mainVideo.setAttribute("crossOrigin", "anonymous");
-
-		mainVideo.resumeFrom 			= 0;
-		mainVideo.bPlayPauseTransition 	= false;
-		mainVideo.bBuffEnoughToPlay 	= false;
-		that.transitionThresholdMS 		= AD_TRANS_THRESHOLD_MS;
-		that.bShowBufferingIcon			= false;
-		
-		
-		for(var i in that.videoEvents) {
-			mainVideo.addEventListener(that.videoEvents[i], onVideoEvent(that));
-		}
-
+		that.transitionThresholdMS 	= AD_TRANS_THRESHOLD_MS;
+		that.bShowBufferingIcon		= false;
+				
 		that.setUpCues();
 				
 		// Clear key
@@ -331,34 +317,42 @@ mVid.procPlaylist = function (ch, playObj) {
 	}
 	this.Log.info("-----------------------------------------------------------");
 	
-	c.length = playObj.ads.length + 1;
-	c[playObj.ads.length] = {};
+	var lt = playObj.ads.length;
+	
+	c.length = lt + 1;
+	c[lt] = {};
 	
 	this.contentTag = commonUtils.basename(playObj.src);
 	
 	if (playObj.addContentId === "false") {
-		c[playObj.ads.length].src = playObj.src;
+		c[lt].src = playObj.src;
 	} else {
-		c[playObj.ads.length].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
+		c[lt].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
 	}
 	
-	c[playObj.ads.length].type 				= playObj.type;
-	c[playObj.ads.length].transitionTime 	= playObj.transitionTime;
-	c[playObj.ads.length].videoId 			= "mVid-mainContent";
-	c[playObj.ads.length].addContentId		= playObj.addContentId;
-	c[playObj.ads.length].channelName		= playObj.channelName;
+	c[lt].type 				= playObj.type;
+	c[lt].transitionTime 	= playObj.transitionTime;
+	c[lt].transitionOffsetMS = playObj.special_transition_c || 0;
+	c[lt].videoId 			= "mVid-mainContent";
+	c[lt].addContentId		= playObj.addContentId;
+	c[lt].channelName		= playObj.channelName;
 
+	if (c[lt].transitionOffsetMS != 0) {
+		this.Log.info(" * SpecialMode: Additional ad transition offset of: " + c[lt].transitionOffsetMS + "ms *");	
+	}
+	
 	var pId = "mVid-video0";
 	
-	for (var i = 0; i < playObj.ads.length; i++) {
+	for (var i = 0; i < lt; i++) {
 		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].src);	
 		//this.Log.info("- Ad: " + i + " " + playObj.ads[i].type);	
 		c[i] = {};
-		c[i].src 			= playObj.ads[i].src;
-		c[i].type 			= playObj.ads[i].type;
-		c[i].transitionTime = -1;
-		c[i].videoId 		= pId;
-		c[i].channelName	= playObj.channelName;
+		c[i].src 				= playObj.ads[i].src;
+		c[i].type 				= playObj.ads[i].type;
+		c[i].transitionTime 	= -1;
+		c[i].transitionOffsetMS = 0;
+		c[i].videoId 			= pId;
+		c[i].channelName		= playObj.channelName;
 		pId = (pId === "mVid-video0") ? "mVid-video1" : "mVid-video0";
 	}
 	
@@ -371,6 +365,15 @@ mVid.procPlaylist = function (ch, playObj) {
 		this.Log.info(" - " + c[i].transitionTime);	
 		this.Log.info(" - ");			
 	}
+	
+	if (playObj.special_jumptomain === "true") {
+		this.Log.info(" * SpecialMode: Jump to main, skipping initial adverts. *");	
+		
+		this.cnt.curBuffIdx = lt;
+		this.cnt.curPlayIdx = lt;
+	}
+	
+	this.bPurgeMain = (playObj.special_purgemain === "true") || false;
 	
 	e("currentChannel") && (e("currentChannel").innerHTML = "Test " + ch + " - " + playObj.channelName);
 }
@@ -594,12 +597,16 @@ mVid.createVideo = function (videoId) {
 	// Allow CORS 
 	video.setAttribute("crossOrigin", "anonymous");
 	
-	video.style.display = "none";
+	if (!this.bWindowedObjs) {
+		video.style.display = "none";
+		video.setAttribute("poster", "bitmaps/bground.jpg");
+	}
 	
 	var source = document.createElement("source");
 	
     source.setAttribute("id", videoId + "-source");
     source.setAttribute("preload", "auto");
+    source.setAttribute("loop", "false");
 	
 	video.appendChild(source);
 
@@ -614,8 +621,23 @@ mVid.createVideo = function (videoId) {
 	this.statusTableText(videoId, "Type", "---");
 	this.statusTableText(videoId, "Pos", "---");
 
-	video.bPlayPauseTransition = false;
-	video.resumeFrom = 0;
+	video.bPlayPauseTransition 		= false;
+	video.resumeFrom 				= 0;
+	video.bBuffEnoughToPlay 		= false;
+	video.bPlayEventFired			= false;
+	video.bAdTransStartedPolling	= false;
+	
+	if (this.bWindowedObjs) {
+		video.style.display 	= "block";
+		video.style.top  		= this.windowVideoObjects[videoId].top;
+		video.style.left 		= this.windowVideoObjects[videoId].left;
+		video.style.width		= this.windowVideoObjects[videoId].width;
+		video.style.height 		= this.windowVideoObjects[videoId].height;
+		video.style.backgroundColor	= this.windowVideoObjects[videoId].bcol;
+		video.style.position	= "absolute";
+		
+		e("player-container").style.backgroundColor = "cyan";
+	}
 	
 	return video;
 }
@@ -867,13 +889,28 @@ mVid.getPlayingContentIdx = function () {
 	return this.cnt.curPlayIdx;
 }
 
-mVid.getTransitionTime = function () {
-	var i = parseInt(this.cnt.list[this.cnt.curPlayIdx].transitionTime);
+mVid.getTransitionPoint = function () {
+	var c = this.cnt.list[this.cnt.curPlayIdx];
+	
+	var i = parseFloat(c.transitionTime);
+	var o = parseFloat(c.transitionOffsetMS) / 1000;
+	
 	var obj = {};
 	
 	obj.bEnabled = (i != -1);
-	obj.v = (i != -1) ? i : Number.MAX_SAFE_INTEGER;
 	
+	if (obj.bEnabled) {
+		obj.v 			= i;
+		obj.offset 		= o;
+		obj.total		= o+i;
+	} else {
+		obj.v 			= Number.MAX_SAFE_INTEGER;
+		obj.offset 		= 0;
+		obj.total		= Number.MAX_SAFE_INTEGER;
+	}
+	
+	// this.Log.info("getTransitionPoint - value: " + obj.v + " offset: " + obj.offset + " total: " + obj.total);
+
 	return obj;
 }
 
@@ -928,7 +965,7 @@ mVid.setSourceAndLoad = function (video, src, type) {
 	
 	if (this.isMainFeatureVideo(video)) 
 	{
-		if (source.getAttribute("type") != "") {
+		if (source.type) {
 			bSetSource = false;
 			if (video.currentTime != video.resumeFrom) {
 				if (this.bCheckResume) {
@@ -944,7 +981,8 @@ mVid.setSourceAndLoad = function (video, src, type) {
 		source.setAttribute("src", src);
 		video.bBuffEnoughToPlay = false;
 		video.bEncrypted = false;
-
+		video.bPlayEventFired = false;
+		
 		// Running on a non hbbtv device?
 		if (!this.app) {
 			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
@@ -989,7 +1027,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	// Set the display CSS property of the previous media element to none.
-	if (previousVideo) {
+	if (previousVideo && !this.bWindowedObjs) {
 		previousVideo.style.display = "none";
 	}
 	
@@ -998,7 +1036,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	// Purge previous video
-	if (previousVideo && !this.isMainFeatureVideo(previousVideo)) {
+	if (previousVideo && (!this.isMainFeatureVideo(previousVideo) || this.bPurgeMain)) {
 		this.purgeVideo(previousVideo.id);
 	}
 }
@@ -1042,7 +1080,7 @@ mVid.showPlayrange = function () {
 		x2 = c.right;			
 	} else {
 		var coef = (c.width / p.duration);
-		var t = this.getTransitionTime().v;
+		var t = this.getTransitionPoint().v;
 		x1 =  (coef * p.resumeFrom) + c.left;
 		var endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
 		
@@ -1191,8 +1229,9 @@ function onVideoEvent (v) {
 				v.setPlayingState(PLAYSTATE_PLAY);
 				v.showPlayrange();
 				
-				// Sanity check
-				if (this != playingVideo) {
+				if (this == playingVideo) {
+					this.bPlayEventFired = true;
+				} else {
 					v.Log.error(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 
@@ -1204,6 +1243,23 @@ function onVideoEvent (v) {
 					this.startPlaybackPointMS = this.currentTime * 1000;
 				} else {
 					this.bPlayPauseTransition = false;
+				}
+				
+				if (v.bPurgeMain) {
+					// Special case - recalculate resume points, this is used for dynamic content (when also using multiple video objects!!!)
+					if (v.isMainFeatureVideo(this) && (this == playingVideo)) {
+						var trans =  v.getTransitionPoint();
+												
+						if (trans.bEnabled) {
+							var tt = trans.v;
+						
+							this.resumeFrom = Math.floor(this.currentTime / tt) * tt;
+						} else {
+							this.resumeFrom = 0;
+						}
+						v.showPlayrange();
+						v.Log.info("* SpecialMode " + this.id + ": recalculate resumefrom point. " + this.resumeFrom + "S *");
+					}
 				}
 				
 				// Sanity check
@@ -1304,16 +1360,16 @@ function onVideoEvent (v) {
 				// Only do this once a second
 				if (tNow != this.tOld) 
 				{
-					// Sanity check
-					if (this === playingVideo) {
+					if ((this === playingVideo) && this.bPlayEventFired) {
 						this.tOld = tNow;				
 						
 						v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
 						v.updatePlaybackBar(this.id);
 				
 						// Time for adverts?
-						if (v.isMainFeatureVideo(playingVideo)) {
-							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionTime().v) {
+						if (v.isMainFeatureVideo(playingVideo) && !this.bAdTransStartedPolling) {
+							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionPoint().v) {
+								this.bAdTransStartedPolling = true;
 								v.startAdStartTimer();
 							}
 						}
@@ -1330,7 +1386,7 @@ function onVideoEvent (v) {
 							var bPreloadNextAd = false;
 							
 							if (v.isMainFeatureVideo(this)) {
-								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionTime().v)) {
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionPoint().v)) {
 									bPreloadNextAd = true;
 									// not needed???? v.setPreload(playingVideo, "none");
 								}
@@ -1431,19 +1487,22 @@ mVid.OnCheckAdStart = function () {
 	}
 	
 	// Time for adverts?
-	if ((this.getCurrentTime(vid) - vid.resumeFrom) >= this.getTransitionTime().v) {
-		this.Log.warn(vid.id + ": transition main content");
+	var transPt = this.getCurrentTime(vid) - (vid.resumeFrom + this.getTransitionPoint().total);
+	
+	if (transPt >= 0) {
+		this.Log.info(vid.id + ": transition from main content to ads");
 				
-		vid.resumeFrom += this.getTransitionTime().v;
+		vid.resumeFrom += this.getTransitionPoint().v;
 		vid.bPlayPauseTransition = false;
+		vid.pause(); // This will trigger adverts events, via 'pause' event
 		
-		if (vid.currentTime != vid.resumeFrom) {
-			var dt = vid.currentTime - vid.resumeFrom;			
-			this.Log.warn(vid.id + " Paused  " + dt + "s past point, frames " + (dt * CONTENT_FPS));
+		if (transPt > 0) {
+			this.Log.warn(vid.id + " Paused  " + transPt + "s past point, frames " + (transPt * CONTENT_FPS));
 		}
 		
-		vid.pause();
 		this.updateBufferStatus(vid.id, "Play advert");
+		
+		vid.bAdTransStartedPolling = false;
 	} else {
 		this.adStartTimerId = setTimeout(this.OnCheckAdStart.bind(this), AD_START_TIMEOUT_MS);
 	}
@@ -1628,7 +1687,7 @@ mVid.cmndJumpToEnd = function () {
 		var t = playingVideo.duration * 0.9;
 		playingVideo.currentTime = t;
 		if (this.isMainFeatureVideo(playingVideo)) {
-			var trans =  this.getTransitionTime();
+			var trans =  this.getTransitionPoint();
 			
 			if (trans.bEnabled) {
 				var tt = trans.v;
@@ -1720,4 +1779,29 @@ keyTable.entries = [
 	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : getVK('VK_8')	}, 
 	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	}, 
 ];
+
+
+
+
+
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+window.onload = function () {
+	try {
+		mVid.start();
+	} catch (error) {
+		mVid.Log.error("FATAL ERROR: " + error.message);
+	}
+}
+
+window.onbeforeunload = function () {
+	mVid.Log.warn("Unload page");
+	mVid.cmndLog();
+	mVid.socket.disconnect();
+}
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+// ---------------------------------------------------------------------- //
+
 		
