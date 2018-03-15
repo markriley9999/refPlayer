@@ -25,7 +25,7 @@ URL=$1
 ./getcontent.sh $URL "adtest-ENC-5"
 ./getcontent.sh $URL "adtest-ENC-6"
 
-./getcontent.sh $URL "blanksads"
+./getcontent.sh $URL "blankads"
 
 ./getcontent.sh $URL "sintel-init"
 ./getcontent.sh $URL "sintel-1"
