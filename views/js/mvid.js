@@ -180,8 +180,10 @@ mVid.start = function () {
 	// Parse query params
 	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
-	this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
 	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
+	
+	// this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
+	this.bFullSCTE		= true;
 	
 	if (this.bOverrideSubs)
 	{
