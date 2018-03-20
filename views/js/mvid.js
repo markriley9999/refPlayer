@@ -415,12 +415,12 @@ mVid.setUpCues = function () {
 
 			if (track)
 			{
-				that.Log.info("Track #" + t); 
-				that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				// that.Log.info("Track #" + t); 
+				// that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
 			}
 			
 			if (track && (track.kind === 'metadata') && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
-				that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
+				// that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
@@ -437,7 +437,7 @@ mVid.setUpCues = function () {
 							
 							that.cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							that.cueImages[imgIndex].style.left = (x - offset) + "px";
-							that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
+							// that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
 						}
 					} else {
 						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
@@ -460,9 +460,9 @@ mVid.setUpCues = function () {
 		}
 	}
 
-	window.setInterval( function() {
-		showCues();	
-	}, 10000);	
+	//window.setInterval( function() {
+	//	showCues();	
+	//}, 10000);	
 		
 	mainVideo.textTracks.onaddtrack = function (event) {
 		var textTrack = event.track;
@@ -472,17 +472,17 @@ mVid.setUpCues = function () {
 			var r;
 			
 			/* --- Example scte data --- *
-			s = "<scte35:Signal xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"><scte35:Binary>   	\
-                                                /TWFpbiBDb250ZW50									\
-                                        </scte35:Binary></scte35:Signal>							\
-			"; 
+			s = "<scte35:Signal><scte35:Binary>/TWFpbiBDb250ZW50</scte35:Binary></scte35:Signal>"; 
 			******************************/
-				
+
 			that.Log.info("Parse SCTE: data: " + s);
 
 			try {
 				if (that.bFullSCTE) {
 					if (window.DOMParser) {
+						// Add scte namespace, used by xml parser
+						s = "<" + "wrapper  xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"" + ">" + s + "<" + "/wrapper" + ">";
+					
 						var parser = new DOMParser();
 						var x = parser.parseFromString(s, "text/xml");
 						var bn = x.getElementsByTagNameNS("urn:scte:scte35:2014:xml+bin", "Binary")[0].childNodes[0].nodeValue;
