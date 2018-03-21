@@ -462,9 +462,9 @@ mVid.setUpCues = function () {
 		}
 	}
 
-	//window.setInterval( function() {
-	//	showCues();	
-	//}, 10000);	
+	window.setInterval( function() {
+		showCues();	
+	}, 10000);	
 		
 	mainVideo.textTracks.onaddtrack = function (event) {
 		var textTrack = event.track;
