@@ -396,7 +396,7 @@ mVid.setUpCues = function () {
 		
 		var p = that.getCurrentPlayingVideo();
 		
-		if (!p) {
+		if (!p || !p.duration || isNaN(p.duration)) {
 			return;
 		}
 		
@@ -430,10 +430,10 @@ mVid.setUpCues = function () {
 					if ((cue !== null) && (cue.endTime > cue.startTime)) {
 						if (cue.startTime > 0) {
 							x =  (coef * cue.startTime) + c.left;
-							imgIndex = Math.floor(x / 4);
+							imgIndex = Math.floor(x / 16);
 							
 							if (!that.cueImages[imgIndex]) {
-								that.cueImages[imgIndex] = imgobj.cloneNode(true);
+								that.cueImages[imgIndex] = imgobj.cloneNode(false);
 								e("playrange").appendChild(that.cueImages[imgIndex]);
 							}
 							
