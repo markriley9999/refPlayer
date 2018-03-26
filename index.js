@@ -383,6 +383,18 @@ function sendServerLog(msg) {
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
+expressSrv.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	res.header('Access-Control-Max-Age', '1');
+
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+
+	next();
+});
+
 expressSrv.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
