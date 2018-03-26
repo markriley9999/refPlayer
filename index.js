@@ -450,6 +450,15 @@ expressSrv.get('/player.aitx', function(req, res) {
     });
 });
 
+const favIcon 	= fs.readFileSync('./views/favicon.ico');
+
+expressSrv.get('/favicon.ico', function(req, res) {
+	res.type("image/x-icon");
+	res.status(200);
+    res.send(favIcon);
+});
+
+
 var mp4box = new mp4boxModule.MP4Box();
 
 expressSrv.get('/content/*', function(req, res) {
