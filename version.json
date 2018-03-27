@@ -1,8 +1,8 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "14d",
-	"comment"	: "Development release",
+	"minor" 	: "16",
+	"comment"	: "Formal release",
 	"notes"		: [	
 					"Time-stamped content",
 					"SCTE Events", 
