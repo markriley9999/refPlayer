@@ -3,6 +3,7 @@
 	type="static"
 	xmlns="urn:mpeg:dash:schema:mpd:2011" 
 	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
+	xmlns:scte35="urn:scte:scte35:2014:xml+bin"
 	xmlns:cenc="urn:mpeg:cenc:2013"
 	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
 	minBufferTime="PT10S" 
@@ -17,12 +18,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-0" start="PT0H0M0.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="1">
 				Period Boundary - Short Final Seg
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="1"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+					
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -53,15 +64,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-0" start="PT0H0M11.680S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="2">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="2"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -70,7 +102,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -86,6 +129,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 
 
@@ -93,12 +137,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-1" start="PT0H9M59.200S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="3">
 				Period Boundary - Short Final Seg
 			</Event>
-		</EventStream>
+		</EventStream-->
 		
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="3"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
+		</EventStream>
+				
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -129,15 +183,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-1" start="PT0H10M10.880S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="4">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="4"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -146,7 +221,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -162,6 +248,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 
 
@@ -169,12 +256,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-2" start="PT0H19M58.400S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="5">
 				Period Boundary - Short Final Seg
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="5"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+					
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -205,15 +302,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-2" start="PT0H20M10.80S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="6">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="6"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -222,7 +340,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -238,6 +367,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 
 
@@ -245,12 +375,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-3" start="PT0H29M57.600S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="7">
 				Period Boundary - Short Final Seg
 			</Event>
-		</EventStream>
+		</EventStream-->
 		
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="7"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
+		</EventStream>
+				
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -281,15 +421,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-3" start="PT0H30M9.280S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="8">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="8"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -298,7 +459,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -314,6 +486,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 
 
@@ -321,12 +494,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-4" start="PT0H39M56.800S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="9">
 				Period Boundary - Short Final Seg
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="9"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-		
+					
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -357,15 +540,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-4" start="PT0H40M8.480S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="10">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="10"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -374,7 +578,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -390,6 +605,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 
 
@@ -397,12 +613,22 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="ad-5" start="PT0H49M56.0S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="11">
 				Period Boundary - Short Final Seg
 			</Event>
-		</EventStream>
+		</EventStream-->
 		
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="48000" id="11"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/U2hvcnQgRmluYWwgU2Vn
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
+		</EventStream>
+				
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
@@ -433,15 +659,36 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="main-5" start="PT0H50M7.680S">
 	
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 			<Event duration="480000"  presentationTime="0" id="12">
 				Period Boundary - Main Content
 			</Event>
+		</EventStream-->
+
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+			<Event presentationTime="0" duration="480000" id="12"> 
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event> 
 		</EventStream>
-	
+						
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+	  
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -450,7 +697,18 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
-			<ContentProtection xmlns:cenc="urn:mpeg:cenc:2013" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"/>
+
+			<ContentProtection 
+				xmlns:cenc="urn:mpeg:cenc:2013" 
+				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
+				value="cenc" 
+				cenc:default_KID="27992649-6a7f-5d25-da69-f2b3b2799a7f"
+			/>
+			<!-- ClearKey -->
+			<ContentProtection
+				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
+			/>
+			
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../sintel/</BaseURL>
@@ -466,6 +724,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D4015" width="512" height="288" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="445783">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
 	
 </MPD>

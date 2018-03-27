@@ -1,9 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "7",
+	"minor" 	: "16",
 	"comment"	: "Formal release",
 	"notes"		: [	
+					"Time-stamped content",
+					"SCTE Events", 
 					"HTTPS support", 
 					"Subtitle, https Icon"
 				  ]

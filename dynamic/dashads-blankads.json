@@ -1,5 +1,5 @@
 {
-	"main"			: "./dynamic/periods/main-bbb-ck.xml",
+	"main"			: "./dynamic/periods/main-sintel.xml",
 	"subs"			: "",
 	
 	"segsize" 		: "3840",
@@ -16,8 +16,7 @@
 	"adSegAlign"	: "none",
 	
 	"ads"			: [
-		"./dynamic/periods/ad-itv.xml",
-		"./dynamic/periods/ad-ch4.xml"
+		"./dynamic/periods/blankads.xml"
 	],
 	"adSubs"		: ""
 }

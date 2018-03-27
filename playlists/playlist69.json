@@ -9,10 +9,6 @@
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "./content/adverts/ch4/CH4_31_02_50_GRY_BHFN133_040_001_93614_17.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
 			"src" 	: "./content/adverts/ch4/MUM-HATD170-020_1462888808_93626_17.mp4", 
 			"type" 	: "video/mp4"
 		},
@@ -21,11 +17,18 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/bbc/hevc1/client_manifest.mpd",
+	"src" 				: "./dynamic/dashads-blankads.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
-	"addContentId" 		: "false",
-	"channelName" 		: "(BBC) UHD HLG with Ad Insertion Test Content",
+	"transitionTime" 	: "601.44",
+	"addContentId" 		: "true",
+	"channelName" 		: "3 Video Objs - Ads: 5, Main: Sintel (Subs)",
 
-	"info"				: []
+	"info"				: [	"5 mp4 (Ch4) adverts",
+							"'Sintel' DASH asset - playing for 60s",
+							"EBU-TT-D 'Snake' Subtitles, in main asset"
+						  ],
+
+						  
+	"special_jumptomain"	: "true",
+	"special_purgemain"		: "true"
 }

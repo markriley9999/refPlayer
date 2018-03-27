@@ -10,6 +10,23 @@ URL=$1
 
 ./getcontent.sh $URL "subs"
 
+./getcontent.sh $URL "adtest-init"
+./getcontent.sh $URL "adtest-1"
+./getcontent.sh $URL "adtest-2"
+./getcontent.sh $URL "adtest-3"
+./getcontent.sh $URL "adtest-4"
+./getcontent.sh $URL "adtest-5"
+./getcontent.sh $URL "adtest-6"
+
+./getcontent.sh $URL "adtest-ENC-1"
+./getcontent.sh $URL "adtest-ENC-2"
+./getcontent.sh $URL "adtest-ENC-3"
+./getcontent.sh $URL "adtest-ENC-4"
+./getcontent.sh $URL "adtest-ENC-5"
+./getcontent.sh $URL "adtest-ENC-6"
+
+./getcontent.sh $URL "blankads"
+
 ./getcontent.sh $URL "sintel-init"
 ./getcontent.sh $URL "sintel-1"
 ./getcontent.sh $URL "sintel-2"

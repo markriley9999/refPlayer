@@ -13,15 +13,11 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
+	"src" 				: "http://refplayer.cloud.digitaluk.co.uk/content/itv/familyguy/familyguy-ckonly.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "120",
+	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV)",
+	"channelName" 		: "ITV Family Guy (CLOUD Hosted - EME Clear Key only)",
 
-	"info"				: [	"3 mp4 (ITV) adverts",
-							"'Lorraine' DASH asset - playing for 120s",
-							"Clear Key encrypted (main asset)"
-						  ]
-
+	"info"				: ["http content"]
 }

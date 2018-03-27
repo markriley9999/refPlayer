@@ -1,10 +1,10 @@
 {
-	"ads" 				: [],
-	"src" 				: "./content/mperiods/absolute-events-unique-values.mpd",
+	"ads" : [],
+	"src" 				: "./content/bbc/hevc1/client_manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Absolute Events Offsets (not relative), unique values - not representative",
+	"channelName" 		: "(BBC) UHD HLG",
 
 	"info"				: []
 }

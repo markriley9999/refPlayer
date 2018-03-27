@@ -18,12 +18,22 @@
 
 <Period duration="PT1M" start="PT0S">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+	<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 		<Event duration="480000"  presentationTime="0" id="1">
-				Period Boundary - Ad Break
+			Period Boundary - Ad Break
 		</Event>
-	</EventStream>
+	</EventStream-->
 
+	<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+		<Event presentationTime="0" duration="2880000" id="1"> 
+			<scte35:Signal> 
+				<scte35:Binary>
+					/QWR2ZXJ0IEJyZWFr
+				</scte35:Binary> 
+			</scte35:Signal> 
+		</Event> 
+	</EventStream>
+						
 	<AdaptationSet segmentAlignment="true" lang="eng">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 		<BaseURL>../adverts/itv/dash/</BaseURL>
@@ -49,10 +59,20 @@
 
 <Period duration="PT2M" start="PT1M">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+	<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
 		<Event duration="480000"  presentationTime="0" id="2">
-				Period Boundary - Main Content
+			Period Boundary - Main Content
 		</Event>
+	</EventStream-->
+	
+	<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+		<Event presentationTime="0" duration="480000" id="2"> 
+			<scte35:Signal> 
+				<scte35:Binary>
+					/TWFpbiBDb250ZW50
+				</scte35:Binary> 
+			</scte35:Signal> 
+		</Event> 
 	</EventStream>
 	
     <BaseURL>../itv/clearkey/dash/</BaseURL>
@@ -184,12 +204,22 @@
 
 <Period duration="PT1M" start="PT3M">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-		<Event duration="480000"  presentationTime="0" id="3">
-				Period Boundary - Ad Break
+	<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<Event duration="480000"  presentationTime="0" id="1">
+			Period Boundary - Ad Break
 		</Event>
+	</EventStream-->
+
+	<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+		<Event presentationTime="0" duration="2880000" id="1"> 
+			<scte35:Signal> 
+				<scte35:Binary>
+					/QWR2ZXJ0IEJyZWFr
+				</scte35:Binary> 
+			</scte35:Signal> 
+		</Event> 
 	</EventStream>
-		
+						
 	<AdaptationSet segmentAlignment="true" lang="eng">
 		<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 		<BaseURL>../adverts/itv/dash/</BaseURL>
@@ -215,10 +245,20 @@
 
 <Period duration="PT2M" start="PT4M">
 
-	<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-		<Event duration="480000"  presentationTime="0" id="4">
-				Period Boundary - Main Content
+	<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
+		<Event duration="480000"  presentationTime="0" id="2">
+			Period Boundary - Main Content
 		</Event>
+	</EventStream-->
+	
+	<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+		<Event presentationTime="0" duration="480000" id="2"> 
+			<scte35:Signal> 
+				<scte35:Binary>
+					/TWFpbiBDb250ZW50
+				</scte35:Binary> 
+			</scte35:Signal> 
+		</Event> 
 	</EventStream>
 	
 	<BaseURL>../itv/clearkey/dash/</BaseURL>

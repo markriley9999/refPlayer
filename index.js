@@ -210,6 +210,8 @@ function init() {
 	
 	runOptions.bShowGUI 	= !argv.headless;
 	runOptions.bSegDump 	= argv.segdump;
+	runOptions.bEventAbs	= argv.eventabs;
+	
 	
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
@@ -241,14 +243,20 @@ function init() {
 		console.log("--- Dump Segment Info ---");
 	}
 	
-	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1200,	640,	sendConnectionStatus,	mainUIClosed, true);
+	if (runOptions.bEventAbs) {
+		console.log(chalk.red("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---"));
+	}
+
+	console.log("");
+	
+	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
 	
 	p = win['log'].getWin();
 	
-	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1400,	700,	null, null, true);
-	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1400, 	800,	null, null, true);
-	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1400, 	800,	null, null, true);
-	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1400, 	800,	null, null, true);
+	win['allvideoobjs'] = new WINDOW(p,	'ui/graph.html',		1216,	700,	null, null, false);
+	win['mainvideoobj'] = new WINDOW(p,	'ui/singlegraph.html',	1216, 	800,	null, null, false);
+	win['ad0videoobj']	= new WINDOW(p,	'ui/graphAdVid0.html', 	1216, 	800,	null, null, false);
+	win['ad1videoobj']	= new WINDOW(p,	'ui/graphAdVid1.html', 	1216, 	800,	null, null, false);
 	win['adtrans']		= new WINDOW(p,	'ui/adtransgraph.html',	800, 	800,	null, null, false);
 	win['config']		= new WINDOW(p,	'ui/config.html',		335, 	650,	null, null, false);
 
@@ -375,6 +383,18 @@ function sendServerLog(msg) {
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
+expressSrv.use(function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	res.header('Access-Control-Max-Age', '1');
+
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+
+	next();
+});
+
 expressSrv.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
 	//console.log(req.body);
@@ -419,7 +439,7 @@ expressSrv.get('/*.html', function(req, res) {
 });
 
 expressSrv.get('/player.aitx', function(req, res) {
-	var srv = "http://" + req.headers.host + "/";
+	var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 	
 	// console.log("get ait: " + srv);
 	res.render('playerait.hbs', {url: srv}, function(err, html) { 
@@ -429,6 +449,15 @@ expressSrv.get('/player.aitx', function(req, res) {
         res.send(html);
     });
 });
+
+const favIcon 	= fs.readFileSync('./views/favicon.ico');
+
+expressSrv.get('/favicon.ico', function(req, res) {
+	res.type("image/x-icon");
+	res.status(200);
+    res.send(favIcon);
+});
+
 
 var mp4box = new mp4boxModule.MP4Box();
 
@@ -525,7 +554,9 @@ expressSrv.get('/content/*', function(req, res) {
 			"Content-Range": "bytes " + start + "-" + end + "/" + total,
 			"Accept-Ranges": "bytes",
 			"Content-Length": chunksize,
-			"Content-Type": cType
+			"Content-Type": cType,
+			"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+			"Access-Control-Allow-Origin": "*"
 		});			
 
 		var stream = fs.createReadStream(file, { start: start, end: end })
@@ -907,8 +938,12 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
 	
-	/* var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   Absolute calc - this is wrong, use relative */
-	var evOffset = 0;
+	if (!runOptions.bEventAbs) {
+		var evOffset = 0;
+	} else {
+		// NOT COMPLIANT!
+		var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+	}
 	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
@@ -927,8 +962,13 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	var alignedOffset = (seg-1) * sz;
 	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
 	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
-	/* var evOffset 	= Math.round(alignedOffset * eTimescale / 1000);	Absolute calc - this is wrong, use relative */
-	var evOffset	= 0;
+	
+	if (!runOptions.bEventAbs) {
+		var evOffset = 0;
+	} else {
+		// NOT COMPLIANT!
+		var evOffset = Math.round(alignedOffset * eTimescale / 1000);	// Absolute calc - this is wrong, use relative
+	}
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
@@ -1058,9 +1098,18 @@ const licenceTable = [];
 expressSrv.post('/getkeys', function(req, res) {
 	
 	var lDelay = commonConfig.getDelayLicense();
+	var licReq = req.body;
+	var kid;
 	
-	console.log("getkeys: " + JSON.stringify(req.body));
+	console.log("getkeys: " + JSON.stringify(licReq));
 	console.log(" - url: " + req.path);
+	
+	try {
+		kid = licReq.kids[0];
+	} catch (err) {
+		console.log(" * malformed licence request.");
+		return res.sendStatus(400);
+	}
 	
 	if (req.query.tag) {
 		var tag = req.query.tag;
@@ -1084,7 +1133,12 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 			
 			var lic = licenceTable[tag];
-			// sendServerLog("licence: " + JSON.stringify(lic));
+			sendServerLog("licence: " + JSON.stringify(lic));
+			
+			if (lic.keys[0].kid !=  kid) {
+				sendServerLog(" * illegal kid.");
+				return res.sendStatus(403);
+			}
 			
 			if (lDelay.value != 0) {
 				

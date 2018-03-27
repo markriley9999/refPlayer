@@ -1,10 +1,10 @@
 {
-	"ads" 				: [],
-	"src" 				: "./content/mperiods/absolute-events.mpd",
+	"ads" : [],
+	"src" 				: "http://vs-dash-ww-rd-stage.akamaized.net/al/hevc2/client_manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Absolute Events Offsets (not relative) - not representative",
+	"channelName" 		: "(BBC) UHD HLG 2",
 
 	"info"				: []
 }

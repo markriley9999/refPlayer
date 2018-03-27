@@ -21,11 +21,15 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "./content/bbc/hevc1/client_manifest.mpd",
+	"src" 				: "./content/sintel/sintel-clearkey.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "(BBC) UHD HLG with Ad Insertion Test Content",
+	"channelName" 		: "3 Video Objs - Ads: 5, Main: Clear Key (Sintel)",
 
-	"info"				: []
+	"info"				: [	"5 mp4 (Ch4) adverts",
+							"'Sintel' DASH asset - playing for 120s",
+							"Clear Key encrypted (main asset)"
+						  ]
+
 }
