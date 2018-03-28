@@ -1,7 +1,7 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "80",
+	"minor" 	: "81d",
 	"comment"	: "Dev release",
 	"notes"		: [	
 					"Time-stamped content",
