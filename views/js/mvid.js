@@ -1657,6 +1657,7 @@ mVid.cmndSeekFWD = function () {
 	
 	this.Log.info("called : cmndSeekFWD"); 
 
+	playingVideo.pause();
 	playingVideo.currentTime += 30;
 }
 
@@ -1669,6 +1670,7 @@ mVid.cmndSeekBACK = function () {
 	
 	this.Log.info("called : cmndSeekBACK"); 
 	
+	playingVideo.pause();
 	playingVideo.currentTime -= 30;
 }
 
@@ -1695,6 +1697,7 @@ mVid.cmndJumpToEnd = function () {
 
 	if (playingVideo) {
 		var t = playingVideo.duration * 0.9;
+		playingVideo.pause();
 		playingVideo.currentTime = t;
 		if (this.isMainFeatureVideo(playingVideo)) {
 			var trans =  this.getTransitionPoint();
@@ -1723,6 +1726,7 @@ mVid.cmndJumpToStart = function () {
 
 	if (playingVideo) {
 		var t = 0;
+		playingVideo.pause();
 		playingVideo.currentTime = t;
 		if (this.isMainFeatureVideo(playingVideo)) {
 			playingVideo.resumeFrom = t;
