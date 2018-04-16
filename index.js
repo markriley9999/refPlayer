@@ -730,16 +730,25 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	
 	sC = configStream[useURL];
 
-	sC.segsize 		= parseInt(eval(sC.segsize));
-	sC.periodD 		= parseInt(eval(sC.periodD));
-	sC.adD 			= parseInt(eval(sC.adD));
-	sC.marginF 		= parseInt(eval(sC.marginF));
-	sC.marginB 		= parseInt(eval(sC.marginB));
+	function intify(x) {
+		return parseInt(eval(x));
+	}
 	
-	sC.Atimescale	= parseInt(eval(sC.Atimescale));
-	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+	sC.segsize 		= intify(sC.segsize);
+	sC.periodD 		= intify(sC.periodD);
+	sC.adD 			= intify(sC.adD);
+	sC.marginF 		= intify(sC.marginF);
+	sC.marginB 		= intify(sC.marginB);
+	
+	sC.Atimescale	= intify(sC.Atimescale);
+	sC.Vtimescale	= intify(sC.Vtimescale);
 
 	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
+	
+	if (sC.subs) {
+		sC.subs.segsize 	= intify(sC.subs.segsize);
+		sC.subs.timescale 	= intify(sC.subs.timescale);
+	}
 	
 	var bAdsandMain = (sC.ads.length > 0);
 
@@ -841,7 +850,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 															sC.Etimescale, 
 															eventId++, 
 															"" /* prevMain */, 
-															sC.adSubs);
+															sC.subs);
 			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
 																i, 
 																sC.periodD, 
@@ -954,25 +963,50 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, prev, subs) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
-	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
+
 	
-	var alignedOffset = (seg-1) * sz;
-	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
-	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
+	function calcOffset (p, periodD, offset, sz, timescale) {
+		var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
+		var alignedOffset = (seg-1) * sz;
+		var obj = {};
+		
+		obj.seg = seg;
+		obj.offset = Math.round((alignedOffset * timescale) / 1000);
+		
+		//console.log(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
+		return obj; 
+	}
 	
+	var offsetObj 	= calcOffset(p, periodD, offset, sz, Atimescale);
+	var seg 		= offsetObj.seg;	
+	var AoffsetS  	= offsetObj.offset;
+	var VoffsetS  	= calcOffset(p, periodD, offset, sz, Vtimescale).offset;
+	
+	var evOffset;
 	if (!runOptions.bEventAbs) {
-		var evOffset = 0;
+		evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		var evOffset = Math.round(alignedOffset * eTimescale / 1000);	// Absolute calc - this is wrong, use relative
+		evOffset = calcOffset(p, periodD, offset, sz, eTimescale).offset;	// Absolute calc - this is wrong, use relative
 	}
+
+	if (subs) {
+		subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+	}
+	
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, eId, prev, subs);
+	return mainContentXML(
+		fn, p, sDuration, sStart, 
+		AoffsetS, VoffsetS, seg, 
+		evOffset, eId, 
+		prev, 
+		subs
+	);
 }
 
 _formatTime = function(d) {
@@ -1018,9 +1052,13 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs, cachedXML.mainSubs)) {
-		template = hbs.handlebars.compile(cachedXML.mainSubs[subs]);
-		context = {};
+	if (subs && loadAndCache(subs.main, cachedXML.mainSubs)) {
+		template = hbs.handlebars.compile(cachedXML.mainSubs[subs.main]);
+		context = { 
+					subid		: "main",
+					offset		: subs.offsetObj.offset,
+					period_seg	: subs.offsetObj.seg
+				};
 		sbs =  template(context);
 	}
 	
@@ -1029,14 +1067,17 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	}
 
 	template 	= hbs.handlebars.compile(cachedXML.mainContent[fn]);
-	context 	= {	period_id: "main-" + p, 
-					period_start: sStart, 
-					period_continuity: pc, 
-					Aoffset: AoffsetS, 
-					Voffset: VoffsetS, 
-					evPresentationTime: evPresTime,
-					evId: eId,					
-					period_seg: seg, subs: sbs};
+	context 	= {	
+					period_id			: "main-" + p, 
+					period_start		: sStart, 
+					period_continuity	: pc, 
+					Aoffset				: AoffsetS, 
+					Voffset				: VoffsetS, 
+					evPresentationTime	: evPresTime,
+					evId				: eId,					
+					period_seg			: seg, 
+					subs				: sbs
+				};
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -1058,9 +1099,13 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) 
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs, cachedXML.adSubs)) {
-		template = hbs.handlebars.compile(cachedXML.adSubs[subs]);
-		context = {};
+	if (subs && loadAndCache(subs.ads, cachedXML.adSubs)) {
+		template = hbs.handlebars.compile(cachedXML.adSubs[subs.ads]);
+		context = { 
+			subid 		: "ads",
+			offset		: 0,
+			period_seg	: 1	
+		};
 		sbs =  template(context);
 	}
 	
