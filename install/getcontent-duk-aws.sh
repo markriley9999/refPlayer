@@ -8,7 +8,7 @@ URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
 if [ "$CMD" == "--subs" ]; then
 	./getcontent.sh "$URL" "subs"
-	return 0
+	exit 0
 fi
 
 if [ "$CMD" != "--ext" ] || [ "$CMD" == "--all" ]; then
