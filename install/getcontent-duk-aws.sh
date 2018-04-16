@@ -6,11 +6,15 @@ CMD=$1
 
 URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
+if [ "$CMD" == "--subs" ]; then
+	./getcontent.sh "$URL" "subs"
+	return 0
+fi
 
 if [ "$CMD" != "--ext" ] || [ "$CMD" == "--all" ]; then
-	./getallcontent.sh $URL
+	./getallcontent.sh "$URL"
 fi
 
 if [ "$CMD" == "--ext" ] || [ "$CMD" == "--all" ]; then
-	./getextcontent.sh $URL
+	./getextcontent.sh "$URL"
 fi
