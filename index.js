@@ -1010,7 +1010,8 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 }
 
 _formatTime = function(d) {
-	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + d.getUTCMilliseconds() + "S";
+	var ms = "00" + d.getUTCMilliseconds();
+	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + ms.substr(-3) + "S";
 }
 
 
