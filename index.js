@@ -1053,7 +1053,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs.main, cachedXML.mainSubs)) {
+	if (subs && subs.main && loadAndCache(subs.main, cachedXML.mainSubs)) {
 		template = hbs.handlebars.compile(cachedXML.mainSubs[subs.main]);
 		context = { 
 					subid		: "main",
@@ -1100,7 +1100,7 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) 
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs.ads, cachedXML.adSubs)) {
+	if (subs && subs.ads && loadAndCache(subs.ads, cachedXML.adSubs)) {
 		template = hbs.handlebars.compile(cachedXML.adSubs[subs.ads]);
 		context = { 
 			subid 		: "ads",
