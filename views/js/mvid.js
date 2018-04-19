@@ -280,9 +280,8 @@ mVid.start = function () {
 		document.addEventListener("keydown", that.OnKeyDown.bind(that));
 
 		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
-				that.setContentSourceAndLoad();				
-			});
+			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log);
+			that.setContentSourceAndLoad();				
 			that.bEMESupport = true;
 		} else {
 			that.setContentSourceAndLoad();

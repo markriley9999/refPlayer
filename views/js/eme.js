@@ -154,13 +154,22 @@ function SetupEME(video, keySystem, name, options, contentTag, logObj)
 		{
 			if (!video.bProcessingKey) { 
 				video.bProcessingKey = true;
+		
+				EnsureMediaKeysCreated(video, keySystem, options).then(
 				
-				var session = video.mediaKeys.createSession();
-				session.addEventListener("message", UpdateSessionFunc(name, contentTag));
-				session.addEventListener("keystatuseschange", KeysChange);
-				session.generateRequest(ev.initDataType, ev.initData).then(function() {
-					log(name + " generated request");
-				  }, bail(name + " Failed to generate request."));
+					function() {
+						log(name + " ensured MediaKeys available on HTMLMediaElement");
+						
+						var session = video.mediaKeys.createSession();
+						session.addEventListener("message", UpdateSessionFunc(name, contentTag));
+						session.addEventListener("keystatuseschange", KeysChange);
+						session.generateRequest(ev.initDataType, ev.initData).then(function() {
+							log(name + " generated request");
+						  }, bail(name + " Failed to generate request."));
+						  
+					  }, 
+						bail(name + " failed to ensure MediaKeys on HTMLMediaElement"));
+	  
 			} else {
 				log(name + "Multiple encrypted events!");
 			}
@@ -168,9 +177,6 @@ function SetupEME(video, keySystem, name, options, contentTag, logObj)
 	}
 	
 	
-	return EnsureMediaKeysCreated(video, keySystem, options).then(function() {
-		log(name + " ensured MediaKeys available on HTMLMediaElement");
-		video.addEventListener("encrypted", onEncrypted);
-	  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"));
+	video.addEventListener("encrypted", onEncrypted);
 
 }
