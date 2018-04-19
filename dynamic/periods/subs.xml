@@ -2,6 +2,6 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="{{offset}}" startNumber="{{period_seg}}" timescale="1000" duration="60000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{offset}}" startNumber="{{period_seg}}" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="{{subid}}" bandwidth="1100"/>
 		</AdaptationSet>
