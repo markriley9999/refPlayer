@@ -1649,20 +1649,7 @@ mVid.cmndReload = function () {
 }	
 
 mVid.seek = function (v, t) {
-	
-	if (!v.paused)
-	{
-		v.onpause = function()	{
-			v.currentTime = t;
-			v.onpause = onVideoEvent(this);
-		};
-
-		v.bPlayPauseTransition = true;
-		v.pause();
-	} else {
-		// already paused
-		v.currentTime = t;
-	}
+	v.currentTime = t;
 }
 
 mVid.cmndSeekFWD = function () {
