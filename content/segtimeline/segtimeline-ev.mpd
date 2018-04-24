@@ -15,42 +15,90 @@
 	</ProgramInformation>
 
 	<Period>
-		<EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="1000">
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
 			<Event duration="60000"  presentationTime="0" id="1">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="60000" id="2">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="60000"  presentationTime="597600" id="3">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="657600" id="4">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="60000"  presentationTime="1195200" id="5">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="1255200" id="6">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="60000"  presentationTime="1792800" id="7">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="1852800" id="8">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="60000"  presentationTime="2390400" id="9">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="2450400" id="10">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="60000"  presentationTime="2988000" id="11">
-				Ad
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 			<Event duration="537600"  presentationTime="3048000" id="12">
-				Main Content
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
 			</Event>
 		</EventStream>
 
