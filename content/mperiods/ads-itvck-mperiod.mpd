@@ -166,6 +166,7 @@
         schemeIdUri="urn:mpeg:dash:role:2011"
         value="main">
       </Role>
+      <BaseURL>../itv/clearkey/dash/</BaseURL>
       <SegmentTemplate
         timescale="25"
         duration="300"
@@ -354,6 +355,7 @@
         schemeIdUri="urn:mpeg:dash:role:2011"
         value="main">
       </Role>
+      <BaseURL>../itv/clearkey/dash/</BaseURL>
       <SegmentTemplate
 		presentationTimeOffset="3000"
 		startNumber="11"
