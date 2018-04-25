@@ -416,6 +416,7 @@ expressSrv.get('/*.html', function(req, res) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		console.log(" ---> App loaded by: " + generalInfo.devName);
+		console.log(" --->   UA: " + UA);
 		
 		//createWindows();
 		
