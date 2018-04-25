@@ -416,7 +416,7 @@ expressSrv.get('/*.html', function(req, res) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		console.log(" ---> App loaded by: " + generalInfo.devName);
-		console.log(" --->   UA: " + UA);
+		console.log("   UA: " + UA);
 		
 		//createWindows();
 		
@@ -479,7 +479,12 @@ expressSrv.get('/content/*', function(req, res) {
 	
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
-
+	
+	if (!runOptions.bShowGUI) {
+			var UA = req.headers['user-agent'];
+			console.log("    Device: " + commonUtils.extractDevName(UA));
+	}
+	
 	// ***** Simulate error condition (505)? *****
 	var nErrs = commonConfig.getNetworkErrors();
 	
