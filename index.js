@@ -320,8 +320,8 @@ function socketConnect(socket) {
 	
 	generalInfo.connectedDevices++;
 
-    console.log(" ---> Device connected: " + generalInfo.connectedDevices);
-	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+ 	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ")");
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
@@ -413,6 +413,7 @@ expressSrv.get('/*.html', function(req, res) {
 	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+		console.log(" ---> App loaded by: " + generalInfo.devName);
 		
 		//createWindows();
 		
