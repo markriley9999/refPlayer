@@ -5,6 +5,7 @@
   xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
   xmlns:cenc="urn:mpeg:cenc:2013"
   xmlns:mas="urn:marlin:mas:1-0:services:schemas:mpd"
+  xmlns:scte35="urn:scte:scte35:2014:xml+bin"
   type="static"
   mediaPresentationDuration="PT6M"
   maxSegmentDuration="PT13S"
@@ -75,7 +76,6 @@
 		</Event> 
 	</EventStream>
 	
-    <BaseURL>../itv/clearkey/dash/</BaseURL>
     <AdaptationSet
       group="1"
       contentType="audio"
@@ -115,6 +115,7 @@
         schemeIdUri="urn:mpeg:dash:role:2011"
         value="main">
       </Role>
+      <BaseURL>../itv/clearkey/dash/</BaseURL>
       <SegmentTemplate
         timescale="48000"
         duration="576000"
@@ -261,7 +262,6 @@
 		</Event> 
 	</EventStream>
 	
-	<BaseURL>../itv/clearkey/dash/</BaseURL>
     <AdaptationSet
       group="1"
       contentType="audio"
@@ -301,6 +301,7 @@
         schemeIdUri="urn:mpeg:dash:role:2011"
         value="main">
       </Role>
+	  <BaseURL>../itv/clearkey/dash/</BaseURL>
       <SegmentTemplate
 		presentationTimeOffset="5760000"
 		startNumber="11"
