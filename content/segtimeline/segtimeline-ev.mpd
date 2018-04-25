@@ -16,7 +16,7 @@
 	</ProgramInformation>
 
 	<Period>
-		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="1000"> 
 			<Event duration="60000"  presentationTime="0" id="1">
 				<scte35:Signal> 
 					<scte35:Binary>
