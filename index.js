@@ -481,8 +481,14 @@ expressSrv.get('/content/*', function(req, res) {
 	//console.log(JSON.stringify(req.headers));
 	
 	if (!runOptions.bShowGUI) {
-			var UA = req.headers['user-agent'];
-			console.log("    Device: " + commonUtils.extractDevName(UA));
+			var u = req.headers['user-agent'];			
+			var d = commonUtils.extractDevName(u);
+			
+			if (d === "UnknownModel") {
+				console.log("    UA: " + u);
+			} else {
+				console.log("    Device: " + d);
+			}
 	}
 	
 	// ***** Simulate error condition (505)? *****
