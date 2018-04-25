@@ -321,7 +321,9 @@ function socketConnect(socket) {
 	generalInfo.connectedDevices++;
 
  	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
-    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ")");
+	var UA = socket.request.headers['user-agent'];
+
+    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
