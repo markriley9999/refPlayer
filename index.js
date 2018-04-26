@@ -488,6 +488,7 @@ expressSrv.get('/content/*', function(req, res) {
 				console.log("    UA: " + u);
 			} else {
 				console.log("    Device: " + d);
+				console.log("       IP: " + req.ip);
 			}
 	}
 	
