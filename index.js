@@ -315,7 +315,8 @@ ioHttps.sockets.on('connection', function(s) {
 	socketConnect(s);
 });
 	
-	
+const whois = require('whois')
+
 function socketConnect(socket) {
 	
 	generalInfo.connectedDevices++;
@@ -324,6 +325,12 @@ function socketConnect(socket) {
 	var UA = socket.request.headers['user-agent'];
 
     console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
+	if (!runOptions.bShowGUI) {
+		whois.lookup(socket.handshake.address, function(err, data) {
+			console.log(chalk.blue(data))
+		})
+	}
+	
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
@@ -416,7 +423,7 @@ expressSrv.get('/*.html', function(req, res) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		console.log(" ---> App loaded by: " + generalInfo.devName);
-		console.log("   UA: " + UA);
+		console.log(chalk.blue("   UA: " + UA));
 		
 		//createWindows();
 		
@@ -485,10 +492,10 @@ expressSrv.get('/content/*', function(req, res) {
 			var d = commonUtils.extractDevName(u);
 			
 			if (d === "UnknownModel") {
-				console.log("    UA: " + u);
+				console.log(chalk.blue("    UA: " + u));
 			} else {
-				console.log("    Device: " + d);
-				console.log("       IP: " + req.ip);
+				console.log(chalk.blue("    Device: " + d));
+				console.log(chalk.blue("       IP: " + req.ip));
 			}
 	}
 	
