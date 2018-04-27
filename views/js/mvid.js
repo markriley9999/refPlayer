@@ -421,7 +421,10 @@ mVid.setUpCues = function () {
 				that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			}
 			
-			if (track && (track.kind === 'metadata') && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
+			if (	track && track.cues &&
+					(track.kind === 'metadata') && 
+					(track.inBandMetadataTrackDispatchType === trackDispatchType) && 
+					(track.cues.length > 0)) {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
