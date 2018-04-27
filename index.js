@@ -6,9 +6,14 @@ const chalk = require('chalk');
 const electron = require('electron');   
 const express = require('express');         
 
-const gui = electron.app;
+const argv = require('minimist')(process.argv.slice(2));
 
- 
+var GUI = null;
+
+if (!argv.headless && !argv.multidevs) {
+	GUI = electron.app;
+}
+	
 const browserWindow = electron.BrowserWindow;   
 const ipc = electron.ipcMain;                   
  
@@ -30,8 +35,6 @@ const CONFIG = require('./common/configobj.js');
 var commonConfig = new CONFIG();
 
 const mp4boxModule = require('mp4box');
-
-var argv = require('minimist')(process.argv.slice(2));
 
 
 var win = {};
@@ -114,7 +117,7 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	
 	self.createWindow = function () {
 
-		if (!runOptions.bShowGUI) {
+		if (!GUI) {
 			return;
 		}
 		
@@ -211,14 +214,7 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	//console.dir(argv);
-	
-	if (!gui) {
-		runOptions.bShowGUI	= false;
-	} else {
-		runOptions.bShowGUI = !argv.headless;
-	}
-	
+	runOptions.bMultiDevs 	= !GUI;	
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
 	
@@ -226,7 +222,7 @@ function init() {
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
 		console.log("--segdump    Dump segment information.");
-		gui.quit();
+		GUI.quit();
 		return;
 	}
 	
@@ -245,7 +241,7 @@ function init() {
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
-	if (!runOptions.bShowGUI) {
+	if (!GUI) {
 		console.log("--- Headless Mode ---");
 	}
 	
@@ -306,12 +302,12 @@ function init() {
 	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.NONE);
 }
  
-if (gui) { 
-	gui.on('ready', init); 
+if (GUI) { 
+	GUI.on('ready', init); 
 	 
-	gui.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
+	GUI.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
 		if (process.platform !== 'darwin')
-			gui.quit();
+			GUI.quit();
 	});
 }
 	
@@ -337,7 +333,7 @@ function socketConnect(socket) {
 	var UA = socket.request.headers['user-agent'];
 
     console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
-	if (!runOptions.bShowGUI) {
+	if (runOptions.bMultiDevs) {
 		whois.lookup(socket.handshake.address, function(err, data) {
 			console.log(chalk.blue(data))
 		})
@@ -431,7 +427,7 @@ expressSrv.post('/adtrans', function(req, res) {
 expressSrv.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
+	if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 		console.log(" ---> App loaded by: " + generalInfo.devName);
@@ -499,7 +495,7 @@ expressSrv.get('/content/*', function(req, res) {
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
 	
-	if (!runOptions.bShowGUI) {
+	if (runOptions.bMultiDevs) {
 			var u = req.headers['user-agent'];			
 			var d = commonUtils.extractDevName(u);
 			
@@ -1262,7 +1258,7 @@ function sendConfig() {
 
 
 http.listen(8080, (err) => {
-	if (!gui) {
+	if (!GUI) {
 		init();
 	}
 });
