@@ -3,7 +3,6 @@
 ./install/setupfirewall.sh
 
 ./forever stopall
-./forever set loglength 1000
-./forever start index.js
+./forever start -d index.js
 ./forever list
 
