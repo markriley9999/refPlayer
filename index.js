@@ -4,7 +4,10 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 const electron = require('electron');   
-const app = electron.app;                
+const express = require('express');         
+
+const gui = electron.app;
+
  
 const browserWindow = electron.BrowserWindow;   
 const ipc = electron.ipcMain;                   
@@ -12,7 +15,6 @@ const ipc = electron.ipcMain;
 const path = require('path'); 
 const url = require('url');   
  
-const express = require('express');         
 const bodyParser = require('body-parser');  
 
 const hbs = require('hbs');                 
@@ -77,25 +79,28 @@ var ioHttp 	= ioLib(http);
 var ioHttps = ioLib(https);        
  
  
- 
-ipc.on('ipc-openwindow', function(event, w) { 
-	if (win[w]) {
-		win[w].createWindow(); 
-		win[w].focusWindow();	
-	}
-})
+if (ipc) {
+	
+	ipc.on('ipc-openwindow', function(event, w) { 
+		if (win[w]) {
+			win[w].createWindow(); 
+			win[w].focusWindow();	
+		}
+	})
 
-ipc.on('ipc-get-config', function(event, w) { 
-	sendConfig();
-})
+	ipc.on('ipc-get-config', function(event, w) { 
+		sendConfig();
+	})
 
-ipc.on('ipc-set-config', function(event, w) { 
-	commonConfig._setProps(w);
-})
+	ipc.on('ipc-set-config', function(event, w) { 
+		commonConfig._setProps(w);
+	})
 
-ipc.on('ipc-get-connectionstatus', function(event, w) { 
-	sendConnectionStatus();
-})
+	ipc.on('ipc-get-connectionstatus', function(event, w) { 
+		sendConnectionStatus();
+	})
+
+}
 
 function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	var self = this;
@@ -208,7 +213,12 @@ function init() {
 	
 	//console.dir(argv);
 	
-	runOptions.bShowGUI 	= !argv.headless;
+	if (!gui) {
+		runOptions.bShowGUI	= false;
+	} else {
+		runOptions.bShowGUI = !argv.headless;
+	}
+	
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
 	
@@ -216,7 +226,7 @@ function init() {
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
 		console.log("--segdump    Dump segment information.");
-		app.quit();
+		gui.quit();
 		return;
 	}
 	
@@ -262,7 +272,6 @@ function init() {
 
 	win['log'].createWindow();
 	
-	
 	var interfaces = os.networkInterfaces();
 
 	for (var k in interfaces) {
@@ -297,13 +306,16 @@ function init() {
 	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.NONE);
 }
  
-app.on('ready', init); 
- 
-app.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
-    if (process.platform !== 'darwin')
-        app.quit();
-});
- 
+if (gui) { 
+	gui.on('ready', init); 
+	 
+	gui.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
+		if (process.platform !== 'darwin')
+			gui.quit();
+	});
+}
+	
+
 expressSrv.on('activate', function() {
 });
 
@@ -1249,6 +1261,11 @@ function sendConfig() {
 } 
 
 
-http.listen(8080);
+http.listen(8080, (err) => {
+	if (!gui) {
+		init();
+	}
+});
+
 https.listen(8082);
 
