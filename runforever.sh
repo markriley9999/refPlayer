@@ -3,6 +3,6 @@
 ./install/setupfirewall.sh
 
 ./forever stopall
-./forever start index.js
-
+./forever start -d index.js
+./forever list
 
