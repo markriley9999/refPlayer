@@ -451,7 +451,7 @@ expressSrv.get('/*.html', function(req, res) {
 		res.render('index.hbs', 
 			{
 				version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-				style: v.dev ? "mVid-dev" : "mVid"
+				style: v.dev ? "mvid-dev" : "mvid"
 			}, 
 			function(err, html) { 
 			res.status(200);
