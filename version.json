@@ -1,8 +1,9 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "83d",
-	"comment"	: "Dev release",
+	"minor" 	: "84",
+	"dev"		: "true",
+	"comment"	: "",
 	"notes"		: [	
 					"Time-stamped content",
 					"SCTE Events", 

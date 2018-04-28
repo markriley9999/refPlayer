@@ -8,14 +8,16 @@ const express = require('express');
 
 const argv = require('minimist')(process.argv.slice(2));
 
-var GUI = null;
+var GUI 		= null;
+var guiWindow 	= null;   
+var guiIPC 		= null;                   
 
 if (!argv.headless && !argv.multidevs) {
-	GUI = electron.app;
+	GUI 		= electron.app;
+	guiWindow 	= electron.BrowserWindow;   
+	guiIPC 		= electron.guiIPCMain;                   
 }
 	
-const browserWindow = electron.BrowserWindow;   
-const ipc = electron.ipcMain;                   
  
 const path = require('path'); 
 const url = require('url');   
@@ -82,24 +84,24 @@ var ioHttp 	= ioLib(http);
 var ioHttps = ioLib(https);        
  
  
-if (ipc) {
+if (guiIPC) {
 	
-	ipc.on('ipc-openwindow', function(event, w) { 
+	guiIPC.on('ipc-openwindow', function(event, w) { 
 		if (win[w]) {
 			win[w].createWindow(); 
 			win[w].focusWindow();	
 		}
 	})
 
-	ipc.on('ipc-get-config', function(event, w) { 
+	guiIPC.on('ipc-get-config', function(event, w) { 
 		sendConfig();
 	})
 
-	ipc.on('ipc-set-config', function(event, w) { 
+	guiIPC.on('ipc-set-config', function(event, w) { 
 		commonConfig._setProps(w);
 	})
 
-	ipc.on('ipc-get-connectionstatus', function(event, w) { 
+	guiIPC.on('ipc-get-connectionstatus', function(event, w) { 
 		sendConnectionStatus();
 	})
 
@@ -122,7 +124,7 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 		}
 		
 		if (!self.winObj) {
-			self.winObj = new browserWindow({
+			self.winObj = new guiWindow({
 					parent: p,
 					width: self.width, 
 					height: self.height, 
@@ -172,10 +174,10 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 		}
 	}
 
-	this.sendToWindow = function(ipc, data)
+	this.sendToWindow = function(guiIPC, data)
 	{
 		if (this.winObj) {
-			this.winObj.webContents.send(ipc, data);
+			this.winObj.webContents.send(guiIPC, data);
 		}
 	}
 	
@@ -228,6 +230,7 @@ function init() {
 	
 	console.log("--------------------------------------------------");
 	console.log(v.title + " v" + v.major + "." + v.minor);
+	console.log("   " + (v.dev ? "Dev" : "Formal") + " Release");
 	console.log("--------------------------------------------------");
 	console.log("");
 	console.log(v.comment);
@@ -442,8 +445,14 @@ expressSrv.get('/*.html', function(req, res) {
 		win['ad1videoobj'].reload();
 		win['adtrans'].reload();
 		
+		var v = generalInfo.version;
+		var sRelType = v.dev ? "dev" : "";
+		
 		res.render('index.hbs', 
-			{version: "v" + generalInfo.version.major + "." + generalInfo.version.minor}, 
+			{
+				version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
+				style: v.dev ? "mVid-dev" : "mVid"
+			}, 
 			function(err, html) { 
 			res.status(200);
 			res.send(html);
@@ -1237,14 +1246,16 @@ expressSrv.post('/getkeys', function(req, res) {
 });
 
 function sendConnectionStatus() {
+	var g = generalInfo;
+	
 	var obj = { 
-					'port'			: generalInfo.port,
-					'bHTTPSEnabled'	: generalInfo.bHTTPSEnabled,
-					'httpsPort'		: generalInfo.httpsPort,
-					'addresses'		: generalInfo.serverAddresses, 
-					'bConnected'	: (generalInfo.connectedDevices > 0),
-					'devName'		: generalInfo.devName,
-					'version'		: "v" + generalInfo.version.major + "." + generalInfo.version.minor
+					'port'			: g.port,
+					'bHTTPSEnabled'	: g.bHTTPSEnabled,
+					'httpsPort'		: g.httpsPort,
+					'addresses'		: g.serverAddresses, 
+					'bConnected'	: (g.connectedDevices > 0),
+					'devName'		: g.devName,
+					'version'		: "v" + g.version.major + "." + g.version.minor + (g.version.dev ? "dev" : "")
 				};
 				 
 	win['log'].sendToWindow('ipc-connected', obj); 
