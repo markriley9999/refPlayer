@@ -1,8 +1,8 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "90",
-	"dev"		: "false",
+	"minor" 	: "91",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
 					"New subtitles content",
