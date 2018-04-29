@@ -1,6 +1,6 @@
 {
 	"main"			: "./dynamic/periods/main-bbb.xml",
-	"subs"			: "",
+	"subs"			: "./dynamic/periods/subs.xml",
 	
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
@@ -19,5 +19,12 @@
 		"./dynamic/periods/ad-itv.xml",
 		"./dynamic/periods/ad-ch4.xml"
 	],
-	"adSubs"		: "./dynamic/periods/subs-snake.xml"
+	
+	"subs" : 
+	{
+		"segsize" 	: "10000",
+		"timescale"	: "1000",
+		"main"		: "./dynamic/periods/subs.xml",
+		"ads"		: "./dynamic/periods/subs.xml"
+	}
 }

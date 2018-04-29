@@ -1,0 +1,19 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/mperiods/dashads-dartest-mainsubs.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Static M-Periods - Subs (main)",
+
+	"info"				: [	"Static Manifest (Adverts and Main Content):",
+							"  - Content duration 60m",
+							"  - Split into 12 Periods",
+							"  - ITV and Ch4 Ads",
+							"  - Ad period, starts every 10m",
+							"  - Ad period lasts 1m",
+							"  - Main period, starts after Ad",
+							"  - Main period lasts 9m",
+							"  - Subs (main content)"
+						  ]
+}

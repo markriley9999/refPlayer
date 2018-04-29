@@ -7,5 +7,13 @@ mkdir -p errlog/
 
 ./install/setupfirewall.sh
 
-./xvfb-run.sh ./run.sh --headless 2> "errlog/error-$(date +%s).log" &
+CMD=$1
+
+
+if [ "$CMD" == "--log" ]; then
+	./xvfb-run.sh ./run.sh --headless >"errlog/error-$(date +%s).log" 2>&1 &
+else
+	./xvfb-run.sh ./run.sh --headless &
+fi
+
 

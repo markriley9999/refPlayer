@@ -1,11 +1,13 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/shortseg/shortseg.mpd",
+	"src" 				: "./content/segtimeline/segtimeline-ev-clearkey.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Static M-Periods -  Partial final 'ad' segment",
+	"channelName" 		: "Static: Segment timeline and events",
 
-	"info"				: [	"Short Final Seg"
+	"info"				: [	"Ads start every 10 minutes",
+							"Ads last 1 minute",
+							"Main content lasts ~9 minutes"
 						  ]
 }

@@ -1,6 +1,5 @@
 {
 	"main"			: "./dynamic/periods/main-sintel-ck.xml",
-	"subs"			: "",
 
 	"segsize" 		: "3840",
 	"periodD" 		: "120000", 	
@@ -15,8 +14,7 @@
 	"adD"			: "0",
 	"adSegAlign"	: "none",
 	
-	"ads"			: [],
-	"adSubs"		: ""
+	"ads"			: []
 }
 
 

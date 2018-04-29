@@ -181,9 +181,8 @@ mVid.start = function () {
 	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
 	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
-	
-	// this.bFullSCTE		= commonUtils.getUrlVars()["fullscte"] || false;
-	this.bFullSCTE		= true;
+	this.bEventsDump	= commonUtils.getUrlVars()["eventdump"] || false;
+	this.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
 	
 	if (this.bOverrideSubs)
 	{
@@ -415,15 +414,17 @@ mVid.setUpCues = function () {
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
 
-			if (track)
+			if (that.bEventsDump && track)
 			{
-				// that.Log.info("Track #" + t); 
-				// that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				that.Log.info("Track #" + t); 
+				that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			}
 			
-			if (track && (track.kind === 'metadata') && (track.inBandMetadataTrackDispatchType === trackDispatchType) && (track.cues.length > 0)) {
-				// that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
-			
+			if (	track && track.cues &&
+					(track.kind === 'metadata') && 
+					(track.inBandMetadataTrackDispatchType === trackDispatchType) && 
+					(track.cues.length > 0)) {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
 
@@ -439,7 +440,9 @@ mVid.setUpCues = function () {
 							
 							that.cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							that.cueImages[imgIndex].style.left = (x - offset) + "px";
-							// that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));				
+							if (that.bEventsDump) {
+								that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
+							}								
 						}
 					} else {
 						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
@@ -477,10 +480,12 @@ mVid.setUpCues = function () {
 			s = "<scte35:Signal><scte35:Binary>/TWFpbiBDb250ZW50</scte35:Binary></scte35:Signal>"; 
 			******************************/
 
-			that.Log.info("Parse SCTE: data: " + s);
-
+			if (that.bEventsDump) {
+				that.Log.info("Parse SCTE: data: " + s);
+			}
+			
 			try {
-				if (that.bFullSCTE) {
+				if (!that.bPartialSCTE) {
 					if (window.DOMParser) {
 						// Add scte namespace, used by xml parser
 						s = "<" + "wrapper  xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"" + ">" + s + "<" + "/wrapper" + ">";
@@ -499,8 +504,10 @@ mVid.setUpCues = function () {
 				r = "Event Data Error";
 			}
 			
-			that.Log.info("Parsed SCTE: " + r);
-
+			if (that.bEventsDump) {
+				that.Log.info("Parsed SCTE: " + r);
+			}
+			
 			return r;
 		}
 		
@@ -513,8 +520,10 @@ mVid.setUpCues = function () {
 
 				showCues();
 				
-				that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
-
+				if (that.bEventsDump) {
+					that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+				}
+				
 				for (var i = 0; i < textTrack.activeCues.length; ++i) {
 
 					cue = textTrack.activeCues[i];
@@ -524,7 +533,9 @@ mVid.setUpCues = function () {
 						var cd = e("cuedata");
 						var s = parseSCTE(cue.data);
 						
-						that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));							
+						if (that.bEventsDump) {
+							that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
+						}							
 						f.setAttribute("class", "playerIcon flag");
 						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
 						cd.innerHTML = "Cue Event: " + s;
@@ -1640,6 +1651,10 @@ mVid.cmndReload = function () {
 	this.reload();
 }	
 
+mVid.seek = function (v, t) {
+	v.currentTime = t;
+}
+
 mVid.cmndSeekFWD = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
@@ -1649,7 +1664,9 @@ mVid.cmndSeekFWD = function () {
 	
 	this.Log.info("called : cmndSeekFWD"); 
 
-	playingVideo.currentTime += 30;
+	playingVideo.bPlayPauseTransition = true;
+	playingVideo.pause();
+	this.seek(playingVideo, playingVideo.currentTime + 30);
 }
 
 mVid.cmndSeekBACK = function () {
@@ -1661,7 +1678,7 @@ mVid.cmndSeekBACK = function () {
 	
 	this.Log.info("called : cmndSeekBACK"); 
 	
-	playingVideo.currentTime -= 30;
+	this.seek(playingVideo, playingVideo.currentTime - 30);
 }
 
 mVid.cmndLog = function () {
@@ -1687,7 +1704,8 @@ mVid.cmndJumpToEnd = function () {
 
 	if (playingVideo) {
 		var t = playingVideo.duration * 0.9;
-		playingVideo.currentTime = t;
+		this.seek(playingVideo, t);
+
 		if (this.isMainFeatureVideo(playingVideo)) {
 			var trans =  this.getTransitionPoint();
 			
@@ -1715,7 +1733,7 @@ mVid.cmndJumpToStart = function () {
 
 	if (playingVideo) {
 		var t = 0;
-		playingVideo.currentTime = t;
+		this.seek(playingVideo, t);
 		if (this.isMainFeatureVideo(playingVideo)) {
 			playingVideo.resumeFrom = t;
 			this.showPlayrange();

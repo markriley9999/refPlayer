@@ -4,15 +4,24 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 const electron = require('electron');   
-const app = electron.app;                
- 
-const browserWindow = electron.BrowserWindow;   
-const ipc = electron.ipcMain;                   
+const express = require('express');         
+
+const argv = require('minimist')(process.argv.slice(2));
+
+var GUI 		= null;
+var guiWindow 	= null;   
+var guiIPC 		= null;                   
+
+if (!argv.headless && !argv.multidevs) {
+	GUI 		= electron.app;
+	guiWindow 	= electron.BrowserWindow;   
+	guiIPC 		= electron.guiIPCMain;                   
+}
+	
  
 const path = require('path'); 
 const url = require('url');   
  
-const express = require('express');         
 const bodyParser = require('body-parser');  
 
 const hbs = require('hbs');                 
@@ -28,8 +37,6 @@ const CONFIG = require('./common/configobj.js');
 var commonConfig = new CONFIG();
 
 const mp4boxModule = require('mp4box');
-
-var argv = require('minimist')(process.argv.slice(2));
 
 
 var win = {};
@@ -77,25 +84,28 @@ var ioHttp 	= ioLib(http);
 var ioHttps = ioLib(https);        
  
  
- 
-ipc.on('ipc-openwindow', function(event, w) { 
-	if (win[w]) {
-		win[w].createWindow(); 
-		win[w].focusWindow();	
-	}
-})
+if (guiIPC) {
+	
+	guiIPC.on('ipc-openwindow', function(event, w) { 
+		if (win[w]) {
+			win[w].createWindow(); 
+			win[w].focusWindow();	
+		}
+	})
 
-ipc.on('ipc-get-config', function(event, w) { 
-	sendConfig();
-})
+	guiIPC.on('ipc-get-config', function(event, w) { 
+		sendConfig();
+	})
 
-ipc.on('ipc-set-config', function(event, w) { 
-	commonConfig._setProps(w);
-})
+	guiIPC.on('ipc-set-config', function(event, w) { 
+		commonConfig._setProps(w);
+	})
 
-ipc.on('ipc-get-connectionstatus', function(event, w) { 
-	sendConnectionStatus();
-})
+	guiIPC.on('ipc-get-connectionstatus', function(event, w) { 
+		sendConnectionStatus();
+	})
+
+}
 
 function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	var self = this;
@@ -109,12 +119,12 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 	
 	self.createWindow = function () {
 
-		if (!runOptions.bShowGUI) {
+		if (!GUI) {
 			return;
 		}
 		
 		if (!self.winObj) {
-			self.winObj = new browserWindow({
+			self.winObj = new guiWindow({
 					parent: p,
 					width: self.width, 
 					height: self.height, 
@@ -164,10 +174,10 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 		}
 	}
 
-	this.sendToWindow = function(ipc, data)
+	this.sendToWindow = function(guiIPC, data)
 	{
 		if (this.winObj) {
-			this.winObj.webContents.send(ipc, data);
+			this.winObj.webContents.send(guiIPC, data);
 		}
 	}
 	
@@ -206,9 +216,7 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	//console.dir(argv);
-	
-	runOptions.bShowGUI 	= !argv.headless;
+	runOptions.bMultiDevs 	= !GUI;	
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
 	
@@ -216,12 +224,13 @@ function init() {
 	if (argv.help) {
 		console.log("--headless   Run with no GUI.");
 		console.log("--segdump    Dump segment information.");
-		app.quit();
+		GUI.quit();
 		return;
 	}
 	
 	console.log("--------------------------------------------------");
 	console.log(v.title + " v" + v.major + "." + v.minor);
+	console.log("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
 	console.log("--------------------------------------------------");
 	console.log("");
 	console.log(v.comment);
@@ -235,7 +244,7 @@ function init() {
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
-	if (!runOptions.bShowGUI) {
+	if (!GUI) {
 		console.log("--- Headless Mode ---");
 	}
 	
@@ -261,7 +270,6 @@ function init() {
 	win['config']		= new WINDOW(p,	'ui/config.html',		335, 	650,	null, null, false);
 
 	win['log'].createWindow();
-	
 	
 	var interfaces = os.networkInterfaces();
 
@@ -297,13 +305,16 @@ function init() {
 	commonConfig.setDelayLicense(commonConfig.DELAYLICENSE.NONE);
 }
  
-app.on('ready', init); 
- 
-app.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
-    if (process.platform !== 'darwin')
-        app.quit();
-});
- 
+if (GUI) { 
+	GUI.on('ready', init); 
+	 
+	GUI.on('window-all-closed', function() { // if this is running on a mac closing all the windows does not kill the application
+		if (process.platform !== 'darwin')
+			GUI.quit();
+	});
+}
+	
+
 expressSrv.on('activate', function() {
 });
 
@@ -315,13 +326,22 @@ ioHttps.sockets.on('connection', function(s) {
 	socketConnect(s);
 });
 	
-	
+const whois = require('whois')
+
 function socketConnect(socket) {
 	
 	generalInfo.connectedDevices++;
 
-    console.log(" ---> Device connected: " + generalInfo.connectedDevices);
-	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+ 	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+	var UA = socket.request.headers['user-agent'];
+
+    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
+	if (runOptions.bMultiDevs) {
+		whois.lookup(socket.handshake.address, function(err, data) {
+			console.log(chalk.blue(data))
+		})
+	}
+	
 	sendConnectionStatus();
 	
 	socket.on('bufferEvent', function(data) {
@@ -410,9 +430,11 @@ expressSrv.post('/adtrans', function(req, res) {
 expressSrv.get('/*.html', function(req, res) {
 	var UA = req.headers['user-agent'];
 	
-	if (!runOptions.bShowGUI || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
+	if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
+		console.log(" ---> App loaded by: " + generalInfo.devName);
+		console.log(chalk.blue("   UA: " + UA));
 		
 		//createWindows();
 		
@@ -423,8 +445,14 @@ expressSrv.get('/*.html', function(req, res) {
 		win['ad1videoobj'].reload();
 		win['adtrans'].reload();
 		
+		var v = generalInfo.version;
+		var sRelType = v.dev == "true" ? "dev" : "";
+		
 		res.render('index.hbs', 
-			{version: "v" + generalInfo.version.major + "." + generalInfo.version.minor}, 
+			{
+				version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
+				style: v.dev == "true" ? "mvid-dev" : "mvid"
+			}, 
 			function(err, html) { 
 			res.status(200);
 			res.send(html);
@@ -475,7 +503,19 @@ expressSrv.get('/content/*', function(req, res) {
 	
 	sendServerLog("GET content: " + req.path);
 	//console.log(JSON.stringify(req.headers));
-
+	
+	if (runOptions.bMultiDevs) {
+			var u = req.headers['user-agent'];			
+			var d = commonUtils.extractDevName(u);
+			
+			if (d === "UnknownModel") {
+				console.log(chalk.blue("    UA: " + u));
+			} else {
+				console.log(chalk.blue("    Device: " + d));
+				console.log(chalk.blue("       IP: " + req.ip));
+			}
+	}
+	
 	// ***** Simulate error condition (505)? *****
 	var nErrs = commonConfig.getNetworkErrors();
 	
@@ -730,16 +770,25 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	
 	sC = configStream[useURL];
 
-	sC.segsize 		= parseInt(eval(sC.segsize));
-	sC.periodD 		= parseInt(eval(sC.periodD));
-	sC.adD 			= parseInt(eval(sC.adD));
-	sC.marginF 		= parseInt(eval(sC.marginF));
-	sC.marginB 		= parseInt(eval(sC.marginB));
+	function intify(x) {
+		return parseInt(eval(x));
+	}
 	
-	sC.Atimescale	= parseInt(eval(sC.Atimescale));
-	sC.Vtimescale	= parseInt(eval(sC.Vtimescale));
+	sC.segsize 		= intify(sC.segsize);
+	sC.periodD 		= intify(sC.periodD);
+	sC.adD 			= intify(sC.adD);
+	sC.marginF 		= intify(sC.marginF);
+	sC.marginB 		= intify(sC.marginB);
+	
+	sC.Atimescale	= intify(sC.Atimescale);
+	sC.Vtimescale	= intify(sC.Vtimescale);
 
 	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
+	
+	if (sC.subs) {
+		sC.subs.segsize 	= intify(sC.subs.segsize);
+		sC.subs.timescale 	= intify(sC.subs.timescale);
+	}
 	
 	var bAdsandMain = (sC.ads.length > 0);
 
@@ -841,7 +890,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 															sC.Etimescale, 
 															eventId++, 
 															"" /* prevMain */, 
-															sC.adSubs);
+															sC.subs);
 			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
 																i, 
 																sC.periodD, 
@@ -954,29 +1003,55 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, prev, subs) {
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
-	var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
+
 	
-	var alignedOffset = (seg-1) * sz;
-	var AoffsetS  	= Math.round(alignedOffset * Atimescale / 1000);
-	var VoffsetS  	= Math.round(alignedOffset * Vtimescale / 1000);
+	function calcOffset (p, periodD, offset, sz, timescale) {
+		var seg = (Math.round(((p * periodD) + offset) / sz)) + 1;
+		var alignedOffset = (seg-1) * sz;
+		var obj = {};
+		
+		obj.seg = seg;
+		obj.offset = Math.round((alignedOffset * timescale) / 1000);
+		
+		//console.log(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
+		return obj; 
+	}
 	
+	var offsetObj 	= calcOffset(p, periodD, offset, sz, Atimescale);
+	var seg 		= offsetObj.seg;	
+	var AoffsetS  	= offsetObj.offset;
+	var VoffsetS  	= calcOffset(p, periodD, offset, sz, Vtimescale).offset;
+	
+	var evOffset;
 	if (!runOptions.bEventAbs) {
-		var evOffset = 0;
+		evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		var evOffset = Math.round(alignedOffset * eTimescale / 1000);	// Absolute calc - this is wrong, use relative
+		evOffset = calcOffset(p, periodD, offset, sz, eTimescale).offset;	// Absolute calc - this is wrong, use relative
 	}
+
+	if (subs) {
+		subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+	}
+	
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
-	return mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evOffset, eId, prev, subs);
+	return mainContentXML(
+		fn, p, sDuration, sStart, 
+		AoffsetS, VoffsetS, seg, 
+		evOffset, eId, 
+		prev, 
+		subs
+	);
 }
 
 _formatTime = function(d) {
-	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + d.getUTCMilliseconds() + "S";
+	var ms = "00" + d.getUTCMilliseconds();
+	return "PT" + d.getUTCHours() + "H" + d.getUTCMinutes() + "M" + d.getUTCSeconds() + "." + ms.substr(-3) + "S";
 }
 
 
@@ -1018,9 +1093,13 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs, cachedXML.mainSubs)) {
-		template = hbs.handlebars.compile(cachedXML.mainSubs[subs]);
-		context = {};
+	if (subs && subs.main && loadAndCache(subs.main, cachedXML.mainSubs)) {
+		template = hbs.handlebars.compile(cachedXML.mainSubs[subs.main]);
+		context = { 
+					subid		: "main",
+					offset		: subs.offsetObj.offset,
+					period_seg	: subs.offsetObj.seg
+				};
 		sbs =  template(context);
 	}
 	
@@ -1029,14 +1108,17 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	}
 
 	template 	= hbs.handlebars.compile(cachedXML.mainContent[fn]);
-	context 	= {	period_id: "main-" + p, 
-					period_start: sStart, 
-					period_continuity: pc, 
-					Aoffset: AoffsetS, 
-					Voffset: VoffsetS, 
-					evPresentationTime: evPresTime,
-					evId: eId,					
-					period_seg: seg, subs: sbs};
+	context 	= {	
+					period_id			: "main-" + p, 
+					period_start		: sStart, 
+					period_continuity	: pc, 
+					Aoffset				: AoffsetS, 
+					Voffset				: VoffsetS, 
+					evPresentationTime	: evPresTime,
+					evId				: eId,					
+					period_seg			: seg, 
+					subs				: sbs
+				};
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -1058,9 +1140,13 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) 
 		pc = "";
 	}
 
-	if (subs && loadAndCache(subs, cachedXML.adSubs)) {
-		template = hbs.handlebars.compile(cachedXML.adSubs[subs]);
-		context = {};
+	if (subs && subs.ads && loadAndCache(subs.ads, cachedXML.adSubs)) {
+		template = hbs.handlebars.compile(cachedXML.adSubs[subs.ads]);
+		context = { 
+			subid 		: "ads",
+			offset		: 0,
+			period_seg	: 1	
+		};
 		sbs =  template(context);
 	}
 	
@@ -1160,14 +1246,16 @@ expressSrv.post('/getkeys', function(req, res) {
 });
 
 function sendConnectionStatus() {
+	var g = generalInfo;
+	
 	var obj = { 
-					'port'			: generalInfo.port,
-					'bHTTPSEnabled'	: generalInfo.bHTTPSEnabled,
-					'httpsPort'		: generalInfo.httpsPort,
-					'addresses'		: generalInfo.serverAddresses, 
-					'bConnected'	: (generalInfo.connectedDevices > 0),
-					'devName'		: generalInfo.devName,
-					'version'		: "v" + generalInfo.version.major + "." + generalInfo.version.minor
+					'port'			: g.port,
+					'bHTTPSEnabled'	: g.bHTTPSEnabled,
+					'httpsPort'		: g.httpsPort,
+					'addresses'		: g.serverAddresses, 
+					'bConnected'	: (g.connectedDevices > 0),
+					'devName'		: g.devName,
+					'version'		: "v" + g.version.major + "." + g.version.minor + (g.version.dev == "true" ? "dev" : "")
 				};
 				 
 	win['log'].sendToWindow('ipc-connected', obj); 
@@ -1180,6 +1268,11 @@ function sendConfig() {
 } 
 
 
-http.listen(8080);
+http.listen(8080, (err) => {
+	if (!GUI) {
+		init();
+	}
+});
+
 https.listen(8082);
 
