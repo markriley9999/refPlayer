@@ -230,7 +230,7 @@ function init() {
 	
 	console.log("--------------------------------------------------");
 	console.log(v.title + " v" + v.major + "." + v.minor);
-	console.log("   " + (v.dev ? "Dev" : "Formal") + " Release");
+	console.log("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
 	console.log("--------------------------------------------------");
 	console.log("");
 	console.log(v.comment);
@@ -446,12 +446,12 @@ expressSrv.get('/*.html', function(req, res) {
 		win['adtrans'].reload();
 		
 		var v = generalInfo.version;
-		var sRelType = v.dev ? "dev" : "";
+		var sRelType = v.dev == "true" ? "dev" : "";
 		
 		res.render('index.hbs', 
 			{
 				version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-				style: v.dev ? "mvid-dev" : "mvid"
+				style: v.dev == "true" ? "mvid-dev" : "mvid"
 			}, 
 			function(err, html) { 
 			res.status(200);
@@ -1255,7 +1255,7 @@ function sendConnectionStatus() {
 					'addresses'		: g.serverAddresses, 
 					'bConnected'	: (g.connectedDevices > 0),
 					'devName'		: g.devName,
-					'version'		: "v" + g.version.major + "." + g.version.minor + (g.version.dev ? "dev" : "")
+					'version'		: "v" + g.version.major + "." + g.version.minor + (g.version.dev == "true" ? "dev" : "")
 				};
 				 
 	win['log'].sendToWindow('ipc-connected', obj); 
