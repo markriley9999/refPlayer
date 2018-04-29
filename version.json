@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "84",
-	"dev"		: "true",
+	"minor" 	: "90",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+					"New subtitles content",
 					"Time-stamped content",
 					"SCTE Events", 
 					"HTTPS support", 
