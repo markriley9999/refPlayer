@@ -602,7 +602,7 @@ expressSrv.get('/content/*', function(req, res) {
 					"Access-Control-Allow-Origin": "*"
 				});			
 
-				//console.log(" - send chunk");
+				console.log(" - send chunk");
 				var nThrot = commonConfig.getNetworkThrottle();
 				
 				if (nThrot.value != 0) {
