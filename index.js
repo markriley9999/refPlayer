@@ -15,7 +15,7 @@ var guiIPC 		= null;
 if (!argv.headless && !argv.multidevs) {
 	GUI 		= electron.app;
 	guiWindow 	= electron.BrowserWindow;   
-	guiIPC 		= electron.guiIPCMain;                   
+	guiIPC 		= electron.ipcMain;      
 }
 	
  
