@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "1",
 	"minor" 	: "95",
-	"dev"		: "false",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
 					"New subtitles content",
