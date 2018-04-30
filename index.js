@@ -540,7 +540,13 @@ expressSrv.get('/content/*', function(req, res) {
 				console.log(" * file does not exist");
 				return res.sendStatus(404);
 			}
-			res.end(err);
+			console.log(" * error in file request: " + file);
+			return res.sendStatus(400);
+		}
+		
+		if (!stats.isFile()) {
+			console.log(" * error in file request: " + file);
+			return res.sendStatus(400);
 		}
 		
 		if (runOptions.bSegDump) {
@@ -587,21 +593,21 @@ expressSrv.get('/content/*', function(req, res) {
 		
 		if (start >= end) {
 			console.log(" * Error: start >= end!");
-			return res.sendStatus(400);				
+			return res.sendStatus(400);
 		}
-
-		res.writeHead(rtn, {
-			"Content-Range": "bytes " + start + "-" + end + "/" + total,
-			"Accept-Ranges": "bytes",
-			"Content-Length": chunksize,
-			"Content-Type": cType,
-			"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-			"Access-Control-Allow-Origin": "*"
-		});			
 
 		var stream = fs.createReadStream(file, { start: start, end: end })
 			.on("open", function() {
-				//console.log(" - send chunk");
+				res.writeHead(rtn, {
+					"Content-Range": "bytes " + start + "-" + end + "/" + total,
+					"Accept-Ranges": "bytes",
+					"Content-Length": chunksize,
+					"Content-Type": cType,
+					"Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+					"Access-Control-Allow-Origin": "*"
+				});			
+
+				// console.log(" - send chunk");
 				var nThrot = commonConfig.getNetworkThrottle();
 				
 				if (nThrot.value != 0) {
@@ -611,8 +617,7 @@ expressSrv.get('/content/*', function(req, res) {
 					stream.pipe(res);				
 				}
 			}).on("error", function(err) {
-				res.sendStatus(400);
-				res.end(err);
+				return res.sendStatus(400);
 			});
 	});
 	
