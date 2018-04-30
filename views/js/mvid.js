@@ -498,6 +498,7 @@ mVid.setUpCues = function () {
 						r = "No DOMParser object";
 					}
 				} else {
+					that.Log.info("Parsing partial scte data");
 					r = window.atob(s.replace(/\s/g,'').substr(1));
 				}
 			} catch (err) {
