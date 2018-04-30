@@ -544,6 +544,11 @@ expressSrv.get('/content/*', function(req, res) {
 			return res.sendStatus(400);
 		}
 		
+		if (!stats.isFile()) {
+			console.log(" * error in file request: " + file);
+			return res.sendStatus(400);
+		}
+		
 		if (runOptions.bSegDump) {
 			var arrayBuffer = new Uint8Array(fs.readFileSync(file)).buffer;
 			arrayBuffer.fileStart = 0;
@@ -602,7 +607,7 @@ expressSrv.get('/content/*', function(req, res) {
 					"Access-Control-Allow-Origin": "*"
 				});			
 
-				console.log(" - send chunk");
+				// console.log(" - send chunk");
 				var nThrot = commonConfig.getNetworkThrottle();
 				
 				if (nThrot.value != 0) {
