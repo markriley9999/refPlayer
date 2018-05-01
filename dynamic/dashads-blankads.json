@@ -16,5 +16,7 @@
 	
 	"ads"			: [
 		"./dynamic/periods/blankads.xml"
-	]
+	],
+
+	"p-trans" : "connectivity"
 }
