@@ -1,12 +1,6 @@
 	<!-- *** Generated Period: Ad *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
-		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
-				Period Boundary - Ad Break
-			</Event>
-		</EventStream-->
-
 		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
 			<Event presentationTime="{{evPresentationTime}}" duration="2880000" id="{{evId}}"> 
 				<scte35:Signal> 
@@ -20,12 +14,14 @@
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<BaseURL>../content/blankads/</BaseURL>
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			{{{period_continuity}}}
 			<SegmentTemplate timescale="48000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="73329">
 			</Representation>
 		</AdaptationSet>
 
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			{{{period_continuity}}}
 			<BaseURL>../content/blankads/</BaseURL>
 			<SegmentTemplate timescale="12800" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" duration="49152" initialization="init/blankads_set2_init.mp4"/>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="575519">

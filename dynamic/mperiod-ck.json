@@ -14,9 +14,7 @@
 	"adD"			: "0",
 	"adSegAlign"	: "none",
 	
-	"ads"			: [],
-
-	"p-trans" : "continuity"
+	"ads"			: []
 }
 
 

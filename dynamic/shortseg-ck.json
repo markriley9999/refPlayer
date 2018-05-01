@@ -18,7 +18,5 @@
 	"ads"			: [
 		"./dynamic/periods/shortseg2.xml",
 		"./dynamic/periods/shortseg1.xml"
-	],
-
-	"p-trans" : "connectivity"
+	]
 }

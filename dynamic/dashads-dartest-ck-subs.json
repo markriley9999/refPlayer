@@ -19,8 +19,6 @@
 		"./dynamic/periods/ad-ch4.xml"
 	],
 
-	"p-trans" : "connectivity",
-	
 	"subs" : 
 	{
 		"segsize" 	: "10000",

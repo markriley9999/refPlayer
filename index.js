@@ -894,7 +894,8 @@ expressSrv.get('/dynamic/*', function(req, res) {
 															sC.adD, 
 															sC.Etimescale, 
 															eventId++, 
-															"" /* prevMain */, 
+															"connectivity",
+															prevMain, 
 															sC.subs);
 			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
 																i, 
@@ -904,8 +905,9 @@ expressSrv.get('/dynamic/*', function(req, res) {
 																sC.Atimescale, 
 																sC.Vtimescale, 
 																sC.Etimescale,
-																eventId++, 
-																"" /* "ad-" + i */, 
+																eventId++,
+																"connectivity",
+																"ad-" + i, 
 																sC.subs);
 		} else {
 			formProps['period' + i] = makeMainPeriod(	sC.main, 
@@ -917,6 +919,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 														sC.Vtimescale, 
 														sC.Etimescale, 
 														eventId++, 
+														"continuity",
 														prevMain, 
 														sC.subs);			
 		}
@@ -985,7 +988,7 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
+makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, ptrans, prev, subs) {
 	var fadD = new Date(adD);
 	var fsAd = new Date(p * periodD);
 	
@@ -1002,10 +1005,11 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, evOffset, eId, prev, subs);
+	return adXML(fn, p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, subs);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, prev, subs) {
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, ptrans, prev, subs) {
+	
 	var fd = new Date(periodD-offset);
 	var fs = new Date((p * periodD) + offset);
 	
@@ -1048,7 +1052,8 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	return mainContentXML(
 		fn, p, sDuration, sStart, 
 		AoffsetS, VoffsetS, seg, 
-		evOffset, eId, 
+		evOffset, eId,
+		ptrans,
 		prev, 
 		subs
 	);
@@ -1060,7 +1065,11 @@ _formatTime = function(d) {
 }
 
 
-const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+var ptransTable = {};
+
+ptransTable['continuity'] 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+ptransTable['connectivity'] = fs.readFileSync('./dynamic/periods/period-connectivity.xml', 'utf8');
+
 
 var cachedXML = {};
 
@@ -1084,14 +1093,14 @@ loadAndCache = function(fn, c) {
 	return true;
 }
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, prevPeriodID, subs) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, ptrans, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
 	var sbs = "";
 	
-	if (prevPeriodID != "") {
-		template = hbs.handlebars.compile(periodContinuity);
+	if ((prevPeriodID != "") && ptransTable[ptrans]) {
+		template = hbs.handlebars.compile(ptransTable[ptrans]);
 		context = {prevperiod_id: prevPeriodID};
 		pc =  template(context);
 	} else {
@@ -1131,14 +1140,14 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
 	var sbs = "";
 		
-	if (prevPeriodID != "") {
-		template = hbs.handlebars.compile(periodContinuity);
+	if ((prevPeriodID != "") && ptransTable[ptrans]) {
+		template = hbs.handlebars.compile(ptransTable[ptrans]);
 		context = {prevperiod_id: prevPeriodID};
 		pc =  template(context);
 	} else {

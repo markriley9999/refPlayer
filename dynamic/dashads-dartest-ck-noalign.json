@@ -17,7 +17,5 @@
 	"ads"			: [
 		"./dynamic/periods/ad-itv.xml",
 		"./dynamic/periods/ad-ch4.xml"
-	],
-
-	"p-trans" : "connectivity"
+	]
 }

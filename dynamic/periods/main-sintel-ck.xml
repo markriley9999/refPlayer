@@ -1,12 +1,6 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
-		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
-				Period Boundary - Main Content
-			</Event>
-		</EventStream-->
-
 		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
 			<Event presentationTime="{{evPresentationTime}}" duration="480000" id="{{evId}}"> 
 				<scte35:Signal> 
