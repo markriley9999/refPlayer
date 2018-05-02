@@ -481,7 +481,9 @@ mVid.setUpCues = function () {
 			******************************/
 
 			if (that.bEventsDump) {
+//<![CDATA[
 				that.Log.info("Parse SCTE: data: " + s);
+//]]>		
 			}
 			
 			try {
