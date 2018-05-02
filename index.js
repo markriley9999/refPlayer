@@ -709,6 +709,10 @@ var persistState 	= [];
 expressSrv.get('/dynamic/*', function(req, res) {
 	
 	var progStart;
+	var bAllPeriods = false;
+
+	
+	// Get time 
 	var dNow = new Date();
 	
 	var utcHours = dNow.getUTCHours();	
@@ -716,19 +720,21 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	var utcSeconds = dNow.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
-	var useURL = req.path;
-	var formProps = {};
 	var timeServer = "http://" + req.headers.host + "/time";
-	var sC = [];
-	var strippedURL = commonUtils.basename(useURL);
-	
-	var bAllPeriods = false;
-	
-	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
 
+	
+	var formProps = {};
+	var sC = [];
+
+	
+	// Extract content from URL 
+	var useURL = req.path;
+	var strippedURL = commonUtils.basename(useURL);
+	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
 	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
 	sendServerLog("ContentId: " + sContId);
 
+		
 	// Content no longer live?
 	if (req.query.contid) {
 		var cContId = strippedURL + "-" + req.query.contid;
@@ -748,9 +754,11 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		}
 	}
 
+	
 	if (req.query.allperiods) {
 		bAllPeriods = req.query.allperiods === "1";
 	}
+	
 	
 	// Create new manifest?
 	formProps.title = sContId;
@@ -773,12 +781,14 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		}
 	}
 	
-	sC = configStream[useURL];
-
+	
 	function intify(x) {
 		return parseInt(eval(x));
 	}
 	
+	sC = configStream[useURL];
+
+	// Extract stream config data
 	sC.segsize 		= intify(sC.segsize);
 	sC.periodD 		= intify(sC.periodD);
 	sC.adD 			= intify(sC.adD);
@@ -794,7 +804,8 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		sC.subs.segsize 	= intify(sC.subs.segsize);
 		sC.subs.timescale 	= intify(sC.subs.timescale);
 	}
-	
+
+	uf 
 	var bAdsandMain = (sC.ads.length > 0);
 
 	
