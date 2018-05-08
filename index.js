@@ -805,10 +805,14 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		sC.subs.timescale 	= intify(sC.subs.timescale);
 	}
 
-	uf 
+	if (sC.segTimeLine) {
+		sC.segTimeLine.segcount = intify(sC.segTimeLine.segcount);
+		sC.segTimeLine.maxseg 	= intify(sC.segTimeLine.maxseg);
+	}
+	
 	var bAdsandMain = (sC.ads.length > 0);
 
-	
+	// Force ad duration to seg boundary???
 	if ((sC.adD > 0) && (sC.adSegAlign != "none")) {
 		console.log("- non aligned adD: " + sC.adD);
 		
@@ -821,6 +825,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		}		
 	} 
 
+	// Force main duration to seg boundary???
 	if (sC.segAlign != "none") {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
@@ -884,6 +889,8 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		}
 	}
 	
+	
+	// Create new manifest!
 	console.log("CurrentPeriod: " + currentP);
 
 	var prevMain;
