@@ -24,8 +24,9 @@
 	"channelName" 		: "3 Video Objs - Frame Count Check, Subs",
 
 	"info"				: [	"'Sintel' DASH asset - playing for 60s",
-							"EBU-TT-D 'Snake' Subtitles, in main asset",
-							"Main content stamped with frame number"
+							"EBU-TT-D 'timestamp' Subtitles, in main asset",
+							"Main content stamped with frame number",
+							"4 ads"
 						  ]
 
 }
