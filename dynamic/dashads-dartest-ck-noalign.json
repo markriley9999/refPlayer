@@ -11,11 +11,13 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "60000",
-	"adSegAlign"	: "none",
-	
-	"ads"			: [
-		"./dynamic/periods/ad-itv.xml",
-		"./dynamic/periods/ad-ch4.xml"
-	]
+	"ads" : {
+		"adD"			: "60000",
+		"adSegAlign"	: "none",
+		
+		"content"		: [
+			"./dynamic/periods/ad-itv.xml",
+			"./dynamic/periods/ad-ch4.xml"
+		]
+	}
 }

@@ -10,11 +10,6 @@
 
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
-	
-	"adD"			: "0",
-	"adSegAlign"	: "none",
-	
-	"ads"			: []
 }
 
 
