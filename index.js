@@ -979,18 +979,8 @@ getPeriod_round = function(m, d, mx) {
 	
 	return p;
 }
-/*
-			formProps['ad-period' + i] 		= makeAdPeriod(	sC.ads[adIdx], 
-															i, sC.periodD, 
-															sC.adD, 
-															sC.Etimescale, 
-															eventId++, 
-															"connectivity",
-															prevMain, 
-															sC.subs);
-			
-makeAdPeriod = function(fn, p, periodD, adD, Etimescale, eId, ptrans, prev, subs) {
-*/
+
+
 makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
 	
 	var fadD = new Date(sC.ads.adD);
@@ -1003,7 +993,7 @@ makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
 		var evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		var evOffset = Math.floor((p * sC.periodD * sc.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+		var evOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
 	}
 	
 	sendServerLog(" - Generated manifest file: Period: " + p);
@@ -1012,22 +1002,7 @@ makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
 	return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
 }
 
-/*
-			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
-																i, 
-																sC.periodD, 
-																sC.adD, 
-																sC.segsize, 
-																sC.Atimescale, 
-																sC.Vtimescale, 
-																sC.Etimescale,
-																eventId++,
-																"connectivity",
-																"ad-" + i, 
-																sC.subs);
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, Etimescale, eId, ptrans, prev, subs) {
-*/
 makeMainPeriod = function(sC, p, eId, ptrans, prev) {
 	
 	var offset = sC.ads ? sC.ads.adD : 0;
