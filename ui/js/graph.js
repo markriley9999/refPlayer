@@ -4,6 +4,7 @@ const MAXROWS = 600;
 var graph = {};
 
 graph.charts = {};
+graph.viewMin = 0;
 
 e = function(id) {
 	return document.getElementById(id);
@@ -55,7 +56,10 @@ graph.setupCharts = function () {
         that.charts[id].chartOptions = {
           title: title,
           curveType: 'none',
-          legend: { position: 'bottom' }
+          legend: { position: 'bottom' },
+		  hAxis: { 
+			viewWindow: { min: '0' }
+		  }
         };
 
         that.charts[id].chart = new google.visualization.LineChart(e(div));
@@ -73,6 +77,7 @@ graph.setupCharts = function () {
 
 graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
 	var ev;
+	var chData = chartObj.chartData;
 	
 	if (annotation) {
 		ev = 'e';
@@ -80,9 +85,9 @@ graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
 		ev = null;
 		annotation = null;
 	}
-		
-	if (chartObj.chartData) {
-		chartObj.chartData.addRow([	parseFloat(t),  
+			
+	if (chData) {
+		chData.addRow([	parseFloat(t),  
 									parseFloat(d), 
 									parseFloat(pos), 
 									parseFloat(buffer), 
@@ -91,11 +96,18 @@ graph.updateChart = function (chartObj, d, t, pos, buffer, hroom, annotation) {
 									annotation
 								]);		
 								
-		if (chartObj.chartData.getNumberOfRows() > MAXROWS) {
-			chartObj.chartData.removeRow(0);
+		if (chData.getNumberOfRows() > MAXROWS) {
+			chData.removeRow(0);			
 		}
 		
-		chartObj.chart.draw(chartObj.chartData, chartObj.chartOptions);
+		var m = chData.getValue(0, 0);
+		
+		if (m > graph.viewMin) {
+			graph.viewMin = m;
+		}
+		chartObj.chartOptions.hAxis.viewWindow.min = graph.viewMin;
+
+		chartObj.chart.draw(chData, chartObj.chartOptions);
 		//console.log(annotation);
 	}
 }
