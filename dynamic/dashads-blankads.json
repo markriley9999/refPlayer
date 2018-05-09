@@ -11,10 +11,13 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "60000",
-	"adSegAlign"	: "none",
-	
-	"ads"			: [
-		"./dynamic/periods/blankads.xml"
-	]
+	"ads" :
+	{
+		"adD"			: "60000",
+		"adSegAlign"	: "none",
+		
+		"content"		: [
+			"./dynamic/periods/blankads.xml"
+		]
+	}
 }

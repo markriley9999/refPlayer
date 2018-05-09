@@ -12,11 +12,14 @@
 	"Atimescale"	: "48000",
 	"Vtimescale"	: "12800",
 	
-	"adD"			: "11680",
-	"adSegAlign"	: "none",
-	
-	"ads"			: [
-		"./dynamic/periods/shortseg2.xml",
-		"./dynamic/periods/shortseg1.xml"
-	]
+	"ads" :
+	{
+		"adD"			: "11680",
+		"adSegAlign"	: "none",
+		
+		"content"		: [
+			"./dynamic/periods/shortseg2.xml",
+			"./dynamic/periods/shortseg1.xml"
+		]
+	}
 }
