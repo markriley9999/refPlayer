@@ -1043,7 +1043,13 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 	}
 
 	if (subs) {
-		subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+		// subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+		var subOffset = (p * periodD) + offset;
+		
+		subs.offsetObj = {
+			offset: (subOffset * subs.timescale) / 1000,
+			seg: Math.floor(subOffset / subs.segsize) + 1
+		};
 	}
 	
 	
