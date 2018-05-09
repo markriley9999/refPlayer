@@ -97,7 +97,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="60000" startNumber="7" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="61440" startNumber="7" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
@@ -197,7 +197,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="661440" startNumber="67" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="660480" startNumber="67" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
@@ -297,7 +297,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="1262880" startNumber="127" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="1263360" startNumber="127" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
@@ -397,7 +397,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="1864320" startNumber="187" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="1866240" startNumber="187" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
@@ -497,7 +497,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="2465760" startNumber="247" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="2465280" startNumber="247" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
@@ -597,7 +597,7 @@
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="3067200" startNumber="307" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
+			<SegmentTemplate presentationTimeOffset="3068160" startNumber="307" timescale="1000" duration="10000" media="$RepresentationID$/$Number%05d$.m4s" initialization="$RepresentationID$/IS.mp4"/>
 			<Representation id="main" bandwidth="1100"/>
 		</AdaptationSet>
 
