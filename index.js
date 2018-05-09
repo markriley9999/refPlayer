@@ -814,7 +814,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	}
 	
 	// Force ad duration to seg boundary???
-	if (sc.ads && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+	if (sC.ads && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
 		console.log("- non aligned adD: " + sC.ads.adD);
 		
 		if (sC.ads.adSegAlign === "round") {
@@ -830,7 +830,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	if (sC.segAlign != "none") {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
-		var adD = sC.ads ? sc.ads.adD : 0;
+		var adD = sC.ads ? sC.ads.adD : 0;
 		
 		if (sC.segAlign === "round") {
 			sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
@@ -1033,7 +1033,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev) {
 	var offset = sC.ads ? sC.ads.adD : 0;
 	
 	var fd = new Date(sC.periodD - offset);
-	var fs = new Date((p * periodD) + offset);
+	var fs = new Date((p * sC.periodD) + offset);
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
