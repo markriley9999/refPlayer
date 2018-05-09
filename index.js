@@ -791,7 +791,6 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	// Extract stream config data
 	sC.segsize 		= intify(sC.segsize);
 	sC.periodD 		= intify(sC.periodD);
-	sC.adD 			= intify(sC.adD);
 	sC.marginF 		= intify(sC.marginF);
 	sC.marginB 		= intify(sC.marginB);
 	
@@ -799,7 +798,11 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	sC.Vtimescale	= intify(sC.Vtimescale);
 
 	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
-	
+
+	if (sC.ads) {
+		sC.ads.adD 	= intify(sC.ads.adD);
+	}
+
 	if (sC.subs) {
 		sC.subs.segsize 	= intify(sC.subs.segsize);
 		sC.subs.timescale 	= intify(sC.subs.timescale);
@@ -810,18 +813,16 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		sC.segTimeLine.maxseg 	= intify(sC.segTimeLine.maxseg);
 	}
 	
-	var bAdsandMain = (sC.ads.length > 0);
-
 	// Force ad duration to seg boundary???
-	if ((sC.adD > 0) && (sC.adSegAlign != "none")) {
-		console.log("- non aligned adD: " + sC.adD);
+	if (sc.ads && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+		console.log("- non aligned adD: " + sC.ads.adD);
 		
-		if (sC.adSegAlign === "round") {
-			sC.adD = Math.round(sC.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (round): " + sC.adD);		
-		} else if (sC.adSegAlign === "floor") {
-			sC.adD = Math.floor(sC.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (floor): " + sC.adD);		
+		if (sC.ads.adSegAlign === "round") {
+			sC.ads.adD = Math.round(sC.ads.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (round): " + sC.ads.adD);		
+		} else if (sC.ads.adSegAlign === "floor") {
+			sC.ads.adD = Math.floor(sC.ads.adD / sC.segsize) * sC.segsize;
+			console.log("- aligned adD (floor): " + sC.ads.adD);		
 		}		
 	} 
 
@@ -829,11 +830,13 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	if (sC.segAlign != "none") {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
+		var adD = sC.ads ? sc.ads.adD : 0;
+		
 		if (sC.segAlign === "round") {
-			sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
 			console.log("- aligned periodD (round): " + sC.periodD);		
 		} else if (sC.segAlign === "floor") {
-			sC.periodD = (Math.floor((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
+			sC.periodD = (Math.floor((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
 			console.log("- aligned periodD (floor): " + sC.periodD);		
 		}		
 	} 
@@ -905,41 +908,12 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			prevMain = "";
 		}
 	
-		if (bAdsandMain) {
-			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(	sC.ads[adIdx], 
-															i, sC.periodD, 
-															sC.adD, 
-															sC.Etimescale, 
-															eventId++, 
-															"connectivity",
-															prevMain, 
-															sC.subs);
-			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
-																i, 
-																sC.periodD, 
-																sC.adD, 
-																sC.segsize, 
-																sC.Atimescale, 
-																sC.Vtimescale, 
-																sC.Etimescale,
-																eventId++,
-																"connectivity",
-																"ad-" + i, 
-																sC.subs);
+		if (sC.ads) {
+			adIdx = (i % sC.ads.content.length);
+			formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
+			formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i);
 		} else {
-			formProps['period' + i] = makeMainPeriod(	sC.main, 
-														i, 
-														sC.periodD, 
-														0, 
-														sC.segsize, 
-														sC.Atimescale, 
-														sC.Vtimescale, 
-														sC.Etimescale, 
-														eventId++, 
-														"continuity",
-														prevMain, 
-														sC.subs);			
+			formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain);
 		}
 	}
 	
@@ -1005,10 +979,22 @@ getPeriod_round = function(m, d, mx) {
 	
 	return p;
 }
-
-makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, ptrans, prev, subs) {
-	var fadD = new Date(adD);
-	var fsAd = new Date(p * periodD);
+/*
+			formProps['ad-period' + i] 		= makeAdPeriod(	sC.ads[adIdx], 
+															i, sC.periodD, 
+															sC.adD, 
+															sC.Etimescale, 
+															eventId++, 
+															"connectivity",
+															prevMain, 
+															sC.subs);
+			
+makeAdPeriod = function(fn, p, periodD, adD, Etimescale, eId, ptrans, prev, subs) {
+*/
+makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
+	
+	var fadD = new Date(sC.ads.adD);
+	var fsAd = new Date(p * sC.periodD);
 	
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
@@ -1017,18 +1003,36 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, ptrans, prev, subs
 		var evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+		var evOffset = Math.floor((p * sC.periodD * sc.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
 	}
 	
 	sendServerLog(" - Generated manifest file: Period: " + p);
 	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, subs);
+	return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, ptrans, prev, subs) {
+/*
+			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
+																i, 
+																sC.periodD, 
+																sC.adD, 
+																sC.segsize, 
+																sC.Atimescale, 
+																sC.Vtimescale, 
+																sC.Etimescale,
+																eventId++,
+																"connectivity",
+																"ad-" + i, 
+																sC.subs);
+
+makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, Etimescale, eId, ptrans, prev, subs) {
+*/
+makeMainPeriod = function(sC, p, eId, ptrans, prev) {
 	
-	var fd = new Date(periodD-offset);
+	var offset = sC.ads ? sC.ads.adD : 0;
+	
+	var fd = new Date(sC.periodD - offset);
 	var fs = new Date((p * periodD) + offset);
 	
 	var sDuration 	= _formatTime(fd);
@@ -1047,33 +1051,33 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 		return obj; 
 	}
 	
-	var offsetObj 	= calcOffset(p, periodD, offset, sz, Atimescale);
+	var offsetObj 	= calcOffset(p, sC.periodD, offset, sC.segsize, sC.Atimescale);
 	var seg 		= offsetObj.seg;	
 	var AoffsetS  	= offsetObj.offset;
-	var VoffsetS  	= calcOffset(p, periodD, offset, sz, Vtimescale).offset;
+	var VoffsetS  	= calcOffset(p, sC.periodD, offset, sC.segsize, sC.Vtimescale).offset;
 	
 	var evOffset;
 	if (!runOptions.bEventAbs) {
 		evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		evOffset = calcOffset(p, periodD, offset, sz, eTimescale).offset;	// Absolute calc - this is wrong, use relative
+		evOffset = calcOffset(p, sC.periodD, offset, sC.segsize, sC.Etimescale).offset;	// Absolute calc - this is wrong, use relative
 	}
 
-	if (subs) {
-		subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+	if (sC.subs) {
+		sC.subs.offsetObj 	= calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
 	}
 	
 	
 	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
 	return mainContentXML(
-		fn, p, sDuration, sStart, 
+		sC.main, p, sDuration, sStart, 
 		AoffsetS, VoffsetS, seg, 
 		evOffset, eId,
 		ptrans,
 		prev, 
-		subs
+		sC.subs
 	);
 }
 
