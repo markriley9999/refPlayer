@@ -922,6 +922,9 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		formProps['segtimeline-audio']  = makeSegTimeLineAudio(sC, utcTotalSeconds);
 		formProps['segtimeline-video']  = makeSegTimeLineVideo(sC, utcTotalSeconds);
 		formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
+		if (sC.subs) {
+			formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+		}
 	}
 	
 	// Get file on server
@@ -1229,6 +1232,18 @@ makeSegTimeLineEvents = function(sC, t) {
 
 	return cachedXML.segTimeLine[fn];
 }
+
+
+makeSegTimeLineSubs = function(sC, t) {
+
+	var fn = sC.subs.main;
+	
+	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+		return false;
+	}
+
+	return cachedXML.segTimeLine[fn];
+}	
 
 
 expressSrv.post('/savelog', function(req, res) {

@@ -8,6 +8,7 @@
 
 	"info"				: [	"Ads start every 10 minutes",
 							"Ads last 1 minute",
-							"Main content lasts ~9 minutes"
+							"Main content lasts ~9 minutes",
+							"Subs"
 						  ]
 }
