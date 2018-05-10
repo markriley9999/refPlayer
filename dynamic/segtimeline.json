@@ -1,0 +1,19 @@
+{
+	"segsize" 		: "3840",
+	"periodD" 		: "600000", 	
+
+	"marginF" 		: "120",					
+	"marginB" 		: "3600",					
+
+	"segTimeLine" :
+	{
+		"audio"		: "./dynamic/periods/segtimeline-audio.xml",
+		"video"		: "./dynamic/periods/segtimeline-video.xml",
+		"events"	: "./dynamic/periods/segtimeline-events.xml"
+	},
+	
+	"ads" :
+	{
+		"adD"			: "60000"
+	}
+}
