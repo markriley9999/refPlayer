@@ -15,5 +15,10 @@
 	"ads" :
 	{
 		"adD"			: "60000"
+	},
+	
+	"subs" : 
+	{
+		"main"		: "./dynamic/segtimeline/subs.xml"
 	}
 }

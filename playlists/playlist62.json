@@ -1,6 +1,6 @@
 {
 	"ads" 				: [],
-	"src" 				: "./dynamic/segtimeline-subs.mpd",
+	"src" 				: "./dynamic/segtimeline.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
@@ -8,7 +8,6 @@
 
 	"info"				: [	"Ads start every 10 minutes",
 							"Ads last 1 minute",
-							"Main content lasts ~9 minutes",
-							"Subs"
+							"Main content lasts ~9 minutes"
 						  ]
 }
