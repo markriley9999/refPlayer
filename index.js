@@ -809,12 +809,11 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	}
 
 	if (sC.segTimeLine) {
-		sC.segTimeLine.segcount = intify(sC.segTimeLine.segcount);
-		sC.segTimeLine.maxseg 	= intify(sC.segTimeLine.maxseg);
+		// Seg timeline stuff...
 	}
 	
 	// Force ad duration to seg boundary???
-	if (sC.ads && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+	if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
 		console.log("- non aligned adD: " + sC.ads.adD);
 		
 		if (sC.ads.adSegAlign === "round") {
@@ -827,7 +826,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	} 
 
 	// Force main duration to seg boundary???
-	if (sC.segAlign != "none") {
+	if (sC.segAlign && (sC.segAlign != "none")) {
 		console.log("- non aligned periodD: " + sC.periodD);
 		
 		var adD = sC.ads ? sC.ads.adD : 0;
@@ -842,79 +841,87 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	} 
 
 	
-	const progDuration	= (60 * 60 * 1000);
-	var maxP = Math.round((progDuration / sC.periodD) - 1);
-	console.log("- maxP: " + maxP);
+	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
 	
-	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
-	
-	var lowerP;
-	var upperP;
-	
-	if (!bAllPeriods) {
-		lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
-		upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
-	} else {
-		lowerP = 0;
-		upperP = maxP;
-	}
-	
-	var numP 		= (upperP - lowerP) + 1;
-
-	// Will the manifest change?
-	if (!persistState[useURL]) {
-		persistState[useURL] = {};
-	}
-	
-	if (	(!persistState[useURL].publishTime) 	|| 
-			(lowerP != persistState[useURL].lowerP) || 
-			(upperP != persistState[useURL].upperP)	||
-			(sContId != persistState[useURL].sContId)	) {
-		var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
-		sendServerLog("Manifest has changed: publishTime - " + fNow);
+	if (!sC.segTimeLine) {
+		const progDuration	= (60 * 60 * 1000);
+		var maxP = Math.round((progDuration / sC.periodD) - 1);
+		console.log("- maxP: " + maxP);
 		
-		formProps.publishTime 	= fNow;
+		var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
 		
-		persistState[useURL].publishTime 	= fNow;
-		persistState[useURL].lowerP 		= lowerP;
-		persistState[useURL].upperP 		= upperP;
-		persistState[useURL].sContId		= sContId;
-	} else {
-		if (archiveMPDs[sContId]) {				
-			sendServerLog("Using previously created manifest (no change). ");
-
-			res.type("application/dash+xml");
-			res.status(200);
-			return res.send(archiveMPDs[sContId]);				
-		} else {				
-			sendServerLog("Error: No previously created manifest!");
-			return res.sendStatus(404);				
-		}
-	}
-	
-	
-	// Create new manifest!
-	console.log("CurrentPeriod: " + currentP);
-
-	var prevMain;
-	var adIdx;
-	var eventId = 1;
-	
-	for (var i = lowerP; i <= upperP; i++) {
+		var lowerP;
+		var upperP;
 		
-		if (i > 0) {
-			prevMain = "main-" + (i-1);	
+		if (!bAllPeriods) {
+			lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
+			upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
 		} else {
-			prevMain = "";
+			lowerP = 0;
+			upperP = maxP;
 		}
-	
-		if (sC.ads) {
-			adIdx = (i % sC.ads.content.length);
-			formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
-			formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i);
+		
+		var numP 		= (upperP - lowerP) + 1;
+
+		// Will the manifest change?
+		if (!persistState[useURL]) {
+			persistState[useURL] = {};
+		}
+		
+		if (	(!persistState[useURL].publishTime) 	|| 
+				(lowerP != persistState[useURL].lowerP) || 
+				(upperP != persistState[useURL].upperP)	||
+				(sContId != persistState[useURL].sContId)	) {
+			sendServerLog("Manifest has changed: publishTime - " + fNow);
+			
+			formProps.publishTime 	= fNow;
+			
+			persistState[useURL].publishTime 	= fNow;
+			persistState[useURL].lowerP 		= lowerP;
+			persistState[useURL].upperP 		= upperP;
+			persistState[useURL].sContId		= sContId;
 		} else {
-			formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain);
+			if (archiveMPDs[sContId]) {				
+				sendServerLog("Using previously created manifest (no change). ");
+
+				res.type("application/dash+xml");
+				res.status(200);
+				return res.send(archiveMPDs[sContId]);				
+			} else {				
+				sendServerLog("Error: No previously created manifest!");
+				return res.sendStatus(404);				
+			}
 		}
+		
+		
+		// Create new manifest!
+		console.log("CurrentPeriod: " + currentP);
+
+		var prevMain;
+		var adIdx;
+		var eventId = 1;
+		
+		for (var i = lowerP; i <= upperP; i++) {
+			
+			if (i > 0) {
+				prevMain = "main-" + (i-1);	
+			} else {
+				prevMain = "";
+			}
+		
+			if (sC.ads)	{
+				adIdx = (i % sC.ads.content.length);
+				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i);
+			} else {
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain);
+			}
+		}
+	} else {
+		formProps.publishTime = fNow;
+		formProps['segtimeline-audio']  = makeSegTimeLineAudio(sC, utcTotalSeconds);
+		formProps['segtimeline-video']  = makeSegTimeLineVideo(sC, utcTotalSeconds);
+		formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
 	}
 	
 	// Get file on server
@@ -1081,6 +1088,7 @@ cachedXML.mainContent	= [];
 cachedXML.mainSubs		= [];
 cachedXML.ads			= [];
 cachedXML.adSubs		= [];
+cachedXML.segTimeLine	= [];
 
 
 loadAndCache = function(fn, c) {
@@ -1185,6 +1193,43 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	
 	return complete;
 }
+
+
+makeSegTimeLineAudio = function(sC, t) {
+	
+	var fn = sC.segTimeLine.audio;
+	
+	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+		return false;
+	}
+
+	return cachedXML.segTimeLine[fn];
+}
+
+
+makeSegTimeLineVideo = function(sC, t) {
+	
+	var fn = sC.segTimeLine.video;
+	
+	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+		return false;
+	}
+
+	return cachedXML.segTimeLine[fn];
+}
+
+
+makeSegTimeLineEvents = function(sC, t) {
+	
+	var fn = sC.segTimeLine.events;
+	
+	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+		return false;
+	}
+
+	return cachedXML.segTimeLine[fn];
+}
+
 
 expressSrv.post('/savelog', function(req, res) {
 	console.log("/savelog: " + req.query.filename);

@@ -7,9 +7,9 @@
 
 	"segTimeLine" :
 	{
-		"audio"		: "./dynamic/periods/segtimeline-audio.xml",
-		"video"		: "./dynamic/periods/segtimeline-video.xml",
-		"events"	: "./dynamic/periods/segtimeline-events.xml"
+		"audio"		: "./dynamic/segtimeline/audio.xml",
+		"video"		: "./dynamic/segtimeline/video.xml",
+		"events"	: "./dynamic/segtimeline/events.xml"
 	},
 	
 	"ads" :
