@@ -3,7 +3,7 @@
 	"src" 				: "./dynamic/segtimeline.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
-	"addContentId" 		: "false",
+	"addContentId" 		: "true",
 	"channelName" 		: "Dynamic: Segment timeline and events",
 
 	"info"				: [	"Ads start every 10 minutes",
