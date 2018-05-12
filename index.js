@@ -918,7 +918,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			upperP = maxP;
 		}
 		
-		var numP 		= (upperP - lowerP) + 1;
+		var numP = (upperP - lowerP) + 1;
 
 		// Will the manifest change?
 		if (!persistState[useURL]) {
@@ -928,10 +928,12 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		if (	(!persistState[useURL].publishTime) 	|| 
 				(lowerP != persistState[useURL].lowerP) || 
 				(upperP != persistState[useURL].upperP)	||
-				(serverContId != persistState[useURL].serverContId)	) {
+				(serverContId != persistState[useURL].serverContId) ||
+				bAllPeriods) 
+		{
 			sendServerLog("Manifest has changed: publishTime - " + fNow);
 			
-			formProps.publishTime 	= fNow;
+			formProps.publishTime = fNow;
 			
 			persistState[useURL].publishTime 	= fNow;
 			persistState[useURL].lowerP 		= lowerP;
@@ -957,6 +959,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		var prevMain;
 		var adIdx;
 		var eventId = 1;
+		var liveStart = !bAllPeriods ? progStart : '';
 		
 		for (var i = lowerP; i <= upperP; i++) {
 			
@@ -969,9 +972,9 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			if (sC.ads)	{
 				adIdx = (i % sC.ads.content.length);
 				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
-				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, progStart);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveStart);
 			} else {
-				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, progStart);
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveStart);
 			}
 		}
 	} else {
