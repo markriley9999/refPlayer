@@ -1,13 +1,14 @@
 {
 	"ads" 				: [],
-	"src" 				: "./dynamic/dashads-dartest-ck.mpd",
+	"src" 				: "./dynamic/dashads-dartest-ck-mainsubs.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
-	"channelName" 		: "Dynamic M-Periods - Clear Key (main), ITV and Ch4 Ads",
+	"channelName" 		: "Dynamic M-Periods - Clear Key  + Subs (main), ITV and Ch4 Ads",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Clear Key (main content)",
+							"  - Subs (main content)",
 							"  - Content starts 'on the hour'",
 							"  - Content duration 60m",
 							"  - Split into 12 Periods",
