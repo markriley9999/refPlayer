@@ -1187,7 +1187,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 		subsContext['offset']		= subs.offsetObj.offset,
 		subsContext['period_seg']	= subs.offsetObj.seg
 
-		sbs =  template(context);
+		sbs =  template(subsContext);
 	}
 	
 	if (!loadAndCache(fn, cachedXML.mainContent)) {
