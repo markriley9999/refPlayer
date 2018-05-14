@@ -490,7 +490,7 @@ expressSrv.get('/favicon.ico', function(req, res) {
 var mp4box = new mp4boxModule.MP4Box();
 
 expressSrv.get('/content/*', function(req, res) {
-	// TODO: Why seeing 2 gets????
+	
 	var suffix = req.path.split('.').pop();
 	var cType;
 	
@@ -515,6 +515,55 @@ expressSrv.get('/content/*', function(req, res) {
 				console.log(chalk.blue("       IP: " + req.ip));
 			}
 	}
+
+	
+	// Live content (emulation)???
+	if (req.query.progStart && req.query.segDuration) {
+		var dNow = new Date();
+		
+		var pStart = req.query.progStart;
+		var segD = req.query.segDuration;
+		
+		// This segment request is for live content - does it exist yet?
+		console.log(chalk.yellow("Live seg req: " + pStart + " (" + segD + "ms)"));
+		
+		// Get time now
+		var dAv = new Date();
+		dAv.setUTCMinutes(0);
+		dAv.setUTCSeconds(0);
+		var curProg = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+		
+		console.log(chalk.yellow(" - current prog: " + curProg));
+		
+		// Is segment request for current content, or past?
+		if (pStart === curProg) {
+			console.log(chalk.cyan(" - segment request current, not past"));
+			// extract segment number and calculate time offset - for end of segment
+			
+			var arr = req.path.match(/\d+(?=.m4s?)/) || ["0"]; 
+			var segN = parseInt(arr[0]);
+			
+			console.log(chalk.cyan(" - segment number: " + segN));
+			
+			if (segN) {
+				var segTmOffset = (segN - 1 + 1) * parseInt(req.query.segDuration) / 1000;
+				console.log(chalk.cyan(" - segment time offset: " + segTmOffset + "s"));
+				
+				// Get now offset 
+				var utcMinutes = dNow.getUTCMinutes();
+				var utcSeconds = dNow.getUTCSeconds();
+				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
+				console.log(chalk.cyan(" - seconds now: " + utcTotalSeconds + "s"));
+				
+				// Is segment request in the future, if so segment does not exist, send 404
+				if (segTmOffset > utcTotalSeconds) {
+					console.log(chalk.red(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")"));
+					return res.sendStatus(404);
+				}
+			}				
+		}
+	}
+	
 	
 	// ***** Simulate error condition (505)? *****
 	var nErrs = commonConfig.getNetworkErrors();
@@ -638,14 +687,14 @@ expressSrv.get('/time', function(req, res) {
 });
  
 
-const configSegJump 	= [];
+const configSegJump 	= {};
 var segCount = 0;
 
 expressSrv.get('/segjump/*', function(req, res) {
 	
 	var useURL = req.path;
 	var formProps = {};
-	var sC = [];
+	var sC = {};
 	
 	sendServerLog("GET segjump: " + useURL);
 
@@ -702,9 +751,9 @@ expressSrv.get('/segjump/*', function(req, res) {
 });
 
 
-const configStream 	= [];
-var archiveMPDs 	= [];
-var persistState 	= [];
+const configStream 	= {};
+var archiveMPDs 	= {};
+var persistState 	= {};
 
 expressSrv.get('/dynamic/*', function(req, res) {
 	
@@ -724,29 +773,31 @@ expressSrv.get('/dynamic/*', function(req, res) {
 
 	
 	var formProps = {};
-	var sC = [];
+	var sC = {};
 
 	
 	// Extract content from URL 
 	var useURL = req.path;
 	var strippedURL = commonUtils.basename(useURL);
 	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
-	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
-	sendServerLog("ContentId: " + sContId);
+	var serverContId = strippedURL + "-" + commonUtils.createContentId(); 
+	sendServerLog("ContentId: " + serverContId);
 
 		
 	// Content no longer live?
+	var clientContId = '';
+	
 	if (req.query.contid) {
-		var cContId = strippedURL + "-" + req.query.contid;
+		clientContId = strippedURL + "-" + req.query.contid;
 		
-		if (sContId != cContId) {
-			sendServerLog("Client requested non-current content: " + cContId);
-			if (archiveMPDs[cContId]) {				
+		if (serverContId != clientContId) {
+			sendServerLog("Client requested non-current content: " + clientContId);
+			if (archiveMPDs[clientContId]) {				
 				sendServerLog("Found archived MPD, using that. ");
 
 				res.type("application/dash+xml");
 				res.status(200);
-				return res.send(archiveMPDs[cContId]);				
+				return res.send(archiveMPDs[clientContId]);				
 			} else {				
 				sendServerLog("No previous content archived!");
 				return res.sendStatus(404);				
@@ -761,11 +812,12 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	
 	
 	// Create new manifest?
-	formProps.title = sContId;
+	formProps.title = serverContId;
 	
 	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
 	// console.log("timeServer: " + timeServer);
 	formProps.timeServer = timeServer;
+	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
 	
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
@@ -842,6 +894,12 @@ expressSrv.get('/dynamic/*', function(req, res) {
 
 	
 	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
+
+	var dAv = dNow;
+	dAv.setUTCMinutes(0);
+	dAv.setUTCSeconds(0);
+	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+	
 	
 	if (!sC.segTimeLine) {
 		const progDuration	= (60 * 60 * 1000);
@@ -861,7 +919,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			upperP = maxP;
 		}
 		
-		var numP 		= (upperP - lowerP) + 1;
+		var numP = (upperP - lowerP) + 1;
 
 		// Will the manifest change?
 		if (!persistState[useURL]) {
@@ -871,22 +929,24 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		if (	(!persistState[useURL].publishTime) 	|| 
 				(lowerP != persistState[useURL].lowerP) || 
 				(upperP != persistState[useURL].upperP)	||
-				(sContId != persistState[useURL].sContId)	) {
+				(serverContId != persistState[useURL].serverContId) ||
+				bAllPeriods) 
+		{
 			sendServerLog("Manifest has changed: publishTime - " + fNow);
 			
-			formProps.publishTime 	= fNow;
+			formProps.publishTime = fNow;
 			
 			persistState[useURL].publishTime 	= fNow;
 			persistState[useURL].lowerP 		= lowerP;
 			persistState[useURL].upperP 		= upperP;
-			persistState[useURL].sContId		= sContId;
+			persistState[useURL].serverContId	= serverContId;
 		} else {
-			if (archiveMPDs[sContId]) {				
+			if (archiveMPDs[serverContId]) {				
 				sendServerLog("Using previously created manifest (no change). ");
 
 				res.type("application/dash+xml");
 				res.status(200);
-				return res.send(archiveMPDs[sContId]);				
+				return res.send(archiveMPDs[serverContId]);				
 			} else {				
 				sendServerLog("Error: No previously created manifest!");
 				return res.sendStatus(404);				
@@ -900,6 +960,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		var prevMain;
 		var adIdx;
 		var eventId = 1;
+		var liveStart = !bAllPeriods ? progStart : '';
 		
 		for (var i = lowerP; i <= upperP; i++) {
 			
@@ -912,9 +973,9 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			if (sC.ads)	{
 				adIdx = (i % sC.ads.content.length);
 				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
-				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveStart);
 			} else {
-				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain);
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveStart);
 			}
 		}
 	} else {
@@ -941,13 +1002,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			res.end(err);
 		}
 
-		var dAv = dNow;
-		
-		dAv.setUTCMinutes(0);
-		dAv.setUTCSeconds(0);
-		progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
 		//console.log("progStart: " + progStart);
-		
 		formProps.availabilityStartTime = progStart;
 		
 		res.render(file, formProps, function(err, mpd) { 
@@ -959,7 +1014,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			res.status(200);
 			res.send(mpd);
 			
-			archiveMPDs[sContId] = mpd; // Archive the mpd for this 'programme'
+			archiveMPDs[serverContId] = mpd; // Archive the mpd for this 'programme'
 		});
     });
 });
@@ -1013,7 +1068,7 @@ makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
 }
 
 
-makeMainPeriod = function(sC, p, eId, ptrans, prev) {
+makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 	
 	var offset = sC.ads ? sC.ads.adD : 0;
 	
@@ -1069,7 +1124,9 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev) {
 		evOffset, eId,
 		ptrans,
 		prev, 
-		sC.subs
+		sC.subs,
+		progStart,
+		sC.segsize
 	);
 }
 
@@ -1087,11 +1144,11 @@ ptransTable['connectivity'] = fs.readFileSync('./dynamic/periods/period-connecti
 
 var cachedXML = {};
 
-cachedXML.mainContent	= [];
-cachedXML.mainSubs		= [];
-cachedXML.ads			= [];
-cachedXML.adSubs		= [];
-cachedXML.segTimeLine	= [];
+cachedXML.mainContent	= {};
+cachedXML.mainSubs		= {};
+cachedXML.ads			= {};
+cachedXML.adSubs		= {};
+cachedXML.segTimeLine	= {};
 
 
 loadAndCache = function(fn, c) {
@@ -1108,10 +1165,10 @@ loadAndCache = function(fn, c) {
 	return true;
 }
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, ptrans, prevPeriodID, subs) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, ptrans, prevPeriodID, subs, progStart, segDuration) {
 	var pc;
 	var template;
-	var context;
+	var context = {};
 	var sbs = "";
 	
 	if ((prevPeriodID != "") && ptransTable[ptrans]) {
@@ -1123,13 +1180,15 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	}
 
 	if (subs && subs.main && loadAndCache(subs.main, cachedXML.mainSubs)) {
+		var subsContext = {};
+		
 		template = hbs.handlebars.compile(cachedXML.mainSubs[subs.main]);
-		context = { 
-					subid		: "main",
-					offset		: subs.offsetObj.offset,
-					period_seg	: subs.offsetObj.seg
-				};
-		sbs =  template(context);
+
+		subsContext['subid']		= "main",
+		subsContext['offset']		= subs.offsetObj.offset,
+		subsContext['period_seg']	= subs.offsetObj.seg
+
+		sbs =  template(subsContext);
 	}
 	
 	if (!loadAndCache(fn, cachedXML.mainContent)) {
@@ -1148,9 +1207,14 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 					period_seg			: seg, 
 					subs				: sbs
 				};
+	
+	if (progStart) {
+		context['queryString'] = "?progStart=" + progStart + "&amp;segDuration=" + segDuration;
+	}
+	
 	var complete = template(context);
 	
-	// console.log(complete);
+	//console.log(complete);
 	
 	return complete;
 }
@@ -1257,7 +1321,7 @@ expressSrv.post('/savelog', function(req, res) {
 	});
 });
  
-const licenceTable = [];
+const licenceTable = {};
 
 expressSrv.post('/getkeys', function(req, res) {
 	
