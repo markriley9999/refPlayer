@@ -2,7 +2,7 @@
 	"segsize" 		: "3840",
 	"periodD" 		: "600000", 	
 
-	"marginF" 		: "120",					
+	"marginF" 		: "0",					
 	"marginB" 		: "3600",					
 
 	"segTimeLine" :
