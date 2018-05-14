@@ -1208,7 +1208,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 				};
 	
 	if (progStart) {
-		context['queryString'] = "?progStart=" + progStart + "&segDuration=" + segDuration;
+		context['queryString'] = "?progStart=" + progStart + "&amp;segDuration=" + segDuration;
 	}
 	
 	var complete = template(context);
