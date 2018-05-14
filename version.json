@@ -1,10 +1,12 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "1",
-	"minor" 	: "96",
+	"minor" 	: "98",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+					"More agressive (deferred) dynamic manifest updates",
+					"Dynamic content: future segments not available",
 					"New subtitles content",
 					"Time-stamped content",
 					"SCTE Events", 
