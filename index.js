@@ -687,14 +687,14 @@ expressSrv.get('/time', function(req, res) {
 });
  
 
-const configSegJump 	= [];
+const configSegJump 	= {};
 var segCount = 0;
 
 expressSrv.get('/segjump/*', function(req, res) {
 	
 	var useURL = req.path;
 	var formProps = {};
-	var sC = [];
+	var sC = {};
 	
 	sendServerLog("GET segjump: " + useURL);
 
@@ -751,9 +751,9 @@ expressSrv.get('/segjump/*', function(req, res) {
 });
 
 
-const configStream 	= [];
-var archiveMPDs 	= [];
-var persistState 	= [];
+const configStream 	= {};
+var archiveMPDs 	= {};
+var persistState 	= {};
 
 expressSrv.get('/dynamic/*', function(req, res) {
 	
@@ -1143,11 +1143,11 @@ ptransTable['connectivity'] = fs.readFileSync('./dynamic/periods/period-connecti
 
 var cachedXML = {};
 
-cachedXML.mainContent	= [];
-cachedXML.mainSubs		= [];
-cachedXML.ads			= [];
-cachedXML.adSubs		= [];
-cachedXML.segTimeLine	= [];
+cachedXML.mainContent	= {};
+cachedXML.mainSubs		= {};
+cachedXML.ads			= {};
+cachedXML.adSubs		= {};
+cachedXML.segTimeLine	= {};
 
 
 loadAndCache = function(fn, c) {
@@ -1320,7 +1320,7 @@ expressSrv.post('/savelog', function(req, res) {
 	});
 });
  
-const licenceTable = [];
+const licenceTable = {};
 
 expressSrv.post('/getkeys', function(req, res) {
 	
