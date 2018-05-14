@@ -557,7 +557,7 @@ expressSrv.get('/content/*', function(req, res) {
 				
 				// Is segment request in the future, if so segment does not exist, send 404
 				if (segTmOffset > utcTotalSeconds) {
-					console.log(chalk.red(" - Illegal segment request: in future"));
+					console.log(chalk.red(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")"));
 					return res.sendStatus(404);
 				}
 			}				
@@ -817,6 +817,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
 	// console.log("timeServer: " + timeServer);
 	formProps.timeServer = timeServer;
+	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
 	
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
