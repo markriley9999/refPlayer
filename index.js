@@ -755,7 +755,7 @@ const configStream 	= {};
 var archiveMPDs 	= {};
 var persistState 	= {};
 
-expressSrv.get('/dynamic/*', function(req, res) {
+expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	var progStart;
 	var bAllPeriods = false;
@@ -860,10 +860,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		sC.subs.timescale 	= intify(sC.subs.timescale);
 	}
 
-	if (sC.segTimeLine) {
-		// Seg timeline stuff...
-	}
-	
+
 	// Force ad duration to seg boundary???
 	if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
 		console.log("- non aligned adD: " + sC.ads.adD);
@@ -900,7 +897,11 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	dAv.setUTCSeconds(0);
 	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
 	
-	
+	// Will the manifest change?
+	if (!persistState[useURL]) {
+		persistState[useURL] = {};
+	}
+			
 	if (!sC.segTimeLine) {
 		const progDuration	= (60 * 60 * 1000);
 		var maxP = Math.round((progDuration / sC.periodD) - 1);
@@ -921,11 +922,6 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		
 		var numP = (upperP - lowerP) + 1;
 
-		// Will the manifest change?
-		if (!persistState[useURL]) {
-			persistState[useURL] = {};
-		}
-		
 		if (	(!persistState[useURL].publishTime) 	|| 
 				(lowerP != persistState[useURL].lowerP) || 
 				(upperP != persistState[useURL].upperP)	||
@@ -979,12 +975,28 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			}
 		}
 	} else {
-		formProps.publishTime = fNow;
-		formProps['segtimeline-audio']  = makeSegTimeLineAudio(sC, utcTotalSeconds);
-		formProps['segtimeline-video']  = makeSegTimeLineVideo(sC, utcTotalSeconds);
-		formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
-		if (sC.subs) {
-			formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+		var createManifest = true;
+		var nowCheck = new Date();
+
+		if (persistState[useURL].lastHit) {
+console.log(nowCheck - persistState[useURL].lastHit);
+			
+			if ((nowCheck - persistState[useURL].lastHit) < 5000)
+			{
+				createManifest = false;
+			}
+		}
+		
+		if (createManifest) {
+			persistState[useURL].lastHit = nowCheck;
+			formProps.publishTime = fNow;
+			formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds);
+			formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds);
+			formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
+			if (sC.subs) {
+				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+			}
+		} else {
 		}
 	}
 	
@@ -1261,28 +1273,120 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	return complete;
 }
 
+const xml2js = require('xml2js');
 
-makeSegTimeLineAudio = function(sC, t) {
+segtimeLineXML = function(fn, tm, segSize, tmScale) {
 	
-	var fn = sC.segTimeLine.audio;
-	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
-	}
+	var promise = new Promise(function(resolve, reject) {
 
-	return cachedXML.segTimeLine[fn];
+		if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+			return false;
+		}
+
+		var parser = new xml2js.Parser();
+		
+		var xml = cachedXML.segTimeLine[fn];
+		
+		var mod = {};
+		
+		mod.SegmentTimeline = {};
+		mod.SegmentTimeline.S = [];
+		
+		parser.parseString(xml, function (err, obj) {
+
+			if (err) {
+				console.log("err: " + err);
+				reject(Error("XML Parsing / creation failed"));
+			}
+			
+			//console.log(JSON.stringify(obj));
+			
+			var tlObj = obj['SegmentTimeline']['S'];
+			var newObj;
+			var tmSectionStart = 0, tmSectionEnd = 0, tmDuration = 0;
+			var i = 0;
+			var bLastOne = false;
+			
+			while ((i < tlObj.length) && !bLastOne) {
+								
+				var segObj = tlObj[i];
+				var segD = parseInt(segObj['$'].d || 0);
+				var segR = parseInt(segObj['$'].r || 0);
+				
+				// console.log(" - d: " + segD);
+				// console.log(" - r: " + segR);
+				
+				tmSectionStart 	= tmSectionEnd;
+				totSegs 		= Math.round(segD + (segD * segR));
+				tmSectionEnd   	= tmSectionStart + (totSegs / tmScale);
+
+				// console.log("tmSectionStart: " + tmSectionStart);
+				// console.log("tmSectionEnd: " + tmSectionEnd);
+				// console.log("tm: " + tm);
+
+				if (tm < tmSectionEnd)
+				{					
+					bLastOne = true;
+				}
+
+				newObj = {};
+				
+				if (i === 0) {
+					newObj.t = "0";
+				}
+				
+				newObj.d = segD;
+								
+				if (bLastOne) {
+					// Trim seg count
+					tmDuration = tmSectionEnd - tmSectionStart;
+					var segCount = Math.floor(((tm - tmSectionStart) * tmScale / segSize) + 0.9999);
+					if (segCount > 1) {
+						newObj.r = segCount-1;
+					}
+				} else {
+					if (segR) {
+						newObj.r = segR;
+					}
+				}
+				
+				mod.SegmentTimeline.S[i] = {};
+				mod.SegmentTimeline.S[i]['$'] = newObj;
+
+				i++;
+			}
+			
+			var builder = new xml2js.Builder( {headless  : true} );
+			var modXML = builder.buildObject(mod);
+			
+			//console.log(modXML);
+			//console.log(xml);
+
+			resolve(modXML);
+		});
+	});
+
+	return promise;
 }
 
 
-makeSegTimeLineVideo = function(sC, t) {
+async function makeSegTimeLineAudio (sC, tm) {
+	
+	var fn = sC.segTimeLine.audio;
+	
+	var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Atimescale);
+	//console.log(xml);
+	return xml;
+}
+
+
+async function makeSegTimeLineVideo (sC, tm) {
 	
 	var fn = sC.segTimeLine.video;
 	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
-	}
-
-	return cachedXML.segTimeLine[fn];
+	var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Vtimescale);
+	//console.log(xml);
+	return xml;
 }
 
 
