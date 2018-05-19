@@ -8,7 +8,8 @@
 
 	"Atimescale"	: "1000",
 	"Vtimescale"	: "1000",
-
+	"Etimescale"	: "1000",
+	
 	"segTimeLine" :
 	{
 		"updatePeriodms"	: "3000",
