@@ -565,16 +565,16 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 	
 	
-	// ***** Simulate error condition (505)? *****
+	// ***** Simulate error condition (503)? *****
 	var nErrs = commonConfig.getNetworkErrors();
 	
 	if (nErrs.value != 0) {
 		var rndErr = Math.floor(Math.random() * (nErrs.value - 1));
 		
 		if (rndErr === 0) {
-			// Simulate error (505)
-			sendServerLog("SIMULATE ERROR! (505)");
-			return res.sendStatus(505);
+			// Simulate error (503)
+			sendServerLog("SIMULATE ERROR! (503)");
+			return res.sendStatus(503);
 		}
 	}
 
@@ -1003,8 +1003,14 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		if (createManifest) {
 			persistState[useURL].lastHit = nowCheck;
 			formProps.publishTime = fNow;
-			formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds);
-			formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds);
+			try {
+				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds);
+				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds);
+			} catch(e) {
+				res.sendStatus(500);
+				return;
+			}
+			
 			formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
 			if (sC.subs) {
 				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
@@ -1294,7 +1300,7 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 	var promise = new Promise(function(resolve, reject) {
 
 		if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-			return false;
+			reject(Error("XML Parsing - file not found"));
 		}
 
 		var parser = new xml2js.Parser();
@@ -1387,10 +1393,14 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 async function makeSegTimeLineAudio (sC, tm) {
 	
 	var fn = sC.segTimeLine.audio;
-	
-	var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Atimescale);
-	//console.log(xml);
-	return xml;
+
+	try {
+		var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Atimescale);
+		// console.log(xml);
+		return xml;
+    } catch(e) {
+        throw e.message;
+    }
 }
 
 
