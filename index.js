@@ -843,8 +843,12 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		sC.Atimescale	= intify(sC.Atimescale);
 		sC.Vtimescale	= intify(sC.Vtimescale);
 
-		sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
-
+		if (sC.Etimescale) {
+			sC.Etimescale	= intify(sC.Etimescale);
+		} else {
+			sC.Etimescale	= sC.Atimescale; 
+		}
+		
 		if (sC.ads) {
 			sC.ads.adD 	= intify(sC.ads.adD);
 		}
@@ -922,23 +926,26 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		persistState[useURL] = {};
 	}
 			
+	const progDuration	= (60 * 60 * 1000);
+	var maxP = Math.round((progDuration / sC.periodD) - 1);
+	console.log("- maxP: " + maxP);
+	
+	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
+	
+	var lowerP;
+	var upperP;
+	
+	if (!bAllPeriods) {
+		lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
+		upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
+	} else {
+		lowerP = 0;
+		upperP = maxP;
+	}
+	
 	if (!sC.segTimeLine) {
-		const progDuration	= (60 * 60 * 1000);
-		var maxP = Math.round((progDuration / sC.periodD) - 1);
-		console.log("- maxP: " + maxP);
-		
-		var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
-		
-		var lowerP;
-		var upperP;
-		
-		if (!bAllPeriods) {
-			lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
-			upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
-		} else {
-			lowerP = 0;
-			upperP = maxP;
-		}
+		// *** Multiple Period Manifest ***
+		console.log("*** Multiple Period Manifest ***");
 		
 		var numP = (upperP - lowerP) + 1;
 
@@ -987,7 +994,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		}
 	} else {
 		// *** Seg Time Line *** 
-		console.log("Seg TimeLine manifest");
+		console.log("*** Seg TimeLine manifest ***");
 		var createManifest = true;
 		var nowCheck = new Date();
 
@@ -1004,14 +1011,20 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			persistState[useURL].lastHit = nowCheck;
 			formProps.publishTime = fNow;
 			try {
-				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds);
-				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds);
+				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds+ sC.marginF);
+				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds+ sC.marginF);
 			} catch(e) {
 				res.sendStatus(500);
 				return;
 			}
 			
-			formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
+			//formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds + sC.marginF);
+
+			var eventId = 1;
+			for (var i = lowerP; i <= upperP; i++) {
+				formProps['event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId++);
+			}
+			
 			if (sC.subs) {
 				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
 			}
@@ -1395,7 +1408,7 @@ async function makeSegTimeLineAudio (sC, tm) {
 	var fn = sC.segTimeLine.audio;
 
 	try {
-		var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Atimescale);
+		var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Atimescale);
 		// console.log(xml);
 		return xml;
     } catch(e) {
@@ -1408,7 +1421,7 @@ async function makeSegTimeLineVideo (sC, tm) {
 	
 	var fn = sC.segTimeLine.video;
 	
-	var xml = await segtimeLineXML(fn, tm + sC.marginF, sC.segsize, sC.Vtimescale);
+	var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Vtimescale);
 	//console.log(xml);
 	return xml;
 }
@@ -1423,6 +1436,10 @@ makeSegTimeLineEvents = function(sC, t) {
 	}
 
 	return cachedXML.segTimeLine[fn];
+}
+
+
+makeSegTimeLineEvent = function(sC, tm, p, eId) {
 }
 
 
