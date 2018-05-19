@@ -831,6 +831,34 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			console.log(" * file does not exist");
 			return res.sendStatus(404);
 		}
+
+		sC = configStream[useURL];
+		
+		// Extract stream config data
+		sC.segsize 		= intify(sC.segsize);
+		sC.periodD 		= intify(sC.periodD);
+		sC.marginF 		= intify(sC.marginF);
+		sC.marginB 		= intify(sC.marginB);
+		
+		sC.Atimescale	= intify(sC.Atimescale);
+		sC.Vtimescale	= intify(sC.Vtimescale);
+
+		sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
+
+		if (sC.ads) {
+			sC.ads.adD 	= intify(sC.ads.adD);
+		}
+
+		if (sC.subs) {
+			sC.subs.segsize 	= intify(sC.subs.segsize);
+			sC.subs.timescale 	= intify(sC.subs.timescale);
+		}
+		
+		if (sC.segTimeLine) {
+			sC.segTimeLine.updatePeriodms = intify(sC.segTimeLine.updatePeriodms);
+		}
+	} else {
+		sC = configStream[useURL];
 	}
 	
 	
@@ -838,27 +866,6 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		return parseInt(eval(x));
 	}
 	
-	sC = configStream[useURL];
-
-	// Extract stream config data
-	sC.segsize 		= intify(sC.segsize);
-	sC.periodD 		= intify(sC.periodD);
-	sC.marginF 		= intify(sC.marginF);
-	sC.marginB 		= intify(sC.marginB);
-	
-	sC.Atimescale	= intify(sC.Atimescale);
-	sC.Vtimescale	= intify(sC.Vtimescale);
-
-	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
-
-	if (sC.ads) {
-		sC.ads.adD 	= intify(sC.ads.adD);
-	}
-
-	if (sC.subs) {
-		sC.subs.segsize 	= intify(sC.subs.segsize);
-		sC.subs.timescale 	= intify(sC.subs.timescale);
-	}
 
 
 	// Force ad duration to seg boundary???
@@ -896,6 +903,19 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	dAv.setUTCMinutes(0);
 	dAv.setUTCSeconds(0);
 	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+
+	function rtnCachedManifest() {
+		if (archiveMPDs[serverContId]) {				
+			sendServerLog("Using previously created manifest (no change). ");
+
+			res.type("application/dash+xml");
+			res.status(200);
+			return res.send(archiveMPDs[serverContId]);				
+		} else {				
+			sendServerLog("Error: No previously created manifest!");
+			return res.sendStatus(404);				
+		}
+	}
 	
 	// Will the manifest change?
 	if (!persistState[useURL]) {
@@ -937,16 +957,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			persistState[useURL].upperP 		= upperP;
 			persistState[useURL].serverContId	= serverContId;
 		} else {
-			if (archiveMPDs[serverContId]) {				
-				sendServerLog("Using previously created manifest (no change). ");
-
-				res.type("application/dash+xml");
-				res.status(200);
-				return res.send(archiveMPDs[serverContId]);				
-			} else {				
-				sendServerLog("Error: No previously created manifest!");
-				return res.sendStatus(404);				
-			}
+			return rtnCachedManifest();
 		}
 		
 		
@@ -975,13 +986,15 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			}
 		}
 	} else {
+		// *** Seg Time Line *** 
+		console.log("Seg TimeLine manifest");
 		var createManifest = true;
 		var nowCheck = new Date();
 
 		if (persistState[useURL].lastHit) {
-console.log(nowCheck - persistState[useURL].lastHit);
+			console.log(" - last update: " + (nowCheck - persistState[useURL].lastHit));
 			
-			if ((nowCheck - persistState[useURL].lastHit) < 5000)
+			if ((nowCheck - persistState[useURL].lastHit) < sC.segTimeLine.updatePeriodms)
 			{
 				createManifest = false;
 			}
@@ -997,6 +1010,7 @@ console.log(nowCheck - persistState[useURL].lastHit);
 				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
 			}
 		} else {
+			return rtnCachedManifest();
 		}
 	}
 	
