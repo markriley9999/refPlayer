@@ -178,15 +178,15 @@ mVid.start = function () {
 	this.displayBrowserInfo();
 
 	// Parse query params
-	this.bOverrideSubs 	= commonUtils.getUrlVars()["subs"] || false;
+	this.overrideSubs 	= commonUtils.getUrlVars()["subs"] || "";
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
 	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
 	this.bEventsDump	= commonUtils.getUrlVars()["eventdump"] || false;
 	this.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
 	
-	if (this.bOverrideSubs)
+	if (this.overrideSubs)
 	{
-        this.Log.warn("Force subtitles on");
+        this.Log.warn("Force subtitles: " + this.overrideSubs);
 	}
 	
     try {
@@ -452,10 +452,12 @@ mVid.setUpCues = function () {
 				var s = e("subs");
 				
 				// Force subs on?
-				if (that.bOverrideSubs){
+				if (that.overrideSubs === 'on'){
 					track.mode = 'showing';
+				} else if (that.overrideSubs === 'off'){
+					track.mode = 'disabled';
 				}
-				
+
 				if (track.mode === 'showing') {
 					s.setAttribute("class", "playerIcon subson");
 				} else {
