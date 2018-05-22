@@ -1438,8 +1438,15 @@ makeSegTimeLineEvents = function(sC, t) {
 	return cachedXML.segTimeLine[fn];
 }
 
-
+// !!!!!!!!!!!!!!!!!!!!
 makeSegTimeLineEvent = function(sC, tm, p, eId) {
+	
+	var evOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+	
+	//sendServerLog(" - Generated manifest file: Period: " + p);
+	//sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
+
+	//return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
 }
 
 
