@@ -1,6 +1,6 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/segtimeline/segtimeline-ev-clearkey.mpd",
+	"src" 				: "./content/segtimeline/segtimeline-ck-subs.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",

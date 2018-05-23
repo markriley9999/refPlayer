@@ -1,6 +1,6 @@
 {
 	"ads" 				: [],
-	"src" 				: "./content/segtimeline/segtimeline-ev.mpd",
+	"src" 				: "./content/segtimeline/segtimeline.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",

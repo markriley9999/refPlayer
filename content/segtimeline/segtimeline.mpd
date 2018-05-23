@@ -1,38 +1,116 @@
-<?xml version="1.0"?>
-<MPD 
-	type="static"
-	xmlns="urn:mpeg:dash:schema:mpd:2011" 
-	xmlns:dvb="urn:dvb:dash-extensions:2014-1" 
-	xmlns:cenc="urn:mpeg:cenc:2013"
-	profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" 
-	minBufferTime="PT10S" 
-	maxSegmentDuration="PT3.84S" 
-	mediaPresentationDuration="PT60M"
->
-
+<?xml version="1.0" encoding="UTF-8"?>
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:dvb="urn:dvb:dash-extensions:2014-1" xmlns:scte35="urn:scte:scte35:2014:xml+bin" type="static" profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" minBufferTime="PT10S" maxSegmentDuration="PT3.84S" mediaPresentationDuration="PT1H">
 	<ProgramInformation>
 		<Title>segtimeline</Title>
 	</ProgramInformation>
-
+	
 	<Period>
+		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="1000"> 
+			<Event duration="60000" presentationTime="0" id="1">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="60000" id="2">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="60000" presentationTime="597600" id="3">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="657600" id="4">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="60000" presentationTime="1195200" id="5">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="1255200" id="6">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="60000" presentationTime="1792800" id="7">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="1852800" id="8">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="60000" presentationTime="2390400" id="9">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="2450400" id="10">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="60000" presentationTime="2988000" id="11">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000" presentationTime="3048000" id="12">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+		</EventStream>
+
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+			<BaseURL>../segtimeline/</BaseURL>
 			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="init/SEG.mp4">
 
 				<SegmentTimeline>
-					<S t="0" d="3840" r="14"/>
-					<S d="2400"/>
-					<S d="3840" r="154"/>
-					<S d="2400"/>
-					<S d="3840" r="154"/>
-					<S d="2400"/>
-					<S d="3840" r="154"/>
-					<S d="2400"/>
-					<S d="3840" r="154"/>
-					<S d="2400"/>
-					<S d="3840" r="154"/>
-					<S d="2400"/>
-					<S d="3840" r="142"/>
-					<S d="2960"/>
+				  <S t="0" d="3840" r="14"/>
+				  <S d="2400"/>
+				  <S d="3840" r="154"/>
+				  <S d="2400"/>
+				  <S d="3840" r="154"/>
+				  <S d="2400"/>
+				  <S d="3840" r="154"/>
+				  <S d="2400"/>
+				  <S d="3840" r="154"/>
+				  <S d="2400"/>
+				  <S d="3840" r="154"/>
+				  <S d="2400"/>
+				  <S d="3840" r="142"/>
+				  <S d="2960"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -51,42 +129,46 @@
 		
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+			<BaseURL>../segtimeline/</BaseURL>
 			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
 			
 				<SegmentTimeline>
-					<S t="0" d="3840" r="14"/>
-					<S d="3819"/>
-					<S d="3840" r="138"/>
-					<S d="3819"/>
-					<S d="3840" r="14"/>
-					<S d="3830"/>
-					<S d="3840" r="138"/>
-					<S d="3819"/>
-					<S d="3840" r="13"/>
-					<S d="3819"/>
-					<S d="3840" r="138"/>
-					<S d="3820"/>
-					<S d="3840" r="14"/>
-					<S d="3830"/>
-					<S d="3840" r="138"/>
-					<S d="3819"/>
-					<S d="3840" r="14"/>
-					<S d="3819"/>
-					<S d="3840" r="138"/>
-					<S d="3819"/>
-					<S d="3840" r="13"/>
-					<S d="3830"/>
-					<S d="3840" r="138"/>
-					<S d="3820"/>
-					<S d="3840" r="2"/>
-					<S d="2154"/>
-				</SegmentTimeline>				
-			
+				  <S t="0" d="3840" r="14"/>
+				  <S d="3819"/>
+				  <S d="3840" r="138"/>
+				  <S d="3819"/>
+				  <S d="3840" r="14"/>
+				  <S d="3830"/>
+				  <S d="3840" r="138"/>
+				  <S d="3819"/>
+				  <S d="3840" r="13"/>
+				  <S d="3819"/>
+				  <S d="3840" r="138"/>
+				  <S d="3820"/>
+				  <S d="3840" r="14"/>
+				  <S d="3830"/>
+				  <S d="3840" r="138"/>
+				  <S d="3819"/>
+				  <S d="3840" r="14"/>
+				  <S d="3819"/>
+				  <S d="3840" r="138"/>
+				  <S d="3819"/>
+				  <S d="3840" r="13"/>
+				  <S d="3830"/>
+				  <S d="3840" r="138"/>
+				  <S d="3820"/>
+				  <S d="3840" r="2"/>
+				  <S d="2154"/>
+				</SegmentTimeline>
+				
 			</SegmentTemplate>
 			
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130530">
 			</Representation>
 		</AdaptationSet>
+
 	</Period>
+	
+	
 	
 </MPD>

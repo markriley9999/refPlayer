@@ -565,16 +565,16 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 	
 	
-	// ***** Simulate error condition (505)? *****
+	// ***** Simulate error condition (503)? *****
 	var nErrs = commonConfig.getNetworkErrors();
 	
 	if (nErrs.value != 0) {
 		var rndErr = Math.floor(Math.random() * (nErrs.value - 1));
 		
 		if (rndErr === 0) {
-			// Simulate error (505)
-			sendServerLog("SIMULATE ERROR! (505)");
-			return res.sendStatus(505);
+			// Simulate error (503)
+			sendServerLog("SIMULATE ERROR! (503)");
+			return res.sendStatus(503);
 		}
 	}
 
@@ -755,7 +755,7 @@ const configStream 	= {};
 var archiveMPDs 	= {};
 var persistState 	= {};
 
-expressSrv.get('/dynamic/*', function(req, res) {
+expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	var progStart;
 	var bAllPeriods = false;
@@ -831,6 +831,38 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			console.log(" * file does not exist");
 			return res.sendStatus(404);
 		}
+
+		sC = configStream[useURL];
+		
+		// Extract stream config data
+		sC.segsize 		= intify(sC.segsize);
+		sC.periodD 		= intify(sC.periodD);
+		sC.marginF 		= intify(sC.marginF);
+		sC.marginB 		= intify(sC.marginB);
+		
+		sC.Atimescale	= intify(sC.Atimescale);
+		sC.Vtimescale	= intify(sC.Vtimescale);
+
+		if (sC.Etimescale) {
+			sC.Etimescale	= intify(sC.Etimescale);
+		} else {
+			sC.Etimescale	= sC.Atimescale; 
+		}
+		
+		if (sC.ads) {
+			sC.ads.adD 	= intify(sC.ads.adD);
+		}
+
+		if (sC.subs) {
+			sC.subs.segsize 	= intify(sC.subs.segsize);
+			sC.subs.timescale 	= intify(sC.subs.timescale);
+		}
+		
+		if (sC.segTimeLine) {
+			sC.segTimeLine.updatePeriodms = intify(sC.segTimeLine.updatePeriodms);
+		}
+	} else {
+		sC = configStream[useURL];
 	}
 	
 	
@@ -838,32 +870,8 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		return parseInt(eval(x));
 	}
 	
-	sC = configStream[useURL];
 
-	// Extract stream config data
-	sC.segsize 		= intify(sC.segsize);
-	sC.periodD 		= intify(sC.periodD);
-	sC.marginF 		= intify(sC.marginF);
-	sC.marginB 		= intify(sC.marginB);
-	
-	sC.Atimescale	= intify(sC.Atimescale);
-	sC.Vtimescale	= intify(sC.Vtimescale);
 
-	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
-
-	if (sC.ads) {
-		sC.ads.adD 	= intify(sC.ads.adD);
-	}
-
-	if (sC.subs) {
-		sC.subs.segsize 	= intify(sC.subs.segsize);
-		sC.subs.timescale 	= intify(sC.subs.timescale);
-	}
-
-	if (sC.segTimeLine) {
-		// Seg timeline stuff...
-	}
-	
 	// Force ad duration to seg boundary???
 	if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
 		console.log("- non aligned adD: " + sC.ads.adD);
@@ -899,33 +907,50 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	dAv.setUTCMinutes(0);
 	dAv.setUTCSeconds(0);
 	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+
+	var liveEdge = !bAllPeriods ? progStart : '';
+
+	function rtnCachedManifest() {
+		if (archiveMPDs[serverContId]) {				
+			sendServerLog("Using previously created manifest (no change). ");
+
+			res.type("application/dash+xml");
+			res.status(200);
+			return res.send(archiveMPDs[serverContId]);				
+		} else {				
+			sendServerLog("Error: No previously created manifest!");
+			return res.sendStatus(404);				
+		}
+	}
 	
+	// Will the manifest change?
+	if (!persistState[useURL]) {
+		persistState[useURL] = {};
+	}
+			
+	const progDuration	= (60 * 60 * 1000);
+	var maxP = Math.round((progDuration / sC.periodD) - 1);
+	console.log("- maxP: " + maxP);
+	
+	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
+	
+	var lowerP;
+	var upperP;
+	
+	if (!bAllPeriods) {
+		lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
+		upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
+	} else {
+		lowerP = 0;
+		upperP = maxP;
+	}
 	
 	if (!sC.segTimeLine) {
-		const progDuration	= (60 * 60 * 1000);
-		var maxP = Math.round((progDuration / sC.periodD) - 1);
-		console.log("- maxP: " + maxP);
-		
-		var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
-		
-		var lowerP;
-		var upperP;
-		
-		if (!bAllPeriods) {
-			lowerP	= getPeriod_floor((utcTotalSeconds - sC.marginB) * 1000, sC.periodD, maxP);
-			upperP	= getPeriod_floor((utcTotalSeconds + sC.marginF) * 1000, sC.periodD, maxP);
-		} else {
-			lowerP = 0;
-			upperP = maxP;
-		}
+		// *** Multiple Period Manifest ***
+		console.log("*** Multiple Period Manifest ***");
 		
 		var numP = (upperP - lowerP) + 1;
 
-		// Will the manifest change?
-		if (!persistState[useURL]) {
-			persistState[useURL] = {};
-		}
-		
 		if (	(!persistState[useURL].publishTime) 	|| 
 				(lowerP != persistState[useURL].lowerP) || 
 				(upperP != persistState[useURL].upperP)	||
@@ -941,16 +966,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			persistState[useURL].upperP 		= upperP;
 			persistState[useURL].serverContId	= serverContId;
 		} else {
-			if (archiveMPDs[serverContId]) {				
-				sendServerLog("Using previously created manifest (no change). ");
-
-				res.type("application/dash+xml");
-				res.status(200);
-				return res.send(archiveMPDs[serverContId]);				
-			} else {				
-				sendServerLog("Error: No previously created manifest!");
-				return res.sendStatus(404);				
-			}
+			return rtnCachedManifest();
 		}
 		
 		
@@ -960,7 +976,6 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		var prevMain;
 		var adIdx;
 		var eventId = 1;
-		var liveStart = !bAllPeriods ? progStart : '';
 		
 		for (var i = lowerP; i <= upperP; i++) {
 			
@@ -973,18 +988,59 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			if (sC.ads)	{
 				adIdx = (i % sC.ads.content.length);
 				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
-				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveStart);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveEdge);
 			} else {
-				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveStart);
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveEdge);
 			}
 		}
 	} else {
-		formProps.publishTime = fNow;
-		formProps['segtimeline-audio']  = makeSegTimeLineAudio(sC, utcTotalSeconds);
-		formProps['segtimeline-video']  = makeSegTimeLineVideo(sC, utcTotalSeconds);
-		formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds);
-		if (sC.subs) {
-			formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+		// *** Seg Time Line *** 
+		console.log("*** Seg TimeLine manifest ***");
+		var createManifest = true;
+		var nowCheck = new Date();
+
+		if (persistState[useURL].lastHit) {
+			console.log(" - last update: " + (nowCheck - persistState[useURL].lastHit));
+			
+			if ((nowCheck - persistState[useURL].lastHit) < sC.segTimeLine.updatePeriodms)
+			{
+				createManifest = false;
+			}
+		}
+		
+		if (createManifest || bAllPeriods) {
+			var tm = utcTotalSeconds+ sC.marginF;
+			
+			persistState[useURL].lastHit = nowCheck;
+			formProps.publishTime = fNow;
+			
+			if (bAllPeriods) {
+				tm = 3600;
+			}
+			
+			try {
+				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, tm);
+				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, tm);
+			} catch(e) {
+				res.sendStatus(500);
+				return;
+			}
+			
+			var eventId = 1;
+			for (var i = lowerP; i <= upperP; i++) {
+				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId);
+				eventId = eventId + 2;
+			}
+
+			if (liveEdge) {
+				formProps['queryString'] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.segsize; // use Average segSize????
+			}
+			
+			if (sC.subs) {
+				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+			}
+		} else {
+			return rtnCachedManifest();
 		}
 	}
 	
@@ -1248,12 +1304,15 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	}
 
 	template 	= hbs.handlebars.compile(cachedXML.ads[fn]);
-	context 	= {	period_id: "ad-" + p, 
-					period_start: sStart, 
-					period_continuity: pc, 
-					evPresentationTime: evPresTime, 
-					evId: eId,
-					subs: sbs};
+	context 	= {	
+		period_id: "ad-" + p, 
+		period_start: sStart, 
+		period_continuity: pc, 
+		evPresentationTime: evPresTime, 
+		evId: eId,
+		subs: sbs
+	};
+	
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -1261,40 +1320,152 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	return complete;
 }
 
+const xml2js = require('xml2js');
 
-makeSegTimeLineAudio = function(sC, t) {
+segtimeLineXML = function(fn, tm, segSize, tmScale) {
 	
-	var fn = sC.segTimeLine.audio;
-	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
-	}
+	var promise = new Promise(function(resolve, reject) {
 
-	return cachedXML.segTimeLine[fn];
+		if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+			reject(Error("XML Parsing - file not found"));
+		}
+
+		var parser = new xml2js.Parser();
+		
+		var xml = cachedXML.segTimeLine[fn];
+		
+		var mod = {};
+		
+		mod.SegmentTimeline = {};
+		mod.SegmentTimeline.S = [];
+		
+		parser.parseString(xml, function (err, obj) {
+
+			if (err) {
+				console.log("err: " + err);
+				reject(Error("XML Parsing / creation failed"));
+			}
+			
+			//console.log(JSON.stringify(obj));
+			
+			var tlObj = obj['SegmentTimeline']['S'];
+			var newObj;
+			var tmSectionStart = 0, tmSectionEnd = 0, tmDuration = 0;
+			var i = 0;
+			var bLastOne = false;
+			
+			while ((i < tlObj.length) && !bLastOne) {
+								
+				var segObj = tlObj[i];
+				var segD = parseInt(segObj['$'].d || 0);
+				var segR = parseInt(segObj['$'].r || 0);
+				
+				// console.log(" - d: " + segD);
+				// console.log(" - r: " + segR);
+				
+				tmSectionStart 	= tmSectionEnd;
+				totSegs 		= Math.round(segD + (segD * segR));
+				tmSectionEnd   	= tmSectionStart + (totSegs / tmScale);
+
+				// console.log("tmSectionStart: " + tmSectionStart);
+				// console.log("tmSectionEnd: " + tmSectionEnd);
+				// console.log("tm: " + tm);
+
+				if (tm < tmSectionEnd)
+				{					
+					bLastOne = true;
+				}
+
+				newObj = {};
+				
+				if (i === 0) {
+					newObj.t = "0";
+				}
+				
+				newObj.d = segD;
+								
+				if (bLastOne) {
+					// Trim seg count
+					tmDuration = tmSectionEnd - tmSectionStart;
+					var segCount = Math.floor(((tm - tmSectionStart) * tmScale / segSize) + 0.9999);
+					if (segCount > 1) {
+						newObj.r = segCount-1;
+					}
+				} else {
+					if (segR) {
+						newObj.r = segR;
+					}
+				}
+				
+				mod.SegmentTimeline.S[i] = {};
+				mod.SegmentTimeline.S[i]['$'] = newObj;
+
+				i++;
+			}
+			
+			var builder = new xml2js.Builder( {	"headless": true, "indent": "     "} );
+			var modXML = builder.buildObject(mod);
+			
+			//console.log(modXML);
+			//console.log(xml);
+			
+			modXML = modXML.replace(/^/gm, "\t\t\t\t");
+			
+			resolve(modXML);
+		});
+	});
+
+	return promise;
 }
 
 
-makeSegTimeLineVideo = function(sC, t) {
+async function makeSegTimeLineAudio (sC, tm) {
+	
+	var fn = sC.segTimeLine.audio;
+
+	try {
+		var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Atimescale);
+		// console.log(xml);
+		return xml;
+    } catch(e) {
+        throw e.message;
+    }
+}
+
+
+async function makeSegTimeLineVideo (sC, tm) {
 	
 	var fn = sC.segTimeLine.video;
 	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
-	}
-
-	return cachedXML.segTimeLine[fn];
+	var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Vtimescale);
+	//console.log(xml);
+	return xml;
 }
 
 
-makeSegTimeLineEvents = function(sC, t) {
+makeSegTimeLineEvent = function(sC, tm, p, eId) {
 	
-	var fn = sC.segTimeLine.events;
+	var adOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   	
+	var mainOffset = Math.floor((((p * sC.periodD) + 60000) * sC.Etimescale) / 1000);   	
+
+	var xml = "";
 	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
+	var fn = sC.segTimeLine.event;
+	
+	if (loadAndCache(fn, cachedXML.segTimeLine)) {
+		var context = { 
+			'ptime-ad' 		: adOffset,
+			'id-ad'			: eId,
+			'ptime-main'	: mainOffset,
+			'id-main'		: eId+1
+		};
+
+		var template = hbs.handlebars.compile(cachedXML.segTimeLine[fn]);
+		xml =  template(context);
 	}
 
-	return cachedXML.segTimeLine[fn];
+	
+	return xml;
 }
 
 
