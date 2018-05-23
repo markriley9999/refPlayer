@@ -1029,7 +1029,8 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 			var eventId = 1;
 			for (var i = lowerP; i <= upperP; i++) {
-				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId++);
+				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId);
+				eventId = eventId + 2;
 			}
 			
 			if (sC.subs) {
@@ -1451,9 +1452,9 @@ makeSegTimeLineEvent = function(sC, tm, p, eId) {
 	if (loadAndCache(fn, cachedXML.segTimeLine)) {
 		var context = { 
 			"ptime-ad" 		: adOffset,
-			"id-ad"			: "ad-" + eId,
+			"id-ad"			: eId,
 			"ptime-main"	: mainOffset,
-			"id-main"		: "main-" + eId
+			"id-main"		: eId+1
 		};
 
 		var template = hbs.handlebars.compile(cachedXML.segTimeLine[fn]);
