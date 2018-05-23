@@ -1007,12 +1007,19 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			}
 		}
 		
-		if (createManifest) {
+		if (createManifest || bAllPeriods) {
+			var tm = utcTotalSeconds+ sC.marginF;
+			
 			persistState[useURL].lastHit = nowCheck;
 			formProps.publishTime = fNow;
+			
+			if (bAllPeriods) {
+				tm = 3600;
+			}
+			
 			try {
-				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, utcTotalSeconds+ sC.marginF);
-				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, utcTotalSeconds+ sC.marginF);
+				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, tm);
+				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, tm);
 			} catch(e) {
 				res.sendStatus(500);
 				return;
@@ -1022,7 +1029,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 			var eventId = 1;
 			for (var i = lowerP; i <= upperP; i++) {
-				formProps['event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId++);
+				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId++);
 			}
 			
 			if (sC.subs) {
@@ -1293,12 +1300,15 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	}
 
 	template 	= hbs.handlebars.compile(cachedXML.ads[fn]);
-	context 	= {	period_id: "ad-" + p, 
-					period_start: sStart, 
-					period_continuity: pc, 
-					evPresentationTime: evPresTime, 
-					evId: eId,
-					subs: sbs};
+	context 	= {	
+		period_id: "ad-" + p, 
+		period_start: sStart, 
+		period_continuity: pc, 
+		evPresentationTime: evPresTime, 
+		evId: eId,
+		subs: sbs
+	};
+	
 	var complete = template(context);
 	
 	// console.log(complete);
@@ -1389,12 +1399,14 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 				i++;
 			}
 			
-			var builder = new xml2js.Builder( {headless  : true} );
+			var builder = new xml2js.Builder( {	"headless": true, "indent": "     "} );
 			var modXML = builder.buildObject(mod);
 			
 			//console.log(modXML);
 			//console.log(xml);
-
+			
+			modXML = modXML.replace(/^/gm, "\t\t\t\t");
+			
 			resolve(modXML);
 		});
 	});
@@ -1427,26 +1439,29 @@ async function makeSegTimeLineVideo (sC, tm) {
 }
 
 
-makeSegTimeLineEvents = function(sC, t) {
-	
-	var fn = sC.segTimeLine.events;
-	
-	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
-		return false;
-	}
-
-	return cachedXML.segTimeLine[fn];
-}
-
-// !!!!!!!!!!!!!!!!!!!!
 makeSegTimeLineEvent = function(sC, tm, p, eId) {
 	
-	var evOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
-	
-	//sendServerLog(" - Generated manifest file: Period: " + p);
-	//sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
+	var adOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   	
+	var mainOffset = Math.floor((((p * sC.periodD) + 60000) * sC.Etimescale) / 1000);   	
 
-	//return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
+	var xml = "";
+	
+	var fn = sC.segTimeLine.event;
+	
+	if (loadAndCache(fn, cachedXML.segTimeLine)) {
+		var context = { 
+			"ptime-ad" 		: adOffset,
+			"id-ad"			: "ad-" + eId,
+			"ptime-main"	: mainOffset,
+			"id-main"		: "main-" + eId
+		};
+
+		var template = hbs.handlebars.compile(cachedXML.segTimeLine[fn]);
+		xml =  template(context);
+	}
+
+	
+	return xml;
 }
 
 

@@ -15,7 +15,7 @@
 		"updatePeriodms"	: "3000",
 		"audio"				: "./dynamic/segtimeline/audio.xml",
 		"video"				: "./dynamic/segtimeline/video.xml",
-		"events"			: "./dynamic/segtimeline/event.xml"
+		"event"				: "./dynamic/segtimeline/event.xml"
 	},
 	
 	"ads" :
