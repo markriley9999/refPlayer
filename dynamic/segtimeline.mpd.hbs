@@ -30,7 +30,7 @@
 
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
 			<BaseURL>../content/segtimeline/</BaseURL>
-			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="init/SEG.mp4">
+			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s{{{queryString}}}" startNumber="1" initialization="init/SEG.mp4">
 
 {{{segtimeline-video}}}
 				
@@ -51,7 +51,7 @@
 		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<BaseURL>../content/segtimeline/</BaseURL>
-			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
+			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s{{{queryString}}}" startNumber="1" initialization="$RepresentationID$/SEG.mp4">
 			
 {{{segtimeline-audio}}}
 				

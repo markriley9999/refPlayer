@@ -908,6 +908,8 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	dAv.setUTCSeconds(0);
 	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
 
+	var liveEdge = !bAllPeriods ? progStart : '';
+
 	function rtnCachedManifest() {
 		if (archiveMPDs[serverContId]) {				
 			sendServerLog("Using previously created manifest (no change). ");
@@ -974,7 +976,6 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		var prevMain;
 		var adIdx;
 		var eventId = 1;
-		var liveStart = !bAllPeriods ? progStart : '';
 		
 		for (var i = lowerP; i <= upperP; i++) {
 			
@@ -987,9 +988,9 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			if (sC.ads)	{
 				adIdx = (i % sC.ads.content.length);
 				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
-				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveStart);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveEdge);
 			} else {
-				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveStart);
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveEdge);
 			}
 		}
 	} else {
@@ -1025,12 +1026,14 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 				return;
 			}
 			
-			//formProps['segtimeline-events'] = makeSegTimeLineEvents(sC, utcTotalSeconds + sC.marginF);
-
 			var eventId = 1;
 			for (var i = lowerP; i <= upperP; i++) {
 				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId);
 				eventId = eventId + 2;
+			}
+
+			if (liveEdge) {
+				formProps['queryString'] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.segsize; // use Average segSize????
 			}
 			
 			if (sC.subs) {
@@ -1451,10 +1454,10 @@ makeSegTimeLineEvent = function(sC, tm, p, eId) {
 	
 	if (loadAndCache(fn, cachedXML.segTimeLine)) {
 		var context = { 
-			"ptime-ad" 		: adOffset,
-			"id-ad"			: eId,
-			"ptime-main"	: mainOffset,
-			"id-main"		: eId+1
+			'ptime-ad' 		: adOffset,
+			'id-ad'			: eId,
+			'ptime-main'	: mainOffset,
+			'id-main'		: eId+1
 		};
 
 		var template = hbs.handlebars.compile(cachedXML.segTimeLine[fn]);
