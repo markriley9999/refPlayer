@@ -7,6 +7,13 @@ if [ -e title.txt ]; then
 fi
 
 
+if [ "$CMD" == "--updatenode" ]; then
+	sudo npm cache clean -f
+	sudo npm install -g n
+	sudo n stable
+fi
+
+
 if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
   echo " - Update code"
   git stash
