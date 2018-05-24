@@ -517,7 +517,7 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 
 	
-	// Live content (emulation)???
+	// Live (dynamic) content (emulation)???
 	if (req.query.progStart && req.query.segDuration) {
 		var dNow = new Date();
 		
@@ -546,7 +546,8 @@ expressSrv.get('/content/*', function(req, res) {
 			console.log(chalk.cyan(" - segment number: " + segN));
 			
 			if (segN) {
-				var segTmOffset = (segN - 1 + 1) * parseInt(req.query.segDuration) / 1000;
+				var sd = req.query.segDuration;
+				var segTmOffset = (segN - 1 + 1) * parseInt(sd) / 1000;
 				console.log(chalk.cyan(" - segment time offset: " + segTmOffset + "s"));
 				
 				// Get now offset 
@@ -555,8 +556,10 @@ expressSrv.get('/content/*', function(req, res) {
 				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 				console.log(chalk.cyan(" - seconds now: " + utcTotalSeconds + "s"));
 				
+				var headRoom = sd * 2;
+				
 				// Is segment request in the future, if so segment does not exist, send 404
-				if (segTmOffset > utcTotalSeconds) {
+				if ((utcTotalSeconds - segTmOffset) + headRoom < 0) {
 					console.log(chalk.red(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")"));
 					return res.sendStatus(404);
 				}
@@ -821,6 +824,11 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
+
+		function intify(x) {
+			return parseInt(eval(x));
+		}
+
 		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
 		
 		console.log("Load config file: " + cfn);
@@ -861,46 +869,43 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		if (sC.segTimeLine) {
 			sC.segTimeLine.updatePeriodms = intify(sC.segTimeLine.updatePeriodms);
 		}
+		
+		// Force ad duration to seg boundary???
+		if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+			console.log("- non aligned adD: " + sC.ads.adD);
+			
+			if (sC.ads.adSegAlign === "round") {
+				sC.ads.adD = Math.round(sC.ads.adD / sC.segsize) * sC.segsize;
+				console.log("- aligned adD (round): " + sC.ads.adD);		
+			} else if (sC.ads.adSegAlign === "floor") {
+				sC.ads.adD = Math.floor(sC.ads.adD / sC.segsize) * sC.segsize;
+				console.log("- aligned adD (floor): " + sC.ads.adD);		
+			}		
+		} 
+
+		// Force main duration to seg boundary???
+		if (sC.segAlign && (sC.segAlign != "none")) {
+			console.log("- non aligned periodD: " + sC.periodD);
+			
+			var adD = sC.ads ? sC.ads.adD : 0;
+			
+			if (sC.segAlign === "round") {
+				sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
+				console.log("- aligned periodD (round): " + sC.periodD);		
+			} else if (sC.segAlign === "floor") {
+				sC.periodD = (Math.floor((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
+				console.log("- aligned periodD (floor): " + sC.periodD);		
+			}		
+		} 
+
+		// Calc average segsize for period
+		sC.averageSegSize = Math.round(sC.periodD / Math.ceil(sC.periodD / sC.segsize)); 
+		console.log("- average seg size for period(s): " + sC.averageSegSize);		
+		
 	} else {
 		sC = configStream[useURL];
 	}
-	
-	
-	function intify(x) {
-		return parseInt(eval(x));
-	}
-	
-
-
-	// Force ad duration to seg boundary???
-	if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
-		console.log("- non aligned adD: " + sC.ads.adD);
 		
-		if (sC.ads.adSegAlign === "round") {
-			sC.ads.adD = Math.round(sC.ads.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (round): " + sC.ads.adD);		
-		} else if (sC.ads.adSegAlign === "floor") {
-			sC.ads.adD = Math.floor(sC.ads.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (floor): " + sC.ads.adD);		
-		}		
-	} 
-
-	// Force main duration to seg boundary???
-	if (sC.segAlign && (sC.segAlign != "none")) {
-		console.log("- non aligned periodD: " + sC.periodD);
-		
-		var adD = sC.ads ? sC.ads.adD : 0;
-		
-		if (sC.segAlign === "round") {
-			sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
-			console.log("- aligned periodD (round): " + sC.periodD);		
-		} else if (sC.segAlign === "floor") {
-			sC.periodD = (Math.floor((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
-			console.log("- aligned periodD (floor): " + sC.periodD);		
-		}		
-	} 
-
-	
 	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
 
 	var dAv = dNow;
@@ -1033,7 +1038,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			}
 
 			if (liveEdge) {
-				formProps['queryString'] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.segsize; // use Average segSize????
+				formProps['queryString'] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.averageSegSize;
 			}
 			
 			if (sC.subs) {
@@ -1182,7 +1187,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 		prev, 
 		sC.subs,
 		progStart,
-		sC.segsize
+		sC.averageSegSize
 	);
 }
 
