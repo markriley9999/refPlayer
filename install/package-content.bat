@@ -11,5 +11,9 @@ echo DASHNAME: %DASHNAME%
 
 mkdir tmp
 
-tar -czvf "tmp/refplayer-content-%DASHNAME%.tar.gz" --exclude={*.mpd,*.xml,*.txt,*.bin} "../content/%NAME%"
-tar -tf "tmp/refplayer-content-%DASHNAME%.tar.gz"
+cd ..
+
+tar -czvPf "install/tmp/refplayer-content-%DASHNAME%.tar.gz" --exclude={*.mpd,*.xml,*.txt,*.bin} "content/%NAME%"
+tar -tf "install/tmp/refplayer-content-%DASHNAME%.tar.gz"
+
+cd install
