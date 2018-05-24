@@ -223,6 +223,22 @@ mVid.start = function () {
 			this.Log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
 		}
 	}
+
+	this.bSysSubsEnabled = false;
+    try {
+		if (oipfObjectFactory.isObjectSupported('application/oipfConfiguration')) {
+			this.cfg = oipfObjectFactory.createConfigurationObject();
+			if (this.cfg.configuration) {
+				this.Log.info("oipfConfiguration: " + JSON.stringify(this.cfg.configuration));
+				this.bSysSubsEnabled = this.cfg.configuration.subtitlesEnabled;
+				this.Log.info("System Subs: " + (this.bSysSubsEnabled ? "Enabled" : "Disabled"));
+			} else {
+				this.Log.warn("oipfConfiguration null");
+			}
+		}
+    } catch (err) {
+        this.Log.warn("Exception when creating creating oipfConfiguration Object. Error: " + err.message);
+    }
 	
 	this.showPlayrange();
 	
@@ -458,10 +474,17 @@ mVid.setUpCues = function () {
 					track.mode = 'disabled';
 				}
 
-				if (track.mode === 'showing') {
-					s.setAttribute("class", "playerIcon subson");
+				if (that.cfg && that.cfg.configuration) {
+					that.bSysSubsEnabled = that.cfg.configuration.subtitlesEnabled;
+					if (that.bSysSubsEnabled) {
+						if (track.mode === 'showing') {
+							s.setAttribute("class", "playerIcon subson");
+						} else {
+							s.setAttribute("class", "playerIcon subsoff");
+						}
+					}
 				} else {
-					s.setAttribute("class", "playerIcon subsoff");
+					s.setAttribute("class", "playerIcon hidden");
 				}
 			}
 		}
@@ -942,7 +965,11 @@ mVid.setContentSourceAndLoad = function () {
 		e("encrypted").setAttribute("class", "playerIcon");
 	}
 	
-	e("subs").setAttribute("class", "playerIcon nosubs");
+	if (this.bSysSubsEnabled) {
+		e("subs").setAttribute("class", "playerIcon nosubs");
+	} else {
+		e("subs").setAttribute("class", "playerIcon hidden");
+	}
 	
 	this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
@@ -1568,6 +1595,7 @@ mVid.OnCatchStall = function () {
 	}
 }
 
+
 mVid.OnKeyDown = function (e) {
 	var keyCode = e.which || e.charCode || e.keyCode;
 	var keyChar = String.fromCharCode(keyCode);
@@ -1698,6 +1726,24 @@ mVid.cmndLog = function () {
 	xhttp.send(this.Log.logStr);
 }
 
+mVid.cmndTogSubs = function () {
+	if (this.overrideSubs === 'on'){
+		this.overrideSubs = 'off';
+	} else if (this.overrideSubs === 'off'){
+		this.overrideSubs = 'on';
+	} else {
+		this.overrideSubs = 'off';
+	}
+}
+
+mVid.cmndSubsOn = function () {
+	this.overrideSubs = 'on';
+}
+
+mVid.cmndSubsOff = function () {
+	this.overrideSubs = 'off';
+}
+
 mVid.cmndJumpToEnd = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
@@ -1752,7 +1798,9 @@ var keyTable = {};
 lVKTable = {};
 
 lVKTable['VK_LEFT']			= 37;
+lVKTable['VK_UP']			= 38;
 lVKTable['VK_RIGHT']		= 39;
+lVKTable['VK_DOWN']			= 40;
 lVKTable['VK_0'] 			= 48;
 lVKTable['VK_1'] 			= 49;
 lVKTable['VK_2'] 			= 50;
@@ -1782,13 +1830,14 @@ getVK = function (vk) {
 } 
 
 keyTable.entries = [
-	{ func : mVid.cmndFastForward, 	key : 'F', hbbKey : getVK('VK_FAST_FWD') 	}, 
+	{ func : mVid.cmndSubsOn, 		key : '',  hbbKey : getVK('VK_UP') 			}, 
+	{ func : mVid.cmndSubsOff, 		key : '',  hbbKey : getVK('VK_DOWN') 		}, 
 	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : getVK('VK_REWIND') 		}, 
 	{ func : mVid.cmndPlay,			key : 'P', hbbKey : getVK('VK_PLAY') 		}, 
 	{ func : mVid.cmndPause, 		key : 'U', hbbKey : getVK('VK_PAUSE') 		}, 
-	{ func : mVid.cmndSeekFWD,		key : 'J', hbbKey : getVK('VK_RIGHT')		}, 
-	{ func : mVid.cmndSeekBACK,		key : 'B', hbbKey : getVK('VK_LEFT')		}, 
-	{ func : mVid.cmndReload, 		key : 'L', hbbKey : getVK('VK_RED') 		}, 
+	{ func : mVid.cmndSeekFWD,		key : '',  hbbKey : getVK('VK_RIGHT')		}, 
+	{ func : mVid.cmndSeekBACK,		key : '',  hbbKey : getVK('VK_LEFT')		}, 
+	{ func : mVid.cmndReload,		key : 'L', hbbKey : getVK('VK_RED') 		}, 
 	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_GREEN')		}, 
 	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')		}, 
 	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')		}, 
