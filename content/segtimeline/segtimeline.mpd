@@ -4,7 +4,7 @@
 		<Title>segtimeline</Title>
 	</ProgramInformation>
 	
-	<Period>
+	<Period start="PT0H0M0.000S">
 		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="1000"> 
 			<Event duration="60000" presentationTime="0" id="1">
 				<scte35:Signal> 
