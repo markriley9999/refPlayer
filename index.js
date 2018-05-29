@@ -1,3 +1,7 @@
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
@@ -139,7 +143,6 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 			});
 			
 			self.winObj.on('closed', function() { // reset the window object when it is closed
-				console.log("-------");
 				if (self.onClosed) {
 					self.onClosed(self.winObj);
 				}
@@ -219,44 +222,49 @@ function init() {
 	runOptions.bMultiDevs 	= !GUI;	
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
+	runOptions.logLevel 	= argv.loglevel;
 	
+	if (runOptions.logLevel) {
+		logger.level = runOptions.logLevel;
+		logger.info("--setting log level to: " + runOptions.logLevel);
+	}
 	
 	if (argv.help) {
-		console.log("--headless   Run with no GUI.");
-		console.log("--segdump    Dump segment information.");
+		logger.info("--headless   Run with no GUI.");
+		logger.info("--segdump    Dump segment information.");
 		GUI.quit();
 		return;
 	}
 	
-	console.log("--------------------------------------------------");
-	console.log(v.title + " v" + v.major + "." + v.minor);
-	console.log("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
-	console.log("--------------------------------------------------");
-	console.log("");
-	console.log(v.comment);
-	console.log("");
+	logger.info("--------------------------------------------------");
+	logger.info(v.title + " v" + v.major + "." + v.minor);
+	logger.info("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
+	logger.info("--------------------------------------------------");
+	logger.info("");
+	logger.info(v.comment);
+	logger.info("");
 	for (var i = 0; i < v.notes.length; i++) {
-		console.log(" - " + v.notes[i]);
+		logger.info(" - " + v.notes[i]);
 	}
-	console.log("");
-	console.log("--------------------------------------------------");
-	console.log("");
+	logger.info("");
+	logger.info("--------------------------------------------------");
+	logger.info("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
 	if (!GUI) {
-		console.log("--- Headless Mode ---");
+		logger.info("--- Headless Mode ---");
 	}
 	
 	if (runOptions.bSegDump) {
-		console.log("--- Dump Segment Info ---");
+		logger.info("--- Dump Segment Info ---");
 	}
 	
 	if (runOptions.bEventAbs) {
-		console.log(chalk.red("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---"));
+		logger.warn("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---");
 	}
 
-	console.log("");
+	logger.info("");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
 	
@@ -282,22 +290,22 @@ function init() {
 		}
 	}
 	
-	console.log("Server (IPv4) Addresses");
-	console.log("-----------------------");
+	logger.info("Server (IPv4) Addresses");
+	logger.info("-----------------------");
 
 	generalInfo.port 		= http.address().port;
 	generalInfo.httpsPort 	= https.address().port;
 
 	for( var i = 0; i < generalInfo.serverAddresses.length; i++) {
-		console.log(i + ": " + generalInfo.serverAddresses[i]);
+		logger.info(i + ": " + generalInfo.serverAddresses[i]);
 	}
 
-	console.log("URLs:");
-	console.log("  http://[server_ip]:" + generalInfo.port + "/index.html");
-	console.log("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
+	logger.info("URLs:");
+	logger.info("  http://[server_ip]:" + generalInfo.port + "/index.html");
+	logger.info("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
 	if (generalInfo.bHTTPSEnabled) {
-		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
-		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
+		logger.info("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
+		logger.info("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
 	}
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
@@ -335,10 +343,10 @@ function socketConnect(socket) {
  	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 	var UA = socket.request.headers['user-agent'];
 
-    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
+    logger.info(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
 	if (runOptions.bMultiDevs) {
 		whois.lookup(socket.handshake.address, function(err, data) {
-			console.log(chalk.blue(data))
+			logger.debug(data)
 		})
 	}
 	
@@ -351,12 +359,12 @@ function socketConnect(socket) {
 		win['ad0videoobj'].sendToWindow('ipc-buffer', data);
 		win['ad1videoobj'].sendToWindow('ipc-buffer', data);
 		
-		//console.log(data);
+		logger.trace(data);
 	});
 	
 	socket.on('playbackOffset', function(data) {
 		win['log'].sendToWindow('ipc-playbackOffset', data);
-		//console.log(data);
+		logger.trace(data);
 	});
 	
 	socket.on('disconnect', function () {
@@ -369,7 +377,7 @@ function socketConnect(socket) {
 
 		sendConnectionStatus();
 
-	console.log(" ---> Device disconnected: " + generalInfo.connectedDevices);
+	logger.info(" ---> Device disconnected: " + generalInfo.connectedDevices);
 	});
 }
 
@@ -389,7 +397,7 @@ expressSrv.set('view-engine', 'hbs');
 
 expressSrv.post('/log', function(req, res) {
 	win['log'].sendToWindow('ipc-log', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -399,7 +407,7 @@ function sendServerLog(msg) {
 					'logText': 	" - server: " + msg + " ---"
 				 };
 				 
-	console.log(chalk.yellow(msg));
+	logger.info(msg);
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
@@ -417,13 +425,13 @@ expressSrv.use(function(req, res, next) {
 
 expressSrv.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
 expressSrv.post('/adtrans', function(req, res) {
 	win['adtrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -433,8 +441,8 @@ expressSrv.get('/*.html', function(req, res) {
 	if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
-		console.log(" ---> App loaded by: " + generalInfo.devName);
-		console.log(chalk.blue("   UA: " + UA));
+		logger.debug(" ---> App loaded by: " + generalInfo.devName);
+		logger.debug("   UA: " + UA);
 		
 		//createWindows();
 		
@@ -456,8 +464,8 @@ expressSrv.get('/*.html', function(req, res) {
 			function(err, html) { 
 			res.status(200);
 			res.send(html);
-			//console.log("UserAgent: " + req.headers['user-agent']);
-			//console.log(JSON.stringify(req.headers));
+			logger.trace("UserAgent: " + req.headers['user-agent']);
+			logger.trace(JSON.stringify(req.headers));
 		});
 		
 	} else {
@@ -469,11 +477,11 @@ expressSrv.get('/*.html', function(req, res) {
 expressSrv.get('/player.aitx', function(req, res) {
 	var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 	
-	// console.log("get ait: " + srv);
+	logger.trace("get ait: " + srv);
 	res.render('playerait.hbs', {url: srv}, function(err, html) { 
 		res.type("application/vnd.dvb.ait+xml");
 		res.status(200);
-		// console.log(html);
+		logger.trace(html);
         res.send(html);
     });
 });
@@ -499,20 +507,20 @@ expressSrv.get('/content/*', function(req, res) {
 	} else {
 		cType = "video/mp4";		
 	}
-	//console.log(" - suffix: " + suffix + " Content-Type: " + cType);
+	logger.trace(" - suffix: " + suffix + " Content-Type: " + cType);
 	
-	sendServerLog("GET content: " + req.path);
-	//console.log(JSON.stringify(req.headers));
+	logger.debug("GET content: " + req.path);
+	logger.trace(JSON.stringify(req.headers));
 	
 	if (runOptions.bMultiDevs) {
 			var u = req.headers['user-agent'];			
 			var d = commonUtils.extractDevName(u);
 			
 			if (d === "UnknownModel") {
-				console.log(chalk.blue("    UA: " + u));
+				logger.debug("    UA: " + u);
 			} else {
-				console.log(chalk.blue("    Device: " + d));
-				console.log(chalk.blue("       IP: " + req.ip));
+				logger.debug("    Device: " + d);
+				logger.debug("       IP: " + req.ip);
 			}
 	}
 
@@ -525,7 +533,7 @@ expressSrv.get('/content/*', function(req, res) {
 		var segD = req.query.segDuration;
 		
 		// This segment request is for live content - does it exist yet?
-		console.log(chalk.yellow("Live seg req: " + pStart + " (" + segD + "ms)"));
+		logger.debug("Live seg req: " + pStart + " (" + segD + "ms)");
 		
 		// Get time now
 		var dAv = new Date();
@@ -533,34 +541,34 @@ expressSrv.get('/content/*', function(req, res) {
 		dAv.setUTCSeconds(0);
 		var curProg = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
 		
-		console.log(chalk.yellow(" - current prog: " + curProg));
+		logger.debug(" - current prog: " + curProg);
 		
 		// Is segment request for current content, or past?
 		if (pStart === curProg) {
-			console.log(chalk.cyan(" - segment request current, not past"));
+			logger.debug(" - segment request current, not past");
 			// extract segment number and calculate time offset - for end of segment
 			
 			var arr = req.path.match(/\d+(?=.m4s?)/) || ["0"]; 
 			var segN = parseInt(arr[0]);
 			
-			console.log(chalk.cyan(" - segment number: " + segN));
+			logger.debug(" - segment number: " + segN);
 			
 			if (segN) {
 				var sd = req.query.segDuration;
 				var segTmOffset = (segN - 1 + 1) * parseInt(sd) / 1000;
-				console.log(chalk.cyan(" - segment time offset: " + segTmOffset + "s"));
+				logger.debug(" - segment time offset: " + segTmOffset + "s");
 				
 				// Get now offset 
 				var utcMinutes = dNow.getUTCMinutes();
 				var utcSeconds = dNow.getUTCSeconds();
 				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
-				console.log(chalk.cyan(" - seconds now: " + utcTotalSeconds + "s"));
+				logger.debug(" - seconds now: " + utcTotalSeconds + "s");
 				
 				var headRoom = sd * 2;
 				
 				// Is segment request in the future, if so segment does not exist, send 404
 				if ((utcTotalSeconds - segTmOffset) + headRoom < 0) {
-					console.log(chalk.red(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")"));
+					logger.error(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")");
 					return res.sendStatus(404);
 				}
 			}				
@@ -576,28 +584,28 @@ expressSrv.get('/content/*', function(req, res) {
 		
 		if (rndErr === 0) {
 			// Simulate error (503)
-			sendServerLog("SIMULATE ERROR! (503)");
+			logger.info("SIMULATE ERROR! (503)");
 			return res.sendStatus(503);
 		}
 	}
 
 	// Get file on server
 	var file = path.join(__dirname, req.path);
-	//console.log(" - file: " + file);
+	logger.trace(" - file: " + file);
 	
     fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
-			console.log(" * error in file request: " + file);
+			logger.error(" * error in file request: " + file);
 			return res.sendStatus(400);
 		}
 		
 		if (!stats.isFile()) {
-			console.log(" * error in file request: " + file);
+			logger.error(" * error in file request: " + file);
 			return res.sendStatus(400);
 		}
 		
@@ -606,7 +614,7 @@ expressSrv.get('/content/*', function(req, res) {
 			arrayBuffer.fileStart = 0;
 
 			mp4box.appendBuffer(arrayBuffer);
-			console.log(mp4box.getInfo());		
+			logger.info(mp4box.getInfo());		
 			mp4box.flush();
 		}
 		
@@ -623,8 +631,8 @@ expressSrv.get('/content/*', function(req, res) {
 			start = parseInt(positions[0], 10);
 			end = positions[1] ? parseInt(positions[1], 10) : total - 1;
 
-			console.log(" - range: " + range);
-			console.log(" - positions: " + positions);
+			logger.debug(" - range: " + range);
+			logger.debug(" - positions: " + positions);
 		} else {
 			start = 0;
 			end = total - 1;		
@@ -632,19 +640,19 @@ expressSrv.get('/content/*', function(req, res) {
 
 		chunksize = (end - start) + 1;
 
-		//console.log(" - total: " + total);
+		logger.trace(" - total: " + total);
 
-		//console.log(" - start: " + start);
-		//console.log(" - end: " + end);
-		//console.log(" - chunksize: " + chunksize);
+		logger.trace(" - start: " + start);
+		logger.trace(" - end: " + end);
+		logger.trace(" - chunksize: " + chunksize);
 
 		if ((chunksize+start) < total) {
 			rtn = 206;
 		} 
-		//console.log(" - rtn: " + rtn);
+		logger.trace(" - rtn: " + rtn);
 		
 		if (start >= end) {
-			console.log(" * Error: start >= end!");
+			logger.error(" * Error: start >= end!");
 			return res.sendStatus(400);
 		}
 
@@ -659,12 +667,12 @@ expressSrv.get('/content/*', function(req, res) {
 					"Access-Control-Allow-Origin": "*"
 				});			
 
-				// console.log(" - send chunk");
+				logger.trace(" - send chunk");
 				var nThrot = commonConfig.getNetworkThrottle();
 				
 				if (nThrot.value != 0) {
 					stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
-					sendServerLog("Throttle server: " + nThrot.name);
+					logger.info("Throttle server: " + nThrot.name);
 				} else {
 					stream.pipe(res);				
 				}
@@ -681,7 +689,7 @@ expressSrv.get('/time', function(req, res) {
 	var d = new Date();
 	
 	tISO = dateFormat(d, "isoUtcDateTime");
-	console.log("tISO: " + tISO);
+	logger.info("tISO: " + tISO);
 	
 	res.status(200);
 	res.type("text/plain");
@@ -699,18 +707,18 @@ expressSrv.get('/segjump/*', function(req, res) {
 	var formProps = {};
 	var sC = {};
 	
-	sendServerLog("GET segjump: " + useURL);
+	logger.info("GET segjump: " + useURL);
 
 	// Load stream config info (sync - one time load)
 	if (!configSegJump[useURL]) {
 		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
 		
-		console.log("Load config file: " + cfn);
+		logger.info("Load config file: " + cfn);
 		
 		if (fs.existsSync(cfn)) {
 			configSegJump[useURL] = require(cfn);
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return res.sendStatus(404);
 		}
 	}
@@ -729,13 +737,13 @@ expressSrv.get('/segjump/*', function(req, res) {
 	
 	// Get file on server
 	var file = path.join(__dirname, useURL + ".hbs");
-	console.log(" - file: " + file);
+	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
 			res.end(err);
@@ -782,9 +790,9 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	// Extract content from URL 
 	var useURL = req.path;
 	var strippedURL = commonUtils.basename(useURL);
-	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
+	logger.info("GET dynamic: " + useURL + " (" + strippedURL + ")");
 	var serverContId = strippedURL + "-" + commonUtils.createContentId(); 
-	sendServerLog("ContentId: " + serverContId);
+	logger.info("ContentId: " + serverContId);
 
 		
 	// Content no longer live?
@@ -794,15 +802,15 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		clientContId = strippedURL + "-" + req.query.contid;
 		
 		if (serverContId != clientContId) {
-			sendServerLog("Client requested non-current content: " + clientContId);
+			logger.info("Client requested non-current content: " + clientContId);
 			if (archiveMPDs[clientContId]) {				
-				sendServerLog("Found archived MPD, using that. ");
+				logger.info("Found archived MPD, using that. ");
 
 				res.type("application/dash+xml");
 				res.status(200);
 				return res.send(archiveMPDs[clientContId]);				
 			} else {				
-				sendServerLog("No previous content archived!");
+				logger.info("No previous content archived!");
 				return res.sendStatus(404);				
 			}
 		}
@@ -817,8 +825,8 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	// Create new manifest?
 	formProps.title = serverContId;
 	
-	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
-	// console.log("timeServer: " + timeServer);
+	logger.info("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
+	logger.trace("timeServer: " + timeServer);
 	formProps.timeServer = timeServer;
 	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
 	
@@ -831,12 +839,12 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
 		
-		console.log("Load config file: " + cfn);
+		logger.info("Load config file: " + cfn);
 		
 		if (fs.existsSync(cfn)) {
 			configStream[useURL] = require(cfn);
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return res.sendStatus(404);
 		}
 
@@ -872,35 +880,35 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		
 		// Force ad duration to seg boundary???
 		if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
-			console.log("- non aligned adD: " + sC.ads.adD);
+			logger.info("- non aligned adD: " + sC.ads.adD);
 			
 			if (sC.ads.adSegAlign === "round") {
 				sC.ads.adD = Math.round(sC.ads.adD / sC.segsize) * sC.segsize;
-				console.log("- aligned adD (round): " + sC.ads.adD);		
+				logger.info("- aligned adD (round): " + sC.ads.adD);		
 			} else if (sC.ads.adSegAlign === "floor") {
 				sC.ads.adD = Math.floor(sC.ads.adD / sC.segsize) * sC.segsize;
-				console.log("- aligned adD (floor): " + sC.ads.adD);		
+				logger.info("- aligned adD (floor): " + sC.ads.adD);		
 			}		
 		} 
 
 		// Force main duration to seg boundary???
 		if (sC.segAlign && (sC.segAlign != "none")) {
-			console.log("- non aligned periodD: " + sC.periodD);
+			logger.info("- non aligned periodD: " + sC.periodD);
 			
 			var adD = sC.ads ? sC.ads.adD : 0;
 			
 			if (sC.segAlign === "round") {
 				sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
-				console.log("- aligned periodD (round): " + sC.periodD);		
+				logger.info("- aligned periodD (round): " + sC.periodD);		
 			} else if (sC.segAlign === "floor") {
 				sC.periodD = (Math.floor((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
-				console.log("- aligned periodD (floor): " + sC.periodD);		
+				logger.info("- aligned periodD (floor): " + sC.periodD);		
 			}		
 		} 
 
 		// Calc average segsize for period
 		sC.averageSegSize = Math.round(sC.periodD / Math.ceil(sC.periodD / sC.segsize)); 
-		console.log("- average seg size for period(s): " + sC.averageSegSize);		
+		logger.info("- average seg size for period(s): " + sC.averageSegSize);		
 		
 	} else {
 		sC = configStream[useURL];
@@ -917,13 +925,13 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 	function rtnCachedManifest() {
 		if (archiveMPDs[serverContId]) {				
-			sendServerLog("Using previously created manifest (no change). ");
+			logger.info("Using previously created manifest (no change). ");
 
 			res.type("application/dash+xml");
 			res.status(200);
 			return res.send(archiveMPDs[serverContId]);				
 		} else {				
-			sendServerLog("Error: No previously created manifest!");
+			logger.info("Error: No previously created manifest!");
 			return res.sendStatus(404);				
 		}
 	}
@@ -935,7 +943,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 			
 	const progDuration	= (60 * 60 * 1000);
 	var maxP = Math.round((progDuration / sC.periodD) - 1);
-	console.log("- maxP: " + maxP);
+	logger.info("- maxP: " + maxP);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
 	
@@ -952,7 +960,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	if (!sC.segTimeLine) {
 		// *** Multiple Period Manifest ***
-		console.log("*** Multiple Period Manifest ***");
+		logger.info("*** Multiple Period Manifest ***");
 		
 		var numP = (upperP - lowerP) + 1;
 
@@ -962,7 +970,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 				(serverContId != persistState[useURL].serverContId) ||
 				bAllPeriods) 
 		{
-			sendServerLog("Manifest has changed: publishTime - " + fNow);
+			logger.info("Manifest has changed: publishTime - " + fNow);
 			
 			formProps.publishTime = fNow;
 			
@@ -976,7 +984,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		
 		
 		// Create new manifest!
-		console.log("CurrentPeriod: " + currentP);
+		logger.info("CurrentPeriod: " + currentP);
 
 		var prevMain;
 		var adIdx;
@@ -1000,12 +1008,12 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		}
 	} else {
 		// *** Seg Time Line *** 
-		console.log("*** Seg TimeLine manifest ***");
+		logger.info("*** Seg TimeLine manifest ***");
 		var createManifest = true;
 		var nowCheck = new Date();
 
 		if (persistState[useURL].lastHit) {
-			console.log(" - last update: " + (nowCheck - persistState[useURL].lastHit));
+			logger.info(" - last update: " + (nowCheck - persistState[useURL].lastHit));
 			
 			if ((nowCheck - persistState[useURL].lastHit) < sC.segTimeLine.updatePeriodms)
 			{
@@ -1051,19 +1059,19 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	// Get file on server
 	var file = path.join(__dirname, useURL + ".hbs");
-	console.log(" - file: " + file);
+	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
 			res.end(err);
 		}
 
-		//console.log("progStart: " + progStart);
+		logger.trace("progStart: " + progStart);
 		formProps.availabilityStartTime = progStart;
 		
 		res.render(file, formProps, function(err, mpd) { 
@@ -1122,8 +1130,8 @@ makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
 		var evOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
 	}
 	
-	sendServerLog(" - Generated manifest file: Period: " + p);
-	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
+	logger.info(" - Generated manifest file: Period: " + p);
+	logger.info(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
 	return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
 }
@@ -1148,7 +1156,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 		obj.seg = seg;
 		obj.offset = Math.round((alignedOffset * timescale) / 1000);
 		
-		//console.log(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
+		logger.trace(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
 		return obj; 
 	}
 	
@@ -1177,7 +1185,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 	}
 	
 	
-	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
+	logger.info(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
 	return mainContentXML(
 		sC.main, p, sDuration, sStart, 
@@ -1214,12 +1222,12 @@ cachedXML.segTimeLine	= {};
 
 loadAndCache = function(fn, c) {
 	if (!c[fn]) {
-		console.log("Load file: " + fn);
+		logger.info("Load file: " + fn);
 		
 		if (fs.existsSync(fn)) {
 			c[fn] = fs.readFileSync(fn, 'utf8');
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return false;
 		}
 	}
@@ -1275,7 +1283,7 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	
 	var complete = template(context);
 	
-	//console.log(complete);
+	logger.trace(complete);
 	
 	return complete;
 }
@@ -1320,7 +1328,7 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID
 	
 	var complete = template(context);
 	
-	// console.log(complete);
+	logger.trace(complete);
 	
 	return complete;
 }
@@ -1347,11 +1355,11 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 		parser.parseString(xml, function (err, obj) {
 
 			if (err) {
-				console.log("err: " + err);
+				logger.error("err: " + err);
 				reject(Error("XML Parsing / creation failed"));
 			}
 			
-			//console.log(JSON.stringify(obj));
+			logger.trace(JSON.stringify(obj));
 			
 			var tlObj = obj['SegmentTimeline']['S'];
 			var newObj;
@@ -1365,16 +1373,16 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 				var segD = parseInt(segObj['$'].d || 0);
 				var segR = parseInt(segObj['$'].r || 0);
 				
-				// console.log(" - d: " + segD);
-				// console.log(" - r: " + segR);
+				logger.trace(" - d: " + segD);
+				logger.trace(" - r: " + segR);
 				
 				tmSectionStart 	= tmSectionEnd;
 				totSegs 		= Math.round(segD + (segD * segR));
 				tmSectionEnd   	= tmSectionStart + (totSegs / tmScale);
 
-				// console.log("tmSectionStart: " + tmSectionStart);
-				// console.log("tmSectionEnd: " + tmSectionEnd);
-				// console.log("tm: " + tm);
+				logger.trace("tmSectionStart: " + tmSectionStart);
+				logger.trace("tmSectionEnd: " + tmSectionEnd);
+				logger.trace("tm: " + tm);
 
 				if (tm < tmSectionEnd)
 				{					
@@ -1411,8 +1419,8 @@ segtimeLineXML = function(fn, tm, segSize, tmScale) {
 			var builder = new xml2js.Builder( {	"headless": true, "indent": "     "} );
 			var modXML = builder.buildObject(mod);
 			
-			//console.log(modXML);
-			//console.log(xml);
+			logger.trace(modXML);
+			logger.trace(xml);
 			
 			modXML = modXML.replace(/^/gm, "\t\t\t\t");
 			
@@ -1430,7 +1438,7 @@ async function makeSegTimeLineAudio (sC, tm) {
 
 	try {
 		var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Atimescale);
-		// console.log(xml);
+		logger.trace(xml);
 		return xml;
     } catch(e) {
         throw e.message;
@@ -1443,7 +1451,7 @@ async function makeSegTimeLineVideo (sC, tm) {
 	var fn = sC.segTimeLine.video;
 	
 	var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Vtimescale);
-	//console.log(xml);
+	logger.trace(xml);
 	return xml;
 }
 
@@ -1487,12 +1495,12 @@ makeSegTimeLineSubs = function(sC, t) {
 
 
 expressSrv.post('/savelog', function(req, res) {
-	console.log("/savelog: " + req.query.filename);
+	logger.info("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
 	fs.writeFile("./logs/" + req.query.filename, "CLIENT IP: " + req.ip + "\n" + req.body, function(err) {
 		if(err) {
-			console.log(err);
+			logger.error(err);
 		}
 	});
 });
@@ -1505,20 +1513,20 @@ expressSrv.post('/getkeys', function(req, res) {
 	var licReq = req.body;
 	var kid;
 	
-	console.log("getkeys: " + JSON.stringify(licReq));
-	console.log(" - url: " + req.path);
+	logger.info("getkeys: " + JSON.stringify(licReq));
+	logger.info(" - url: " + req.path);
 	
 	try {
 		kid = licReq.kids[0];
 	} catch (err) {
-		console.log(" * malformed licence request.");
+		logger.error(" * malformed licence request.");
 		return res.sendStatus(400);
 	}
 	
 	if (req.query.tag) {
 		var tag = req.query.tag;
 		
-		sendServerLog(" - tag: " + tag);
+		logger.info(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';
 		
@@ -1526,7 +1534,7 @@ expressSrv.post('/getkeys', function(req, res) {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					// 404 Error if file not found
-					console.log(" * file does not exist: " + file);
+					logger.error(" * file does not exist: " + file);
 					return res.sendStatus(404);
 				}
 				res.end(err);
@@ -1537,16 +1545,16 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 			
 			var lic = licenceTable[tag];
-			sendServerLog("licence: " + JSON.stringify(lic));
+			logger.info("licence: " + JSON.stringify(lic));
 			
 			if (lic.keys[0].kid !=  kid) {
-				sendServerLog(" * illegal kid.");
+				logger.info(" * illegal kid.");
 				return res.sendStatus(403);
 			}
 			
 			if (lDelay.value != 0) {
 				
-				sendServerLog("getkeys: delay license by " + lDelay.name);
+				logger.info("getkeys: delay license by " + lDelay.name);
 				setTimeout(function() {
 					res.status(200);
 					res.send(lic);
@@ -1558,7 +1566,7 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 		});
 	} else {
-		console.log(" * no tag");
+		logger.error(" * no tag");
 		return res.sendStatus(404);
 	}
 });
