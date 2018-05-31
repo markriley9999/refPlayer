@@ -562,12 +562,13 @@ expressSrv.get('/content/*', function(req, res) {
 				var utcMinutes = dNow.getUTCMinutes();
 				var utcSeconds = dNow.getUTCSeconds();
 				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
+
 				logger.debug(" - seconds now: " + utcTotalSeconds + "s");
 				
-				var headRoom = sd * 2;
+				var headRoom = (parseInt(sd) * 1) / 1000;
 				
 				// Is segment request in the future, if so segment does not exist, send 404
-				if ((utcTotalSeconds - segTmOffset) + headRoom < 0) {
+				if (segTmOffset > (utcTotalSeconds + headRoom)) {
 					logger.error(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")");
 					return res.sendStatus(404);
 				}
