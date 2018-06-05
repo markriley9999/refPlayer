@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "2",
 	"minor" 	: "01",
-	"dev"		: "false",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
 					"More agressive (deferred) dynamic manifest updates",
