@@ -1,0 +1,14 @@
+			<Event duration="60000"  presentationTime="{{ptime-ad}}" id="{{id-ad}}">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/QWR2ZXJ0IEJyZWFr
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>
+			<Event duration="10000"  presentationTime="{{ptime-main}}" id="{{id-main}}">
+				<scte35:Signal> 
+					<scte35:Binary>
+						/TWFpbiBDb250ZW50
+					</scte35:Binary> 
+				</scte35:Signal> 
+			</Event>

@@ -1,12 +1,6 @@
 	<!-- *** Generated Period: Main Content *** -->
 	<Period id="{{period_id}}" start="{{period_start}}">
 	
-		<!--EventStream schemeIdUri="tag:refplayer.digitaluk.co.uk,2017:events/dar" value="1" timescale="48000">
-			<Event duration="480000"  presentationTime="{{evPresentationTime}}" id="{{evId}}">
-				Period Boundary - Main Content
-			</Event>
-		</EventStream-->
-		
 		<EventStream schemeIdUri="urn:scte:scte35:2014:xml+bin" value="1" timescale="48000"> 
 			<Event presentationTime="{{evPresentationTime}}" duration="480000" id="{{evId}}"> 
 				<scte35:Signal> 
@@ -22,7 +16,7 @@
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="{{Aoffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{Aoffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s{{{queryString}}}" timescale="48000" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
 			</Representation>
 		</AdaptationSet>
@@ -30,7 +24,7 @@
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/sintel/</BaseURL>
-			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
+			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s{{{queryString}}}" timescale="12800" duration="49152" initialization="init/sintel_set2_init.mp4"/>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4635588">
 			</Representation>
 			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">

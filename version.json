@@ -1,14 +1,12 @@
 {
 	"title"		: "Reference Player",
-	"major" 	: "1",
-	"minor" 	: "95",
+	"major" 	: "2",
+	"minor" 	: "01",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
-					"New subtitles content",
-					"Time-stamped content",
-					"SCTE Events", 
-					"HTTPS support", 
-					"Subtitle, https Icon"
+					"More agressive (deferred) dynamic manifest updates",
+					"Dynamic 'live-edge' content: future segments not available",
+					"Dynamic Segtimeline"
 				  ]
 }

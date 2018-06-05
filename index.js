@@ -1,3 +1,7 @@
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = 'debug';
+
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
@@ -139,7 +143,6 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 			});
 			
 			self.winObj.on('closed', function() { // reset the window object when it is closed
-				console.log("-------");
 				if (self.onClosed) {
 					self.onClosed(self.winObj);
 				}
@@ -219,44 +222,49 @@ function init() {
 	runOptions.bMultiDevs 	= !GUI;	
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
+	runOptions.logLevel 	= argv.loglevel;
 	
+	if (runOptions.logLevel) {
+		logger.level = runOptions.logLevel;
+		logger.info("--setting log level to: " + runOptions.logLevel);
+	}
 	
 	if (argv.help) {
-		console.log("--headless   Run with no GUI.");
-		console.log("--segdump    Dump segment information.");
+		logger.info("--headless   Run with no GUI.");
+		logger.info("--segdump    Dump segment information.");
 		GUI.quit();
 		return;
 	}
 	
-	console.log("--------------------------------------------------");
-	console.log(v.title + " v" + v.major + "." + v.minor);
-	console.log("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
-	console.log("--------------------------------------------------");
-	console.log("");
-	console.log(v.comment);
-	console.log("");
+	logger.info("--------------------------------------------------");
+	logger.info(v.title + " v" + v.major + "." + v.minor);
+	logger.info("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
+	logger.info("--------------------------------------------------");
+	logger.info("");
+	logger.info(v.comment);
+	logger.info("");
 	for (var i = 0; i < v.notes.length; i++) {
-		console.log(" - " + v.notes[i]);
+		logger.info(" - " + v.notes[i]);
 	}
-	console.log("");
-	console.log("--------------------------------------------------");
-	console.log("");
+	logger.info("");
+	logger.info("--------------------------------------------------");
+	logger.info("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
 	if (!GUI) {
-		console.log("--- Headless Mode ---");
+		logger.info("--- Headless Mode ---");
 	}
 	
 	if (runOptions.bSegDump) {
-		console.log("--- Dump Segment Info ---");
+		logger.info("--- Dump Segment Info ---");
 	}
 	
 	if (runOptions.bEventAbs) {
-		console.log(chalk.red("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---"));
+		logger.warn("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---");
 	}
 
-	console.log("");
+	logger.info("");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
 	
@@ -282,22 +290,22 @@ function init() {
 		}
 	}
 	
-	console.log("Server (IPv4) Addresses");
-	console.log("-----------------------");
+	logger.info("Server (IPv4) Addresses");
+	logger.info("-----------------------");
 
 	generalInfo.port 		= http.address().port;
 	generalInfo.httpsPort 	= https.address().port;
 
 	for( var i = 0; i < generalInfo.serverAddresses.length; i++) {
-		console.log(i + ": " + generalInfo.serverAddresses[i]);
+		logger.info(i + ": " + generalInfo.serverAddresses[i]);
 	}
 
-	console.log("URLs:");
-	console.log("  http://[server_ip]:" + generalInfo.port + "/index.html");
-	console.log("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
+	logger.info("URLs:");
+	logger.info("  http://[server_ip]:" + generalInfo.port + "/index.html");
+	logger.info("  http://[server_ip]:" + generalInfo.port + "/player.aitx");
 	if (generalInfo.bHTTPSEnabled) {
-		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
-		console.log("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
+		logger.info("  https://[server_ip]:" + generalInfo.httpsPort + "/index.html");
+		logger.info("  https://[server_ip]:" + generalInfo.httpsPort + "/player.aitx");
 	}
 	
 	commonConfig.setNetworkThrottle(commonConfig.THROTTLE.NONE);
@@ -335,10 +343,10 @@ function socketConnect(socket) {
  	generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
 	var UA = socket.request.headers['user-agent'];
 
-    console.log(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
+    logger.info(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
 	if (runOptions.bMultiDevs) {
 		whois.lookup(socket.handshake.address, function(err, data) {
-			console.log(chalk.blue(data))
+			logger.debug(data)
 		})
 	}
 	
@@ -351,12 +359,12 @@ function socketConnect(socket) {
 		win['ad0videoobj'].sendToWindow('ipc-buffer', data);
 		win['ad1videoobj'].sendToWindow('ipc-buffer', data);
 		
-		//console.log(data);
+		logger.trace(data);
 	});
 	
 	socket.on('playbackOffset', function(data) {
 		win['log'].sendToWindow('ipc-playbackOffset', data);
-		//console.log(data);
+		logger.trace(data);
 	});
 	
 	socket.on('disconnect', function () {
@@ -369,7 +377,7 @@ function socketConnect(socket) {
 
 		sendConnectionStatus();
 
-	console.log(" ---> Device disconnected: " + generalInfo.connectedDevices);
+	logger.info(" ---> Device disconnected: " + generalInfo.connectedDevices);
 	});
 }
 
@@ -389,7 +397,7 @@ expressSrv.set('view-engine', 'hbs');
 
 expressSrv.post('/log', function(req, res) {
 	win['log'].sendToWindow('ipc-log', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -399,7 +407,7 @@ function sendServerLog(msg) {
 					'logText': 	" - server: " + msg + " ---"
 				 };
 				 
-	console.log(chalk.yellow(msg));
+	logger.info(msg);
 	win['log'].sendToWindow('ipc-log', logObj); 
 } 
 
@@ -417,13 +425,13 @@ expressSrv.use(function(req, res, next) {
 
 expressSrv.post('/status', function(req, res) {
 	win['log'].sendToWindow('ipc-status', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
 expressSrv.post('/adtrans', function(req, res) {
 	win['adtrans'].sendToWindow('ipc-adtrans', req.body); // send the async-body message to the rendering thread
-	//console.log(req.body);
+	logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
@@ -433,8 +441,8 @@ expressSrv.get('/*.html', function(req, res) {
 	if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
 		generalInfo.currentDeviceUA = UA;
 		generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
-		console.log(" ---> App loaded by: " + generalInfo.devName);
-		console.log(chalk.blue("   UA: " + UA));
+		logger.debug(" ---> App loaded by: " + generalInfo.devName);
+		logger.debug("   UA: " + UA);
 		
 		//createWindows();
 		
@@ -456,8 +464,8 @@ expressSrv.get('/*.html', function(req, res) {
 			function(err, html) { 
 			res.status(200);
 			res.send(html);
-			//console.log("UserAgent: " + req.headers['user-agent']);
-			//console.log(JSON.stringify(req.headers));
+			logger.trace("UserAgent: " + req.headers['user-agent']);
+			logger.trace(JSON.stringify(req.headers));
 		});
 		
 	} else {
@@ -469,11 +477,11 @@ expressSrv.get('/*.html', function(req, res) {
 expressSrv.get('/player.aitx', function(req, res) {
 	var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 	
-	// console.log("get ait: " + srv);
+	logger.trace("get ait: " + srv);
 	res.render('playerait.hbs', {url: srv}, function(err, html) { 
 		res.type("application/vnd.dvb.ait+xml");
 		res.status(200);
-		// console.log(html);
+		logger.trace(html);
         res.send(html);
     });
 });
@@ -490,7 +498,7 @@ expressSrv.get('/favicon.ico', function(req, res) {
 var mp4box = new mp4boxModule.MP4Box();
 
 expressSrv.get('/content/*', function(req, res) {
-	// TODO: Why seeing 2 gets????
+	
 	var suffix = req.path.split('.').pop();
 	var cType;
 	
@@ -499,53 +507,106 @@ expressSrv.get('/content/*', function(req, res) {
 	} else {
 		cType = "video/mp4";		
 	}
-	//console.log(" - suffix: " + suffix + " Content-Type: " + cType);
+	logger.trace(" - suffix: " + suffix + " Content-Type: " + cType);
 	
-	sendServerLog("GET content: " + req.path);
-	//console.log(JSON.stringify(req.headers));
+	logger.debug("GET content: " + req.path);
+	logger.trace(JSON.stringify(req.headers));
 	
 	if (runOptions.bMultiDevs) {
 			var u = req.headers['user-agent'];			
 			var d = commonUtils.extractDevName(u);
 			
 			if (d === "UnknownModel") {
-				console.log(chalk.blue("    UA: " + u));
+				logger.debug("    UA: " + u);
 			} else {
-				console.log(chalk.blue("    Device: " + d));
-				console.log(chalk.blue("       IP: " + req.ip));
+				logger.debug("    Device: " + d);
+				logger.debug("       IP: " + req.ip);
 			}
 	}
+
 	
-	// ***** Simulate error condition (505)? *****
+	// Live (dynamic) content (emulation)???
+	if (req.query.progStart && req.query.segDuration) {
+		var dNow = new Date();
+		
+		var pStart = req.query.progStart;
+		var segD = req.query.segDuration;
+		
+		// This segment request is for live content - does it exist yet?
+		logger.debug("Live seg req: " + pStart + " (" + segD + "ms)");
+		
+		// Get time now
+		var dAv = new Date();
+		dAv.setUTCMinutes(0);
+		dAv.setUTCSeconds(0);
+		var curProg = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+		
+		logger.debug(" - current prog: " + curProg);
+		
+		// Is segment request for current content, or past?
+		if (pStart === curProg) {
+			logger.debug(" - segment request current, not past");
+			// extract segment number and calculate time offset - for end of segment
+			
+			var arr = req.path.match(/\d+(?=.m4s?)/) || ["0"]; 
+			var segN = parseInt(arr[0]);
+			
+			logger.debug(" - segment number: " + segN);
+			
+			if (segN) {
+				var sd = req.query.segDuration;
+				var segTmOffset = (segN - 1 + 1) * parseInt(sd) / 1000;
+				logger.debug(" - segment time offset: " + segTmOffset + "s");
+				
+				// Get now offset 
+				var utcMinutes = dNow.getUTCMinutes();
+				var utcSeconds = dNow.getUTCSeconds();
+				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
+
+				logger.debug(" - seconds now: " + utcTotalSeconds + "s");
+				
+				var headRoom = (parseInt(sd) * 1) / 1000;
+				
+				// Is segment request in the future, if so segment does not exist, send 404
+				if (segTmOffset > (utcTotalSeconds + headRoom)) {
+					logger.error(" - Illegal segment request: in future (" + (segTmOffset - utcTotalSeconds) + ")");
+					return res.sendStatus(404);
+				}
+			}				
+		}
+	}
+	
+	
+	// ***** Simulate error condition (503)? *****
 	var nErrs = commonConfig.getNetworkErrors();
 	
 	if (nErrs.value != 0) {
 		var rndErr = Math.floor(Math.random() * (nErrs.value - 1));
 		
 		if (rndErr === 0) {
-			// Simulate error (505)
-			sendServerLog("SIMULATE ERROR! (505)");
-			return res.sendStatus(505);
+			// Simulate error (503)
+			logger.info("SIMULATE ERROR! (503)");
+			return res.sendStatus(503);
 		}
 	}
 
 	// Get file on server
 	var file = path.join(__dirname, req.path);
-	//console.log(" - file: " + file);
+	logger.trace(" - file: " + file);
 	
     fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
-			console.log(" * error in file request: " + file);
+			logger.error(" * error in file request: " + file);
 			return res.sendStatus(400);
 		}
 		
 		if (!stats.isFile()) {
-			console.log(" * error in file request: " + file);
+			logger.error(" * error in file request: " + file);
 			return res.sendStatus(400);
 		}
 		
@@ -554,7 +615,7 @@ expressSrv.get('/content/*', function(req, res) {
 			arrayBuffer.fileStart = 0;
 
 			mp4box.appendBuffer(arrayBuffer);
-			console.log(mp4box.getInfo());		
+			logger.info(mp4box.getInfo());		
 			mp4box.flush();
 		}
 		
@@ -571,8 +632,8 @@ expressSrv.get('/content/*', function(req, res) {
 			start = parseInt(positions[0], 10);
 			end = positions[1] ? parseInt(positions[1], 10) : total - 1;
 
-			console.log(" - range: " + range);
-			console.log(" - positions: " + positions);
+			logger.debug(" - range: " + range);
+			logger.debug(" - positions: " + positions);
 		} else {
 			start = 0;
 			end = total - 1;		
@@ -580,19 +641,19 @@ expressSrv.get('/content/*', function(req, res) {
 
 		chunksize = (end - start) + 1;
 
-		//console.log(" - total: " + total);
+		logger.trace(" - total: " + total);
 
-		//console.log(" - start: " + start);
-		//console.log(" - end: " + end);
-		//console.log(" - chunksize: " + chunksize);
+		logger.trace(" - start: " + start);
+		logger.trace(" - end: " + end);
+		logger.trace(" - chunksize: " + chunksize);
 
 		if ((chunksize+start) < total) {
 			rtn = 206;
 		} 
-		//console.log(" - rtn: " + rtn);
+		logger.trace(" - rtn: " + rtn);
 		
 		if (start >= end) {
-			console.log(" * Error: start >= end!");
+			logger.error(" * Error: start >= end!");
 			return res.sendStatus(400);
 		}
 
@@ -607,12 +668,12 @@ expressSrv.get('/content/*', function(req, res) {
 					"Access-Control-Allow-Origin": "*"
 				});			
 
-				// console.log(" - send chunk");
+				logger.trace(" - send chunk");
 				var nThrot = commonConfig.getNetworkThrottle();
 				
 				if (nThrot.value != 0) {
 					stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
-					sendServerLog("Throttle server: " + nThrot.name);
+					logger.info("Throttle server: " + nThrot.name);
 				} else {
 					stream.pipe(res);				
 				}
@@ -629,7 +690,7 @@ expressSrv.get('/time', function(req, res) {
 	var d = new Date();
 	
 	tISO = dateFormat(d, "isoUtcDateTime");
-	console.log("tISO: " + tISO);
+	logger.info("tISO: " + tISO);
 	
 	res.status(200);
 	res.type("text/plain");
@@ -638,27 +699,27 @@ expressSrv.get('/time', function(req, res) {
 });
  
 
-const configSegJump 	= [];
+const configSegJump 	= {};
 var segCount = 0;
 
 expressSrv.get('/segjump/*', function(req, res) {
 	
 	var useURL = req.path;
 	var formProps = {};
-	var sC = [];
+	var sC = {};
 	
-	sendServerLog("GET segjump: " + useURL);
+	logger.info("GET segjump: " + useURL);
 
 	// Load stream config info (sync - one time load)
 	if (!configSegJump[useURL]) {
 		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
 		
-		console.log("Load config file: " + cfn);
+		logger.info("Load config file: " + cfn);
 		
 		if (fs.existsSync(cfn)) {
 			configSegJump[useURL] = require(cfn);
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return res.sendStatus(404);
 		}
 	}
@@ -677,13 +738,13 @@ expressSrv.get('/segjump/*', function(req, res) {
 	
 	// Get file on server
 	var file = path.join(__dirname, useURL + ".hbs");
-	console.log(" - file: " + file);
+	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
 			res.end(err);
@@ -702,13 +763,17 @@ expressSrv.get('/segjump/*', function(req, res) {
 });
 
 
-const configStream 	= [];
-var archiveMPDs 	= [];
-var persistState 	= [];
+const configStream 	= {};
+var archiveMPDs 	= {};
+var persistState 	= {};
 
-expressSrv.get('/dynamic/*', function(req, res) {
+expressSrv.get('/dynamic/*', async function(req, res) {
 	
 	var progStart;
+	var bAllPeriods = false;
+
+	
+	// Get time 
 	var dNow = new Date();
 	
 	var utcHours = dNow.getUTCHours();	
@@ -716,116 +781,170 @@ expressSrv.get('/dynamic/*', function(req, res) {
 	var utcSeconds = dNow.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
-	var useURL = req.path;
-	var formProps = {};
 	var timeServer = "http://" + req.headers.host + "/time";
-	var sC = [];
+
+	
+	var formProps = {};
+	var sC = {};
+
+	
+	// Extract content from URL 
+	var useURL = req.path;
 	var strippedURL = commonUtils.basename(useURL);
-	
-	var bAllPeriods = false;
-	
-	sendServerLog("GET dynamic: " + useURL + " (" + strippedURL + ")");
+	logger.info("GET dynamic: " + useURL + " (" + strippedURL + ")");
+	var serverContId = strippedURL + "-" + commonUtils.createContentId(); 
+	logger.info("ContentId: " + serverContId);
 
-	var sContId = strippedURL + "-" + commonUtils.createContentId(); 
-	sendServerLog("ContentId: " + sContId);
-
-	// Content no longer live?
-	if (req.query.contid) {
-		var cContId = strippedURL + "-" + req.query.contid;
 		
-		if (sContId != cContId) {
-			sendServerLog("Client requested non-current content: " + cContId);
-			if (archiveMPDs[cContId]) {				
-				sendServerLog("Found archived MPD, using that. ");
+	// Content no longer live?
+	var clientContId = '';
+	
+	if (req.query.contid) {
+		clientContId = strippedURL + "-" + req.query.contid;
+		
+		if (serverContId != clientContId) {
+			logger.info("Client requested non-current content: " + clientContId);
+			if (archiveMPDs[clientContId]) {				
+				logger.info("Found archived MPD, using that. ");
 
 				res.type("application/dash+xml");
 				res.status(200);
-				return res.send(archiveMPDs[cContId]);				
+				return res.send(archiveMPDs[clientContId]);				
 			} else {				
-				sendServerLog("No previous content archived!");
+				logger.info("No previous content archived!");
 				return res.sendStatus(404);				
 			}
 		}
 	}
 
+	
 	if (req.query.allperiods) {
 		bAllPeriods = req.query.allperiods === "1";
 	}
 	
-	// Create new manifest?
-	formProps.title = sContId;
 	
-	console.log("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
-	// console.log("timeServer: " + timeServer);
+	// Create new manifest?
+	formProps.title = serverContId;
+	
+	logger.info("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
+	logger.trace("timeServer: " + timeServer);
 	formProps.timeServer = timeServer;
+	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
 	
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
+
+		function intify(x) {
+			return parseInt(eval(x));
+		}
+
 		var cfn = '.' + commonUtils.noSuffix(useURL) + ".json";
 		
-		console.log("Load config file: " + cfn);
+		logger.info("Load config file: " + cfn);
 		
 		if (fs.existsSync(cfn)) {
 			configStream[useURL] = require(cfn);
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return res.sendStatus(404);
+		}
+
+		sC = configStream[useURL];
+		
+		// Extract stream config data
+		sC.segsize 		= intify(sC.segsize);
+		sC.periodD 		= intify(sC.periodD);
+		sC.marginF 		= intify(sC.marginF);
+		sC.marginB 		= intify(sC.marginB);
+		
+		sC.Atimescale	= intify(sC.Atimescale);
+		sC.Vtimescale	= intify(sC.Vtimescale);
+
+		if (sC.Etimescale) {
+			sC.Etimescale	= intify(sC.Etimescale);
+		} else {
+			sC.Etimescale	= sC.Atimescale; 
+		}
+		
+		if (sC.ads) {
+			sC.ads.adD 	= intify(sC.ads.adD);
+		}
+
+		if (sC.subs) {
+			sC.subs.segsize 	= intify(sC.subs.segsize);
+			sC.subs.timescale 	= intify(sC.subs.timescale);
+		}
+		
+		if (sC.segTimeLine) {
+			sC.segTimeLine.updatePeriodms = intify(sC.segTimeLine.updatePeriodms);
+		}
+		
+		// Force ad duration to seg boundary???
+		if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+			logger.info("- non aligned adD: " + sC.ads.adD);
+			
+			if (sC.ads.adSegAlign === "round") {
+				sC.ads.adD = Math.round(sC.ads.adD / sC.segsize) * sC.segsize;
+				logger.info("- aligned adD (round): " + sC.ads.adD);		
+			} else if (sC.ads.adSegAlign === "floor") {
+				sC.ads.adD = Math.floor(sC.ads.adD / sC.segsize) * sC.segsize;
+				logger.info("- aligned adD (floor): " + sC.ads.adD);		
+			}		
+		} 
+
+		// Force main duration to seg boundary???
+		if (sC.segAlign && (sC.segAlign != "none")) {
+			logger.info("- non aligned periodD: " + sC.periodD);
+			
+			var adD = sC.ads ? sC.ads.adD : 0;
+			
+			if (sC.segAlign === "round") {
+				sC.periodD = (Math.round((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
+				logger.info("- aligned periodD (round): " + sC.periodD);		
+			} else if (sC.segAlign === "floor") {
+				sC.periodD = (Math.floor((sC.periodD - adD) / sC.segsize) * sC.segsize) + adD;
+				logger.info("- aligned periodD (floor): " + sC.periodD);		
+			}		
+		} 
+
+		// Calc average segsize for period
+		sC.averageSegSize = Math.round(sC.periodD / Math.ceil(sC.periodD / sC.segsize)); 
+		logger.info("- average seg size for period(s): " + sC.averageSegSize);		
+		
+	} else {
+		sC = configStream[useURL];
+	}
+		
+	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
+
+	var dAv = dNow;
+	dAv.setUTCMinutes(0);
+	dAv.setUTCSeconds(0);
+	progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
+
+	var liveEdge = !bAllPeriods ? progStart : '';
+
+	function rtnCachedManifest() {
+		if (archiveMPDs[serverContId]) {				
+			logger.info("Using previously created manifest (no change). ");
+
+			res.type("application/dash+xml");
+			res.status(200);
+			return res.send(archiveMPDs[serverContId]);				
+		} else {				
+			logger.info("Error: No previously created manifest!");
+			return res.sendStatus(404);				
 		}
 	}
 	
-	sC = configStream[useURL];
-
-	function intify(x) {
-		return parseInt(eval(x));
+	// Will the manifest change?
+	if (!persistState[useURL]) {
+		persistState[useURL] = {};
 	}
-	
-	sC.segsize 		= intify(sC.segsize);
-	sC.periodD 		= intify(sC.periodD);
-	sC.adD 			= intify(sC.adD);
-	sC.marginF 		= intify(sC.marginF);
-	sC.marginB 		= intify(sC.marginB);
-	
-	sC.Atimescale	= intify(sC.Atimescale);
-	sC.Vtimescale	= intify(sC.Vtimescale);
-
-	sC.Etimescale	= sC.Atimescale; // Uses audio timescale - events associated to audio track (less reps)
-	
-	if (sC.subs) {
-		sC.subs.segsize 	= intify(sC.subs.segsize);
-		sC.subs.timescale 	= intify(sC.subs.timescale);
-	}
-	
-	var bAdsandMain = (sC.ads.length > 0);
-
-	
-	if ((sC.adD > 0) && (sC.adSegAlign != "none")) {
-		console.log("- non aligned adD: " + sC.adD);
-		
-		if (sC.adSegAlign === "round") {
-			sC.adD = Math.round(sC.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (round): " + sC.adD);		
-		} else if (sC.adSegAlign === "floor") {
-			sC.adD = Math.floor(sC.adD / sC.segsize) * sC.segsize;
-			console.log("- aligned adD (floor): " + sC.adD);		
-		}		
-	} 
-
-	if (sC.segAlign != "none") {
-		console.log("- non aligned periodD: " + sC.periodD);
-		
-		if (sC.segAlign === "round") {
-			sC.periodD = (Math.round((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
-			console.log("- aligned periodD (round): " + sC.periodD);		
-		} else if (sC.segAlign === "floor") {
-			sC.periodD = (Math.floor((sC.periodD - sC.adD) / sC.segsize) * sC.segsize) + sC.adD;
-			console.log("- aligned periodD (floor): " + sC.periodD);		
-		}		
-	} 
-
-	
+			
 	const progDuration	= (60 * 60 * 1000);
 	var maxP = Math.round((progDuration / sC.periodD) - 1);
-	console.log("- maxP: " + maxP);
+	logger.info("- maxP: " + maxP);
 	
 	var currentP 	= getPeriod_floor(utcTotalSeconds * 1000, sC.periodD, maxP);
 	
@@ -840,109 +959,120 @@ expressSrv.get('/dynamic/*', function(req, res) {
 		upperP = maxP;
 	}
 	
-	var numP 		= (upperP - lowerP) + 1;
+	if (!sC.segTimeLine) {
+		// *** Multiple Period Manifest ***
+		logger.info("*** Multiple Period Manifest ***");
+		
+		var numP = (upperP - lowerP) + 1;
 
-	// Will the manifest change?
-	if (!persistState[useURL]) {
-		persistState[useURL] = {};
-	}
-	
-	if (	(!persistState[useURL].publishTime) 	|| 
-			(lowerP != persistState[useURL].lowerP) || 
-			(upperP != persistState[useURL].upperP)	||
-			(sContId != persistState[useURL].sContId)	) {
-		var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
-		sendServerLog("Manifest has changed: publishTime - " + fNow);
+		if (	(!persistState[useURL].publishTime) 	|| 
+				(lowerP != persistState[useURL].lowerP) || 
+				(upperP != persistState[useURL].upperP)	||
+				(serverContId != persistState[useURL].serverContId) ||
+				bAllPeriods) 
+		{
+			logger.info("Manifest has changed: publishTime - " + fNow);
+			
+			formProps.publishTime = fNow;
+			
+			persistState[useURL].publishTime 	= fNow;
+			persistState[useURL].lowerP 		= lowerP;
+			persistState[useURL].upperP 		= upperP;
+			persistState[useURL].serverContId	= serverContId;
+		} else {
+			return rtnCachedManifest();
+		}
 		
-		formProps.publishTime 	= fNow;
 		
-		persistState[useURL].publishTime 	= fNow;
-		persistState[useURL].lowerP 		= lowerP;
-		persistState[useURL].upperP 		= upperP;
-		persistState[useURL].sContId		= sContId;
+		// Create new manifest!
+		logger.info("CurrentPeriod: " + currentP);
+
+		var prevMain;
+		var adIdx;
+		var eventId = 1;
+		
+		for (var i = lowerP; i <= upperP; i++) {
+			
+			if (i > 0) {
+				prevMain = "main-" + (i-1);	
+			} else {
+				prevMain = "";
+			}
+		
+			if (sC.ads)	{
+				adIdx = (i % sC.ads.content.length);
+				formProps['ad-period' + i] = makeAdPeriod(sC,	adIdx, i, eventId++, "connectivity", prevMain);
+				formProps['main-period' + i] = makeMainPeriod(sC, i, eventId++, "connectivity", "ad-" + i, liveEdge);
+			} else {
+				formProps['period' + i] = makeMainPeriod(sC, i, eventId++, "continuity", prevMain, liveEdge);
+			}
+		}
 	} else {
-		if (archiveMPDs[sContId]) {				
-			sendServerLog("Using previously created manifest (no change). ");
+		// *** Seg Time Line *** 
+		logger.info("*** Seg TimeLine manifest ***");
+		var createManifest = true;
+		var nowCheck = new Date();
 
-			res.type("application/dash+xml");
-			res.status(200);
-			return res.send(archiveMPDs[sContId]);				
-		} else {				
-			sendServerLog("Error: No previously created manifest!");
-			return res.sendStatus(404);				
+		if (persistState[useURL].lastHit) {
+			logger.info(" - last update: " + (nowCheck - persistState[useURL].lastHit));
+			
+			if ((nowCheck - persistState[useURL].lastHit) < sC.segTimeLine.updatePeriodms)
+			{
+				createManifest = false;
+			}
 		}
-	}
-	
-	console.log("CurrentPeriod: " + currentP);
-
-	var prevMain;
-	var adIdx;
-	var eventId = 1;
-	
-	for (var i = lowerP; i <= upperP; i++) {
 		
-		if (i > 0) {
-			prevMain = "main-" + (i-1);	
+		if (createManifest || bAllPeriods) {
+			var tm = utcTotalSeconds+ sC.marginF;
+			
+			persistState[useURL].lastHit = nowCheck;
+			formProps.publishTime = fNow;
+			
+			if (bAllPeriods) {
+				tm = 3600;
+			}
+			
+			try {
+				formProps['segtimeline-audio']  = await makeSegTimeLineAudio(sC, tm);
+				formProps['segtimeline-video']  = await makeSegTimeLineVideo(sC, tm);
+			} catch(e) {
+				res.sendStatus(500);
+				return;
+			}
+			
+			var eventId = 1;
+			for (var i = lowerP; i <= upperP; i++) {
+				formProps['segtimeline-event' + i] = makeSegTimeLineEvent(sC, utcTotalSeconds+ sC.marginF, i, eventId);
+				eventId = eventId + 2;
+			}
+
+			if (liveEdge) {
+				formProps['queryString'] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.averageSegSize;
+			}
+			
+			if (sC.subs) {
+				formProps['segtimeline-subs'] 	= makeSegTimeLineSubs(sC, utcTotalSeconds);
+			}
 		} else {
-			prevMain = "";
-		}
-	
-		if (bAdsandMain) {
-			adIdx = (i % sC.ads.length);
-			formProps['ad-period' + i] 		= makeAdPeriod(	sC.ads[adIdx], 
-															i, sC.periodD, 
-															sC.adD, 
-															sC.Etimescale, 
-															eventId++, 
-															"" /* prevMain */, 
-															sC.subs);
-			formProps['main-period' + i] 	= makeMainPeriod(	sC.main, 
-																i, 
-																sC.periodD, 
-																sC.adD, 
-																sC.segsize, 
-																sC.Atimescale, 
-																sC.Vtimescale, 
-																sC.Etimescale,
-																eventId++, 
-																"" /* "ad-" + i */, 
-																sC.subs);
-		} else {
-			formProps['period' + i] = makeMainPeriod(	sC.main, 
-														i, 
-														sC.periodD, 
-														0, 
-														sC.segsize, 
-														sC.Atimescale, 
-														sC.Vtimescale, 
-														sC.Etimescale, 
-														eventId++, 
-														prevMain, 
-														sC.subs);			
+			return rtnCachedManifest();
 		}
 	}
 	
 	// Get file on server
 	var file = path.join(__dirname, useURL + ".hbs");
-	console.log(" - file: " + file);
+	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				// 404 Error if file not found
-				console.log(" * file does not exist");
+				logger.error(" * file does not exist");
 				return res.sendStatus(404);
 			}
 			res.end(err);
 		}
 
-		var dAv = dNow;
-		
-		dAv.setUTCMinutes(0);
-		dAv.setUTCSeconds(0);
-		progStart = dateFormat(dAv.toUTCString(), "isoUtcDateTime");
-		//console.log("progStart: " + progStart);
-		
+		logger.trace("progStart: " + progStart);
 		formProps.availabilityStartTime = progStart;
 		
 		res.render(file, formProps, function(err, mpd) { 
@@ -954,7 +1084,7 @@ expressSrv.get('/dynamic/*', function(req, res) {
 			res.status(200);
 			res.send(mpd);
 			
-			archiveMPDs[sContId] = mpd; // Archive the mpd for this 'programme'
+			archiveMPDs[serverContId] = mpd; // Archive the mpd for this 'programme'
 		});
     });
 });
@@ -985,9 +1115,11 @@ getPeriod_round = function(m, d, mx) {
 	return p;
 }
 
-makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
-	var fadD = new Date(adD);
-	var fsAd = new Date(p * periodD);
+
+makeAdPeriod = function(sC,	adIdx, p, eId, ptrans, prev) {
+	
+	var fadD = new Date(sC.ads.adD);
+	var fsAd = new Date(p * sC.periodD);
 	
 	var sAdDuration = _formatTime(fadD);
 	var sAdStart 	= _formatTime(fsAd);
@@ -996,18 +1128,22 @@ makeAdPeriod = function(fn, p, periodD, adD, eTimescale, eId, prev, subs) {
 		var evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		var evOffset = Math.floor((p * periodD * eTimescale) / 1000);   // Absolute calc - this is wrong, use relative */
+		var evOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   // Absolute calc - this is wrong, use relative */
 	}
 	
-	sendServerLog(" - Generated manifest file: Period: " + p);
-	sendServerLog(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
+	logger.info(" - Generated manifest file: Period: " + p);
+	logger.info(" -  Ad: Duration: " + sAdDuration + " Start: " + sAdStart);
 
-	return adXML(fn, p, sAdDuration, sAdStart, evOffset, eId, prev, subs);
+	return adXML(sC.ads.content[adIdx], p, sAdDuration, sAdStart, evOffset, eId, ptrans, prev, sC.subs);
 }
 
-makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eTimescale, eId, prev, subs) {
-	var fd = new Date(periodD-offset);
-	var fs = new Date((p * periodD) + offset);
+
+makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
+	
+	var offset = sC.ads ? sC.ads.adD : 0;
+	
+	var fd = new Date(sC.periodD - offset);
+	var fs = new Date((p * sC.periodD) + offset);
 	
 	var sDuration 	= _formatTime(fd);
 	var sStart 		= _formatTime(fs);
@@ -1021,36 +1157,46 @@ makeMainPeriod = function(fn, p, periodD, offset, sz, Atimescale, Vtimescale, eT
 		obj.seg = seg;
 		obj.offset = Math.round((alignedOffset * timescale) / 1000);
 		
-		//console.log(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
+		logger.trace(" --- calcOffset seg:" + seg + " alignedOffset:" + alignedOffset + " timescale:" + timescale + " obj.offset:" + obj.offset); 
 		return obj; 
 	}
 	
-	var offsetObj 	= calcOffset(p, periodD, offset, sz, Atimescale);
+	var offsetObj 	= calcOffset(p, sC.periodD, offset, sC.segsize, sC.Atimescale);
 	var seg 		= offsetObj.seg;	
 	var AoffsetS  	= offsetObj.offset;
-	var VoffsetS  	= calcOffset(p, periodD, offset, sz, Vtimescale).offset;
+	var VoffsetS  	= calcOffset(p, sC.periodD, offset, sC.segsize, sC.Vtimescale).offset;
 	
 	var evOffset;
 	if (!runOptions.bEventAbs) {
 		evOffset = 0;
 	} else {
 		// NOT COMPLIANT!
-		evOffset = calcOffset(p, periodD, offset, sz, eTimescale).offset;	// Absolute calc - this is wrong, use relative
+		evOffset = calcOffset(p, sC.periodD, offset, sC.segsize, sC.Etimescale).offset;	// Absolute calc - this is wrong, use relative
 	}
 
-	if (subs) {
-		subs.offsetObj 	= calcOffset(p, periodD, offset, subs.segsize, subs.timescale); 
+	if (sC.subs) {
+		// sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
+		// var subOffset = (p * sC.periodD) + offset;
+		var subOffset = (seg-1) * sC.segsize;  // Syncing subs with av segs!
+		
+		sC.subs.offsetObj = {
+			offset: (subOffset * sC.subs.timescale) / 1000,
+			seg: 	Math.floor(subOffset / sC.subs.segsize) + 1
+		};
 	}
 	
 	
-	sendServerLog(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
+	logger.info(" -  Main: Duration: " + sDuration + " Start: " + sStart + " (A:" + AoffsetS + "S, V:" + VoffsetS + ")");
 
 	return mainContentXML(
-		fn, p, sDuration, sStart, 
+		sC.main, p, sDuration, sStart, 
 		AoffsetS, VoffsetS, seg, 
-		evOffset, eId, 
+		evOffset, eId,
+		ptrans,
 		prev, 
-		subs
+		sC.subs,
+		progStart,
+		sC.averageSegSize
 	);
 }
 
@@ -1060,38 +1206,43 @@ _formatTime = function(d) {
 }
 
 
-const periodContinuity 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+var ptransTable = {};
+
+ptransTable['continuity'] 	= fs.readFileSync('./dynamic/periods/period-continuity.xml', 'utf8');
+ptransTable['connectivity'] = fs.readFileSync('./dynamic/periods/period-connectivity.xml', 'utf8');
+
 
 var cachedXML = {};
 
-cachedXML.mainContent	= [];
-cachedXML.mainSubs		= [];
-cachedXML.ads			= [];
-cachedXML.adSubs		= [];
+cachedXML.mainContent	= {};
+cachedXML.mainSubs		= {};
+cachedXML.ads			= {};
+cachedXML.adSubs		= {};
+cachedXML.segTimeLine	= {};
 
 
 loadAndCache = function(fn, c) {
 	if (!c[fn]) {
-		console.log("Load file: " + fn);
+		logger.info("Load file: " + fn);
 		
 		if (fs.existsSync(fn)) {
 			c[fn] = fs.readFileSync(fn, 'utf8');
 		} else {
-			console.log(" * file does not exist");
+			logger.error(" * file does not exist");
 			return false;
 		}
 	}
 	return true;
 }
 
-mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, prevPeriodID, subs) {
+mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPresTime, eId, ptrans, prevPeriodID, subs, progStart, segDuration) {
 	var pc;
 	var template;
-	var context;
+	var context = {};
 	var sbs = "";
 	
-	if (prevPeriodID != "") {
-		template = hbs.handlebars.compile(periodContinuity);
+	if ((prevPeriodID != "") && ptransTable[ptrans]) {
+		template = hbs.handlebars.compile(ptransTable[ptrans]);
 		context = {prevperiod_id: prevPeriodID};
 		pc =  template(context);
 	} else {
@@ -1099,13 +1250,15 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 	}
 
 	if (subs && subs.main && loadAndCache(subs.main, cachedXML.mainSubs)) {
+		var subsContext = {};
+		
 		template = hbs.handlebars.compile(cachedXML.mainSubs[subs.main]);
-		context = { 
-					subid		: "main",
-					offset		: subs.offsetObj.offset,
-					period_seg	: subs.offsetObj.seg
-				};
-		sbs =  template(context);
+
+		subsContext['subid']		= "main",
+		subsContext['offset']		= subs.offsetObj.offset,
+		subsContext['period_seg']	= subs.offsetObj.seg
+
+		sbs =  template(subsContext);
 	}
 	
 	if (!loadAndCache(fn, cachedXML.mainContent)) {
@@ -1124,21 +1277,26 @@ mainContentXML = function(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evP
 					period_seg			: seg, 
 					subs				: sbs
 				};
+	
+	if (progStart) {
+		context['queryString'] = "?progStart=" + progStart + "&amp;segDuration=" + segDuration;
+	}
+	
 	var complete = template(context);
 	
-	// console.log(complete);
+	logger.trace(complete);
 	
 	return complete;
 }
 
-adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) {
+adXML = function(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID, subs) {
 	var pc;
 	var template;
 	var context;
 	var sbs = "";
 		
-	if (prevPeriodID != "") {
-		template = hbs.handlebars.compile(periodContinuity);
+	if ((prevPeriodID != "") && ptransTable[ptrans]) {
+		template = hbs.handlebars.compile(ptransTable[ptrans]);
 		context = {prevperiod_id: prevPeriodID};
 		pc =  template(context);
 	} else {
@@ -1160,31 +1318,195 @@ adXML = function(fn, p, sDuration, sStart, evPresTime, eId, prevPeriodID, subs) 
 	}
 
 	template 	= hbs.handlebars.compile(cachedXML.ads[fn]);
-	context 	= {	period_id: "ad-" + p, 
-					period_start: sStart, 
-					period_continuity: pc, 
-					evPresentationTime: evPresTime, 
-					evId: eId,
-					subs: sbs};
+	context 	= {	
+		period_id: "ad-" + p, 
+		period_start: sStart, 
+		period_continuity: pc, 
+		evPresentationTime: evPresTime, 
+		evId: eId,
+		subs: sbs
+	};
+	
 	var complete = template(context);
 	
-	// console.log(complete);
+	logger.trace(complete);
 	
 	return complete;
 }
 
+const xml2js = require('xml2js');
+
+segtimeLineXML = function(fn, tm, segSize, tmScale) {
+	
+	var promise = new Promise(function(resolve, reject) {
+
+		if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+			reject(Error("XML Parsing - file not found"));
+		}
+
+		var parser = new xml2js.Parser();
+		
+		var xml = cachedXML.segTimeLine[fn];
+		
+		var mod = {};
+		
+		mod.SegmentTimeline = {};
+		mod.SegmentTimeline.S = [];
+		
+		parser.parseString(xml, function (err, obj) {
+
+			if (err) {
+				logger.error("err: " + err);
+				reject(Error("XML Parsing / creation failed"));
+			}
+			
+			logger.trace(JSON.stringify(obj));
+			
+			var tlObj = obj['SegmentTimeline']['S'];
+			var newObj;
+			var tmSectionStart = 0, tmSectionEnd = 0, tmDuration = 0;
+			var i = 0;
+			var bLastOne = false;
+			
+			while ((i < tlObj.length) && !bLastOne) {
+								
+				var segObj = tlObj[i];
+				var segD = parseInt(segObj['$'].d || 0);
+				var segR = parseInt(segObj['$'].r || 0);
+				
+				logger.trace(" - d: " + segD);
+				logger.trace(" - r: " + segR);
+				
+				tmSectionStart 	= tmSectionEnd;
+				totSegs 		= Math.round(segD + (segD * segR));
+				tmSectionEnd   	= tmSectionStart + (totSegs / tmScale);
+
+				logger.trace("tmSectionStart: " + tmSectionStart);
+				logger.trace("tmSectionEnd: " + tmSectionEnd);
+				logger.trace("tm: " + tm);
+
+				if (tm < tmSectionEnd)
+				{					
+					bLastOne = true;
+				}
+
+				newObj = {};
+				
+				if (i === 0) {
+					newObj.t = "0";
+				}
+				
+				newObj.d = segD;
+								
+				if (bLastOne) {
+					// Trim seg count
+					tmDuration = tmSectionEnd - tmSectionStart;
+					var segCount = Math.floor(((tm - tmSectionStart) * tmScale / segSize) + 0.9999);
+					if (segCount > 1) {
+						newObj.r = segCount-1;
+					}
+				} else {
+					if (segR) {
+						newObj.r = segR;
+					}
+				}
+				
+				mod.SegmentTimeline.S[i] = {};
+				mod.SegmentTimeline.S[i]['$'] = newObj;
+
+				i++;
+			}
+			
+			var builder = new xml2js.Builder( {	"headless": true, "indent": "     "} );
+			var modXML = builder.buildObject(mod);
+			
+			logger.trace(modXML);
+			logger.trace(xml);
+			
+			modXML = modXML.replace(/^/gm, "\t\t\t\t");
+			
+			resolve(modXML);
+		});
+	});
+
+	return promise;
+}
+
+
+async function makeSegTimeLineAudio (sC, tm) {
+	
+	var fn = sC.segTimeLine.audio;
+
+	try {
+		var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Atimescale);
+		logger.trace(xml);
+		return xml;
+    } catch(e) {
+        throw e.message;
+    }
+}
+
+
+async function makeSegTimeLineVideo (sC, tm) {
+	
+	var fn = sC.segTimeLine.video;
+	
+	var xml = await segtimeLineXML(fn, tm, sC.segsize, sC.Vtimescale);
+	logger.trace(xml);
+	return xml;
+}
+
+
+makeSegTimeLineEvent = function(sC, tm, p, eId) {
+	
+	var adOffset = Math.floor((p * sC.periodD * sC.Etimescale) / 1000);   	
+	var mainOffset = Math.floor((((p * sC.periodD) + 60000) * sC.Etimescale) / 1000);   	
+
+	var xml = "";
+	
+	var fn = sC.segTimeLine.event;
+	
+	if (loadAndCache(fn, cachedXML.segTimeLine)) {
+		var context = { 
+			'ptime-ad' 		: adOffset,
+			'id-ad'			: eId,
+			'ptime-main'	: mainOffset,
+			'id-main'		: eId+1
+		};
+
+		var template = hbs.handlebars.compile(cachedXML.segTimeLine[fn]);
+		xml =  template(context);
+	}
+
+	
+	return xml;
+}
+
+
+makeSegTimeLineSubs = function(sC, t) {
+
+	var fn = sC.subs.main;
+	
+	if (!loadAndCache(fn, cachedXML.segTimeLine)) {
+		return false;
+	}
+
+	return cachedXML.segTimeLine[fn];
+}	
+
+
 expressSrv.post('/savelog', function(req, res) {
-	console.log("/savelog: " + req.query.filename);
+	logger.info("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
 	fs.writeFile("./logs/" + req.query.filename, "CLIENT IP: " + req.ip + "\n" + req.body, function(err) {
 		if(err) {
-			console.log(err);
+			logger.error(err);
 		}
 	});
 });
  
-const licenceTable = [];
+const licenceTable = {};
 
 expressSrv.post('/getkeys', function(req, res) {
 	
@@ -1192,20 +1514,20 @@ expressSrv.post('/getkeys', function(req, res) {
 	var licReq = req.body;
 	var kid;
 	
-	console.log("getkeys: " + JSON.stringify(licReq));
-	console.log(" - url: " + req.path);
+	logger.info("getkeys: " + JSON.stringify(licReq));
+	logger.info(" - url: " + req.path);
 	
 	try {
 		kid = licReq.kids[0];
 	} catch (err) {
-		console.log(" * malformed licence request.");
+		logger.error(" * malformed licence request.");
 		return res.sendStatus(400);
 	}
 	
 	if (req.query.tag) {
 		var tag = req.query.tag;
 		
-		sendServerLog(" - tag: " + tag);
+		logger.info(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';
 		
@@ -1213,7 +1535,7 @@ expressSrv.post('/getkeys', function(req, res) {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					// 404 Error if file not found
-					console.log(" * file does not exist: " + file);
+					logger.error(" * file does not exist: " + file);
 					return res.sendStatus(404);
 				}
 				res.end(err);
@@ -1224,16 +1546,16 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 			
 			var lic = licenceTable[tag];
-			sendServerLog("licence: " + JSON.stringify(lic));
+			logger.info("licence: " + JSON.stringify(lic));
 			
 			if (lic.keys[0].kid !=  kid) {
-				sendServerLog(" * illegal kid.");
+				logger.info(" * illegal kid.");
 				return res.sendStatus(403);
 			}
 			
 			if (lDelay.value != 0) {
 				
-				sendServerLog("getkeys: delay license by " + lDelay.name);
+				logger.info("getkeys: delay license by " + lDelay.name);
 				setTimeout(function() {
 					res.status(200);
 					res.send(lic);
@@ -1245,7 +1567,7 @@ expressSrv.post('/getkeys', function(req, res) {
 			}
 		});
 	} else {
-		console.log(" * no tag");
+		logger.error(" * no tag");
 		return res.sendStatus(404);
 	}
 });
