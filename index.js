@@ -781,8 +781,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	var utcSeconds = dNow.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
-	var timeServer = "http://" + req.headers.host + "/time";
-
+	var timeServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/time";
 	
 	var formProps = {};
 	var sC = {};
