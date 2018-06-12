@@ -167,10 +167,17 @@ function SetupEME(video, keySystem, name, options, contentTag, logObj)
 		}
 	}
 	
-	
-	return EnsureMediaKeysCreated(video, keySystem, options).then(function() {
-		log(name + " ensured MediaKeys available on HTMLMediaElement");
-		video.addEventListener("encrypted", onEncrypted);
-	  }, bail(name + " failed to ensure MediaKeys on HTMLMediaElement"));
+	var promise = new Promise(function(resolve, reject) {
 
+		EnsureMediaKeysCreated(video, keySystem, options).then(function() {
+			log(name + " ensured MediaKeys available on HTMLMediaElement");
+			video.addEventListener("encrypted", onEncrypted);
+			resolve("EME: Clear Key Initialised");
+		  }, function() {
+			reject("EME: Clear Key Failed To Initialise!");
+		  });
+		  
+	});
+	
+	return promise;
 }

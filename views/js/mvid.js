@@ -297,7 +297,10 @@ mVid.start = function () {
 
 		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
 			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+				that.Log.info(p);
 				that.setContentSourceAndLoad();				
+			}, function(p) {
+				that.Log.error(p);
 			});
 			that.bEMESupport = true;
 		} else {
