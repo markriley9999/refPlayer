@@ -564,6 +564,7 @@ expressSrv.get('/content/*', function(req, res) {
 				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 
 				logger.debug(" - seconds now: " + utcTotalSeconds + "s");
+				logger.debug(" - delta: " + (utcTotalSeconds - segTmOffset) + "s");
 				
 				var headRoom = (parseInt(sd) * 1) / 1000;
 				
@@ -573,6 +574,8 @@ expressSrv.get('/content/*', function(req, res) {
 					return res.sendStatus(404);
 				}
 			}				
+		} else {
+			logger.debug(" - segment request past, not current.");
 		}
 	}
 	
