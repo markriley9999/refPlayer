@@ -1700,8 +1700,6 @@ mVid.cmndSeekFWD = function () {
 	
 	this.Log.info("called : cmndSeekFWD"); 
 
-	playingVideo.bPlayPauseTransition = true;
-	playingVideo.pause();
 	this.seek(playingVideo, playingVideo.currentTime + 30);
 }
 
