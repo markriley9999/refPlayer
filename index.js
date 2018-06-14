@@ -5,7 +5,6 @@ logger.level = 'debug';
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
-const chalk = require('chalk');
 
 const electron = require('electron');   
 const express = require('express');         
@@ -223,6 +222,7 @@ function init() {
 	runOptions.bSegDump 	= argv.segdump;
 	runOptions.bEventAbs	= argv.eventabs;
 	runOptions.logLevel 	= argv.loglevel;
+	runOptions.timeOffset	= argv.timeoffset;
 	
 	if (runOptions.logLevel) {
 		logger.level = runOptions.logLevel;
@@ -230,9 +230,14 @@ function init() {
 	}
 	
 	if (argv.help) {
-		logger.info("--headless   Run with no GUI.");
-		logger.info("--segdump    Dump segment information.");
-		GUI.quit();
+		logger.info("--headless			: Run with no GUI.");
+		logger.info("--segdump			: Dump segment information.");
+		logger.info("--loglevel=[n]		: Set log level, where n = \"trace\", \"debug\", \"info\", \"warn\", \"error\" or \"fatal\".");
+		logger.info("--timeoffset=[t]		: Used by dynamic dash manifests, adds 't' seconds to server time.");
+		if (GUI) {
+			GUI.quit();
+		}
+		process.exit();
 		return;
 	}
 	
@@ -264,6 +269,10 @@ function init() {
 		logger.warn("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---");
 	}
 
+	if (runOptions.timeOffset) {
+		logger.info("--- Server Time Offset set to: " + runOptions.timeOffset + "s ---");
+	}
+	
 	logger.info("");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
@@ -692,8 +701,16 @@ expressSrv.get('/time', function(req, res) {
 
 	var d = new Date();
 	
+	if (req.query.offset) {
+		var o = parseInt(req.query.offset);
+		logger.warn("Server Time offset applied: " + o + "s");
+		d.setUTCSeconds(d.getUTCSeconds() + o);
+	}
+	
 	tISO = dateFormat(d, "isoUtcDateTime");
 	logger.info("tISO: " + tISO);
+	
+	res.set('Date', d.toUTCString());
 	
 	res.status(200);
 	res.type("text/plain");
@@ -829,10 +846,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	formProps.title = serverContId;
 	
 	logger.info("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
-	logger.trace("timeServer: " + timeServer);
-	formProps.timeServer = timeServer;
-	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
-	
+
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
 
@@ -917,6 +931,15 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		sC = configStream[useURL];
 	}
 		
+		
+	if (sC.serverTimeOffset || runOptions.timeOffset) {
+		timeServer += "?offset=" + (sC.serverTimeOffset || runOptions.timeOffset);
+	}
+	logger.trace("timeServer: " + timeServer);
+	formProps.timeServer = timeServer;
+	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
+	
+	
 	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
 
 	var dAv = dNow;
@@ -1061,7 +1084,8 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	}
 	
 	// Get file on server
-	var file = path.join(__dirname, useURL + ".hbs");
+	var file = path.join(__dirname, (sC.useManifest || useURL) + ".hbs");
+	
 	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
