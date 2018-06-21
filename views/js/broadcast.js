@@ -1,12 +1,84 @@
 function SetupBroadcastObject(id, container, log)
 {
+	var startTime = Date.now();
+	
 	var bo;
 	var mSync;
 	
-	e = function (id) {
+	const STATE_STOPPED 		= 0;
+	const STATE_WATCHING_BT 	= 1;
+	const STATE_BUFFERING_OD	= 2;
+	const STATE_PLAYING_OD		= 3;
+	
+	const POLL_SLOW	= 100;
+	const POLL_FAST	= 10;
+	
+	
+	var curState 	= STATE_STOPPED;
+	var pollRate	= POLL_SLOW;
+	
+	var curTime;
+	
+	var odTime;
+	var preloadTime;
+	var preloadFunc;
+	var startOndemandFunc;
+	
+	var timeupdateFunc;
+	
+	
+	function e(id) {
 	  return document.getElementById(id);
 	}
 
+
+	function getCurrentTime() {
+		if (mSync) {
+			return mSync.currentTime;
+		} else {
+			//log.warn("mSync not defined, using emulated time.");
+			return (Date.now() - startTime) / 1000;
+		}
+	}
+	
+	
+	function checkState() {
+		
+		if ((curState == STATE_STOPPED) || (curState == STATE_PLAYING_OD)) {
+			setTimeout(checkState, pollRate);
+			return;
+		}
+		
+		curTime = getCurrentTime(); 
+		//log.info("msync: currentTime: " + curTime + "(s)");
+		
+		if (timeupdateFunc) {
+			timeupdateFunc(curTime);
+		}
+		
+		if (preloadTime && (curTime >= preloadTime)) {
+			curState = STATE_BUFFERING_OD;
+			pollRate = POLL_FAST;
+			if (preloadFunc) {
+				preloadFunc(curTime);
+				preloadFunc = null; // one hit
+			}
+		}
+
+		if (odTime && (curTime >= odTime)) {
+			curState = STATE_PLAYING_OD;
+			pollRate = POLL_SLOW;
+			if (startOndemandFunc) {
+				startOndemandFunc(curTime);
+				startOndemandFunc = null; // one hit
+			}
+		}
+	
+		setTimeout(checkState, pollRate);
+	}
+		
+	checkState();
+	
 	log.info("SetupBroadcastObject: " + id);
 
 	if (!e(id)) {
@@ -32,6 +104,7 @@ function SetupBroadcastObject(id, container, log)
 			try {
 				log.info("SetupBroadcastObject: bindToCurrentChannel");
 				bo.bindToCurrentChannel();
+				setTimeout(checkState(), pollRate);
 			} catch (e) {
 				log.error("Starting of broadcast video failed: bindToCurrentChannel");
 			}		
@@ -50,6 +123,22 @@ function SetupBroadcastObject(id, container, log)
 			} catch (err) {
 				log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
 			}
+			curState = STATE_WATCHING_BT;
+		},
+		
+		setTimeEvents: function (p, t, f1, f2) {
+			odTime = t;
+			preloadTime	= t - p;
+			preloadFunc = f1;
+			startOndemandFunc = f2;
+		},
+
+		setTimeUpdateEvents: function (f) {
+			timeupdateFunc = f;
+		},
+		
+		hide: function () {
+			bo.style.display = "none";
 		}
 	};
 }

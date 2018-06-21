@@ -183,7 +183,7 @@ mVid.start = function () {
 	// Parse query params
 	this.overrideSubs 	= commonUtils.getUrlVars()["subs"] || "";
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
-	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false;
+	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || true;  // TODO
 	this.bEventsDump	= commonUtils.getUrlVars()["eventdump"] || false;
 	this.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
 	
@@ -275,8 +275,7 @@ mVid.start = function () {
 		that.bShowBufferingIcon		= false;
 				
 		that.showBufferingIcon(false);
-		that.resetStallTimer();
-		
+
 		document.addEventListener("keydown", that.OnKeyDown.bind(that));
 
 		
@@ -304,6 +303,10 @@ mVid.start = function () {
 				
 				if (playObj.timeline && playObj.timeline.selector) {
 					that.broadcast.initMediaSync(playObj.timeline.selector);
+					that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
+					if (playObj.transitionTime > 0) {
+						that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, playObj.transitionTime, onMsyncPreloadAd(that), onMsyncPlayAd(that));
+					}
 				} else {
 					that.Log.warn("MediaSync timeline not defined.");			
 				}
@@ -312,7 +315,8 @@ mVid.start = function () {
 			}
 			
 		} else {
-			
+			that.resetStallTimer();
+		
 			// Clear key
 			const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
@@ -857,28 +861,31 @@ mVid.updateBufferStatus = function(videoId, annot) {
 }
 
 mVid.updatePlaybackBar = function(videoId) {
-	var videoBar 		= e("playbackBar");
-	var video 			= e(videoId);
+	var video = e(videoId);
 	
 	if (video) {
-		var duration 		= video.duration;
-		
-		if (duration && (duration > 0)) {
-			videoBar.max = duration;
-			videoBar.value = video.currentTime;
-		} else
-		{
-			videoBar.value = 0;	
-			videoBar.max = 100;	
-		}
-
-		var out = "{";
-		out += "\"value\":" + JSON.stringify('' + videoBar.value) + ",";
-		out += "\"max\":" + JSON.stringify('' + videoBar.max);
-		out += "}";
-		
-		this.socket.emit('playbackOffset', out);
+		this.__updatePlaybackBar(video.currentTime, video.duration); 
 	}
+}
+
+mVid.__updatePlaybackBar = function(t, d) {
+	var videoBar 		= e("playbackBar");
+
+	if (d && (d > 0)) {
+		videoBar.max = d;
+		videoBar.value = t;
+	} else
+	{
+		videoBar.value = 0;	
+		videoBar.max = 100;	
+	}
+
+	var out = "{";
+	out += "\"value\":" + JSON.stringify('' + videoBar.value) + ",";
+	out += "\"max\":" + JSON.stringify('' + videoBar.max);
+	out += "}";
+	
+	this.socket.emit('playbackOffset', out);
 }
 
 mVid.showBufferingIcon = function (bBuffering) {
@@ -1178,6 +1185,46 @@ mVid.setEOPlayback = function () {
 	this.purgeVideo("mVid-mainContent");
 	this.purgeVideo("mVid-video0");
 	this.purgeVideo("mVid-video1");
+}
+
+function onMsyncTimeUpdate (that) {
+	return function (t) {
+		//that.Log.info("msync: time " + t + "(s)");
+		that.__updatePlaybackBar(t,600); // todo: don't hardcode duration!!!
+	}
+}
+
+function onMsyncPreloadAd (that) {
+	return function (t) {
+		that.Log.info("msync: preload ad now: " + t + "(s)");
+		that.skipBufferingToNextVideo(); // Get ready to buffer next video
+		that.setContentSourceAndLoad();
+
+		var v = that.getCurrentBufferingVideo();
+		that.updateBufferStatus(v.id, "Preload next ad");
+		that.resetStallTimer();
+	}
+}
+
+function onMsyncPlayAd (that) {
+	return function (t) {
+		that.Log.info("msync: play ad now: " + t + "(s)");
+		
+		that.skipPlayingToNextVideo();
+		var v = that.getCurrentPlayingVideo();
+		
+		if (v) {
+			that.updateBufferStatus(v, "Play advert");
+		
+			that.timeStampStartOfPlay(v);
+
+			if (v.bBuffEnoughToPlay) {
+				that.switchVideoToPlaying(v, null);
+			}
+			
+			that.broadcast.hide(); 
+		}
+	}
 }
 
 function onVideoEvent (v) {

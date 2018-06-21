@@ -21,7 +21,7 @@
 	],
 	"src" 				: "",
 	"type" 				: "video/broadcast",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "10",
 	"addContentId" 		: "false",
 	"channelName" 		: "MediaSync: Ad insertion test",
 
