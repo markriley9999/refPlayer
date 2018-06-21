@@ -1,0 +1,36 @@
+{
+	"special_jumptomain"	: "true",
+	
+	"ads" : [
+		{
+			"src" 	: "./content/blankads/ad1.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/ad2.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/ad3.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/ad4.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "",
+	"type" 				: "video/broadcast",
+	"transitionTime" 	: "60",
+	"addContentId" 		: "false",
+	"channelName" 		: "MediaSync: Ad insertion test",
+
+	"timeline"	: {
+		"selector"	: "urn:dvb:css:timeline:pts"
+	},
+	
+	"info"				: [	"",
+							""
+						  ]
+
+}
