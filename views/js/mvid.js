@@ -5,6 +5,7 @@ e = function (id) {
   return document.getElementById(id);
 }
 
+
 // --- MAIN OBJECT --- //
 var mVid = {};
 
@@ -115,6 +116,8 @@ const event_value = "1"
 
 mVid.startTime = Date.now();
 
+
+// --- Log object ---
 mVid.Log = {};
 
 mVid.Log.init = function (logDiv) {
@@ -264,52 +267,18 @@ mVid.start = function () {
 	var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
 	
 	getPlaylist(currentChannel || "0", function(ch, playObj) {		
-		var mainVideo;
 
 		that.procPlaylist(ch, playObj);
 
-		mainVideo = that.createVideo("mVid-mainContent");
 		
 		that.transitionThresholdMS 	= AD_TRANS_THRESHOLD_MS;
 		that.bShowBufferingIcon		= false;
 				
-		that.setUpCues();
-				
-		// Clear key
-		const KEYSYSTEM_TYPE = "org.w3.clearkey";
-
-		var options = [];
-		const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
-		const videoContentType = 'video/mp4; codecs="avc3.4D4015"'; 
-
-		options = [
-			{
-			  initDataTypes: ["cenc"],
-			  videoCapabilities: [{contentType: videoContentType}],
-			  audioCapabilities: [{contentType: audioContentType}],
-			}
-		];
-
 		that.showBufferingIcon(false);
-		that.setPlayingState(PLAYSTATE_STOP);
+		that.resetStallTimer();
 		
 		document.addEventListener("keydown", that.OnKeyDown.bind(that));
 
-		if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
-			SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
-				that.Log.info(p);
-				that.setContentSourceAndLoad();				
-			}, function(p) {
-				that.Log.error(p);
-			});
-			that.bEMESupport = true;
-		} else {
-			that.setContentSourceAndLoad();
-			e("encrypted").setAttribute("class", "playerIcon noeme");
-			that.bEMESupport = false;
-		}
-			
-		that.resetStallTimer();
 		
 		window.setInterval( function() {
 			var elTimer = e("videoTimer");
@@ -321,7 +290,64 @@ mVid.start = function () {
 			
 			that.updateAllBuffersStatus();	
 
-		}, 1000);	
+		}, 1000);
+
+		if (playObj.type === "video/broadcast") {
+			
+			that.Log.info("*** Use Video Broadcast Object ***");
+
+			// TODO: Do it explicitly for now....
+			that.broadcast = SetupBroadcastObject("mSync-broadcast", "player-container", that.Log);
+			
+			if (that.broadcast) {
+				that.broadcast.bind();
+				
+				if (playObj.timeline && playObj.timeline.selector) {
+					that.broadcast.initMediaSync(playObj.timeline.selector);
+				} else {
+					that.Log.warn("MediaSync timeline not defined.");			
+				}
+			} else {
+				that.Log.error("Broadcast object init failed.");			
+			}
+			
+		} else {
+			
+			// Clear key
+			const KEYSYSTEM_TYPE = "org.w3.clearkey";
+
+			var options = [];
+			const audioContentType = 'audio/mp4; codecs="mp4a.40.2"'; 
+			const videoContentType = 'video/mp4; codecs="avc3.4D4015"'; 
+
+			options = [
+				{
+				  initDataTypes: ["cenc"],
+				  videoCapabilities: [{contentType: videoContentType}],
+				  audioCapabilities: [{contentType: audioContentType}],
+				}
+			];
+
+			var mainVideo = that.createVideo("mVid-mainContent");
+
+			that.setUpCues();
+			that.setPlayingState(PLAYSTATE_STOP);
+					
+			if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
+				SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+					that.Log.info(p);
+					that.setContentSourceAndLoad();				
+				}, function(p) {
+					that.Log.error(p);
+				});
+				that.bEMESupport = true;
+			} else {
+				that.setContentSourceAndLoad();
+				e("encrypted").setAttribute("class", "playerIcon noeme");
+				that.bEMESupport = false;
+			}
+		}
+		
 	});
 };
 
@@ -353,7 +379,13 @@ mVid.procPlaylist = function (ch, playObj) {
 	c[lt].type 				= playObj.type;
 	c[lt].transitionTime 	= playObj.transitionTime;
 	c[lt].transitionOffsetMS = playObj.special_transition_c || 0;
-	c[lt].videoId 			= "mVid-mainContent";
+	
+	if (playObj.type === "video/broadcast") {
+		c[lt].videoId 			= "mSync-broadcast";
+	} else {
+		c[lt].videoId 			= "mVid-mainContent";
+	}
+	
 	c[lt].addContentId		= playObj.addContentId;
 	c[lt].channelName		= playObj.channelName;
 
@@ -1863,11 +1895,11 @@ keyTable.entries = [
 // ---------------------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
 window.onload = function () {
-	try {
+	// TODO: try {
 		mVid.start();
-	} catch (error) {
-		mVid.Log.error("FATAL ERROR: " + error.message);
-	}
+	//} catch (error) {
+	//	mVid.Log.error("FATAL ERROR: " + error.message);
+	//}
 }
 
 window.onbeforeunload = function () {
