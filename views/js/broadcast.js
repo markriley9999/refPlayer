@@ -25,6 +25,7 @@ function SetupBroadcastObject(id, container, log)
 	var startOndemandFunc;
 	
 	var timeupdateFunc;
+	var winObj = null;
 	
 	
 	function e(id) {
@@ -96,10 +97,26 @@ function SetupBroadcastObject(id, container, log)
 		bo.style.outline = "transparent";
 		bo.setAttribute("class", "broadcast");
 		e(container).appendChild(bo);
+		
+		if (this.bWindowedObjs) {
+			bo.style.display 	= "block";
+			bo.style.top  		= winObj.top;
+			bo.style.left 		= winObj.left;
+			bo.style.width		= winObj.width;
+			bo.style.height 	= winObj.height;
+			bo.style.backgroundColor	= winObj.bcol;
+			bo.style.position	= "absolute";
+			
+			e("player-container").style.backgroundColor = "cyan";
+		}
 	}
 	
 
 	return {
+		setWindow: function (o) {
+			winObj = o;
+		},
+		
 		bind: function () {
 			try {
 				log.info("SetupBroadcastObject: bindToCurrentChannel");
@@ -123,6 +140,7 @@ function SetupBroadcastObject(id, container, log)
 			} catch (err) {
 				log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
 			}
+			setTimeout(checkState(), pollRate);
 			curState = STATE_WATCHING_BT;
 		},
 		
@@ -139,6 +157,11 @@ function SetupBroadcastObject(id, container, log)
 		
 		hide: function () {
 			bo.style.display = "none";
+		},
+		
+		resume: function () {
+			bo.style.display = "block";
+			curState = STATE_WATCHING_BT;
 		}
 	};
 }

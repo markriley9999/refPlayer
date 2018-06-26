@@ -1,6 +1,4 @@
 {
-	"special_jumptomain"	: "true",
-	
 	"ads" : [
 		{
 			"src" 	: "./content/blankads/ad1.mp4", 
@@ -21,10 +19,12 @@
 	],
 	"src" 				: "",
 	"type" 				: "video/broadcast",
-	"transitionTime" 	: "10",
+	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
 	"channelName" 		: "MediaSync: Ad insertion test",
 
+	"contentDuration"	: "600",
+	
 	"timeline"	: {
 		"selector"	: "urn:dvb:css:timeline:pts"
 	},

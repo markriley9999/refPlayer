@@ -103,9 +103,10 @@ const HAVE_ENOUGH_DATA	= 4; 	// it should be possible to play the media stream w
 var windowVideoObjects = [];
 
 mVid.windowVideoObjects = {
-	"mVid-video0" : 		{ top : "96px", 	left	: "240px", 	width	: "480px", 	height : "320px", bcol	: "blue" },
-	"mVid-video1" : 		{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "darkcyan" },
-	"mVid-mainContent" : 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
+	"mVid-video0" 		: 	{ top : "96px", 	left	: "240px", 	width	: "480px", 	height : "320px", bcol	: "blue" },
+	"mVid-video1" 		: 	{ top : "160px", 	left	: "305px", 	width	: "480px", 	height : "320px", bcol	: "darkcyan" },
+	"mVid-mainContent" 	: 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" },
+	"mVid-broadcast" 	: 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
 }
 
 // Events
@@ -183,7 +184,7 @@ mVid.start = function () {
 	// Parse query params
 	this.overrideSubs 	= commonUtils.getUrlVars()["subs"] || "";
 	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
-	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || true;  // TODO
+	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false; 
 	this.bEventsDump	= commonUtils.getUrlVars()["eventdump"] || false;
 	this.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
 	
@@ -296,17 +297,19 @@ mVid.start = function () {
 			that.Log.info("*** Use Video Broadcast Object ***");
 
 			// TODO: Do it explicitly for now....
-			that.broadcast = SetupBroadcastObject("mSync-broadcast", "player-container", that.Log);
+			that.broadcast = SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
 			
 			if (that.broadcast) {
 				that.broadcast.bind();
 				
 				if (playObj.timeline && playObj.timeline.selector) {
 					that.broadcast.initMediaSync(playObj.timeline.selector);
-					that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
-					if (playObj.transitionTime > 0) {
-						that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, playObj.transitionTime, onMsyncPreloadAd(that), onMsyncPlayAd(that));
+					if (that.bWindowedObjs) {
+						that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
 					}
+					that.broadcast.contentDuration = playObj.contentDuration;
+					that.broadcast.bSetupAdTransEvents = true;
+					that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
 				} else {
 					that.Log.warn("MediaSync timeline not defined.");			
 				}
@@ -385,13 +388,14 @@ mVid.procPlaylist = function (ch, playObj) {
 	c[lt].transitionOffsetMS = playObj.special_transition_c || 0;
 	
 	if (playObj.type === "video/broadcast") {
-		c[lt].videoId 			= "mSync-broadcast";
+		c[lt].videoId 				= "mVid-broadcast";
+		playObj.special_jumptomain	= "true";
 	} else {
-		c[lt].videoId 			= "mVid-mainContent";
+		c[lt].videoId 				= "mVid-mainContent";
 	}
 	
-	c[lt].addContentId		= playObj.addContentId;
-	c[lt].channelName		= playObj.channelName;
+	c[lt].addContentId	= playObj.addContentId;
+	c[lt].channelName	= playObj.channelName;
 
 	if (c[lt].transitionOffsetMS != 0) {
 		this.Log.info(" * SpecialMode: Additional ad transition offset of: " + c[lt].transitionOffsetMS + "ms *");	
@@ -1036,6 +1040,10 @@ mVid.isMainFeatureVideo = function (video) {
 	return (video.id == "mVid-mainContent");
 }
 
+mVid.isBroadcast = function (video) {
+	return (video.id == "mVid-broadcast");
+}
+
 mVid.setPreload = function (video, mode) {
 	var source = e(video.id + "-source");
 	source.setAttribute("preload", mode);
@@ -1163,13 +1171,29 @@ mVid.showPlayrange = function () {
 	var x1, x2;
 	
 	if (!p || !this.isMainFeatureVideo(p)) {
+		this._showPlayrange(0,0);
+	} else {
+		this._showPlayrange(p.resumeFrom, p.duration);
+	}
+	
+	e("ad-start-point").style.left 	= (x1 - offset) + "px";
+	e("ad-resume-point").style.left = (x2 - offset) + "px";			
+}
+
+mVid._showPlayrange = function (r, d) {
+	var c = e("playbackBar").getBoundingClientRect();
+	var offset = e("ad-start-point").getBoundingClientRect().width / 2;
+
+	var x1, x2;
+	
+	if (r >= d) {
 		x1 = c.left;
 		x2 = c.right;			
 	} else {
-		var coef = (c.width / p.duration);
+		var coef = (c.width / d);
 		var t = this.getTransitionPoint().v;
-		x1 =  (coef * p.resumeFrom) + c.left;
-		var endP = (p.resumeFrom + t > p.duration) ? p.duration : p.resumeFrom + t;
+		x1 =  (coef * r) + c.left;
+		var endP = (r + t > d) ? d : r + t;
 		
 		x2 =  (coef * endP) + c.left;
 	}
@@ -1189,8 +1213,29 @@ mVid.setEOPlayback = function () {
 
 function onMsyncTimeUpdate (that) {
 	return function (t) {
-		//that.Log.info("msync: time " + t + "(s)");
-		that.__updatePlaybackBar(t,600); // todo: don't hardcode duration!!!
+		var v = that.getCurrentPlayingVideo();
+		
+		if (v && that.isBroadcast(v)) {
+			//that.Log.info("msync: time " + t + "(s)");
+			that.resetStallTimer();
+			v.setPlayingState(PLAYSTATE_PLAY);
+
+			that.__updatePlaybackBar(t, that.broadcast.contentDuration);
+
+			if (that.broadcast.bSetupAdTransEvents) {
+				that.broadcast.bSetupAdTransEvents = false;
+				
+				var trans =  that.getTransitionPoint();
+										
+				if (trans.bEnabled) {
+					var tv = trans.v;
+					var nextTrans = (Math.floor((t + PRELOAD_NEXT_AD_S) / tv) + 1) * tv;
+					that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
+					that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
+					that._showPlayrange((nextTrans-tv), that.broadcast.contentDuration);
+				}
+			}
+		}
 	}
 }
 
@@ -1471,12 +1516,23 @@ function onVideoEvent (v) {
 					v.skipPlayingToNextVideo();
 					var newPlayingVideo = v.getCurrentPlayingVideo();
 					
-					v.timeStampStartOfPlay(newPlayingVideo);
-					if (newPlayingVideo.bBuffEnoughToPlay) {
-						v.switchVideoToPlaying(newPlayingVideo, this);
+					if (v.isBroadcast(newPlayingVideo)) {
+						v.Log.info(newPlayingVideo.id + ": show broadcast.");
+						
+						if (v.broadcast) {
+							v.broadcast.bSetupAdTransEvents = true;
+							v.broadcast.resume();
+							v.switchVideoToPlaying(null, this);
+						}
+
 					} else {
-						// oh dear - still buffering, not ready to play yet 
-						v.switchVideoToPlaying(null, this);				
+						v.timeStampStartOfPlay(newPlayingVideo);
+						if (newPlayingVideo.bBuffEnoughToPlay) {
+							v.switchVideoToPlaying(newPlayingVideo, this);
+						} else {
+							// oh dear - still buffering, not ready to play yet 
+							v.switchVideoToPlaying(null, this);				
+						}
 					}
 				}
 				break;
@@ -1526,12 +1582,17 @@ function onVideoEvent (v) {
 							if (bPreloadNextAd) {
 								v.Log.info(this.id + ": Commence buffering for next item");			
 								v.skipBufferingToNextVideo(); // Get ready to buffer next video
-								v.setContentSourceAndLoad();
 
+								bufferingVideo = v.getCurrentBufferingVideo();
+
+								if (!v.isBroadcast(bufferingVideo)) {
+									v.setContentSourceAndLoad();
+									v.updateBufferStatus(this.id, "Preload next ad");
+								}
+								
 								if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY_THROUGH) {
 									v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 								}
-								v.updateBufferStatus(this.id, "Preload next ad");
 							}
 						}
 						
@@ -1635,9 +1696,13 @@ mVid.OnCheckAdStart = function () {
 	}
 }
 
-mVid.resetStallTimer = function () {
+mVid.killStallTimer = function () {
 	this.showBufferingIcon(false);
 	if (this.stallTimerId) clearTimeout(this.stallTimerId);
+}
+
+mVid.resetStallTimer = function () {
+	this.killStallTimer();
 	this.stallCount = 0;
 	this.stallTimerId = setTimeout(this.OnCatchStall.bind(this), STALL_TIMEOUT_MS);
 }
