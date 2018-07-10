@@ -10,7 +10,7 @@ fi
 if [ "$CMD" == "--updatenode" ]; then
   sudo npm cache clean -f
   sudo npm install -g n
-  sudo /usr/local/bin/n stable
+  sudo n stable
   exit 0
 fi
 
