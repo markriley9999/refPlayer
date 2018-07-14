@@ -1272,143 +1272,143 @@ function onMsyncPlayAd (that) {
 	}
 }
 
-function onVideoEvent (v) {
+function onVideoEvent (m) {
 	return function (event) {
-		if (v.EOPlayback) {
+		if (m.EOPlayback) {
 			return;
 		}
 		
-		var bufferingVideo = v.getCurrentBufferingVideo();
-		var playingVideo = v.getCurrentPlayingVideo();
+		var bufferingVideo = m.getCurrentBufferingVideo();
+		var playingVideo = m.getCurrentPlayingVideo();
 
-		var bufferingContentIdx = v.getBufferingContentIdx();
-		var playingContentIdx = v.getPlayingContentIdx();
+		var bufferingContentIdx = m.getBufferingContentIdx();
+		var playingContentIdx = m.getPlayingContentIdx();
 		
 		var bBufferingWhilstAttemptingToPlay = (bufferingContentIdx === playingContentIdx);
 		
 		switch(event.type) {
-			case v.videoEvents.LOAD_START:
-				v.Log.info(this.id + ": video has started loading");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.LOAD_START:
+				m.Log.info(this.id + ": video has started loading");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				/* TODO: why is this being generated for non buffering content???
 				if (this != bufferingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+					m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
 				}
 				*/
 				if (this.readyState != HAVE_NOTHING) {
-					v.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_NOTHING");
+					m.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_NOTHING");
 				}
 				this.bufferSeqCheck = event.type;
 				break;
 				
-			case v.videoEvents.LOADED_METADATA:
-				v.Log.info(this.id + ": metadata has loaded");
-				v.statusTableText(this.id, "Buffer", "Started buffering");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.LOADED_METADATA:
+				m.Log.info(this.id + ": metadata has loaded");
+				m.statusTableText(this.id, "Buffer", "Started buffering");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				if (this != bufferingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+					m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
 				}
 				if (this.readyState != HAVE_METADATA) {
-					v.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_METADATA"); // TODO: Need to check this....
+					m.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_METADATA"); // TODO: Need to check this....
 				}
-				if (this.bufferSeqCheck != v.videoEvents.LOAD_START) {
-					v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
+				if (this.bufferSeqCheck != m.videoEvents.LOAD_START) {
+					m.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 				}
 				this.bufferSeqCheck = event.type;
 				
 				if (this === playingVideo) {
-					v.resetStallTimer();
+					m.resetStallTimer();
 				}
 				break;
 				
-			case v.videoEvents.CAN_PLAY:
-				v.Log.info(this.id + ": video can play");
-				v.statusTableText(this.id, "Buffer", "Enough to start play");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.CAN_PLAY:
+				m.Log.info(this.id + ": video can play");
+				m.statusTableText(this.id, "Buffer", "Enough to start play");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 					
 				// Sanity check
 				if (this != bufferingVideo) {
-					v.Log.error(this.id + ": " + event.type + ": event for non buffering video object!");
+					m.Log.error(this.id + ": " + event.type + ": event for non buffering video object!");
 				}
 				if (this.readyState != HAVE_FUTURE_DATA) {
-					v.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_FUTURE_DATA"); // TODO: Need to check this....
+					m.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_FUTURE_DATA"); // TODO: Need to check this....
 				}
-				if (this.bufferSeqCheck != v.videoEvents.LOADED_METADATA) {
-					v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
+				if (this.bufferSeqCheck != m.videoEvents.LOADED_METADATA) {
+					m.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 				}
 				this.bufferSeqCheck = event.type;
 				
 				
-				if (v.getBufferedAmount(this) == 0) {
-					v.Log.warn(this.id + ": Buffer should not still be empty!");				
+				if (m.getBufferedAmount(this) == 0) {
+					m.Log.warn(this.id + ": Buffer should not still be empty!");				
 				}
 
 				this.bBuffEnoughToPlay = true;
 
 				if (bBufferingWhilstAttemptingToPlay) {
 					// Happens for first piece of content (or we're behind on buffering) - we can start playing now...
-					v.switchVideoToPlaying(this, null);
+					m.switchVideoToPlaying(this, null);
 				} 
 
 				if (this === playingVideo) {
-					v.resetStallTimer();
+					m.resetStallTimer();
 				}
 
 				break;
 				
-			case v.videoEvents.CAN_PLAY_THROUGH:
-				v.Log.info(this.id + ": buffered sufficiently to play-through.");
-				v.statusTableText(this.id, "Buffer", "Can play through");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.CAN_PLAY_THROUGH:
+				m.Log.info(this.id + ": buffered sufficiently to play-through.");
+				m.statusTableText(this.id, "Buffer", "Can play through");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 
 				// Sanity check
 				if (this != bufferingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+					m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
 				}
 				if (this.readyState != HAVE_ENOUGH_DATA) {
-					v.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_ENOUGH_DATA");
+					m.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_ENOUGH_DATA");
 				}
-				if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY) {
-					v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
+				if (this.bufferSeqCheck != m.videoEvents.CAN_PLAY) {
+					m.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 				}
 				this.bufferSeqCheck = event.type;
 
-				if (v.getBufferedAmount(this) == 0) {
-					v.Log.warn(this.id + ": Buffer should not still be empty!");				
+				if (m.getBufferedAmount(this) == 0) {
+					m.Log.warn(this.id + ": Buffer should not still be empty!");				
 				}
 				
 				this.bBuffEnoughToPlay = true;
 
 				if (this === playingVideo) {
-					v.resetStallTimer();
+					m.resetStallTimer();
 				}
 
 				if (bBufferingWhilstAttemptingToPlay && this.paused) {
 					// Happens for first piece of content (or we're behind on buffering) - we can start playing now...
-					v.switchVideoToPlaying(this, null);
+					m.switchVideoToPlaying(this, null);
 				} 
 
 				break;
 				
-			case v.videoEvents.PLAY:
-				v.Log.info(this.id + ": video is playing");
-				v.statusTableText(this.id, "Play", "Playing");
-				// v.statusTableText(this.id, "Buffer", "Being consumed");
-				v.updateBufferStatus(this.id, "");
+			case m.videoEvents.PLAY:
+				m.Log.info(this.id + ": video is playing");
+				m.statusTableText(this.id, "Play", "Playing");
+				// m.statusTableText(this.id, "Buffer", "Being consumed");
+				m.updateBufferStatus(this.id, "");
 
-				v.setPlayingState(PLAYSTATE_PLAY);
-				v.showPlayrange();
+				m.setPlayingState(PLAYSTATE_PLAY);
+				m.showPlayrange();
 				
 				if (this == playingVideo) {
 					this.bPlayEventFired = true;
 				} else {
-					v.Log.error(this.id + ": " + event.type + ": event for non playing video object!");
+					m.Log.error(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 
-				if (v.getBufferedAmount(this) == 0) {
-					v.Log.warn(this.id + ": Buffer should not still be empty!");				
+				if (m.getBufferedAmount(this) == 0) {
+					m.Log.warn(this.id + ": Buffer should not still be empty!");				
 				}
 
 				if ((this == playingVideo) && !this.bPlayPauseTransition) {
@@ -1417,10 +1417,10 @@ function onVideoEvent (v) {
 					this.bPlayPauseTransition = false;
 				}
 				
-				if (v.bPurgeMain) {
+				if (m.bPurgeMain) {
 					// Special case - recalculate resume points, this is used for dynamic content (when also using multiple video objects!!!)
-					if (v.isMainFeatureVideo(this) && (this == playingVideo)) {
-						var trans =  v.getTransitionPoint();
+					if (m.isMainFeatureVideo(this) && (this == playingVideo)) {
+						var trans =  m.getTransitionPoint();
 												
 						if (trans.bEnabled) {
 							var tt = trans.v;
@@ -1429,115 +1429,115 @@ function onVideoEvent (v) {
 						} else {
 							this.resumeFrom = 0;
 						}
-						v.showPlayrange();
-						v.Log.info("* SpecialMode " + this.id + ": recalculate resumefrom point. " + this.resumeFrom + "S *");
+						m.showPlayrange();
+						m.Log.info("* SpecialMode " + this.id + ": recalculate resumefrom point. " + this.resumeFrom + "S *");
 					}
 				}
 				
 				// Sanity check
-				if (v.isMainFeatureVideo(this) && (this == playingVideo) && (playingVideo.currentTime < playingVideo.resumeFrom)) {
-					v.Log.error(this.id + ": resume error (currentTime < resume point)");
+				if (m.isMainFeatureVideo(this) && (this == playingVideo) && (playingVideo.currentTime < playingVideo.resumeFrom)) {
+					m.Log.error(this.id + ": resume error (currentTime < resume point)");
 					playingVideo.currentTime = playingVideo.resumeFrom;
 				}
 				break;
 				
-			case v.videoEvents.PAUSE:
-				v.Log.info(this.id + ": video is paused");
-				v.statusTableText(this.id, "Play", "Paused");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.PAUSE:
+				m.Log.info(this.id + ": video is paused");
+				m.statusTableText(this.id, "Play", "Paused");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 
 				// Sanity check
 				if (this != playingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
+					m.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 
 				if (this.bPlayPauseTransition) {
-					v.setPlayingState(PLAYSTATE_PAUSE);
+					m.setPlayingState(PLAYSTATE_PAUSE);
 				} else
 				{
-					if (v.isMainFeatureVideo(this)) {
-						v.skipPlayingToNextVideo();
-						var newPlayingVideo = v.getCurrentPlayingVideo();
+					if (m.isMainFeatureVideo(this)) {
+						m.skipPlayingToNextVideo();
+						var newPlayingVideo = m.getCurrentPlayingVideo();
 						
 						if (newPlayingVideo) {
-							v.timeStampStartOfPlay(newPlayingVideo);
+							m.timeStampStartOfPlay(newPlayingVideo);
 							if (newPlayingVideo.bBuffEnoughToPlay) {
-								v.switchVideoToPlaying(newPlayingVideo, this);
+								m.switchVideoToPlaying(newPlayingVideo, this);
 							} else {
 								// oh dear - still buffering, not ready to play yet 
-								v.switchVideoToPlaying(null, this);				
+								m.switchVideoToPlaying(null, this);				
 							}
 						}
 					}
 				}
 				break;
 				
-			case v.videoEvents.SEEKED:
-				v.Log.info(this.id + ": video has seeked");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.SEEKED:
+				m.Log.info(this.id + ": video has seeked");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				// Sanity check
 				if (this != playingVideo) {
-					v.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
+					m.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
 				}
 				break;
 				
-			case v.videoEvents.STALLED:
-				v.Log.warn(this.id + ": has stalled");
-				v.showBufferingIcon(true);
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.STALLED:
+				m.Log.warn(this.id + ": has stalled");
+				m.showBufferingIcon(true);
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
-			case v.videoEvents.WAITING:
-				v.Log.warn(this.id + ": is waiting");
-				v.showBufferingIcon(true);
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.WAITING:
+				m.Log.warn(this.id + ": is waiting");
+				m.showBufferingIcon(true);
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
-			case v.videoEvents.RESIZE:
-				v.Log.info(this.id + ": resize called");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.RESIZE:
+				m.Log.info(this.id + ": resize called");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
-			case v.videoEvents.ENDED:
-				v.statusTableText(this.id, "Buffer", "---");
-				v.Log.info(this.id + ": video has ended");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.ENDED:
+				m.statusTableText(this.id, "Buffer", "---");
+				m.Log.info(this.id + ": video has ended");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				
-				v.showBufferingIcon(true);
-				v.setPlayingState(PLAYSTATE_STOP);
+				m.showBufferingIcon(true);
+				m.setPlayingState(PLAYSTATE_STOP);
 
 				// Start playing buffered content
-				if (v.isMainFeatureVideo(this)) {
-					v.Log.info(this.id + ": video has ended - stop everything.");
-					v.setEOPlayback();
-					v.cmndLog();
+				if (m.isMainFeatureVideo(this)) {
+					m.Log.info(this.id + ": video has ended - stop everything.");
+					m.setEOPlayback();
+					m.cmndLog();
 					return;
 				} else {
-					v.skipPlayingToNextVideo();
-					var newPlayingVideo = v.getCurrentPlayingVideo();
+					m.skipPlayingToNextVideo();
+					var newPlayingVideo = m.getCurrentPlayingVideo();
 					
-					if (v.isBroadcast(newPlayingVideo)) {
-						v.Log.info(newPlayingVideo.id + ": show broadcast.");
+					if (m.isBroadcast(newPlayingVideo)) {
+						m.Log.info(newPlayingVideo.id + ": show broadcast.");
 						
-						if (v.broadcast) {
-							v.broadcast.bSetupAdTransEvents = true;
-							v.broadcast.resume();
-							v.switchVideoToPlaying(null, this);
+						if (m.broadcast) {
+							m.broadcast.bSetupAdTransEvents = true;
+							m.broadcast.resume();
+							m.switchVideoToPlaying(null, this);
 						}
 
 					} else {
-						v.timeStampStartOfPlay(newPlayingVideo);
+						m.timeStampStartOfPlay(newPlayingVideo);
 						if (newPlayingVideo.bBuffEnoughToPlay) {
-							v.switchVideoToPlaying(newPlayingVideo, this);
+							m.switchVideoToPlaying(newPlayingVideo, this);
 						} else {
 							// oh dear - still buffering, not ready to play yet 
-							v.switchVideoToPlaying(null, this);				
+							m.switchVideoToPlaying(null, this);				
 						}
 					}
 				}
 				break;
 
-			case v.videoEvents.TIME_UPDATE:
+			case m.videoEvents.TIME_UPDATE:
 				var tNow = Math.floor(this.currentTime);
 
 				// Only do this once a second
@@ -1546,32 +1546,32 @@ function onVideoEvent (v) {
 					if ((this === playingVideo) && this.bPlayEventFired) {
 						this.tOld = tNow;				
 						
-						v.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
-						v.updatePlaybackBar(this.id);
+						m.statusTableText(this.id, "Pos", Math.floor(this.currentTime));
+						m.updatePlaybackBar(this.id);
 				
 						// Time for adverts?
-						if (v.isMainFeatureVideo(playingVideo) && !this.bAdTransStartedPolling) {
-							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= v.getTransitionPoint().v) {
+						if (m.isMainFeatureVideo(playingVideo) && !this.bAdTransStartedPolling) {
+							if (((this.currentTime - this.resumeFrom) + AD_START_THRESHOLD_S) >= m.getTransitionPoint().v) {
 								this.bAdTransStartedPolling = true;
-								v.startAdStartTimer();
+								m.startAdStartTimer();
 							}
 						}
 
 						// Check if gone off end!
 						if (this.currentTime > this.duration) {
-								v.Log.error("Current Time > Duration - content should have ended!");
+								m.Log.error("Current Time > Duration - content should have ended!");
 						}
 						
 						// Start buffering next programme?
 						if (bBufferingWhilstAttemptingToPlay) {
 							var duration 	= this.duration;
-							var bufferEnd 	= v.getBufferedAmount(this);
+							var bufferEnd 	= m.getBufferedAmount(this);
 							var bPreloadNextAd = false;
 							
-							if (v.isMainFeatureVideo(this)) {
-								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + v.getTransitionPoint().v)) {
+							if (m.isMainFeatureVideo(this)) {
+								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= (this.resumeFrom + m.getTransitionPoint().v)) {
 									bPreloadNextAd = true;
-									// not needed???? v.setPreload(playingVideo, "none");
+									// not needed???? m.setPreload(playingVideo, "none");
 								}
 							} else {
 								if ((this.currentTime + PRELOAD_NEXT_AD_S) >= duration) {
@@ -1580,51 +1580,51 @@ function onVideoEvent (v) {
 							}
 							
 							if (bPreloadNextAd) {
-								v.Log.info(this.id + ": Commence buffering for next item");			
-								v.skipBufferingToNextVideo(); // Get ready to buffer next video
+								m.Log.info(this.id + ": Commence buffering for next item");			
+								m.skipBufferingToNextVideo(); // Get ready to buffer next video
 
-								bufferingVideo = v.getCurrentBufferingVideo();
+								bufferingVideo = m.getCurrentBufferingVideo();
 
-								if (!v.isBroadcast(bufferingVideo)) {
-									v.setContentSourceAndLoad();
-									v.updateBufferStatus(this.id, "Preload next ad");
+								if (!m.isBroadcast(bufferingVideo)) {
+									m.setContentSourceAndLoad();
+									m.updateBufferStatus(this.id, "Preload next ad");
 								}
 								
-								if (this.bufferSeqCheck != v.videoEvents.CAN_PLAY_THROUGH) {
-									v.Log.warn(this.id + ": " + event.type + ": event sequence error!");
+								if (this.bufferSeqCheck != m.videoEvents.CAN_PLAY_THROUGH) {
+									m.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 								}
 							}
 						}
 						
-						v.resetStallTimer();
+						m.resetStallTimer();
 					}
 					
 				}
 				break;
 				
-			case v.videoEvents.ERROR:
-				v.Log.error(this.id + ": video error: " + event.srcElement.error.code + " - " + v.eventErrorCodesMappingTable[event.srcElement.error.code]);
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.ERROR:
+				m.Log.error(this.id + ": video error: " + event.srcElement.error.code + " - " + m.eventErrorCodesMappingTable[event.srcElement.error.code]);
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 				
-			case v.videoEvents.ENCRYPTED:
-				if (v.bEMESupport) {
+			case m.videoEvents.ENCRYPTED:
+				if (m.bEMESupport) {
 					e("encrypted").setAttribute("class", "playerIcon encrypted");
 				}
-				v.Log.warn(this.id + ": ENCRYPTED");
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+				m.Log.warn(this.id + ": ENCRYPTED");
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 
-			case v.videoEvents.SUSPEND:
-			case v.videoEvents.ABORT:
-			case v.videoEvents.EMPTIED:
-			case v.videoEvents.LOADED_DATA:
-			case v.videoEvents.PLAYING:
-			case v.videoEvents.SEEKING:
-			case v.videoEvents.DURATION_CHANGE:
-			case v.videoEvents.RATE_CHANGE:
-			case v.videoEvents.VOLUME_CHANGE:
-				v.updateBufferStatus(this.id, "Event: " + event.type);
+			case m.videoEvents.SUSPEND:
+			case m.videoEvents.ABORT:
+			case m.videoEvents.EMPTIED:
+			case m.videoEvents.LOADED_DATA:
+			case m.videoEvents.PLAYING:
+			case m.videoEvents.SEEKING:
+			case m.videoEvents.DURATION_CHANGE:
+			case m.videoEvents.RATE_CHANGE:
+			case m.videoEvents.VOLUME_CHANGE:
+				m.updateBufferStatus(this.id, "Event: " + event.type);
 				break;
 
 			default:
