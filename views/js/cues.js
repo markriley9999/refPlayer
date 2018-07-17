@@ -24,6 +24,11 @@ function InitCues(o) {
 	var trackDispatchType = event_schemeIdUri + " " + event_value;
 	var bSysSubsEnabled = false;
 	
+	if (o.cfg) {
+		bSysSubsEnabled = o.cfg.configuration.subtitlesEnabled;
+		o.log.info("System Subs: " + (bSysSubsEnabled ? "Enabled" : "Disabled"));
+	}
+	
 	function arrayBufferToString(buffer) {
 		var arr = new Uint8Array(buffer);
 		var str = String.fromCharCode.apply(String, arr);
@@ -59,9 +64,9 @@ function InitCues(o) {
 
 			if (o.params.bEventsDump && track)
 			{
-				o.o.log.info("Track #" + t); 
-				o.o.log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
-				o.o.log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
+				o.log.info("Track #" + t); 
+				o.log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				o.log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			}
 			
 			if (	track && track.cues &&
@@ -84,11 +89,11 @@ function InitCues(o) {
 							cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							cueImages[imgIndex].style.left = (x - offset) + "px";
 							if (o.params.bEventsDump) {
-								o.o.log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
+								o.log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
 							}								
 						}
 					} else {
-						o.o.log.warn("Show Cue: zero length cue - this is probably wrong.");			
+						o.log.warn("Show Cue: zero length cue - this is probably wrong.");			
 					}
 				}
 			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
@@ -99,7 +104,7 @@ function InitCues(o) {
 					track.mode = 'disabled';
 				}
 
-				if (cfg && o.cfg.configuration) {
+				if (o.cfg && o.cfg.configuration) {
 					bSysSubsEnabled = o.cfg.configuration.subtitlesEnabled;
 					if (bSysSubsEnabled) {
 						if (track.mode === 'showing') {
@@ -132,7 +137,7 @@ function InitCues(o) {
 
 			if (o.params.bEventsDump) {
 //<![CDATA[
-				o.o.log.info("Parse SCTE: data: " + s);
+				o.log.info("Parse SCTE: data: " + s);
 //]]>		
 			}
 			
@@ -150,7 +155,7 @@ function InitCues(o) {
 						r = "No DOMParser object";
 					}
 				} else {
-					o.o.log.info("Parsing partial scte data");
+					o.log.info("Parsing partial scte data");
 					r = window.atob(s.replace(/\s/g,'').substr(1));
 				}
 			} catch (err) {
@@ -208,6 +213,30 @@ function InitCues(o) {
 			}
 		}
 	};		
-	
+
+	return {
+		CheckSubs		: function() {
+			if (bSysSubsEnabled) {
+				o.tvui.ShowSubs("nosubs");
+			} else {
+				o.tvui.ShowSubs("hidden");
+			}
+		},
+		
+		OverrideSubs		: function (v) {
+			o.params.overrideSubs = v;
+		},
+		
+		ToggleOverrideSub	: function () {
+			if (o.params.overrideSubs === 'on'){
+				o.params.overrideSubs = 'off';
+			} else if (o.params.overrideSubs === 'off'){
+				o.params.overrideSubs = 'on';
+			} else {
+				o.params.overrideSubs = 'off';
+			}
+		}
+		
+	}
 }
 

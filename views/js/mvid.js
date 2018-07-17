@@ -169,14 +169,11 @@ mVid.start = function () {
 		}
 	}
 
-	// TODO: Remove this.bSysSubsEnabled = false;
     try {
 		if (oipfObjectFactory.isObjectSupported('application/oipfConfiguration')) {
 			this.cfg = oipfObjectFactory.createConfigurationObject();
 			if (this.cfg.configuration) {
 				this.Log.info("oipfConfiguration: " + JSON.stringify(this.cfg.configuration));
-				// TODO: Remove this.bSysSubsEnabled = this.cfg.configuration.subtitlesEnabled;
-				// TODO: Remove this.Log.info("System Subs: " + (this.bSysSubsEnabled ? "Enabled" : "Disabled"));
 			} else {
 				this.Log.warn("oipfConfiguration null");
 			}
@@ -682,13 +679,8 @@ mVid.setContentSourceAndLoad = function () {
 		this.tvui.ShowEncrypted("");
 	}
 	
-	//TODO: Remove
-	//if (this.bSysSubsEnabled) {
-	//	this.tvui.ShowSubs("nosubs");
-	//} else {
-	//	this.tvui.ShowSubs("hidden");
-	//}
-	
+	this.cues.CheckSubs();
+		
 	this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
 
@@ -1509,21 +1501,15 @@ mVid.cmndLog = function () {
 }
 
 mVid.cmndTogSubs = function () {
-	if (this.params.overrideSubs === 'on'){
-		this.params.overrideSubs = 'off';
-	} else if (this.params.overrideSubs === 'off'){
-		this.params.overrideSubs = 'on';
-	} else {
-		this.params.overrideSubs = 'off';
-	}
+	this.cues.ToggleOverrideSub();
 }
 
 mVid.cmndSubsOn = function () {
-	this.params.overrideSubs = 'on';
+	this.cues.OverrideSubs('on');
 }
 
 mVid.cmndSubsOff = function () {
-	this.params.overrideSubs = 'off';
+	this.cues.OverrideSubs('off');
 }
 
 mVid.cmndJumpToEnd = function () {
