@@ -118,51 +118,6 @@ const event_value = "1"
 mVid.startTime = Date.now();
 
 
-// --- Log object ---
-mVid.Log = {};
-
-mVid.Log.init = function (logDiv) {
-	this.lastLogTime 	= Date.now();
-	this.logStr 		= "";
-};
-
-mVid.Log.error = function (message) {
-	this._write("ERROR: " + message, "error");
-	console.log("ERROR: " + message);
-};
-
-mVid.Log.warn = function (message) {
-	this._write("WARN: " + message, "warn");
-	console.log("WARN: " + message);
-};
-
-mVid.Log.info = function (message) {
-	this._write("INFO: " + message, "info");
-};
-
-mVid.Log.debug = function (message) {
-	this._write("DEBUG: " + message, "debug");
-};
-
-mVid.Log._write = function(message, cssClass) {
-	var log, nextLog, logText, elapsedTime;
-	
-	elapsedTime = ("000000" + (Date.now() - this.lastLogTime)).slice(-6);
-	this.lastLogTime = Date.now();
-	
-	logText = elapsedTime + "ms:" + message;
-	this.logStr += logText + "\r\n";
-	
-	var out = "cssClass=" + cssClass + "&";
-	out += "logText=" + logText;
-	
-	// send a xhr/ajax POST request with the serialized media events
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", "/log", true);
-	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
-	xhttp.send(out);
-};
-
 
 mVid.start = function () {
     var appMan 		= null;
@@ -172,11 +127,11 @@ mVid.start = function () {
 	this.EOPlayback = false;
 	this.bAttemptStallRecovery = false;
 	
-	this.socket = io();
-
 	this.app = null;
 	
-	this.Log.init(e("log"));
+	this.srvComms 	= InitServerComms();
+	this.Log 		= InitLog(this.srvComms);
+	
 	this.Log.info("app loaded");
 
 	this.displayBrowserInfo();
@@ -627,12 +582,11 @@ mVid.setUpCues = function () {
 
 mVid.reload = function () {
 	this.cmndLog();
-    this.socket.on("disconnect", function(){
+	
+	this.srvComms.Disconnect(function (){
         console.log("client disconnected from server");
 		location.reload();
-    });
-
-	this.socket.disconnect();	
+	});
 }
 
 mVid.setChannel = function (idx) {
@@ -720,7 +674,7 @@ mVid.createVideo = function (videoId) {
 		video.style.backgroundColor	= this.windowVideoObjects[videoId].bcol;
 		video.style.position	= "absolute";
 		
-		e("player-container").style.backgroundColor = "cyan";
+		// e("player-container").style.backgroundColor = "cyan";
 	}
 	
 	return video;
@@ -781,7 +735,7 @@ mVid.updateBufferStatus = function(videoId, annot) {
 	var videoBuffer 	= e(videoId + "-bufferBar");
 	var headroomBuffer 	= e(videoId + "-headroomBar");
 	var video 			= e(videoId);
-
+	
 	
 	if (video)
 	{
@@ -809,12 +763,9 @@ mVid.updateBufferStatus = function(videoId, annot) {
 				if (buffD < 0) {
 					buffD = 0;
 				}
-				videoBuffer.value 		= buffV;
-				headroomBuffer.value 	= buffD;
-			} else {
-				videoBuffer.value 		= 0;			
-				headroomBuffer.value 	= 0;			
 			}
+			videoBuffer.value 		= buffV;
+			headroomBuffer.value 	= buffD;
 		} else
 		{
 			videoBuffer.value 		= 0;	
@@ -824,44 +775,7 @@ mVid.updateBufferStatus = function(videoId, annot) {
 		}
 	}
 	
-	// Send state over io sockets
-	var pbObj = "\"playerBufferObj\": {";
-	pbObj += "\"id\":" + JSON.stringify(videoId) + ",";
-	if (video)	{
-		pbObj += "\"class\":" + JSON.stringify(videoBuffer.getAttribute("class")) + ",";
-		pbObj += "\"value\":" + JSON.stringify('' + buffV) + ","; 
-		pbObj += "\"max\":" + JSON.stringify('' + videoBuffer.max) + ",";
-		pbObj += "\"currentTime\":" + JSON.stringify('' + video.currentTime) + ",";
-		pbObj += "\"resumeFrom\":" + JSON.stringify('' + video.resumeFrom) + ",";
-		pbObj += "\"duration\":" + JSON.stringify('' + video.duration) + ",";
-	} else {
-		pbObj += "\"class\":\"bufferBar\",";
-		pbObj += "\"value\":\"0\","; 
-		pbObj += "\"max\":\"0\",";
-		pbObj += "\"currentTime\":\"0\",";
-		pbObj += "\"resumeFrom\":\"0\",";
-		pbObj += "\"duration\":\"0\",";	
-	}
-	pbObj += "\"time\":" + JSON.stringify('' + (Date.now() - this.startTime) / 1000) + ",";
-	pbObj += "\"annotation\":" + JSON.stringify(annot);
-	pbObj += "}";
-	
-	var hbObj = "\"headroomBufferObj\": {";
-	hbObj += "\"id\":" + JSON.stringify(videoId) + ",";
-	if (video)	{
-		hbObj += "\"class\":" + JSON.stringify(headroomBuffer.getAttribute("class")) + ",";
-		hbObj += "\"value\":" + JSON.stringify('' + buffD) + ",";
-		hbObj += "\"max\":" + JSON.stringify('' + headroomBuffer.max);
-	} else {
-		hbObj += "\"class\":\"bufferBar\",";
-		hbObj += "\"value\":\"0\","; 
-		hbObj += "\"max\":\"0\"";
-	}
-	hbObj += "}";
-	
-	var out = "{" + pbObj + "," + hbObj + "}";
-
-	this.socket.emit('bufferEvent', out);
+	this.srvComms.EmitBufferEvent(videoId, video, videoBuffer, headroomBuffer, (Date.now() - this.startTime) / 1000, annot);
 }
 
 mVid.updatePlaybackBar = function(videoId) {
@@ -884,12 +798,7 @@ mVid.__updatePlaybackBar = function(t, d) {
 		videoBar.max = 100;	
 	}
 
-	var out = "{";
-	out += "\"value\":" + JSON.stringify('' + videoBar.value) + ",";
-	out += "\"max\":" + JSON.stringify('' + videoBar.max);
-	out += "}";
-	
-	this.socket.emit('playbackOffset', out);
+	this.srvComms.EmitPlaybackOffset(videoBar.value, videoBar.max);
 }
 
 mVid.showBufferingIcon = function (bBuffering) {
@@ -919,26 +828,8 @@ mVid.setPlayingState = function (state) {
 	}
 }
 
-mVid.postStatusUpdate = function (id, text) {
-	var out = "id=" + id + "&" + "text=" + text;
-	this._post("/status", out);
-}
-
-mVid.postAdTrans = function (id, time) {
-	var out = "id=" + id + "&" + "time=" + time;
-	this._post("/adtrans", out);
-}
-
-mVid._post = function (url, out) {
-	// send a xhr/ajax POST request with the serialized media events
-	var xhttp = new XMLHttpRequest();
-	xhttp.open("POST", url, true);
-	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
-	xhttp.send(out);
-}
-
 mVid.statusTableText = function (videoId, textEntry, text) {
-	this.postStatusUpdate("e_" + videoId + "_" + textEntry, text);
+	this.srvComms.StatusUpdate("e_" + videoId + "_" + textEntry, text);
 }
 
 mVid.getCurrentBufferingVideo = function () {
@@ -1025,7 +916,7 @@ mVid.skipBufferingToNextVideo = function () {
 		this.cnt.curBuffIdx = 0;
 	}
 	this.Log.info("skipBufferingToNextVideo: " + this.cnt.curBuffIdx);
-	this.postStatusUpdate("BufferIdx", this.cnt.curBuffIdx);
+	this.srvComms.StatusUpdate("BufferIdx", this.cnt.curBuffIdx);
 }
 
 mVid.skipPlayingToNextVideo = function () {
@@ -1033,7 +924,7 @@ mVid.skipPlayingToNextVideo = function () {
 		this.cnt.curPlayIdx = 0;
 	}
 	this.Log.info("skipPlayingToNextVideo: " + this.cnt.curPlayIdx);
-	this.postStatusUpdate("PlayingIdx", this.cnt.curPlayIdx);
+	this.srvComms.StatusUpdate("PlayingIdx", this.cnt.curPlayIdx);
 }
 
 mVid.isMainFeatureVideo = function (video) {
@@ -1127,7 +1018,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	if (freshVideo) {
-		this.postStatusUpdate("PlayCount", ++this.playCount);
+		this.srvComms.StatusUpdate("PlayCount", ++this.playCount);
 	}
 	
 	// Purge previous video
@@ -1656,7 +1547,7 @@ mVid.OnCheckAdTransition = function () {
 		var playTransMS = Date.now() - vid.timestampStartPlay - this.transitionThresholdMS;
 		playTransMS = (playTransMS > 0) ? playTransMS : 0;
 		this.statusTableText(vid.id, "Play trans", playTransMS + "ms");
-		this.postAdTrans(vid.id, playTransMS);
+		this.srvComms.AdTrans(vid.id, playTransMS);
 	} else {
 		this.adTimerId = setTimeout(this.OnCheckAdTransition.bind(this), AD_TRANS_TIMEOUT_MS);
 	}
@@ -1860,15 +1751,10 @@ mVid.cmndSeekBACK = function () {
 }
 
 mVid.cmndLog = function () {
-	var xhttp = new XMLHttpRequest();
 	var fileName = commonUtils.extractDevName(navigator.userAgent) + "_" + Date.now() + ".log";
 
 	this.Log.info("Save file : " + fileName); 
-	
-	// send a xhr/ajax POST request with the serialized media events
-	xhttp.open("POST", "/savelog?filename=" + fileName, true);
-	xhttp.setRequestHeader("Content-type", "text/plain"); 
-	xhttp.send(this.Log.logStr);
+	this.Log.SaveLog(fileName);
 }
 
 mVid.cmndTogSubs = function () {
@@ -2017,7 +1903,7 @@ window.onload = function () {
 window.onbeforeunload = function () {
 	mVid.Log.warn("Unload page");
 	mVid.cmndLog();
-	mVid.socket.disconnect();
+	mVid.srvComms.Disconnect();
 }
 // ---------------------------------------------------------------------- //
 // ---------------------------------------------------------------------- //
