@@ -8,7 +8,7 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetCurrentPlayingVideo, fUpdateBufferStatus) {
+function InitCues(o) {
 
 	//const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
 	const event_schemeIdUri = "urn:scte:scte35:2014:xml+bin"
@@ -34,8 +34,8 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 		
 		var p = null;
 		
-		if (fGetCurrentPlayingVideo) {
-			p = fGetCurrentPlayingVideo();
+		if (o.fGetCurrentPlayingVideo) {
+			p = o.fGetCurrentPlayingVideo();
 		}
 		
 		if (!p || !p.duration || isNaN(p.duration)) {
@@ -57,11 +57,11 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 		for (var t = 0; t < tracks.length; t++) {
 			track = tracks[t];
 
-			if (bEventsDump && track)
+			if (o.params.bEventsDump && track)
 			{
-				log.info("Track #" + t); 
-				log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
-				log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
+				o.o.log.info("Track #" + t); 
+				o.o.log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				o.o.log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			}
 			
 			if (	track && track.cues &&
@@ -83,33 +83,33 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 							
 							cueImages[imgIndex].setAttribute("class", "ad-arrow");
 							cueImages[imgIndex].style.left = (x - offset) + "px";
-							if (bEventsDump) {
-								log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
+							if (o.params.bEventsDump) {
+								o.o.log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
 							}								
 						}
 					} else {
-						log.warn("Show Cue: zero length cue - this is probably wrong.");			
+						o.o.log.warn("Show Cue: zero length cue - this is probably wrong.");			
 					}
 				}
 			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
 				// Force subs on?
-				if (overrideSubs === 'on'){
+				if (o.params.overrideSubs === 'on'){
 					track.mode = 'showing';
-				} else if (overrideSubs === 'off'){
+				} else if (o.params.overrideSubs === 'off'){
 					track.mode = 'disabled';
 				}
 
-				if (cfg && cfg.configuration) {
-					bSysSubsEnabled = cfg.configuration.subtitlesEnabled;
+				if (cfg && o.cfg.configuration) {
+					bSysSubsEnabled = o.cfg.configuration.subtitlesEnabled;
 					if (bSysSubsEnabled) {
 						if (track.mode === 'showing') {
-							tvui.ShowSubs("subson");
+							o.tvui.ShowSubs("subson");
 						} else {
-							tvui.ShowSubs("subsoff");
+							o.tvui.ShowSubs("subsoff");
 						}
 					}
 				} else {
-					tvui.ShowSubs("hidden");
+					o.tvui.ShowSubs("hidden");
 				}
 			}
 		}
@@ -130,14 +130,14 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 			s = "<scte35:Signal><scte35:Binary>/TWFpbiBDb250ZW50</scte35:Binary></scte35:Signal>"; 
 			******************************/
 
-			if (bEventsDump) {
+			if (o.params.bEventsDump) {
 //<![CDATA[
-				log.info("Parse SCTE: data: " + s);
+				o.o.log.info("Parse SCTE: data: " + s);
 //]]>		
 			}
 			
 			try {
-				if (!bPartialSCTE) {
+				if (!o.params.bPartialSCTE) {
 					if (window.DOMParser) {
 						// Add scte namespace, used by xml parser
 						s = "<" + "wrapper  xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"" + ">" + s + "<" + "/wrapper" + ">";
@@ -150,15 +150,15 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 						r = "No DOMParser object";
 					}
 				} else {
-					log.info("Parsing partial scte data");
+					o.o.log.info("Parsing partial scte data");
 					r = window.atob(s.replace(/\s/g,'').substr(1));
 				}
 			} catch (err) {
 				r = "Event Data Error";
 			}
 			
-			if (bEventsDump) {
-				log.info("Parsed SCTE: " + r);
+			if (o.params.bEventsDump) {
+				o.log.info("Parsed SCTE: " + r);
 			}
 			
 			return r;
@@ -173,8 +173,8 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 
 				ShowCues();
 				
-				if (bEventsDump) {
-					log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+				if (o.params.bEventsDump) {
+					o.log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
 				}
 				
 				for (var i = 0; i < textTrack.activeCues.length; ++i) {
@@ -186,19 +186,19 @@ function InitCues(log, tvui, bEventsDump, overrideSubs, cfg, bPartialSCTE, fGetC
 						var cd = e("cuedata");
 						var s = parseSCTE(cue.data);
 						
-						if (bEventsDump) {
-							log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
+						if (o.params.bEventsDump) {
+							o.log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
 						}							
 						f.setAttribute("class", "playerIcon flag");
-						if (fUpdateBufferStatus) {
-							fUpdateBufferStatus(mainVideo.id, "Event: Cue Start");
+						if (o.fUpdateBufferStatus) {
+							o.fUpdateBufferStatus(mainVideo.id, "Event: Cue Start");
 						}
 						cd.innerHTML = "Cue Event: " + s;
 						
 						cue.onexit = function (ev) {
 							f.setAttribute("class", "playerIcon");
-							if (fUpdateBufferStatus) {
-								fUpdateBufferStatus(mainVideo.id, "Event: Cue End");
+							if (o.fUpdateBufferStatus) {
+								o.fUpdateBufferStatus(mainVideo.id, "Event: Cue End");
 							}
 							cd.innerHTML = "";
 						}

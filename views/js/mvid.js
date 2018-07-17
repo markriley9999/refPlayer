@@ -1,7 +1,7 @@
 // --- Some helpers first --- //
 var commonUtils = new UTILS();
 
-e = function (id) {
+function e(id) {
   return document.getElementById(id);
 }
 
@@ -121,15 +121,17 @@ mVid.start = function () {
 	this.displayBrowserInfo();
 
 	// Parse query params
-	this.overrideSubs 	= commonUtils.getUrlVars()["subs"] || "";
-	this.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
-	this.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false; 
-	this.bEventsDump	= commonUtils.getUrlVars()["eventdump"] || false;
-	this.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
+	this.params = [];
 	
-	if (this.overrideSubs)
+	this.params.overrideSubs 	= commonUtils.getUrlVars()["subs"] || "";
+	this.params.bCheckResume 	= commonUtils.getUrlVars()["checkresume"] || false;
+	this.params.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false; 
+	this.params.bEventsDump		= commonUtils.getUrlVars()["eventdump"] || false;
+	this.params.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
+	
+	if (this.params.overrideSubs)
 	{
-        this.Log.warn("Force subtitles: " + this.overrideSubs);
+        this.Log.warn("Force subtitles: " + this.params.overrideSubs);
 	}
 	
     try {
@@ -236,7 +238,7 @@ mVid.start = function () {
 				
 				if (playObj.timeline && playObj.timeline.selector) {
 					that.broadcast.initMediaSync(playObj.timeline.selector);
-					if (that.bWindowedObjs) {
+					if (that.params.bWindowedObjs) {
 						that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
 					}
 					that.broadcast.contentDuration = playObj.contentDuration;
@@ -252,6 +254,21 @@ mVid.start = function () {
 		} else {
 			that.resetStallTimer();
 		
+			var mainVideo = that.createVideo("mVid-mainContent");
+
+			that.cues = InitCues(
+				{
+					log		: that.Log, 
+					tvui	: that.tvui, 
+					params	: that.params, 
+					cfg		: that.cfg, 
+					fGetCurrentPlayingVideo	: that.getCurrentPlayingVideo.bind(that),
+					fUpdateBufferStatus		: that.updateBufferStatus.bind(that)
+				}
+			);
+
+			that.tvui.ShowPlayingState(PLAYSTATE_STOP);
+					
 			// Clear key
 			const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
@@ -267,19 +284,6 @@ mVid.start = function () {
 				}
 			];
 
-			var mainVideo = that.createVideo("mVid-mainContent");
-
-			// TODO: So init params - too many!!!!
-			that.cues = InitCues(
-				that.Log, 
-				that.tvui, 
-				that.bEventsDump, that.overrideSubs, that.cfg, that.bPartialSCTE, 
-				that.getCurrentPlayingVideo.bind(that),
-				that.updateBufferStatus.bind(that)
-			);
-
-			that.tvui.ShowPlayingState(PLAYSTATE_STOP);
-					
 			if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
 				SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
 					that.Log.info(p);
@@ -433,7 +437,7 @@ mVid.createVideo = function (videoId) {
 	// Allow CORS 
 	video.setAttribute("crossOrigin", "anonymous");
 	
-	if (!this.bWindowedObjs) {
+	if (!this.params.bWindowedObjs) {
 		video.style.display = "none";
 		video.setAttribute("poster", "bitmaps/bground.jpg");
 	}
@@ -463,7 +467,7 @@ mVid.createVideo = function (videoId) {
 	video.bPlayEventFired			= false;
 	video.bAdTransStartedPolling	= false;
 	
-	if (this.bWindowedObjs) {
+	if (this.params.bWindowedObjs) {
 		video.style.display 	= "block";
 		video.style.top  		= this.windowVideoObjects[videoId].top;
 		video.style.left 		= this.windowVideoObjects[videoId].left;
@@ -731,7 +735,7 @@ mVid.setSourceAndLoad = function (video, src, type) {
 		if (source.type) {
 			bSetSource = false;
 			if (video.currentTime != video.resumeFrom) {
-				if (this.bCheckResume) {
+				if (this.params.bCheckResume) {
 					this.Log.warn(video.id + " video.currentTime - realign from " + video.currentTime + " to " + video.resumeFrom);
 					video.currentTime = video.resumeFrom;
 				}
@@ -790,7 +794,7 @@ mVid.switchVideoToPlaying = function(freshVideo, previousVideo) {
 	}
 	
 	// Set the display CSS property of the previous media element to none.
-	if (previousVideo && !this.bWindowedObjs) {
+	if (previousVideo && !this.params.bWindowedObjs) {
 		previousVideo.style.display = "none";
 	}
 	
@@ -1505,21 +1509,21 @@ mVid.cmndLog = function () {
 }
 
 mVid.cmndTogSubs = function () {
-	if (this.overrideSubs === 'on'){
-		this.overrideSubs = 'off';
-	} else if (this.overrideSubs === 'off'){
-		this.overrideSubs = 'on';
+	if (this.params.overrideSubs === 'on'){
+		this.params.overrideSubs = 'off';
+	} else if (this.params.overrideSubs === 'off'){
+		this.params.overrideSubs = 'on';
 	} else {
-		this.overrideSubs = 'off';
+		this.params.overrideSubs = 'off';
 	}
 }
 
 mVid.cmndSubsOn = function () {
-	this.overrideSubs = 'on';
+	this.params.overrideSubs = 'on';
 }
 
 mVid.cmndSubsOff = function () {
-	this.overrideSubs = 'off';
+	this.params.overrideSubs = 'off';
 }
 
 mVid.cmndJumpToEnd = function () {
