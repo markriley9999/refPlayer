@@ -43,8 +43,6 @@ mVid.cnt.curBuffIdx = 0;
 mVid.cnt.curPlayIdx = 0;
 mVid.cnt.list = [];
 
-mVid.cueImages = [];
-
 
 // Play states
 const PLAYSTATE_STOP	= 0;
@@ -65,15 +63,6 @@ const PRELOAD_NEXT_AD_S = 5;
 
 const CONTENT_FPS = 25;
 
-
-// Icon table
-mVid.playIconTable = [
-	{	state: PLAYSTATE_STOP, 	icon: "player-stop"	},
-	{	state: PLAYSTATE_PLAY, 	icon: "player-play"	},
-	{ 	state: PLAYSTATE_PAUSE, icon: "player-pause"},
-	{	state: PLAYSTATE_REW, 	icon: "player-rew"	},
-	{	state: PLAYSTATE_FWD, 	icon: "player-fwd"	}
-];
 
 // Error codes name table
 mVid.eventErrorCodesMappingTable = [
@@ -109,12 +98,6 @@ mVid.windowVideoObjects = {
 	"mVid-broadcast" 	: 	{ top : "224px", 	left	: "496px", 	width	: "672px", 	height : "426px", bcol	: "grey" }
 }
 
-// Events
-//const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
-const event_schemeIdUri = "urn:scte:scte35:2014:xml+bin"
-
-const event_value = "1"
-
 mVid.startTime = Date.now();
 
 
@@ -129,6 +112,7 @@ mVid.start = function () {
 	
 	this.app = null;
 	
+	this.tvui		= InitTVUI();
 	this.srvComms 	= InitServerComms();
 	this.Log 		= InitLog(this.srvComms);
 	
@@ -183,14 +167,14 @@ mVid.start = function () {
 		}
 	}
 
-	this.bSysSubsEnabled = false;
+	// TODO: Remove this.bSysSubsEnabled = false;
     try {
 		if (oipfObjectFactory.isObjectSupported('application/oipfConfiguration')) {
 			this.cfg = oipfObjectFactory.createConfigurationObject();
 			if (this.cfg.configuration) {
 				this.Log.info("oipfConfiguration: " + JSON.stringify(this.cfg.configuration));
-				this.bSysSubsEnabled = this.cfg.configuration.subtitlesEnabled;
-				this.Log.info("System Subs: " + (this.bSysSubsEnabled ? "Enabled" : "Disabled"));
+				// TODO: Remove this.bSysSubsEnabled = this.cfg.configuration.subtitlesEnabled;
+				// TODO: Remove this.Log.info("System Subs: " + (this.bSysSubsEnabled ? "Enabled" : "Disabled"));
 			} else {
 				this.Log.warn("oipfConfiguration null");
 			}
@@ -202,7 +186,7 @@ mVid.start = function () {
 	this.showPlayrange();
 	
 	if (location.protocol === 'https:') {
-		e("padlock").setAttribute("class", "playerIcon showsecure");
+		this.ShowSecure(true);
 	}
 
 	getCookie = function (cname) {
@@ -236,13 +220,6 @@ mVid.start = function () {
 
 		
 		window.setInterval( function() {
-			var elTimer = e("videoTimer");
-
-			// elTimer.innerHTML = ("00000000" + (Date.now() - that.startTime)).slice(-8);
-			if (elTimer) {
-				elTimer.innerHTML = that.msToTime(Date.now() - that.startTime);
-			}
-			
 			that.updateAllBuffersStatus();	
 
 		}, 1000);
@@ -292,8 +269,16 @@ mVid.start = function () {
 
 			var mainVideo = that.createVideo("mVid-mainContent");
 
-			that.setUpCues();
-			that.setPlayingState(PLAYSTATE_STOP);
+			// TODO: So init params - too many!!!!
+			that.cues = InitCues(
+				that.Log, 
+				that.tvui, 
+				that.bEventsDump, that.overrideSubs, that.cfg, that.bPartialSCTE, 
+				that.getCurrentPlayingVideo.bind(that),
+				that.updateBufferStatus.bind(that)
+			);
+
+			that.tvui.ShowPlayingState(PLAYSTATE_STOP);
 					
 			if (typeof navigator.requestMediaKeySystemAccess !== 'undefined') {
 				SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
@@ -305,7 +290,7 @@ mVid.start = function () {
 				that.bEMESupport = true;
 			} else {
 				that.setContentSourceAndLoad();
-				e("encrypted").setAttribute("class", "playerIcon noeme");
+				that.tvui.ShowEncrypted("noeme");
 				that.bEMESupport = false;
 			}
 		}
@@ -390,194 +375,7 @@ mVid.procPlaylist = function (ch, playObj) {
 	
 	this.bPurgeMain = (playObj.special_purgemain === "true") || false;
 	
-	e("currentChannel") && (e("currentChannel").innerHTML = "Test " + ch + " - " + playObj.channelName);
-}
-
-mVid.setUpCues = function () {
-
-	var mainVideo = e("mVid-mainContent");
-	var that = this;
-	var trackDispatchType = event_schemeIdUri + " " + event_value;
-	
-	function arrayBufferToString(buffer) {
-		var arr = new Uint8Array(buffer);
-		var str = String.fromCharCode.apply(String, arr);
-		return str;
-	}
-
-	function showCues () {
-		
-		var p = that.getCurrentPlayingVideo();
-		
-		if (!p || !p.duration || isNaN(p.duration)) {
-			return;
-		}
-		
-		var imgobj = e("ev-arrow");
-		
-		var c = e("playbackBar").getBoundingClientRect();
-		var offset = imgobj.getBoundingClientRect().width / 2;
-
-		var x;
-		var coef = (c.width / p.duration);
-		var imgIndex;
-		
-		var tracks = p.textTracks;
-		var track;
-
-		for (var t = 0; t < tracks.length; t++) {
-			track = tracks[t];
-
-			if (that.bEventsDump && track)
-			{
-				that.Log.info("Track #" + t); 
-				that.Log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
-				that.Log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
-			}
-			
-			if (	track && track.cues &&
-					(track.kind === 'metadata') && 
-					(track.inBandMetadataTrackDispatchType === trackDispatchType) && 
-					(track.cues.length > 0)) {
-				for (var i = 0; i < track.cues.length; ++i) {
-					var cue = track.cues[i];
-
-					if ((cue !== null) && (cue.endTime > cue.startTime)) {
-						if (cue.startTime > 0) {
-							x =  (coef * cue.startTime) + c.left;
-							imgIndex = Math.floor(x / 16);
-							
-							if (!that.cueImages[imgIndex]) {
-								that.cueImages[imgIndex] = imgobj.cloneNode(false);
-								e("playrange").appendChild(that.cueImages[imgIndex]);
-							}
-							
-							that.cueImages[imgIndex].setAttribute("class", "ad-arrow");
-							that.cueImages[imgIndex].style.left = (x - offset) + "px";
-							if (that.bEventsDump) {
-								that.Log.info("(" + track.kind + ") Show Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
-							}								
-						}
-					} else {
-						that.Log.warn("Show Cue: zero length cue - this is probably wrong.");			
-					}
-				}
-			} else if (track && ((track.kind === 'subtitles') || (track.kind === 'captions'))) {
-				var s = e("subs");
-				
-				// Force subs on?
-				if (that.overrideSubs === 'on'){
-					track.mode = 'showing';
-				} else if (that.overrideSubs === 'off'){
-					track.mode = 'disabled';
-				}
-
-				if (that.cfg && that.cfg.configuration) {
-					that.bSysSubsEnabled = that.cfg.configuration.subtitlesEnabled;
-					if (that.bSysSubsEnabled) {
-						if (track.mode === 'showing') {
-							s.setAttribute("class", "playerIcon subson");
-						} else {
-							s.setAttribute("class", "playerIcon subsoff");
-						}
-					}
-				} else {
-					s.setAttribute("class", "playerIcon hidden");
-				}
-			}
-		}
-	}
-
-	window.setInterval( function() {
-		showCues();	
-	}, 10000);	
-		
-	mainVideo.textTracks.onaddtrack = function (event) {
-		var textTrack = event.track;
-		
-		function parseSCTE(d) {
-			var s = arrayBufferToString(d);
-			var r;
-			
-			/* --- Example scte data --- *
-			s = "<scte35:Signal><scte35:Binary>/TWFpbiBDb250ZW50</scte35:Binary></scte35:Signal>"; 
-			******************************/
-
-			if (that.bEventsDump) {
-//<![CDATA[
-				that.Log.info("Parse SCTE: data: " + s);
-//]]>		
-			}
-			
-			try {
-				if (!that.bPartialSCTE) {
-					if (window.DOMParser) {
-						// Add scte namespace, used by xml parser
-						s = "<" + "wrapper  xmlns:scte35=\"urn:scte:scte35:2014:xml+bin\"" + ">" + s + "<" + "/wrapper" + ">";
-					
-						var parser = new DOMParser();
-						var x = parser.parseFromString(s, "text/xml");
-						var bn = x.getElementsByTagNameNS("urn:scte:scte35:2014:xml+bin", "Binary")[0].childNodes[0].nodeValue;
-						r = window.atob(bn.replace(/\s/g,'').substr(1));
-					} else {
-						r = "No DOMParser object";
-					}
-				} else {
-					that.Log.info("Parsing partial scte data");
-					r = window.atob(s.replace(/\s/g,'').substr(1));
-				}
-			} catch (err) {
-				r = "Event Data Error";
-			}
-			
-			if (that.bEventsDump) {
-				that.Log.info("Parsed SCTE: " + r);
-			}
-			
-			return r;
-		}
-		
-		if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType)) {
-			
-			showCues();
-
-			textTrack.oncuechange = function () {
-				var cue;
-
-				showCues();
-				
-				if (that.bEventsDump) {
-					that.Log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
-				}
-				
-				for (var i = 0; i < textTrack.activeCues.length; ++i) {
-
-					cue = textTrack.activeCues[i];
-
-					if (cue && (cue.endTime > cue.startTime)) {
-						var f = e("flag");
-						var cd = e("cuedata");
-						var s = parseSCTE(cue.data);
-						
-						if (that.bEventsDump) {
-							that.Log.info("Active Cue:  Cue - start: " + cue.startTime + " end: " +  cue.endTime + " id: " + cue.id + " data: " + arrayBufferToString(cue.data));
-						}							
-						f.setAttribute("class", "playerIcon flag");
-						that.updateBufferStatus(mainVideo.id, "Event: Cue Start");
-						cd.innerHTML = "Cue Event: " + s;
-						
-						cue.onexit = function (ev) {
-							f.setAttribute("class", "playerIcon");
-							that.updateBufferStatus(mainVideo.id, "Event: Cue End");
-							cd.innerHTML = "";
-						}
-						return;
-					}
-				}
-			}
-		}
-	};		
-	
+	this.tvui.ShowCurrentChannel(ch, playObj.channelName);
 }
 
 mVid.reload = function () {
@@ -673,8 +471,6 @@ mVid.createVideo = function (videoId) {
 		video.style.height 		= this.windowVideoObjects[videoId].height;
 		video.style.backgroundColor	= this.windowVideoObjects[videoId].bcol;
 		video.style.position	= "absolute";
-		
-		// e("player-container").style.backgroundColor = "cyan";
 	}
 	
 	return video;
@@ -787,7 +583,7 @@ mVid.updatePlaybackBar = function(videoId) {
 }
 
 mVid.__updatePlaybackBar = function(t, d) {
-	var videoBar 		= e("playbackBar");
+	var videoBar = e("playbackBar");
 
 	if (d && (d > 0)) {
 		videoBar.max = d;
@@ -803,28 +599,8 @@ mVid.__updatePlaybackBar = function(t, d) {
 
 mVid.showBufferingIcon = function (bBuffering) {
 	if (this.bShowBufferingIcon != bBuffering) {
-		var bufferingIcon = e("player-buffering");
-		
-		this.bShowBufferingIcon = bBuffering;
-			
-		if (bBuffering) {
-				bufferingIcon.setAttribute("class", "playerBufferingIcon rotate");
-		} else {
-				bufferingIcon.setAttribute("class", "playerBufferingIcon");			
-		}			
-	}
-}
-
-mVid.setPlayingState = function (state) {
-	for (var s in this.playIconTable) {
-		var playEl = e(this.playIconTable[s].icon);
-		if (playEl) {
-			if (this.playIconTable[s].state === state) {
-				playEl.setAttribute("class", "playerIcon hilite");
-			} else {
-				playEl.setAttribute("class", "playerIcon");
-			}
-		}
+		this.bShowBufferingIcon = bBuffering;		
+		this.tvui.ShowBuffering(bBuffering);
 	}
 }
 
@@ -899,14 +675,15 @@ mVid.setContentSourceAndLoad = function () {
 	this.Log.info(video.id + " setContentSourceAndLoad - curBuffIdx: " + this.cnt.curBuffIdx);
 	
 	if (this.bEMESupport) {
-		e("encrypted").setAttribute("class", "playerIcon");
+		this.tvui.ShowEncrypted("");
 	}
 	
-	if (this.bSysSubsEnabled) {
-		e("subs").setAttribute("class", "playerIcon nosubs");
-	} else {
-		e("subs").setAttribute("class", "playerIcon hidden");
-	}
+	//TODO: Remove
+	//if (this.bSysSubsEnabled) {
+	//	this.tvui.ShowSubs("nosubs");
+	//} else {
+	//	this.tvui.ShowSubs("hidden");
+	//}
 	
 	this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
@@ -1056,41 +833,11 @@ mVid.getBufferedAmount = function (video) {
 mVid.showPlayrange = function () {
 	var p = this.getCurrentPlayingVideo();
 	
-	var c = e("playbackBar").getBoundingClientRect();
-	var offset = e("ad-start-point").getBoundingClientRect().width / 2;
-
-	var x1, x2;
-	
 	if (!p || !this.isMainFeatureVideo(p)) {
-		this._showPlayrange(0,0);
+		this.tvui.ShowPlayrange(0,0,0);
 	} else {
-		this._showPlayrange(p.resumeFrom, p.duration);
+		this.tvui.ShowPlayrange(p.resumeFrom, p.duration, this.getTransitionPoint().v);
 	}
-	
-	e("ad-start-point").style.left 	= (x1 - offset) + "px";
-	e("ad-resume-point").style.left = (x2 - offset) + "px";			
-}
-
-mVid._showPlayrange = function (r, d) {
-	var c = e("playbackBar").getBoundingClientRect();
-	var offset = e("ad-start-point").getBoundingClientRect().width / 2;
-
-	var x1, x2;
-	
-	if (r >= d) {
-		x1 = c.left;
-		x2 = c.right;			
-	} else {
-		var coef = (c.width / d);
-		var t = this.getTransitionPoint().v;
-		x1 =  (coef * r) + c.left;
-		var endP = (r + t > d) ? d : r + t;
-		
-		x2 =  (coef * endP) + c.left;
-	}
-	
-	e("ad-start-point").style.left 	= (x1 - offset) + "px";
-	e("ad-resume-point").style.left = (x2 - offset) + "px";			
 }
 
 mVid.setEOPlayback = function () {
@@ -1109,7 +856,7 @@ function onMsyncTimeUpdate (that) {
 		if (v && that.isBroadcast(v)) {
 			//that.Log.info("msync: time " + t + "(s)");
 			that.resetStallTimer();
-			v.setPlayingState(PLAYSTATE_PLAY);
+			that.tvui.ShowPlayingState(PLAYSTATE_PLAY);
 
 			that.__updatePlaybackBar(t, that.broadcast.contentDuration);
 
@@ -1123,7 +870,7 @@ function onMsyncTimeUpdate (that) {
 					var nextTrans = (Math.floor((t + PRELOAD_NEXT_AD_S) / tv) + 1) * tv;
 					that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
 					that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
-					that._showPlayrange((nextTrans-tv), that.broadcast.contentDuration);
+					that.tvui.ShowPlayrange((nextTrans-tv), that.broadcast.contentDuration, that.getTransitionPoint().v);
 				}
 			}
 		}
@@ -1289,7 +1036,7 @@ function onVideoEvent (m) {
 				// m.statusTableText(this.id, "Buffer", "Being consumed");
 				m.updateBufferStatus(this.id, "");
 
-				m.setPlayingState(PLAYSTATE_PLAY);
+				m.tvui.ShowPlayingState(PLAYSTATE_PLAY);
 				m.showPlayrange();
 				
 				if (this == playingVideo) {
@@ -1343,7 +1090,7 @@ function onVideoEvent (m) {
 				}
 
 				if (this.bPlayPauseTransition) {
-					m.setPlayingState(PLAYSTATE_PAUSE);
+					m.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
 				} else
 				{
 					if (m.isMainFeatureVideo(this)) {
@@ -1395,7 +1142,7 @@ function onVideoEvent (m) {
 				m.updateBufferStatus(this.id, "Event: " + event.type);
 				
 				m.showBufferingIcon(true);
-				m.setPlayingState(PLAYSTATE_STOP);
+				m.tvui.ShowPlayingState(PLAYSTATE_STOP);
 
 				// Start playing buffered content
 				if (m.isMainFeatureVideo(this)) {
@@ -1500,7 +1247,7 @@ function onVideoEvent (m) {
 				
 			case m.videoEvents.ENCRYPTED:
 				if (m.bEMESupport) {
-					e("encrypted").setAttribute("class", "playerIcon encrypted");
+					m.tvui.ShowEncrypted("encrypted");
 				}
 				m.Log.warn(this.id + ": ENCRYPTED");
 				m.updateBufferStatus(this.id, "Event: " + event.type);
@@ -1666,7 +1413,7 @@ mVid.cmndFastForward = function () {
 	this.Log.info("called : cmndFastForward"); 
 
 	if (playingVideo) playingVideo.playbackRate = 4;	
-	this.setPlayingState(PLAYSTATE_FWD);
+	this.tvui.ShowPlayingState(PLAYSTATE_FWD);
 }	
 	
 mVid.cmndRewind = function () {
@@ -1679,7 +1426,7 @@ mVid.cmndRewind = function () {
 	this.Log.info("called : cmndRewind"); 
 	
 	if (playingVideo) playingVideo.playbackRate = -4;	
-	this.setPlayingState(PLAYSTATE_REW);
+	this.tvui.ShowPlayingState(PLAYSTATE_REW);
 }	
 	
 mVid.cmndPlay = function () {
@@ -1693,7 +1440,7 @@ mVid.cmndPlay = function () {
 	
 	if (playingVideo) {
 		playingVideo.playbackRate = 1;
-		this.setPlayingState(PLAYSTATE_PLAY);
+		this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
 		if (playingVideo.paused) {
 			playingVideo.bPlayPauseTransition = true;
 			playingVideo.play();
@@ -1712,7 +1459,7 @@ mVid.cmndPause = function () {
 	
 	if (playingVideo && !playingVideo.paused) {
 		playingVideo.bPlayPauseTransition = true;
-		this.setPlayingState(PLAYSTATE_PAUSE);
+		this.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
 		playingVideo.pause();
 	}
 }	
