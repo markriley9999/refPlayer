@@ -1,0 +1,12 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://live.unified-streaming.com/scte35/scte35.isml/.mpd?mpd_profile=urn:dvb:dash:profile:dvb-dash:2014",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Dynamic: ITV USP stream test + scte events",
+
+	"info"				: [	"",
+							""
+						  ]
+}
