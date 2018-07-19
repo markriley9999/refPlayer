@@ -103,14 +103,10 @@ mVid.startTime = Date.now();
 
 
 mVid.start = function () {
-    var appMan 		= null;
 	var that 		= this;
-	var confManager = null;
 	
 	this.EOPlayback = false;
 	this.bAttemptStallRecovery = false;
-	
-	this.app = null;
 	
 	this.tvui		= InitTVUI();
 	this.srvComms 	= InitServerComms();
@@ -128,59 +124,8 @@ mVid.start = function () {
 	this.params.bWindowedObjs	= commonUtils.getUrlVars()["win"] || false; 
 	this.params.bEventsDump		= commonUtils.getUrlVars()["eventdump"] || false;
 	this.params.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
-	
-	if (this.params.overrideSubs)
-	{
-        this.Log.warn("Force subtitles: " + this.params.overrideSubs);
-	}
-	
-    try {
-		if (oipfObjectFactory.isObjectSupported('application/oipfApplicationManager')) {
-			appMan = oipfObjectFactory.createApplicationManagerObject();
-		}
-    } catch (err) {
-        this.Log.warn("Exception when creating creating ApplicationManager Object. Error: " + err.message);
-    }
-	
-    try {
-        this.app = appMan.getOwnerApplication(document);
-    } catch (err) {
-        this.Log.warn("Exception when getting the owner Application object. Error: " + err.message);
-    }
 
-	if (this.app) {
-		try {
-			this.app.show();
-		} catch (err) {
-			this.Log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
-		}
-
-	   try {
-			var myKeyset = this.app.privateData.keyset;
-			myKeyset.setValue(	myKeyset.RED 		| 
-								myKeyset.GREEN 		| 
-								myKeyset.BLUE 		| 
-								myKeyset.YELLOW		| 
-								myKeyset.VCR		|
-								myKeyset.NUMERIC 	|
-								myKeyset.NAVIGATION);
-		} catch (err) {
-			this.Log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
-		}
-	}
-
-    try {
-		if (oipfObjectFactory.isObjectSupported('application/oipfConfiguration')) {
-			this.cfg = oipfObjectFactory.createConfigurationObject();
-			if (this.cfg.configuration) {
-				this.Log.info("oipfConfiguration: " + JSON.stringify(this.cfg.configuration));
-			} else {
-				this.Log.warn("oipfConfiguration null");
-			}
-		}
-    } catch (err) {
-        this.Log.warn("Exception when creating creating oipfConfiguration Object. Error: " + err.message);
-    }
+	this.hbbtv = InitHBBTVApp(this.Log);
 	
 	this.showPlayrange();
 	
@@ -258,7 +203,7 @@ mVid.start = function () {
 					log		: that.Log, 
 					tvui	: that.tvui, 
 					params	: that.params, 
-					cfg		: that.cfg, 
+					cfg		: that.hbbtv.cfg, 
 					fGetCurrentPlayingVideo	: that.getCurrentPlayingVideo.bind(that),
 					fUpdateBufferStatus		: that.updateBufferStatus.bind(that),
 					eventSchemeIdUri		: playObj.eventSchemeIdUri
@@ -744,7 +689,7 @@ mVid.setSourceAndLoad = function (video, src, type) {
 		video.bPlayEventFired = false;
 		
 		// Running on a non hbbtv device?
-		if (!this.app) {
+		if (!this.hbbtv.app) {
 			this.Log.warn("*** USE DASHJS (non hbbtv device) ***");		
 			dashjs.MediaPlayerFactory.create(video, source);
 		}
