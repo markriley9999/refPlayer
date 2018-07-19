@@ -1,12 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "01",
+	"minor" 	: "02",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
-					"More agressive (deferred) dynamic manifest updates",
-					"Dynamic 'live-edge' content: future segments not available",
-					"Dynamic Segtimeline"
+					"Media Sync Module (dev)",
+					"Calculate manifest update based on update period param"
 				  ]
 }
