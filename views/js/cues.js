@@ -21,7 +21,11 @@ function InitCues(o) {
 		trackDispatchType = default_event_schemeIdUri + " " + default_event_value;
 	}
 	
-
+	if (o.params.overrideSubs)
+	{
+        o.log.warn("Force subtitles: " + o.params.overrideSubs);
+	}
+	
 	cueImages = [];
 
 	e = function (id) {
