@@ -3,7 +3,7 @@
 	"periodD" 		: "600000", 	
 	"segAlign"		: "floor",
 
-	"marginF" 		: "0",					
+	"updatePeriod" 	: "5",  					
 	"marginB" 		: "3600",					
 
 	"Atimescale"	: "1000",

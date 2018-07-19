@@ -870,7 +870,14 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		// Extract stream config data
 		sC.segsize 		= intify(sC.segsize);
 		sC.periodD 		= intify(sC.periodD);
-		sC.marginF 		= intify(sC.marginF);
+		
+		if (sC.marginF) {
+			sC.marginF 		= intify(sC.marginF);
+		} else {
+			sC.marginF 		= intify(sC.updatePeriod) * 2;
+			logger.info(" - Use update period: marginF " +  sC.marginF + "s");
+		}
+		
 		sC.marginB 		= intify(sC.marginB);
 		
 		sC.Atimescale	= intify(sC.Atimescale);
@@ -1100,6 +1107,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 		logger.trace("progStart: " + progStart);
 		formProps.availabilityStartTime = progStart;
+		formProps.minimumUpdatePeriod	= "PT" + sC.updatePeriod + "S";
 		
 		res.render(file, formProps, function(err, mpd) { 
 			if (err) {

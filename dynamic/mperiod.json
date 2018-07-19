@@ -5,7 +5,7 @@
 	"periodD" 		: "120000", 	
 	"segAlign"		: "round",
 
-	"marginF" 		: "0",					
+	"updatePeriod" 	: "5",  					
 	"marginB" 		: "3600",					
 
 	"Atimescale"	: "48000",
