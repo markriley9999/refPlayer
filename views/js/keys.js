@@ -29,6 +29,7 @@ function InitVKKeys() {
 	lVKTable['VK_REWIND'] 		= 412;
 	lVKTable['VK_PLAY'] 		= 415;
 	lVKTable['VK_PAUSE'] 		= 19;
+	lVKTable['VK_PLAY_PAUSE']	= 463;
 	lVKTable['VK_INFO'] 		= 457;
 	lVKTable['VK_RED'] 			= 403;
 	lVKTable['VK_GREEN']		= 404;

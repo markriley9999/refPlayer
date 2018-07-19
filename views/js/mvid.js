@@ -1378,13 +1378,11 @@ mVid.cmndPlay = function () {
 	
 	this.Log.info("called : cmndPlay"); 
 	
-	if (playingVideo) {
-		playingVideo.playbackRate = 1;
-		this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
-		if (playingVideo.paused) {
-			playingVideo.bPlayPauseTransition = true;
-			playingVideo.play();
-		}
+	playingVideo.playbackRate = 1;
+	this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+	if (playingVideo.paused) {
+		playingVideo.bPlayPauseTransition = true;
+		playingVideo.play();
 	}
 }	
 	
@@ -1401,6 +1399,26 @@ mVid.cmndPause = function () {
 		playingVideo.bPlayPauseTransition = true;
 		this.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
 		playingVideo.pause();
+	}
+}	
+	
+mVid.cmndPlayPause = function () {
+	var playingVideo = this.getCurrentPlayingVideo();
+
+	if (!playingVideo) {
+		return;
+	}
+	
+	this.Log.info("called : cmndPlayPause"); 
+	
+	playingVideo.bPlayPauseTransition = true;
+	
+	if (!playingVideo.paused) {
+		this.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+		playingVideo.pause();
+	} else {
+		this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+		playingVideo.play();
 	}
 }	
 	
@@ -1510,17 +1528,18 @@ var keyTable = {};
 var getVK = InitVKKeys();
 
 keyTable.entries = [
-	{ func : mVid.cmndSubsOn, 		key : '',  hbbKey : getVK('VK_UP') 			}, 
-	{ func : mVid.cmndSubsOff, 		key : '',  hbbKey : getVK('VK_DOWN') 		}, 
-	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : getVK('VK_REWIND') 		}, 
-	{ func : mVid.cmndPlay,			key : 'P', hbbKey : getVK('VK_PLAY') 		}, 
-	{ func : mVid.cmndPause, 		key : 'U', hbbKey : getVK('VK_PAUSE') 		}, 
-	{ func : mVid.cmndSeekFWD,		key : '',  hbbKey : getVK('VK_RIGHT')		}, 
-	{ func : mVid.cmndSeekBACK,		key : '',  hbbKey : getVK('VK_LEFT')		}, 
-	{ func : mVid.cmndReload,		key : 'L', hbbKey : getVK('VK_RED') 		}, 
-	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_GREEN')		}, 
-	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')		}, 
-	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')		}, 
+	{ func : mVid.cmndSubsOn, 		key : '',  hbbKey : getVK('VK_UP') 				}, 
+	{ func : mVid.cmndSubsOff, 		key : '',  hbbKey : getVK('VK_DOWN') 			}, 
+	{ func : mVid.cmndRewind, 		key : 'R', hbbKey : getVK('VK_REWIND') 			}, 
+	{ func : mVid.cmndPlay,			key : 'P', hbbKey : getVK('VK_PLAY') 			}, 
+	{ func : mVid.cmndPause, 		key : 'U', hbbKey : getVK('VK_PAUSE') 			}, 
+	{ func : mVid.cmndPlayPause, 	key : 'T', hbbKey : getVK('VK_PLAY_PAUSE') 		}, 
+	{ func : mVid.cmndSeekFWD,		key : '',  hbbKey : getVK('VK_RIGHT')			}, 
+	{ func : mVid.cmndSeekBACK,		key : '',  hbbKey : getVK('VK_LEFT')			}, 
+	{ func : mVid.cmndReload,		key : 'L', hbbKey : getVK('VK_RED') 			}, 
+	{ func : mVid.cmndLog, 			key : 'D', hbbKey : getVK('VK_GREEN')			}, 
+	{ func : mVid.cmndJumpToStart,	key : 'S', hbbKey : getVK('VK_YELLOW')			}, 
+	{ func : mVid.cmndJumpToEnd,	key : 'E', hbbKey : getVK('VK_BLUE')			}, 
 	
 	{ func : function() {this.setChannel(0)},	key : '0',	hbbKey : getVK('VK_0')	}, 
 	{ func : function() {this.setChannel(1)},	key : '1',	hbbKey : getVK('VK_1')	}, 
@@ -1531,7 +1550,7 @@ keyTable.entries = [
 	{ func : function() {this.setChannel(6)},	key : '6',	hbbKey : getVK('VK_6')	}, 
 	{ func : function() {this.setChannel(7)},	key : '7',	hbbKey : getVK('VK_7')	}, 
 	{ func : function() {this.setChannel(8)},	key : '8',	hbbKey : getVK('VK_8')	}, 
-	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	}, 
+	{ func : function() {this.setChannel(9)},	key : '9',	hbbKey : getVK('VK_9')	} 
 ];
 
 
