@@ -260,7 +260,8 @@ mVid.start = function () {
 					params	: that.params, 
 					cfg		: that.cfg, 
 					fGetCurrentPlayingVideo	: that.getCurrentPlayingVideo.bind(that),
-					fUpdateBufferStatus		: that.updateBufferStatus.bind(that)
+					fUpdateBufferStatus		: that.updateBufferStatus.bind(that),
+					eventSchemeIdUri		: playObj.eventSchemeIdUri
 				}
 			);
 
@@ -550,7 +551,7 @@ mVid.updateBufferStatus = function(videoId, annot) {
 			headroomBuffer.setAttribute("class", "bufferBarActive");	
 		}
 		
-		if (duration && (duration > 0)) {
+		if (duration && (duration > 0)  && (duration != Infinity)) {
 			videoBuffer.max = duration;
 			headroomBuffer.max = 60; // (duration < 60) ? duration : 60;
 
@@ -1228,12 +1229,10 @@ function onVideoEvent (m) {
 									m.Log.warn(this.id + ": " + event.type + ": event sequence error!");
 								}
 							}
-						}
-						
-						m.resetStallTimer();
-					}
-					
+						}						
+					}				
 				}
+				m.resetStallTimer();
 				break;
 				
 			case m.videoEvents.ERROR:

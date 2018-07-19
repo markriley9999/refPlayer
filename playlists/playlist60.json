@@ -8,5 +8,7 @@
 
 	"info"				: [	"",
 							""
-						  ]
+						  ],
+						  
+	"eventSchemeIdUri" 	: "urn:scte:scte35:2013:bin"
 }

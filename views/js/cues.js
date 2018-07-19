@@ -10,9 +10,17 @@
 
 function InitCues(o) {
 
-	//const event_schemeIdUri = "tag:refplayer.digitaluk.co.uk,2017:events/dar" 
-	const event_schemeIdUri = "urn:scte:scte35:2014:xml+bin"
-	const event_value = "1"
+	const default_event_schemeIdUri = "urn:scte:scte35:2014:xml+bin"
+	const default_event_value = "1"
+
+	var trackDispatchType;
+
+	if (o.eventSchemeIdUri) {
+		trackDispatchType = o.eventSchemeIdUri;
+	} else {
+		trackDispatchType = default_event_schemeIdUri + " " + default_event_value;
+	}
+	
 
 	cueImages = [];
 
@@ -21,7 +29,6 @@ function InitCues(o) {
 	}
 
 	var mainVideo = e("mVid-mainContent");
-	var trackDispatchType = event_schemeIdUri + " " + event_value;
 	var bSysSubsEnabled = false;
 	
 	if (o.cfg) {
@@ -65,13 +72,13 @@ function InitCues(o) {
 			if (o.params.bEventsDump && track)
 			{
 				o.log.info("Track #" + t); 
-				o.log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + track.inBandMetadataTrackDispatchType);
+				o.log.info("Track inBandMetadataTrackDispatchType (" + trackDispatchType + "): " + "*" + track.inBandMetadataTrackDispatchType + "*");
 				o.log.info("Track Info: track - kind: " + track.kind + " label: " +  track.label + " id: " + track.id);			
 			}
 			
 			if (	track && track.cues &&
 					(track.kind === 'metadata') && 
-					(track.inBandMetadataTrackDispatchType === trackDispatchType) && 
+					(track.inBandMetadataTrackDispatchType.trim() === trackDispatchType) && 
 					(track.cues.length > 0)) {
 				for (var i = 0; i < track.cues.length; ++i) {
 					var cue = track.cues[i];
@@ -169,7 +176,7 @@ function InitCues(o) {
 			return r;
 		}
 		
-		if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType === trackDispatchType)) {
+		if ((textTrack.kind === 'metadata') && (textTrack.inBandMetadataTrackDispatchType.trim() === trackDispatchType)) {
 			
 			ShowCues();
 
@@ -179,7 +186,7 @@ function InitCues(o) {
 				ShowCues();
 				
 				if (o.params.bEventsDump) {
-					o.log.info("textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
+					o.log.info("oncuechange: textTrack - kind: " + textTrack.kind + " label: " +  textTrack.label + " id: " + textTrack.id);			
 				}
 				
 				for (var i = 0; i < textTrack.activeCues.length; ++i) {
@@ -215,6 +222,7 @@ function InitCues(o) {
 	};		
 
 	return {
+		
 		CheckSubs		: function() {
 			if (bSysSubsEnabled) {
 				o.tvui.ShowSubs("nosubs");
