@@ -75,6 +75,31 @@ function InitServerComms() {
 			socket.emit('bufferEvent', out);
 		},
 		
+		EmitJustCurrentTime	: function (id, t, d, tm, annot) {
+			var pObj = "\"playerBufferObj\": {";
+			pObj += "\"id\":" + JSON.stringify(id) + ",";
+			pObj += "\"class\":\"bufferBar\",";
+			pObj += "\"value\":\"0\","; 
+			pObj += "\"max\":\"0\",";
+			pObj += "\"currentTime\":" + JSON.stringify('' + t) + ",";
+			pObj += "\"resumeFrom\":\"0\",";
+			pObj += "\"duration\":" + JSON.stringify('' + d) + ",";
+			pObj += "\"time\":" + JSON.stringify('' + tm) + ",";
+			pObj += "\"annotation\":" + JSON.stringify(annot);
+			pObj += "}";
+			
+			var hObj = "\"headroomBufferObj\": {";
+			hObj += "\"id\":" + JSON.stringify(id) + ",";
+			hObj += "\"class\":\"bufferBar\",";
+			hObj += "\"value\":\"0\","; 
+			hObj += "\"max\":\"0\"";
+			hObj += "}";
+			
+			var out = "{" + pObj + "," + hObj + "}";
+
+			socket.emit('bufferEvent', out);
+		},
+		
 		EmitPlaybackOffset	: function (v, m) {
 			var out = "{";
 			out += "\"value\":" + JSON.stringify('' + v) + ",";
