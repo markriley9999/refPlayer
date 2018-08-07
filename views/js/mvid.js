@@ -184,7 +184,10 @@ mVid.start = function () {
 						that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
 					}
 					that.broadcast.contentDuration = playObj.contentDuration;
+					that.broadcast.adsDuration = playObj.adsDuration;
+					
 					that.broadcast.bSetupAdTransEvents = true;
+					that.broadcast.bTimePlayTransition = false;
 					that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
 				} else {
 					that.Log.warn("MediaSync timeline not defined.");			
@@ -270,9 +273,9 @@ mVid.procPlaylist = function (ch, playObj) {
 		c[lt].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
 	}
 	
-	c[lt].type 				= playObj.type;
-	c[lt].transitionTime 	= playObj.transitionTime;
-	c[lt].transitionOffsetMS = playObj.special_transition_c || 0;
+	c[lt].type 					= playObj.type;
+	c[lt].transitionTime 		= playObj.transitionTime;
+	c[lt].transitionOffsetMS 	= playObj.special_transition_c || 0;
 	
 	if (playObj.type === "video/broadcast") {
 		c[lt].videoId 				= "mVid-broadcast";
@@ -465,7 +468,17 @@ mVid.msToTime  = function (timeMS) {
 }
 
 mVid.updateAllBuffersStatus = function() {
-	this.updateBufferStatus("mVid-mainContent", '');
+	if (this.broadcast) {
+		this.srvComms.EmitJustCurrentTime(
+			this.broadcast.getId(), 
+			this.broadcast.getCurrentTime(), 
+			this.broadcast.contentDuration, 
+			(Date.now() - this.startTime) / 1000, 
+			"");
+	} else {
+		this.updateBufferStatus("mVid-mainContent", '');
+	}
+	
 	this.updateBufferStatus("mVid-video0", '');
 	this.updateBufferStatus("mVid-video1", '');
 } 
@@ -625,8 +638,10 @@ mVid.setContentSourceAndLoad = function () {
 		this.tvui.ShowEncrypted("");
 	}
 	
-	this.cues.CheckSubs();
-		
+	if (this.cues) { 
+		this.cues.CheckSubs();
+	}
+	
 	this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
 }
 
@@ -802,17 +817,30 @@ function onMsyncTimeUpdate (that) {
 
 			that.__updatePlaybackBar(t, that.broadcast.contentDuration);
 
-			if (that.broadcast.bSetupAdTransEvents) {
-				that.broadcast.bSetupAdTransEvents = false;
+			if (that.broadcast.bSetupAdTransEvents || that.broadcast.bTimePlayTransition) {
 				
 				var trans =  that.getTransitionPoint();
-										
+
 				if (trans.bEnabled) {
 					var tv = trans.v;
 					var nextTrans = (Math.floor((t + PRELOAD_NEXT_AD_S) / tv) + 1) * tv;
-					that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
-					that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
-					that.tvui.ShowPlayrange((nextTrans-tv), that.broadcast.contentDuration, that.getTransitionPoint().v);
+					
+					if (that.broadcast.bSetupAdTransEvents) {
+						that.broadcast.bSetupAdTransEvents = false;
+						
+						that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
+						that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
+						that.tvui.ShowPlayrange((nextTrans-tv), that.broadcast.contentDuration, that.getTransitionPoint().v);
+					}
+				
+					if (that.broadcast.bTimePlayTransition) {
+						that.broadcast.bTimePlayTransition = false;
+						
+						var playTransMS = ((t - (nextTrans-tv)) - that.broadcast.adsDuration) * 1000;
+						that.statusTableText(that.broadcast.getId(), "Play trans", playTransMS + "ms");
+						that.srvComms.AdTrans(that.broadcast.getId() + " (cumulative)", playTransMS);
+						that.Log.info("msync: trans back to live " + playTransMS + "(ms)");
+					}
 				}
 			}
 		}
@@ -1101,6 +1129,7 @@ function onVideoEvent (m) {
 						
 						if (m.broadcast) {
 							m.broadcast.bSetupAdTransEvents = true;
+							m.broadcast.bTimePlayTransition	= true;
 							m.broadcast.resume();
 							m.switchVideoToPlaying(null, this);
 						}
@@ -1463,15 +1492,21 @@ mVid.cmndLog = function () {
 }
 
 mVid.cmndTogSubs = function () {
-	this.cues.ToggleOverrideSub();
+	if (this.cues) { 
+		this.cues.ToggleOverrideSub();
+	}
 }
 
 mVid.cmndSubsOn = function () {
-	this.cues.OverrideSubs('on');
+	if (this.cues) { 
+		this.cues.OverrideSubs('on');
+	}
 }
 
 mVid.cmndSubsOff = function () {
-	this.cues.OverrideSubs('off');
+	if (this.cues) { 
+		this.cues.OverrideSubs('off');
+	}
 }
 
 mVid.cmndJumpToEnd = function () {
