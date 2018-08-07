@@ -68,7 +68,7 @@ graph.setupCharts = function () {
 
 	function drawCharts() {
 		
-		if (e("chart_div0")) {	drawChart('mVid-mainContent', 'Main Video Object', 'chart_div0');	}
+		if (e("chart_div0")) {	drawChart('main', 'Main / Live Video', 'chart_div0');	}
 		if (e("chart_div1")) {	drawChart('mVid-video0', 'Video Object 0', 'chart_div1');			}
 		if (e("chart_div2")) {	drawChart('mVid-video1', 'Video Object 1', 'chart_div2');			}
 		
@@ -121,6 +121,11 @@ ipc.on('ipc-buffer', function(event, message) {
 		var pbObj = msgObj.playerBufferObj;
 		var hbObj = msgObj.headroomBufferObj;
 		var playerId = pbObj.id;
+		
+		if ((playerId == "mVid-mainContent") || (playerId == "mVid-broadcast")) {
+			playerId = "main";
+		}
+		
 		//console.log(pbObj);
 		if (graph.charts[playerId]) {
 			graph.updateChart(graph.charts[playerId], pbObj.duration, pbObj.time, pbObj.currentTime, pbObj.value, hbObj.value, pbObj.annotation);
