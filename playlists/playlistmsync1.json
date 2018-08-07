@@ -24,6 +24,7 @@
 	"channelName" 		: "MediaSync: Ad insertion test",
 
 	"contentDuration"	: "600",
+	"adsDuration"		: "60",
 	
 	"timeline"	: {
 		"selector"	: "urn:dvb:css:timeline:pts"
