@@ -43,11 +43,11 @@ function SetupBroadcastObject(id, container, log)
 	}
 
 
-	function getCurrentTime() {
+	function currentTime() {
 		if (mSync) {
 			return mSync.currentTime;
 		} else {
-			//log.warn("mSync not defined, using emulated time.");
+			log.warn("mSync not defined, using emulated time.");
 			return (Date.now() - startTime) / 1000;
 		}
 	}
@@ -60,7 +60,7 @@ function SetupBroadcastObject(id, container, log)
 			return;
 		}
 		
-		curTime = getCurrentTime(); 
+		curTime = currentTime(); 
 		//log.info("msync: currentTime: " + curTime + "(s)");
 		
 		if (timeupdateFunc) {
@@ -71,8 +71,9 @@ function SetupBroadcastObject(id, container, log)
 			curState = STATE_BUFFERING_OD;
 			pollRate = POLL_FAST;
 			if (preloadFunc) {
-				preloadFunc(curTime);
+				var a = preloadFunc;
 				preloadFunc = null; // one hit
+				a(curTime);
 			}
 		}
 
@@ -80,8 +81,9 @@ function SetupBroadcastObject(id, container, log)
 			curState = STATE_PLAYING_OD;
 			pollRate = POLL_SLOW;
 			if (startOndemandFunc) {
-				startOndemandFunc(curTime);
+				var a = startOndemandFunc;
 				startOndemandFunc = null; // one hit
+				a(curTime);
 			}
 		}
 	
@@ -172,6 +174,14 @@ function SetupBroadcastObject(id, container, log)
 		resume: function () {
 			bo.style.display = "block";
 			curState = STATE_WATCHING_BT;
+		},
+		
+		getId: function () {
+			return id;
+		},
+		
+		getCurrentTime: function () {
+			return currentTime();
 		}
 	};
 }
