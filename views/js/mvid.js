@@ -810,7 +810,11 @@ function onMsyncTimeUpdate (that) {
 	return function (t) {
 		var v = that.getCurrentPlayingVideo();
 		
-		if (v && that.isBroadcast(v)) {
+		if (t == 0) {
+			that.Log.warn("msync: time = 0");
+		}
+		
+		if (t && v && that.isBroadcast(v)) {
 			//that.Log.info("msync: time " + t + "(s)");
 			that.resetStallTimer();
 			that.tvui.ShowPlayingState(PLAYSTATE_PLAY);

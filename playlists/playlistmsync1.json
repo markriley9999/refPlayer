@@ -1,19 +1,7 @@
 {
 	"ads" : [
 		{
-			"src" 	: "./content/blankads/ad1.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/blankads/ad2.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/blankads/ad3.mp4", 
-			"type" 	: "video/mp4"
-		},
-		{
-			"src" 	: "./content/blankads/ad4.mp4", 
+			"src" 	: "./content/adverts/itv/ads-itv.mp4", 
 			"type" 	: "video/mp4"
 		}
 	],
@@ -23,7 +11,7 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "MediaSync: Ad insertion test",
 
-	"contentDuration"	: "600",
+	"contentDuration"	: "720",
 	"adsDuration"		: "60",
 	
 	"timeline"	: {

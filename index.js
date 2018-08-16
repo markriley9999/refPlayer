@@ -233,7 +233,7 @@ function init() {
 		logger.info("--headless			: Run with no GUI.");
 		logger.info("--segdump			: Dump segment information.");
 		logger.info("--loglevel=[n]		: Set log level, where n = \"trace\", \"debug\", \"info\", \"warn\", \"error\" or \"fatal\".");
-		logger.info("--timeoffset=[t]		: Used by dynamic dash manifests, adds 't' seconds to server time.");
+		logger.info("--timeoffset=[t]	: Used by dynamic dash manifests, adds 't' seconds to server time.");
 		if (GUI) {
 			GUI.quit();
 		}
