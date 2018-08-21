@@ -1209,14 +1209,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 	}
 
 	if (sC.subs) {
-		// sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
-		// var subOffset = (p * sC.periodD) + offset;
-		var subOffset = (seg-1) * sC.segsize;  // Syncing subs with av segs!
-		
-		sC.subs.offsetObj = {
-			offset: (subOffset * sC.subs.timescale) / 1000,
-			seg: 	Math.floor(subOffset / sC.subs.segsize) + 1
-		};
+		sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
 	}
 	
 	
