@@ -25,7 +25,7 @@
 
 	"subs" : 
 	{
-		"segsize" 	: "10000",
+		"segsize" 	: "3840",
 		"timescale"	: "1000",
 		"main"		: "./dynamic/periods/subs.xml",
 		"ads"		: "./dynamic/periods/subs.xml"
