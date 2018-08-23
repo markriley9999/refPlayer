@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "03",
+	"minor" 	: "04",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+					"AV Aligned sub segments",
 					"Media Sync Module (dev)",
 					"Calculate manifest update based on update period param"
 				  ]

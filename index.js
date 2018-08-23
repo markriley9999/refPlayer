@@ -218,12 +218,13 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	runOptions.bMultiDevs 	= !GUI;	
-	runOptions.bSegDump 	= argv.segdump;
-	runOptions.bEventAbs	= argv.eventabs;
-	runOptions.logLevel 	= argv.loglevel;
-	runOptions.timeOffset	= argv.timeoffset;
-	
+	runOptions.bMultiDevs 			= !GUI;	
+	runOptions.bSegDump 			= argv.segdump;
+	runOptions.bEventAbs			= argv.eventabs;
+	runOptions.logLevel 			= argv.loglevel;
+	runOptions.timeOffset			= argv.timeoffset;
+	runOptions.prependContentPath	= argv.pathprepend;
+
 	if (runOptions.logLevel) {
 		logger.level = runOptions.logLevel;
 		logger.info("--setting log level to: " + runOptions.logLevel);
@@ -256,6 +257,14 @@ function init() {
 	logger.info("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
+	
+	if (runOptions.prependContentPath) {
+		var c = runOptions.prependContentPath.slice(-1);
+		if ((c === '/') || (c === '\\')) {
+			runOptions.prependContentPath = runOptions.prependContentPath.slice(0, -1);
+		}
+		logger.info("-- Prepend content path: " + runOptions.prependContentPath);
+	}
 	
 	if (!GUI) {
 		logger.info("--- Headless Mode ---");
@@ -603,8 +612,16 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 
 	// Get file on server
-	var file = path.join(__dirname, req.path);
-	logger.trace(" - file: " + file);
+	var file;
+	
+	if (runOptions.prependContentPath) {
+		file = runOptions.prependContentPath + req.path;
+		logger.debug(" - file (prepended dir): " + file);
+	} else {
+		file = path.join(__dirname, req.path);
+		logger.trace(" - file: " + file);
+	}
+	
 	
     fs.stat(file, function(err, stats) {
 		if (err) {
@@ -1209,14 +1226,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 	}
 
 	if (sC.subs) {
-		// sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
-		// var subOffset = (p * sC.periodD) + offset;
-		var subOffset = (seg-1) * sC.segsize;  // Syncing subs with av segs!
-		
-		sC.subs.offsetObj = {
-			offset: (subOffset * sC.subs.timescale) / 1000,
-			seg: 	Math.floor(subOffset / sC.subs.segsize) + 1
-		};
+		sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
 	}
 	
 	

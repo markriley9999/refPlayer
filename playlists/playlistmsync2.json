@@ -1,0 +1,25 @@
+{
+	"ads" : [
+		{
+			"src" 	: "./content/adverts/itv/ads-itv.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "",
+	"type" 				: "video/broadcast",
+	"transitionTime" 	: "120",
+	"addContentId" 		: "false",
+	"channelName" 		: "MediaSync: Ad insertion test",
+
+	"contentDuration"	: "720",
+	"adsDuration"		: "60",
+	
+	"timeline"	: {
+		"selector"	: "urn:dvb:css:timeline:temi:11:1"
+	},
+	
+	"info"				: [	"",
+							""
+						  ]
+
+}
