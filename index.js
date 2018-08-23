@@ -218,12 +218,13 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	runOptions.bMultiDevs 	= !GUI;	
-	runOptions.bSegDump 	= argv.segdump;
-	runOptions.bEventAbs	= argv.eventabs;
-	runOptions.logLevel 	= argv.loglevel;
-	runOptions.timeOffset	= argv.timeoffset;
-	
+	runOptions.bMultiDevs 			= !GUI;	
+	runOptions.bSegDump 			= argv.segdump;
+	runOptions.bEventAbs			= argv.eventabs;
+	runOptions.logLevel 			= argv.loglevel;
+	runOptions.timeOffset			= argv.timeoffset;
+	runOptions.prependContentPath	= argv.pathprepend;
+
 	if (runOptions.logLevel) {
 		logger.level = runOptions.logLevel;
 		logger.info("--setting log level to: " + runOptions.logLevel);
@@ -256,6 +257,14 @@ function init() {
 	logger.info("");
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
+	
+	if (runOptions.prependContentPath) {
+		var c = runOptions.prependContentPath.slice(-1);
+		if ((c === '/') || (c === '\\')) {
+			runOptions.prependContentPath = runOptions.prependContentPath.slice(0, -1);
+		}
+		logger.info("-- Prepend content path: " + runOptions.prependContentPath);
+	}
 	
 	if (!GUI) {
 		logger.info("--- Headless Mode ---");
@@ -603,8 +612,16 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 
 	// Get file on server
-	var file = path.join(__dirname, req.path);
-	logger.trace(" - file: " + file);
+	var file;
+	
+	if (runOptions.prependContentPath) {
+		file = runOptions.prependContentPath + req.path;
+		logger.debug(" - file (prepended dir): " + file);
+	} else {
+		file = path.join(__dirname, req.path);
+		logger.trace(" - file: " + file);
+	}
+	
 	
     fs.stat(file, function(err, stats) {
 		if (err) {
