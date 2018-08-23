@@ -130,7 +130,7 @@ mVid.start = function () {
 	this.showPlayrange();
 	
 	if (location.protocol === 'https:') {
-		this.ShowSecure(true);
+		this.tvui.ShowSecure(true);
 	}
 
 	getCookie = function (cname) {
