@@ -1568,9 +1568,16 @@ expressSrv.post('/getkeys', function(req, res) {
 		return res.sendStatus(400);
 	}
 	
-	if (req.query.tag) {
-		var tag = req.query.tag;
-		
+	logger.info(" - kid: " + kid);
+
+	var tag = req.query.tag;
+	
+	if (!tag) {
+		tag = "KID-" + kid;
+		logger.warn(" - no tag, using KID: " + tag);
+	}
+	
+	if (tag) {
 		logger.info(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';

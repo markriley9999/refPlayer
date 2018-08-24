@@ -1,0 +1,11 @@
+{
+	"keys":[
+		{
+			"kty":"oct",
+			"alg":"A128KW",
+			"k":"Q8iXoAHmbnZdu9wg-j4JHw",
+			"kid":"7fZXGH6aSeevajQZUVJb2w"
+		}
+	],
+	"type":"temporary"
+}
