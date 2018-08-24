@@ -1654,3 +1654,17 @@ http.listen(8080, (err) => {
 
 https.listen(8082);
 
+
+process.on('exit', function(code) {
+	logger.info("exit: " + code);
+});
+
+process.on('uncaughtException', function(err) {
+	logger.error("uncaughtException: " + err);
+	process.exit(0);
+});
+
+process.on('SIGINT', function() {
+	logger.info("SIGINT");
+	process.exit(0);
+});
