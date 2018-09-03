@@ -15,7 +15,7 @@
 	"adsDuration"		: "60",
 	
 	"timeline"	: {
-		"selector"	: "urn:dvb:css:timeline:temi:11:1"
+		"selector"	: "urn:dvb:css:timeline:temi:11:129"
 	},
 	
 	"info"				: [	"",
