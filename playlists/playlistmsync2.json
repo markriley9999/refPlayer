@@ -9,13 +9,13 @@
 	"type" 				: "video/broadcast",
 	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "MediaSync: Ad insertion test",
+	"channelName" 		: "MediaSync: Ad insertion test - PTS",
 
 	"contentDuration"	: "720",
 	"adsDuration"		: "60",
 	
 	"timeline"	: {
-		"selector"	: "urn:dvb:css:timeline:temi:11:129"
+		"selector"	: "urn:dvb:css:timeline:pts"
 	},
 	
 	"info"				: [	"",
