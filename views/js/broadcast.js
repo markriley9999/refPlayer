@@ -20,7 +20,7 @@ function SetupBroadcastObject(id, container, log)
 	const STATE_BUFFERING_OD	= 2;
 	const STATE_PLAYING_OD		= 3;
 	
-	const POLL_SLOW	= 500;
+	const POLL_SLOW	= 1000;
 	const POLL_FAST	= 100;
 	
 	

@@ -185,6 +185,8 @@ mVid.start = function () {
 					that.broadcast.contentDuration = playObj.contentDuration;
 					that.broadcast.adsDuration = playObj.adsDuration;
 					
+					that.broadcast.fps = playObj.timeline.fps ? playObj.timeline.fps : CONTENT_FPS;
+					
 					that.broadcast.bSetupAdTransEvents = true;
 					that.broadcast.bTimePlayTransition = false;
 					that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
@@ -800,8 +802,8 @@ function onMsyncTimeUpdate (that) {
 		}
 		
 		if (t && v && that.isBroadcast(v)) {
-			//that.Log.info("msync: time " + t + "(s)");
-			that.tvui.UpdateMSyncTime(t, 24);
+			// that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
+			that.tvui.UpdateMSyncTime(t, that.broadcast.fps);
 			
 			that.resetStallTimer();
 			that.tvui.ShowPlayingState(PLAYSTATE_PLAY);

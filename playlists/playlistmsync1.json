@@ -15,7 +15,8 @@
 	"adsDuration"		: "60",
 	
 	"timeline"	: {
-		"selector"	: "urn:dvb:css:timeline:temi:11:129"
+		"selector"	: "urn:dvb:css:timeline:temi:11:129",
+		"fps"		: "24"
 	},
 	
 	"info"				: [	"",
