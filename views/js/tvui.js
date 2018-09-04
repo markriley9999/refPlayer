@@ -10,6 +10,9 @@
 
 function InitTVUI() {
 
+	var prevMSyncTm = "";
+	
+	
 	// Icon table
 	playIconTable = [
 		{	state: PLAYSTATE_STOP, 	icon: "player-stop"	},
@@ -87,7 +90,48 @@ function InitTVUI() {
 			} else {
 				e("padlock").setAttribute("class", "playerIcon");
 			}
-		}
+		},
 		
+		ShowMsyncTime : function (b) {
+			var t = e("msync-time"); 
+			if (t) {
+				if (b) {
+					t.setAttribute("class", "msync-text msync-show");
+				} else {
+					t.setAttribute("class", "msync-text msync-hide");
+				}
+			}
+		},
+		
+		UpdateMSyncTime : function (tm, fps) {
+			
+			var timeMS = tm * 1000;
+			
+			var milliseconds = parseInt((timeMS%1000))
+				, seconds = parseInt((timeMS/1000)%60)
+				, minutes = parseInt((timeMS/(1000*60))%60);
+
+			var frame = ("00" + parseInt(((timeMS * fps) / 1000) % fps)).slice(-2);
+			
+			minutes = ("00" + minutes).slice(-2);
+			seconds = ("00" + seconds).slice(-2);
+			milliseconds = ("000" + milliseconds).slice(-3);
+			
+			var txt = minutes + ":" + seconds + "-" + frame;
+						
+			var t = e("msync-time"); 
+			if (t) {
+				t.innerHTML = txt;
+	
+				if (txt != prevMSyncTm) {
+					t.setAttribute("class", "msync-text msync-show");
+				} else 
+				{
+					t.setAttribute("class", "msync-text msync-warn");
+				}
+			}
+			
+			prevMSyncTm = txt;
+		}
 	}
 }

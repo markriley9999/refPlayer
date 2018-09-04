@@ -20,8 +20,8 @@ function SetupBroadcastObject(id, container, log)
 	const STATE_BUFFERING_OD	= 2;
 	const STATE_PLAYING_OD		= 3;
 	
-	const POLL_SLOW	= 100;
-	const POLL_FAST	= 10;
+	const POLL_SLOW	= 500;
+	const POLL_FAST	= 100;
 	
 	
 	var curState 	= STATE_STOPPED;
@@ -133,7 +133,6 @@ function SetupBroadcastObject(id, container, log)
 			try {
 				log.info("SetupBroadcastObject: bindToCurrentChannel");
 				bo.bindToCurrentChannel();
-				setTimeout(checkState(), pollRate);
 			} catch (e) {
 				log.error("Starting of broadcast video failed: bindToCurrentChannel");
 			}		
@@ -152,7 +151,6 @@ function SetupBroadcastObject(id, container, log)
 			} catch (err) {
 				log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
 			}
-			setTimeout(checkState(), pollRate);
 			curState = STATE_WATCHING_BT;
 		},
 		

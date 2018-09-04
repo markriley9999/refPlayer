@@ -165,7 +165,6 @@ mVid.start = function () {
 		
 		window.setInterval( function() {
 			that.updateAllBuffersStatus();	
-
 		}, 1000);
 
 		if (playObj.type === "video/broadcast") {
@@ -453,20 +452,6 @@ mVid.getKeyByValue = function (obj, value) {
     }
 } 
  
-mVid.msToTime  = function (timeMS) {
-	var milliseconds = parseInt((timeMS%1000))
-		, seconds = parseInt((timeMS/1000)%60)
-		, minutes = parseInt((timeMS/(1000*60))%60)
-		, hours = parseInt((timeMS/(1000*60*60))%24);
-
-	hours = (hours < 10) ? "0" + hours : hours;
-	minutes = (minutes < 10) ? "0" + minutes : minutes;
-	seconds = (seconds < 10) ? "0" + seconds : seconds;
-	milliseconds = ("000" + milliseconds).slice(-3);
-
-	return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-}
-
 mVid.updateAllBuffersStatus = function() {
 	if (this.broadcast) {
 		this.srvComms.EmitJustCurrentTime(
@@ -816,6 +801,8 @@ function onMsyncTimeUpdate (that) {
 		
 		if (t && v && that.isBroadcast(v)) {
 			//that.Log.info("msync: time " + t + "(s)");
+			that.tvui.UpdateMSyncTime(t, 24);
+			
 			that.resetStallTimer();
 			that.tvui.ShowPlayingState(PLAYSTATE_PLAY);
 
@@ -880,6 +867,7 @@ function onMsyncPlayAd (that) {
 			}
 			
 			that.broadcast.hide(); 
+			that.tvui.ShowMsyncTime(false);
 		}
 	}
 }
