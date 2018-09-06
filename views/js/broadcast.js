@@ -24,8 +24,8 @@ function SetupBroadcastObject(id, container, log)
 	const POLL_FAST	= 100;
 	
 	
-	var curState 	= STATE_STOPPED;
-	var pollRate	= POLL_SLOW;
+	var curState 		= STATE_STOPPED;
+	var pollInterval	= POLL_SLOW;
 	
 	var curTime;
 	
@@ -56,7 +56,7 @@ function SetupBroadcastObject(id, container, log)
 	function checkState() {
 		
 		if ((curState == STATE_STOPPED) || (curState == STATE_PLAYING_OD)) {
-			setTimeout(checkState, pollRate);
+			setTimeout(checkState, pollInterval);
 			return;
 		}
 		
@@ -69,25 +69,25 @@ function SetupBroadcastObject(id, container, log)
 		
 		if (preloadTime && (curTime >= preloadTime)) {
 			curState = STATE_BUFFERING_OD;
-			pollRate = POLL_FAST;
 			if (preloadFunc) {
 				var a = preloadFunc;
 				preloadFunc = null; // one hit
-				a(curTime);
+				a(curTime, preloadTime, pollInterval);
 			}
+			pollInterval = POLL_FAST;
 		}
 
 		if (odTime && (curTime >= odTime)) {
 			curState = STATE_PLAYING_OD;
-			pollRate = POLL_SLOW;
 			if (startOndemandFunc) {
 				var a = startOndemandFunc;
 				startOndemandFunc = null; // one hit
-				a(curTime);
+				a(curTime, odTime, pollInterval);
 			}
+			pollInterval = POLL_SLOW;
 		}
 	
-		setTimeout(checkState, pollRate);
+		setTimeout(checkState, pollInterval);
 	}
 		
 	checkState();

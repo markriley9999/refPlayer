@@ -182,8 +182,10 @@ mVid.start = function () {
 					if (that.params.bWindowedObjs) {
 						that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
 					}
+					
 					that.broadcast.contentDuration = playObj.contentDuration;
 					that.broadcast.adsDuration = playObj.adsDuration;
+					that.broadcast.cumulativeAdTransMS = 0;
 					
 					that.broadcast.fps = playObj.timeline.fps ? playObj.timeline.fps : CONTENT_FPS;
 					
@@ -830,9 +832,17 @@ function onMsyncTimeUpdate (that) {
 						that.broadcast.bTimePlayTransition = false;
 						
 						var playTransMS = ((t - (nextTrans-tv)) - that.broadcast.adsDuration) * 1000;
+
 						that.statusTableText(that.broadcast.getId(), "Play trans", playTransMS + "ms");
 						that.srvComms.AdTrans(that.broadcast.getId() + " (cumulative)", playTransMS);
-						that.Log.info("msync: trans back to live " + playTransMS + "(ms)");
+						that.Log.info("msync: trans back to live (absolute)" + playTransMS + "(ms)  Frames: " + parseInt(playTransMS * that.broadcast.fps / 1000));
+
+						var relPlayTransMS = playTransMS - that.broadcast.cumulativeAdTransMS;
+
+						that.srvComms.AdTrans(that.broadcast.getId() + " (relative)", relPlayTransMS);
+						that.Log.info("msync: trans back to live (relative)" + relPlayTransMS + "(ms)  Frames: " + parseInt(relPlayTransMS * that.broadcast.fps / 1000));
+						
+						that.broadcast.cumulativeAdTransMS = 0;
 					}
 				}
 			}
@@ -841,8 +851,19 @@ function onMsyncTimeUpdate (that) {
 }
 
 function onMsyncPreloadAd (that) {
-	return function (t) {
+	return function (t, target, pollInterval) {
+		var f;
+		var delta = t - target;
+		
 		that.Log.info("msync: preload ad now: " + t + "(s)");
+
+		if ((delta * 1000) < (pollInterval*2)) { 
+			f = that.Log.info;
+		} else {
+			f = that.Log.warn;
+		}
+
+		f("msync: preload delta: " + delta + "(s) - frames: " + parseInt(that.broadcast.fps * delta));
 		that.skipBufferingToNextVideo(); // Get ready to buffer next video
 		that.setContentSourceAndLoad();
 
@@ -853,8 +874,19 @@ function onMsyncPreloadAd (that) {
 }
 
 function onMsyncPlayAd (that) {
-	return function (t) {
+	return function (t, target, pollInterval) {
+		var f;
+		var delta = t - target;
+		
 		that.Log.info("msync: play ad now: " + t + "(s)");
+
+		if ((delta * 1000) < (pollInterval*2)) { 
+			f = that.Log.info;
+		} else {
+			f = that.Log.warn;
+		}
+		
+		f("msync: play ad delta: " + delta + "(s) - frames: " + parseInt(that.broadcast.fps * delta));
 		
 		that.skipPlayingToNextVideo();
 		var v = that.getCurrentPlayingVideo();
@@ -1258,6 +1290,10 @@ mVid.OnCheckAdTransition = function () {
 		playTransMS = (playTransMS > 0) ? playTransMS : 0;
 		this.statusTableText(vid.id, "Play trans", playTransMS + "ms");
 		this.srvComms.AdTrans(vid.id, playTransMS);
+		
+		if (this.broadcast) {
+			this.broadcast.cumulativeAdTransMS += playTransMS;
+		}
 	} else {
 		this.adTimerId = setTimeout(this.OnCheckAdTransition.bind(this), AD_TRANS_TIMEOUT_MS);
 	}
