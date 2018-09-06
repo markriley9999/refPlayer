@@ -16,12 +16,21 @@ function SetupBroadcastObject(id, container, log)
 	var mSync;
 	
 	const STATE_STOPPED 		= 0;
-	const STATE_WATCHING_BT 	= 1;
-	const STATE_BUFFERING_OD	= 2;
-	const STATE_PLAYING_OD		= 3;
+	const STATE_WAITINGFOR_BT 	= 1;
+	const STATE_WATCHING_BT 	= 2;
+	const STATE_BUFFERING_OD	= 3;
+	const STATE_PLAYING_OD		= 4;
 	
-	const POLL_SLOW	= 1000;
-	const POLL_FAST	= 100;
+	var stateTxt = [
+		"Stopped",
+		"Waiting for broadcast content to start",
+		"Watching broadcast content",
+		"Buffering OnDemand content (and watching broadcast)",
+		"Playing OnDemand content"
+	]
+	
+	const POLL_SLOW	= 500;
+	const POLL_FAST	= 40;
 	
 	
 	var curState 		= STATE_STOPPED;
@@ -53,6 +62,14 @@ function SetupBroadcastObject(id, container, log)
 	}
 	
 	
+	function setState(st, p) {
+		if ((curState != st) || (pollInterval != p)) {
+			log.info("Broadcast - change state: " + stateTxt[st] + " --- Poll Interval (ms): " + p); 
+			curState = st;
+			pollInterval = p;
+		}
+	}
+	
 	function checkState() {
 		
 		if ((curState == STATE_STOPPED) || (curState == STATE_PLAYING_OD)) {
@@ -63,30 +80,32 @@ function SetupBroadcastObject(id, container, log)
 		curTime = currentTime(); 
 		//log.info("msync: currentTime: " + curTime + "(s)");
 		
-		if (timeupdateFunc) {
+		if (timeupdateFunc && curTime) {
 			timeupdateFunc(curTime);
 		}
 		
 		if (preloadTime && (curTime >= preloadTime)) {
-			curState = STATE_BUFFERING_OD;
 			if (preloadFunc) {
 				var a = preloadFunc;
 				preloadFunc = null; // one hit
 				a(curTime, preloadTime, pollInterval);
 			}
-			pollInterval = POLL_FAST;
+			setState(STATE_BUFFERING_OD, POLL_FAST);
 		}
 
 		if (odTime && (curTime >= odTime)) {
-			curState = STATE_PLAYING_OD;
 			if (startOndemandFunc) {
 				var a = startOndemandFunc;
 				startOndemandFunc = null; // one hit
 				a(curTime, odTime, pollInterval);
 			}
-			pollInterval = POLL_SLOW;
+			setState(STATE_PLAYING_OD, POLL_SLOW);
 		}
 	
+		if ((curState == STATE_WAITINGFOR_BT) && curTime) {
+			setState(STATE_WATCHING_BT, POLL_SLOW);
+		}
+		
 		setTimeout(checkState, pollInterval);
 	}
 		
@@ -151,7 +170,7 @@ function SetupBroadcastObject(id, container, log)
 			} catch (err) {
 				log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
 			}
-			curState = STATE_WATCHING_BT;
+			setState(STATE_WAITINGFOR_BT, POLL_FAST);
 		},
 		
 		setTimeEvents: function (p, t, f1, f2) {
@@ -171,7 +190,7 @@ function SetupBroadcastObject(id, container, log)
 		
 		resume: function () {
 			bo.style.display = "block";
-			curState = STATE_WATCHING_BT;
+			setState(STATE_WAITINGFOR_BT, POLL_FAST);
 		},
 		
 		getId: function () {

@@ -186,6 +186,7 @@ mVid.start = function () {
 					that.broadcast.contentDuration = playObj.contentDuration;
 					that.broadcast.adsDuration = playObj.adsDuration;
 					that.broadcast.cumulativeAdTransMS = 0;
+					that.broadcast.previousTimeMS = 0;
 					
 					that.broadcast.fps = playObj.timeline.fps ? playObj.timeline.fps : CONTENT_FPS;
 					
@@ -798,6 +799,7 @@ mVid.setEOPlayback = function () {
 function onMsyncTimeUpdate (that) {
 	return function (t) {
 		var v = that.getCurrentPlayingVideo();
+		var ms = t * 1000;
 		
 		if (t == 0) {
 			that.Log.warn("msync: time = 0");
@@ -807,11 +809,13 @@ function onMsyncTimeUpdate (that) {
 			// that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
 			that.tvui.UpdateMSyncTime(t, that.broadcast.fps);
 			
-			that.resetStallTimer();
-			that.tvui.ShowPlayingState(PLAYSTATE_PLAY);
-
-			that.__updatePlaybackBar(t, that.broadcast.contentDuration);
-
+			if ((ms - that.broadcast.previousTimeMS) > 250) {
+				that.broadcast.previousTimeMS = ms;
+				that.resetStallTimer();
+				that.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+				that.__updatePlaybackBar(t, that.broadcast.contentDuration);
+			}
+			
 			if (that.broadcast.bSetupAdTransEvents || that.broadcast.bTimePlayTransition) {
 				
 				var trans =  that.getTransitionPoint();
