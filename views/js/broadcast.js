@@ -56,8 +56,7 @@ function SetupBroadcastObject(id, container, log)
 		if (mSync) {
 			return mSync.currentTime;
 		} else {
-			log.warn("mSync not defined, using emulated time.");
-			return (Date.now() - startTime) / 1000;
+			return 0;
 		}
 	}
 	
@@ -157,7 +156,7 @@ function SetupBroadcastObject(id, container, log)
 			}		
 		},
 		
-		initMediaSync: function (s) {
+		initMediaSync: function (s, fOk, fErr) {
 			try {
 				if (oipfObjectFactory.isObjectSupported('application/hbbtvMediaSynchroniser')) {
 					log.info("SetupBroadcastObject: createMediaSynchroniser");
@@ -166,11 +165,23 @@ function SetupBroadcastObject(id, container, log)
 					mSync.initMediaSynchroniser(bo,	s);				
 				} else {
 					log.error("application/hbbtvMediaSynchroniser not supported.");
+					if (fErr) {
+						fErr(err);
+					}
+					return;
 				}
 			} catch (err) {
 				log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
+				if (fErr) {
+					fErr(err);
+				}
+				return;
 			}
+			
 			setState(STATE_WAITINGFOR_BT, POLL_FAST);
+			if (fOk) {
+				fOk();
+			}
 		},
 		
 		setTimeEvents: function (p, t, f1, f2) {

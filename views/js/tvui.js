@@ -92,6 +92,20 @@ function InitTVUI() {
 			}
 		},
 		
+		ShowMSyncIcon	: function (m) {
+			e("clock").setAttribute("class", "playerIcon " + m);
+		},
+		
+		ShowTransportIcons	: function (b) {
+			var c = b ? "playerIcon" : "playerIcon hidden";
+			
+			e("player-rew").setAttribute("class", c);
+			e("player-play").setAttribute("class", c);
+			e("player-fwd").setAttribute("class", c);
+			e("player-pause").setAttribute("class", c);
+			e("player-stop").setAttribute("class", c);
+		},
+		
 		ShowMsyncTime : function (b) {
 			var t = e("msync-time"); 
 			if (t) {
@@ -133,5 +147,5 @@ function InitTVUI() {
 			
 			prevMSyncTm = txt;
 		}
-	}
+	}	
 }

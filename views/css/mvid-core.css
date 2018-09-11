@@ -222,6 +222,14 @@ progress::-moz-progress-bar {
 	background-color: red;
 }
 
+.msyncicon {
+	background-color: green;
+}
+
+.nomsyncicon {
+	background-color: red;
+}
+
 .flag {
 	background-color: blue;
 }

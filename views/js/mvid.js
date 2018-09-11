@@ -168,17 +168,25 @@ mVid.start = function () {
 		}, 1000);
 
 		if (playObj.type === "video/broadcast") {
-			
+
 			that.Log.info("*** Use Video Broadcast Object ***");
 
-			// TODO: Do it explicitly for now....
 			that.broadcast = SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
 			
 			if (that.broadcast) {
+				that.tvui.ShowTransportIcons(false);
+				
 				that.broadcast.bind();
 				
 				if (playObj.timeline && playObj.timeline.selector) {
-					that.broadcast.initMediaSync(playObj.timeline.selector);
+					that.broadcast.initMediaSync(playObj.timeline.selector, 
+						function() {
+							that.tvui.ShowMSyncIcon("msyncicon");
+						}, 
+						function(err) {
+							that.tvui.ShowMSyncIcon("nomsyncicon");
+						}
+					);
 					if (that.params.bWindowedObjs) {
 						that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
 					}
@@ -217,8 +225,10 @@ mVid.start = function () {
 				}
 			);
 
-			that.tvui.ShowPlayingState(PLAYSTATE_STOP);
-					
+			if (!that.broadcast) {
+				that.tvui.ShowPlayingState(PLAYSTATE_STOP);
+			}
+			
 			// Clear key
 			const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
@@ -812,7 +822,6 @@ function onMsyncTimeUpdate (that) {
 			if ((ms - that.broadcast.previousTimeMS) > 250) {
 				that.broadcast.previousTimeMS = ms;
 				that.resetStallTimer();
-				that.tvui.ShowPlayingState(PLAYSTATE_PLAY);
 				that.__updatePlaybackBar(t, that.broadcast.contentDuration);
 			}
 			
@@ -1036,7 +1045,9 @@ function onVideoEvent (m) {
 				// m.statusTableText(this.id, "Buffer", "Being consumed");
 				m.updateBufferStatus(this.id, "");
 
-				m.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+				if (!m.broadcast) {
+					m.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+				}
 				m.showPlayrange();
 				
 				if (this == playingVideo) {
@@ -1090,7 +1101,9 @@ function onVideoEvent (m) {
 				}
 
 				if (this.bPlayPauseTransition) {
-					m.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+					if (!m.broadcast) {
+						m.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+					}
 				} else
 				{
 					if (m.isMainFeatureVideo(this)) {
@@ -1142,7 +1155,9 @@ function onVideoEvent (m) {
 				m.updateBufferStatus(this.id, "Event: " + event.type);
 				
 				m.showBufferingIcon(true);
-				m.tvui.ShowPlayingState(PLAYSTATE_STOP);
+				if (!m.broadcast) {
+					m.tvui.ShowPlayingState(PLAYSTATE_STOP);
+				}
 
 				// Start playing buffered content
 				if (m.isMainFeatureVideo(this)) {
@@ -1409,6 +1424,10 @@ mVid.OnKeyDown = function (e) {
 mVid.cmndFastForward = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 	
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1422,6 +1441,10 @@ mVid.cmndFastForward = function () {
 mVid.cmndRewind = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1435,6 +1458,10 @@ mVid.cmndRewind = function () {
 mVid.cmndPlay = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1452,6 +1479,10 @@ mVid.cmndPlay = function () {
 mVid.cmndPause = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1468,6 +1499,10 @@ mVid.cmndPause = function () {
 mVid.cmndPlayPause = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1497,6 +1532,10 @@ mVid.seek = function (v, t) {
 mVid.cmndSeekFWD = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1509,6 +1548,10 @@ mVid.cmndSeekFWD = function () {
 mVid.cmndSeekBACK = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1546,6 +1589,10 @@ mVid.cmndSubsOff = function () {
 mVid.cmndJumpToEnd = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
@@ -1575,6 +1622,10 @@ mVid.cmndJumpToEnd = function () {
 mVid.cmndJumpToStart = function () {
 	var playingVideo = this.getCurrentPlayingVideo();
 
+	if (this.broadcast) {
+		return;
+	}
+	
 	if (!playingVideo) {
 		return;
 	}
