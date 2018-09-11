@@ -109,11 +109,14 @@ mVid.start = function () {
 	this.bAttemptStallRecovery = false;
 	
 	this.tvui		= InitTVUI();
-	this.srvComms 	= InitServerComms();
+	
+	this.srvComms 	= InitServerComms(GLOBAL_SERVERGUI);
 	this.Log 		= InitLog(this.srvComms);
 	
 	this.Log.info("app loaded");
 
+	this.Log.info("GLOBAL_SERVERGUI: " + GLOBAL_SERVERGUI);
+	
 	this.displayBrowserInfo();
 
 	// Parse query params

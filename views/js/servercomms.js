@@ -8,7 +8,7 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitServerComms() { 
+function InitServerComms(bServerGUI) { 
 
 	socket = io();
 
@@ -36,6 +36,8 @@ function InitServerComms() {
 		},
 		
 		EmitBufferEvent	: function (id, v, vb, hb, tm, annot) {
+			if (!bServerGUI) return;
+			
 			var pObj = "\"playerBufferObj\": {";
 			pObj += "\"id\":" + JSON.stringify(id) + ",";
 			if (v)	{
@@ -76,6 +78,8 @@ function InitServerComms() {
 		},
 		
 		EmitJustCurrentTime	: function (id, t, d, tm, annot) {
+			if (!bServerGUI) return;
+
 			var pObj = "\"playerBufferObj\": {";
 			pObj += "\"id\":" + JSON.stringify(id) + ",";
 			pObj += "\"class\":\"bufferBar\",";
@@ -101,6 +105,8 @@ function InitServerComms() {
 		},
 		
 		EmitPlaybackOffset	: function (v, m) {
+			if (!bServerGUI) return;
+
 			var out = "{";
 			out += "\"value\":" + JSON.stringify('' + v) + ",";
 			out += "\"max\":" + JSON.stringify('' + m);
@@ -110,16 +116,22 @@ function InitServerComms() {
 		},
 		
 		StatusUpdate 	: function (id, text) {
+			if (!bServerGUI) return;
+
 			var out = "id=" + id + "&" + "text=" + text;
 			post("/status", out);
 		},
 
 		AdTrans 	: function (id, time) {
+			if (!bServerGUI) return;
+
 			var out = "id=" + id + "&" + "time=" + time;
 			post("/adtrans", out);
 		},
 
 		Log				: function (m) {
+			if (!bServerGUI) return;
+
 			var xhttp = new XMLHttpRequest();
 
 			xhttp.open("POST", "/log", true);
