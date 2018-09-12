@@ -1,0 +1,24 @@
+{
+	"main"			: "./dynamic/periods/stl-main-sintel.xml",
+	
+	"segsize" 		: "3840",
+	"periodD" 		: "600000", 	
+	"segAlign"		: "round",
+
+	"updatePeriod" 	: "5",  					
+	"marginB" 		: "3600",					
+
+	"Atimescale"	: "48000",
+	"Vtimescale"	: "12800",
+	
+	"ads" :
+	{
+		"adD"			: "60000",
+		"adSegAlign"	: "none",
+		
+		"content"		: [
+			"./dynamic/periods/stl-ad-itv.xml",
+			"./dynamic/periods/stl-ad-ch4.xml"
+		]
+	}
+}
