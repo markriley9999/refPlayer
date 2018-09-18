@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CMD=$1
+CURRENTVERSION=$(./install/getversion.sh)
 
 if [ -e title.txt ]; then
     cat title.txt
@@ -15,7 +16,7 @@ if [ "$CMD" == "--updatenode" ]; then
 fi
 
 
-if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
+if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ] || [ "$CMD" == "--updateinc" ] ; then
   echo " - Update code"
   git stash
   git pull
@@ -27,6 +28,12 @@ if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
     echo " - Get content"
     cd install/
 	./getcontent-duk-aws.sh
+  fi
+
+  if [ "$CMD" == "--updateinc" ]; then
+    echo " - Get content"
+    cd install/
+	./incupdate.sh "$CURRENTVERSION"
   fi
 
   exit 0

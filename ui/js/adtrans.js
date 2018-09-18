@@ -41,7 +41,7 @@ graph.setupChart = function () {
 		that.chart = {};
 		
 		that.chart.chartData = google.visualization.arrayToDataTable([
-          ['Video Object'	, 'Time',	{ role: 'style' }],
+          ['Video Object'	, 'Time (ms)',	{ role: 'style' }],
 		  ['', 0, 'blue']
         ]);
 

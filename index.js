@@ -5,7 +5,6 @@ logger.level = 'debug';
 const os = require("os");
 const ip = require("ip");
 const fs = require('fs');
-const chalk = require('chalk');
 
 const electron = require('electron');   
 const express = require('express');         
@@ -219,20 +218,27 @@ function init() {
 	var p;
 	var v = generalInfo.version;
 	
-	runOptions.bMultiDevs 	= !GUI;	
-	runOptions.bSegDump 	= argv.segdump;
-	runOptions.bEventAbs	= argv.eventabs;
-	runOptions.logLevel 	= argv.loglevel;
-	
+	runOptions.bMultiDevs 			= (GUI == null);	
+	runOptions.bSegDump 			= argv.segdump;
+	runOptions.bEventAbs			= argv.eventabs;
+	runOptions.logLevel 			= argv.loglevel;
+	runOptions.timeOffset			= argv.timeoffset;
+	runOptions.prependContentPath	= argv.pathprepend;
+
 	if (runOptions.logLevel) {
 		logger.level = runOptions.logLevel;
 		logger.info("--setting log level to: " + runOptions.logLevel);
 	}
 	
 	if (argv.help) {
-		logger.info("--headless   Run with no GUI.");
-		logger.info("--segdump    Dump segment information.");
-		GUI.quit();
+		logger.info("--headless			: Run with no GUI.");
+		logger.info("--segdump			: Dump segment information.");
+		logger.info("--loglevel=[n]		: Set log level, where n = \"trace\", \"debug\", \"info\", \"warn\", \"error\" or \"fatal\".");
+		logger.info("--timeoffset=[t]	: Used by dynamic dash manifests, adds 't' seconds to server time.");
+		if (GUI) {
+			GUI.quit();
+		}
+		process.exit();
 		return;
 	}
 	
@@ -252,6 +258,14 @@ function init() {
 	
 	fs.existsSync("logs") || fs.mkdirSync("logs");
 	
+	if (runOptions.prependContentPath) {
+		var c = runOptions.prependContentPath.slice(-1);
+		if ((c === '/') || (c === '\\')) {
+			runOptions.prependContentPath = runOptions.prependContentPath.slice(0, -1);
+		}
+		logger.info("-- Prepend content path: " + runOptions.prependContentPath);
+	}
+	
 	if (!GUI) {
 		logger.info("--- Headless Mode ---");
 	}
@@ -264,6 +278,10 @@ function init() {
 		logger.warn("--- Use ABSOLUTE Event Offsets - NOT COMPLIANT!  ---");
 	}
 
+	if (runOptions.timeOffset) {
+		logger.info("--- Server Time Offset set to: " + runOptions.timeOffset + "s ---");
+	}
+	
 	logger.info("");
 	
 	win['log'] 			= new WINDOW(null,	'ui/ui.html',		1216,	700,	sendConnectionStatus,	mainUIClosed, false);
@@ -459,7 +477,8 @@ expressSrv.get('/*.html', function(req, res) {
 		res.render('index.hbs', 
 			{
 				version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-				style: v.dev == "true" ? "mvid-dev" : "mvid"
+				style		: v.dev == "true" ? "mvid-dev" : "mvid",
+				serverGUI	: GUI ? "true" : "false"
 			}, 
 			function(err, html) { 
 			res.status(200);
@@ -564,6 +583,7 @@ expressSrv.get('/content/*', function(req, res) {
 				var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 
 				logger.debug(" - seconds now: " + utcTotalSeconds + "s");
+				logger.debug(" - delta: " + (utcTotalSeconds - segTmOffset) + "s");
 				
 				var headRoom = (parseInt(sd) * 1) / 1000;
 				
@@ -573,6 +593,8 @@ expressSrv.get('/content/*', function(req, res) {
 					return res.sendStatus(404);
 				}
 			}				
+		} else {
+			logger.debug(" - segment request past, not current.");
 		}
 	}
 	
@@ -591,8 +613,16 @@ expressSrv.get('/content/*', function(req, res) {
 	}
 
 	// Get file on server
-	var file = path.join(__dirname, req.path);
-	logger.trace(" - file: " + file);
+	var file;
+	
+	if (runOptions.prependContentPath) {
+		file = runOptions.prependContentPath + req.path;
+		logger.debug(" - file (prepended dir): " + file);
+	} else {
+		file = path.join(__dirname, req.path);
+		logger.trace(" - file: " + file);
+	}
+	
 	
     fs.stat(file, function(err, stats) {
 		if (err) {
@@ -689,8 +719,16 @@ expressSrv.get('/time', function(req, res) {
 
 	var d = new Date();
 	
+	if (req.query.offset) {
+		var o = parseInt(req.query.offset);
+		logger.warn("Server Time offset applied: " + o + "s");
+		d.setUTCSeconds(d.getUTCSeconds() + o);
+	}
+	
 	tISO = dateFormat(d, "isoUtcDateTime");
 	logger.info("tISO: " + tISO);
+	
+	res.set('Date', d.toUTCString());
 	
 	res.status(200);
 	res.type("text/plain");
@@ -781,8 +819,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	var utcSeconds = dNow.getUTCSeconds();
 	var utcTotalSeconds = (utcMinutes * 60) + utcSeconds;
 	
-	var timeServer = "http://" + req.headers.host + "/time";
-
+	var timeServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/time";
 	
 	var formProps = {};
 	var sC = {};
@@ -827,10 +864,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	formProps.title = serverContId;
 	
 	logger.info("- Time offset, past the hour - " + utcMinutes + "M" + utcSeconds + "S");
-	logger.trace("timeServer: " + timeServer);
-	formProps.timeServer = timeServer;
-	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
-	
+
 	// Load stream config info (sync - one time load)
 	if (!configStream[useURL]) {
 
@@ -854,7 +888,14 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		// Extract stream config data
 		sC.segsize 		= intify(sC.segsize);
 		sC.periodD 		= intify(sC.periodD);
-		sC.marginF 		= intify(sC.marginF);
+		
+		if (sC.marginF) {
+			sC.marginF 		= intify(sC.marginF);
+		} else {
+			sC.marginF 		= intify(sC.updatePeriod) * 2;
+			logger.info(" - Use update period: marginF " +  sC.marginF + "s");
+		}
+		
 		sC.marginB 		= intify(sC.marginB);
 		
 		sC.Atimescale	= intify(sC.Atimescale);
@@ -915,6 +956,15 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 		sC = configStream[useURL];
 	}
 		
+		
+	if (sC.serverTimeOffset || runOptions.timeOffset) {
+		timeServer += "?offset=" + (sC.serverTimeOffset || runOptions.timeOffset);
+	}
+	logger.trace("timeServer: " + timeServer);
+	formProps.timeServer = timeServer;
+	formProps.timeScheme = "urn:mpeg:dash:utc:http-head:2014";  // Or use urn:mpeg:dash:utc:http-iso:2014
+	
+	
 	var fNow = dateFormat(dNow.toUTCString(), "isoUtcDateTime");
 
 	var dAv = dNow;
@@ -1059,7 +1109,8 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 	}
 	
 	// Get file on server
-	var file = path.join(__dirname, useURL + ".hbs");
+	var file = path.join(__dirname, (sC.useManifest || useURL) + ".hbs");
+	
 	logger.info(" - file: " + file);
 
 	fs.stat(file, function(err, stats) {
@@ -1074,6 +1125,7 @@ expressSrv.get('/dynamic/*', async function(req, res) {
 
 		logger.trace("progStart: " + progStart);
 		formProps.availabilityStartTime = progStart;
+		formProps.minimumUpdatePeriod	= "PT" + sC.updatePeriod + "S";
 		
 		res.render(file, formProps, function(err, mpd) { 
 			if (err) {
@@ -1175,14 +1227,7 @@ makeMainPeriod = function(sC, p, eId, ptrans, prev, progStart) {
 	}
 
 	if (sC.subs) {
-		// sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
-		// var subOffset = (p * sC.periodD) + offset;
-		var subOffset = (seg-1) * sC.segsize;  // Syncing subs with av segs!
-		
-		sC.subs.offsetObj = {
-			offset: (subOffset * sC.subs.timescale) / 1000,
-			seg: 	Math.floor(subOffset / sC.subs.segsize) + 1
-		};
+		sC.subs.offsetObj = calcOffset(p, sC.periodD, offset, sC.subs.segsize, sC.subs.timescale); 
 	}
 	
 	
@@ -1524,9 +1569,16 @@ expressSrv.post('/getkeys', function(req, res) {
 		return res.sendStatus(400);
 	}
 	
-	if (req.query.tag) {
-		var tag = req.query.tag;
-		
+	logger.info(" - kid: " + kid);
+
+	var tag = req.query.tag;
+	
+	if (!tag) {
+		tag = "KID-" + kid;
+		logger.warn(" - no tag, using KID: " + tag);
+	}
+	
+	if (tag) {
 		logger.info(" - tag: " + tag);
 		
 		var file = './clearKey/licence-' + tag + '.json';
@@ -1603,3 +1655,17 @@ http.listen(8080, (err) => {
 
 https.listen(8082);
 
+
+process.on('exit', function(code) {
+	logger.info("exit: " + code);
+});
+
+process.on('uncaughtException', function(err) {
+	logger.error("uncaughtException: " + err);
+	process.exit(0);
+});
+
+process.on('SIGINT', function() {
+	logger.info("SIGINT");
+	process.exit(0);
+});

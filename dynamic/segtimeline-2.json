@@ -1,0 +1,26 @@
+{
+	"segsize" 		: "3840",
+	"periodD" 		: "600000", 	
+	"segAlign"		: "floor",
+
+	"updatePeriod" 	: "5",  					
+	"marginB" 		: "3600",					
+
+	"Atimescale"	: "1000",
+	"Vtimescale"	: "1000",
+	"Etimescale"	: "1",
+	
+	"segTimeLine" :
+	{
+		"updatePeriodms"	: "3000",
+		"audio"				: "./dynamic/segtimeline/audio.xml",
+		"video"				: "./dynamic/segtimeline/video.xml",
+		"event"				: "./dynamic/segtimeline/event-2.xml"
+	},
+	
+	"ads" :
+	{
+		"adD"			: "60000",
+		"adSegAlign"	: "none"
+	}
+}

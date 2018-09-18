@@ -10,7 +10,7 @@
 	maxSegmentDuration="PT3.84S" 
 	mediaPresentationDuration="PT1H0.040S"
  
-	minimumUpdatePeriod="PT10S"
+	minimumUpdatePeriod="{{minimumUpdatePeriod}}"
 	timeShiftBufferDepth="PT60M"
 	publishTime="{{publishTime}}"
 	availabilityStartTime="{{availabilityStartTime}}"
@@ -52,7 +52,7 @@
 
 	<UTCTiming
 		schemeIdUri="{{timeScheme}}"
-		value="{{timeServer}}">
+		value="{{{timeServer}}}">
 	</UTCTiming>
 	
 </MPD>

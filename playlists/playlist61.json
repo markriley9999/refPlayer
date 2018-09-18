@@ -1,0 +1,14 @@
+{
+	"ads" 				: [],
+	"src" 				: "./dynamic/nw-servertimeoffset.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Dynamic M-Periods - Live Edge stress test",
+
+	"info"				: [	"Forces the client to request (slightly) beyond the 'live-edge'",
+							"Device may stall, but should:",
+							" - Recover from stall",
+							" - Must not agressively retry"
+							]
+}

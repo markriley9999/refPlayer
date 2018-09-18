@@ -5,7 +5,7 @@
 	"periodD" 		: "600000", 	
 	"segAlign"		: "round",
 
-	"marginF" 		: "0",					
+	"updatePeriod" 	: "5",  					
 	"marginB" 		: "3600",					
 
 	"Atimescale"	: "48000",
@@ -24,7 +24,7 @@
 	
 	"subs" : 
 	{
-		"segsize" 	: "10000",
+		"segsize" 	: "3840",
 		"timescale"	: "1000",
 		"main"		: "./dynamic/periods/subs.xml",
 		"ads"		: ""

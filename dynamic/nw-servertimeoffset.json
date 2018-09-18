@@ -1,0 +1,27 @@
+{
+	"useManifest"		: "./dynamic/dashads-dartest.mpd",
+	"serverTimeOffset"	: "15",
+	
+	"main"			: "./dynamic/periods/main-bbb.xml",
+	
+	"segsize" 		: "3840",
+	"periodD" 		: "600000", 	
+	"segAlign"		: "round",
+
+	"updatePeriod" 	: "5",  					
+	"marginB" 		: "3600",					
+
+	"Atimescale"	: "48000",
+	"Vtimescale"	: "12800",
+	
+	"ads" :
+	{
+		"adD"			: "60000",
+		"adSegAlign"	: "none",
+		
+		"content"		: [
+			"./dynamic/periods/ad-itv.xml",
+			"./dynamic/periods/ad-ch4.xml"
+		]
+	}
+}

@@ -8,11 +8,20 @@
         <script src="/socket.io/socket.io.js" charset="utf-8"></script> <!-- needed for sockets io to be able to detect the client -->
 
         <script type="text/javascript" src="common/utils.js"></script>		
+        <script type="text/javascript" src="js/log.js"></script>
+        <script type="text/javascript" src="js/servercomms.js"></script>
+        <script type="text/javascript" src="js/broadcast.js"></script>
         <script type="text/javascript" src="js/eme.js"></script>
         <script type="text/javascript" src="js/lic.js"></script>
-        <script type="text/javascript" src="js/mvid.js"></script>
         <script type="text/javascript" src="js/playlist.js"></script>
+		<script type="text/javascript" src="js/tvui.js"></script>
+		<script type="text/javascript" src="js/cues.js"></script>
+		<script type="text/javascript" src="js/keys.js"></script>
+		<script type="text/javascript" src="js/hbbtvapp.js"></script>
+
+        <script type="text/javascript" src="js/mvid.js"></script>
  		
+        <link 	rel="stylesheet" href="css/mvid-core.css" />
         <link 	rel="stylesheet" href="css/{{style}}.css" />
 		<link 	href="https://fonts.googleapis.com/css?family=VT323" rel='stylesheet' type='text/css'/>
 		<link 	href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel='stylesheet' type='text/css'/>
@@ -48,6 +57,11 @@
 					</progress>
 				</div>
 			</div>
+			<div class="msync">
+				<p id="msync-time" class="msync-text msync-hide">
+					00:00-00
+				</p>
+			</div>
 			<div class="videoGFXOverlay">
 				<div class="centre fitwidth">
 					<img src="bitmaps/buffering2.png" 	id="player-buffering" 	class="playerBufferingIcon"></img>				
@@ -77,9 +91,13 @@
 					<img src="bitmaps/player_stop2.png" 	id="player-stop" 	class="playerIcon"></img>				
 					<img src="bitmaps/key.png" 				id="encrypted" 		class="playerIcon"></img>				
 					<img src="bitmaps/padlock.png" 			id="padlock"		class="playerIcon"></img>
+					<img src="bitmaps/clock.png" 			id="clock"			class="playerIcon hidden"></img>
 					<p id="cuedata"></p>
 				</div>
 			</div>
 		</div>
+        <script type="text/javascript">
+			var GLOBAL_SERVERGUI = {{serverGUI}};
+		</script>
     </body>
 </html>
