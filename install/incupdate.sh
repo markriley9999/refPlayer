@@ -14,7 +14,8 @@ VERSION="$1"
 echo "Version: $VERSION"
 
 if (( $(echo "$VERSION < $MINVERSION" | bc -l) )); then
-	echo "ERROR: Current version too old, can not perform incremental update!"
+	echo "ERROR: Current version too old, can not perform incremental update! Please run:"
+	echo "./run.sh --updateall"
 	exit 0
 fi
 
@@ -25,8 +26,8 @@ echo "Current version OK to update."
 
 URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
-#./getcontent.sh "$URL" "adverts"
-#./getcontent.sh "$URL" "subs"
-#./getcontent.sh "$URL" "msync"
+./getcontent.sh "$URL" "adverts"
+./getcontent.sh "$URL" "subs"
+./getcontent.sh "$URL" "msync"
 
 
