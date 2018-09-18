@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CMD=$1
-CURRENTVERSION=$(./getversion.sh)
+CURRENTVERSION=$(./install/getversion.sh)
 
 if [ -e title.txt ]; then
     cat title.txt
