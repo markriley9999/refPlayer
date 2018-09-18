@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CMD=$1
+CURRENTVERSION=$(./getversion.sh)
 
 if [ -e title.txt ]; then
     cat title.txt
@@ -32,7 +33,7 @@ if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ] || [ "$CMD" == "--upd
   if [ "$CMD" == "--updateinc" ]; then
     echo " - Get content"
     cd install/
-	./incupdate.sh
+	./incupdate.sh "$CURRENTVERSION"
   fi
 
   exit 0

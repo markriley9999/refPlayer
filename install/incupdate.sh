@@ -9,7 +9,7 @@ echo "*** Perform Incremental Update ***"
 
 MINVERSION="2.01"
 
-VERSION=$(./getversion.sh)
+VERSION="$1"
 
 echo "Version: $VERSION"
 
