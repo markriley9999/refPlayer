@@ -15,7 +15,7 @@ if [ "$CMD" == "--updatenode" ]; then
 fi
 
 
-if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
+if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ] || [ "$CMD" == "--updateinc" ] ; then
   echo " - Update code"
   git stash
   git pull
@@ -27,6 +27,12 @@ if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ]; then
     echo " - Get content"
     cd install/
 	./getcontent-duk-aws.sh
+  fi
+
+  if [ "$CMD" == "--updateinc" ]; then
+    echo " - Get content"
+    cd install/
+	./incupdate.sh
   fi
 
   exit 0
