@@ -7,7 +7,7 @@ echo "*** Perform Incremental Update ***"
 
 ./appinstall.sh bc
 
-MINVERSION="2.01"
+MINVERSION="1.9"
 
 VERSION="$1"
 
