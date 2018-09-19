@@ -26,6 +26,7 @@ echo "Current version OK to update."
 
 URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
+./getcontent.sh "$URL" "blankads"
 ./getcontent.sh "$URL" "adverts"
 ./getcontent.sh "$URL" "subs"
 ./getcontent.sh "$URL" "msync"
