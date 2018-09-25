@@ -11,7 +11,7 @@
     "updateall": "./run.sh --updateall",
     "updateinc": "./run.sh --updateinc",
     "help": "node . --help",
-    "gui": "run.sh"
+    "gui": "./run.sh"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
