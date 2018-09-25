@@ -2,10 +2,16 @@
   "name": "RefPlayer",
   "private": true,
   "version": "0.0.1",
-  "description": "HBBTV Reference Player",
+  "description": "DUK Reference Player",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/electron ."
+    "start": "node .",
+    "forever": "./runforever.sh",
+    "update": "./run.sh --update",
+    "updateall": "./run.sh --updateall",
+    "updateinc": "./run.sh --updateinc",
+    "help": "node . --help",
+    "gui": "run.sh"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
