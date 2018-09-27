@@ -5,15 +5,16 @@
   "description": "DUK Reference Player",
   "main": "index.js",
   "scripts": {
-    "start": 		"./node_modules/.bin/electron .",
-    "forever": 		"./runforever.sh",
-    "update": 		"./run.sh --update",
-    "updateall": 	"./run.sh --updateall",
-    "updateinc": 	"./run.sh --updateinc",
-    "updatenode": 	"./run.sh --updatenode",
-    "help": 		"node . --help",
-    "gui": 			"./run.sh",
-	"nogui": 		"node ."
+    "start"			: 	"./node_modules/.bin/electron .",
+    "forever"		: 	"./runforever.sh",
+	"stopall"		:	"./forever stopall",
+    "update"		: 	"./run.sh --update",
+    "updateall"		: 	"./run.sh --updateall",
+    "updateinc"		: 	"./run.sh --updateinc",
+    "updatenode"	: 	"./run.sh --updatenode",
+    "help"			: 	"node . --help",
+    "gui"			: 	"./run.sh",
+	"nogui"			: 	"node ."
   },
   "dependencies": {
     "body-parser": "^1.16.1",
