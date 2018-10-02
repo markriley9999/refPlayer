@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "11",
+	"minor" 	: "12",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+					"Updated Media Sync stream (fixed PCR offset)",
 					"Media Sync Module",
 					"AV Aligned sub segments",
 					"Calculate manifest update based on update period param"
