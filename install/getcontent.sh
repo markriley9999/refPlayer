@@ -35,10 +35,13 @@ while [  $COUNTER -lt $MAXATTEMPTS ]; do
 				# happy path
 				tar -xzvf $DIR/$FNAME -C ../
 
-				rm $DIR/$FNAME
+				if [ $? -eq 0 ]; then
+					# happy path
+					rm $DIR/$FNAME
 
-				echo "--- Success ---"
-				exit 0
+					echo "--- Success ---"
+					exit 0
+				fi
 			fi
 
 		else
