@@ -5,7 +5,7 @@
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
-					"Media Sync Module",
+					"Updated Media Sync stream (fixed PCR offset)",
 					"AV Aligned sub segments",
 					"Calculate manifest update based on update period param"
 				  ]
