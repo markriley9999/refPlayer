@@ -822,6 +822,11 @@ function onMsyncTimeUpdate (that) {
 			// that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
 			that.tvui.UpdateMSyncTime(t, that.broadcast.fps);
 			
+			if (that.broadcast.previousTimeMS > ms) {
+				that.Log.error("msync: previous time exceeds current time!");
+				that.broadcast.previousTimeMS = ms;
+			}
+			
 			if ((ms - that.broadcast.previousTimeMS) > 250) {
 				that.broadcast.previousTimeMS = ms;
 				that.resetStallTimer();
