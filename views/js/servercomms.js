@@ -8,18 +8,20 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitServerComms(bServerGUI) { 
+/*global io */
 
-    socket = io();
+window.InitServerComms = function(bServerGUI) { 
+
+    var socket = io();
 
 
-    post = function (url, out) {
+    function post(url, out) {
         // send a xhr/ajax POST request with the serialized media events
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", url, true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); 
         xhttp.send(out);
-    };
+    }
 
 
     return {
@@ -149,4 +151,4 @@ function InitServerComms(bServerGUI) {
 
     };
 	
-}
+};

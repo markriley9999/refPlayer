@@ -1,14 +1,10 @@
 module.exports = {
     "env": {
-        "browser": true,
-        "node": true,
-        "es6": true,
-        "amd": true
+        "browser": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
+        "ecmaVersion": 5
     },
     "rules": {
         "indent": [
@@ -26,13 +22,6 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ],
-        "no-unused-vars": [
-            "warn", { 
-                "vars": "local", 
-                "args": "none", 
-                "ignoreRestSiblings": false 
-            }
         ]
     }
 };

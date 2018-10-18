@@ -8,14 +8,15 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitHBBTVApp(log) {
+/*global oipfObjectFactory */
 
-    var appMan 		= null;
-    var confManager = null;
-    var _app 		= null;
-    var _cfg		= null;
-	
-	
+window.InitHBBTVApp = function (log) {
+
+    var appMan      = null;
+    var _app        = null;
+    var _cfg        = null;
+    
+    
     try {
         if (oipfObjectFactory.isObjectSupported("application/oipfApplicationManager")) {
             appMan = oipfObjectFactory.createApplicationManagerObject();
@@ -23,7 +24,7 @@ function InitHBBTVApp(log) {
     } catch (err) {
         log.warn("Exception when creating creating ApplicationManager Object. Error: " + err.message);
     }
-	
+    
     try {
         _app = appMan.getOwnerApplication(document);
     } catch (err) {
@@ -37,15 +38,15 @@ function InitHBBTVApp(log) {
             log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
         }
 
-	   try {
+        try {
             var myKeyset = _app.privateData.keyset;
-            myKeyset.setValue(	myKeyset.RED 		| 
-								myKeyset.GREEN 		| 
-								myKeyset.BLUE 		| 
-								myKeyset.YELLOW		| 
-								myKeyset.VCR		|
-								myKeyset.NUMERIC 	|
-								myKeyset.NAVIGATION);
+            myKeyset.setValue(  myKeyset.RED        | 
+                                myKeyset.GREEN      | 
+                                myKeyset.BLUE       | 
+                                myKeyset.YELLOW     | 
+                                myKeyset.VCR        |
+                                myKeyset.NUMERIC    |
+                                myKeyset.NAVIGATION);
         } catch (err) {
             log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
         }
@@ -63,9 +64,9 @@ function InitHBBTVApp(log) {
     } catch (err) {
         log.warn("Exception when creating creating oipfConfiguration Object. Error: " + err.message);
     }
-	
+    
     return {
-        app	: _app,
-        cfg	: _cfg
+        app : _app,
+        cfg : _cfg
     };
-}
+};

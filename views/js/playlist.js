@@ -1,13 +1,15 @@
-function getPlaylist(idx, playlistReadyCallback) {
+/*global ActiveXObject */
+ 
+window.getPlaylist = function(idx, logObj, playlistReadyCallback) {
 
     var url = "./playlists/playlist" + idx + ".json";
 
     function log(msg) {
-        mVid.Log.info("Playlist: " + msg);
+        logObj.info("Playlist: " + msg);
     }
 
     function logErr(msg) {
-        mVid.Log.error("Playlist: " + msg);
+        logObj.error("Playlist: " + msg);
     }
 
 
@@ -38,4 +40,4 @@ function getPlaylist(idx, playlistReadyCallback) {
     }
 
     ajax(url, callback);
-}
+};

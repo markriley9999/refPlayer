@@ -8,19 +8,19 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function SetupBroadcastObject(id, container, log)
+/*global oipfObjectFactory */
+
+window.SetupBroadcastObject = function (id, container, log)
 {
-    var startTime = Date.now();
-	
     var bo;
     var mSync;
-	
-    const STATE_STOPPED 		= 0;
-    const STATE_WAITINGFOR_BT 	= 1;
-    const STATE_WATCHING_BT 	= 2;
-    const STATE_BUFFERING_OD	= 3;
-    const STATE_PLAYING_OD		= 4;
-	
+    
+    const STATE_STOPPED         = 0;
+    const STATE_WAITINGFOR_BT   = 1;
+    const STATE_WATCHING_BT     = 2;
+    const STATE_BUFFERING_OD    = 3;
+    const STATE_PLAYING_OD      = 4;
+    
     var stateTxt = [
         "Stopped",
         "Waiting for broadcast content to start",
@@ -28,27 +28,27 @@ function SetupBroadcastObject(id, container, log)
         "Buffering OnDemand content (and watching broadcast)",
         "Playing OnDemand content"
     ];
-	
-    const POLL_SLOW	= 500;
-    const POLL_FAST	= 40;
-	
-	
-    var curState 		= STATE_STOPPED;
-    var pollInterval	= POLL_SLOW;
-	
+    
+    const POLL_SLOW = 500;
+    const POLL_FAST = 40;
+    
+    
+    var curState        = STATE_STOPPED;
+    var pollInterval    = POLL_SLOW;
+    
     var curTime;
-	
+    
     var odTime;
     var preloadTime;
     var preloadFunc;
     var startOndemandFunc;
-	
+    
     var timeupdateFunc;
     var winObj = null;
-	
-	
+    
+    
     function e(id) {
-	  return document.getElementById(id);
+        return document.getElementById(id);
     }
 
 
@@ -59,8 +59,8 @@ function SetupBroadcastObject(id, container, log)
             return 0;
         }
     }
-	
-	
+    
+    
     function setState(st, p) {
         if ((curState != st) || (pollInterval != p)) {
             log.info("Broadcast - change state: " + stateTxt[st] + " --- Poll Interval (ms): " + p); 
@@ -68,24 +68,25 @@ function SetupBroadcastObject(id, container, log)
             pollInterval = p;
         }
     }
-	
+    
     function checkState() {
-		
+        var a;
+        
         if ((curState == STATE_STOPPED) || (curState == STATE_PLAYING_OD)) {
             setTimeout(checkState, pollInterval);
             return;
         }
-		
+        
         curTime = currentTime(); 
         //log.info("msync: currentTime: " + curTime + "(s)");
-		
+        
         if (timeupdateFunc && curTime) {
             timeupdateFunc(curTime);
         }
-		
+        
         if (preloadTime && (curTime >= preloadTime)) {
             if (preloadFunc) {
-                var a = preloadFunc;
+                a = preloadFunc;
                 preloadFunc = null; // one hit
                 a(curTime, preloadTime, pollInterval);
             }
@@ -94,32 +95,32 @@ function SetupBroadcastObject(id, container, log)
 
         if (odTime && (curTime >= odTime)) {
             if (startOndemandFunc) {
-                var a = startOndemandFunc;
+                a = startOndemandFunc;
                 startOndemandFunc = null; // one hit
                 a(curTime, odTime, pollInterval);
             }
             setState(STATE_PLAYING_OD, POLL_SLOW);
         }
-	
+    
         if ((curState == STATE_WAITINGFOR_BT) && curTime) {
             setState(STATE_WATCHING_BT, POLL_SLOW);
         }
-		
+        
         setTimeout(checkState, pollInterval);
     }
-		
+        
     checkState();
-	
+    
     log.info("SetupBroadcastObject: " + id);
 
     if (!e(id)) {
-        var bo = document.createElement("object");	
+        bo = document.createElement("object");  
 
         if (!bo) {
             log.error("SetupBroadcastObject: " + id + " Creation failed!");
             return null;
         }
-	
+    
         bo.setAttribute("id", id);
 
         bo.type = "video/broadcast";
@@ -127,46 +128,46 @@ function SetupBroadcastObject(id, container, log)
         bo.style.outline = "transparent";
         bo.setAttribute("class", "broadcast");
         e(container).appendChild(bo);
-		
+        
         if (this.bWindowedObjs) {
-            bo.style.display 	= "block";
-            bo.style.top  		= winObj.top;
-            bo.style.left 		= winObj.left;
-            bo.style.width		= winObj.width;
-            bo.style.height 	= winObj.height;
-            bo.style.backgroundColor	= winObj.bcol;
-            bo.style.position	= "absolute";
-			
+            bo.style.display    = "block";
+            bo.style.top        = winObj.top;
+            bo.style.left       = winObj.left;
+            bo.style.width      = winObj.width;
+            bo.style.height     = winObj.height;
+            bo.style.backgroundColor    = winObj.bcol;
+            bo.style.position   = "absolute";
+            
             e("player-container").style.backgroundColor = "cyan";
         }
     }
-	
+    
 
     return {
         setWindow: function (o) {
             winObj = o;
         },
-		
+        
         bind: function () {
             try {
                 log.info("SetupBroadcastObject: bindToCurrentChannel");
                 bo.bindToCurrentChannel();
             } catch (e) {
                 log.error("Starting of broadcast video failed: bindToCurrentChannel");
-            }		
+            }       
         },
-		
+        
         initMediaSync: function (s, fOk, fErr) {
             try {
-                if (true) {
+                if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
                     log.info("SetupBroadcastObject: createMediaSynchroniser");
                     mSync = oipfObjectFactory.createMediaSynchroniser();
                     log.info("SetupBroadcastObject: initMediaSynchroniser");
-                    mSync.initMediaSynchroniser(bo,	s);				
+                    mSync.initMediaSynchroniser(bo, s);             
                 } else {
                     log.error("application/hbbtvMediaSynchroniser not supported.");
                     if (fErr) {
-                        fErr(err);
+                        fErr();
                     }
                     return;
                 }
@@ -177,16 +178,16 @@ function SetupBroadcastObject(id, container, log)
                 }
                 return;
             }
-			
+            
             setState(STATE_WAITINGFOR_BT, POLL_FAST);
             if (fOk) {
                 fOk();
             }
         },
-		
+        
         setTimeEvents: function (p, t, f1, f2) {
             odTime = t;
-            preloadTime	= t - p;
+            preloadTime = t - p;
             preloadFunc = f1;
             startOndemandFunc = f2;
         },
@@ -194,22 +195,22 @@ function SetupBroadcastObject(id, container, log)
         setTimeUpdateEvents: function (f) {
             timeupdateFunc = f;
         },
-		
+        
         hide: function () {
             bo.style.display = "none";
         },
-		
+        
         resume: function () {
             bo.style.display = "block";
             setState(STATE_WAITINGFOR_BT, POLL_FAST);
         },
-		
+        
         getId: function () {
             return id;
         },
-		
+        
         getCurrentTime: function () {
             return currentTime();
         }
     };
-}
+};

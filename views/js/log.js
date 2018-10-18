@@ -8,13 +8,15 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitLog(srvComms) { 
+/*eslint no-console: "error"*/
+
+window.InitLog = function(srvComms) { 
 
     var lastLogTime = Date.now();
     var logStr 		= "";
 
     function write(message, cssClass) {
-        var log, nextLog, logText, elapsedTime;
+        var logText, elapsedTime;
 		
         elapsedTime = ("000000" + (Date.now() - lastLogTime)).slice(-6);
         lastLogTime = Date.now();
@@ -33,21 +35,25 @@ function InitLog(srvComms) {
     return {
         error 	: function (message) {
             write("ERROR: " + message, "error");
+            // eslint-disable-next-line no-console
             console.error(message);
         },
 
         warn 	: function (message) {
             write("WARN: " + message, "warn");
+            // eslint-disable-next-line no-console
             console.warn(message);
         },
 
         info 	: function (message) {
             write("INFO: " + message, "info");
+            // eslint-disable-next-line no-console
             console.info(message);
         },
 
         debug 	: function (message) {
             write("DEBUG: " + message, "debug");
+            // eslint-disable-next-line no-console
             console.trace(message);
         },
 		
@@ -57,4 +63,4 @@ function InitLog(srvComms) {
             }
         }
     };
-}
+};

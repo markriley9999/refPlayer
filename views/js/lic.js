@@ -1,15 +1,16 @@
-function clearkeyGetLicence(session, msg, contentTag, video, logObj) {
+/*global ActiveXObject */
+ 
+window.clearkeyGetLicence = function(session, msg, contentTag, video, logObj) {
 
     var keyServiceUrl = "./getkeys?tag=" + contentTag;
 
 
-    // TODO: mVid should be a param
     function log(m) {
         logObj.info("Licence: " + m);
     }
 
     function logerr(msg) {
-        logObj.error("Licence: " + m);
+        logObj.error("Licence: " + msg);
     }
 
     function callback(licenseString, xhr) {
@@ -56,4 +57,4 @@ function clearkeyGetLicence(session, msg, contentTag, video, logObj) {
     }
 
     ajax();
-}
+};

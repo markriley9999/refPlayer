@@ -43,14 +43,6 @@ mVid.cnt.curBuffIdx = 0;
 mVid.cnt.curPlayIdx = 0;
 mVid.cnt.list = [];
 
-
-// Play states
-const PLAYSTATE_STOP	= 0;
-const PLAYSTATE_PLAY	= 1;
-const PLAYSTATE_PAUSE	= 2;
-const PLAYSTATE_REW		= 3;
-const PLAYSTATE_FWD		= 4;
-
 const STALL_TIMEOUT_MS = 10000;
 
 const AD_TRANS_TIMEOUT_MS	= 20;
@@ -108,9 +100,9 @@ mVid.start = function () {
     this.EOPlayback = false;
     this.bAttemptStallRecovery = false;
 	
-    this.tvui		= InitTVUI();
+    this.tvui		= window.InitTVUI();
 	
-    this.srvComms 	= InitServerComms(GLOBAL_SERVERGUI);
+    this.srvComms 	= window.InitServerComms(GLOBAL_SERVERGUI);
     this.Log 		= InitLog(this.srvComms);
 	
     this.Log.info("app loaded");
@@ -128,7 +120,7 @@ mVid.start = function () {
     this.params.bEventsDump		= commonUtils.getUrlVars()["eventdump"] || false;
     this.params.bPartialSCTE	= commonUtils.getUrlVars()["partialscte"] || false;
 
-    this.hbbtv = InitHBBTVApp(this.Log);
+    this.hbbtv = window.InitHBBTVApp(this.Log);
 	
     this.showPlayrange();
 	
@@ -153,7 +145,7 @@ mVid.start = function () {
 
     var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
 	
-    getPlaylist(currentChannel || "0", function(ch, playObj) {		
+    window.getPlaylist(currentChannel || "0", this.Log, function(ch, playObj) {		
 
         that.procPlaylist(ch, playObj);
 
@@ -174,7 +166,7 @@ mVid.start = function () {
 
             that.Log.info("*** Use Video Broadcast Object ***");
 
-            that.broadcast = SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
+            that.broadcast = window.SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
 			
             if (that.broadcast) {
                 that.tvui.ShowTransportIcons(false);
@@ -216,7 +208,7 @@ mVid.start = function () {
 		
             var mainVideo = that.createVideo("mVid-mainContent");
 
-            that.cues = InitCues(
+            that.cues = window.InitCues(
                 {
                     log		: that.Log, 
                     tvui	: that.tvui, 
@@ -229,7 +221,7 @@ mVid.start = function () {
             );
 
             if (!that.broadcast) {
-                that.tvui.ShowPlayingState(PLAYSTATE_STOP);
+                that.tvui.ShowPlayingState("stop");
             }
 			
             // Clear key
@@ -248,7 +240,7 @@ mVid.start = function () {
             ];
 
             if (typeof navigator.requestMediaKeySystemAccess !== "undefined") {
-                SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+                window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
                     that.Log.info(p);
                     that.setContentSourceAndLoad();				
                 }, function(p) {
@@ -1054,7 +1046,7 @@ function onVideoEvent (m) {
             m.updateBufferStatus(this.id, "");
 
             if (!m.broadcast) {
-                m.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+                m.tvui.ShowPlayingState("play");
             }
             m.showPlayrange();
 				
@@ -1110,7 +1102,7 @@ function onVideoEvent (m) {
 
             if (this.bPlayPauseTransition) {
                 if (!m.broadcast) {
-                    m.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+                    m.tvui.ShowPlayingState("pause");
                 }
             } else
             {
@@ -1164,7 +1156,7 @@ function onVideoEvent (m) {
 				
             m.showBufferingIcon(true);
             if (!m.broadcast) {
-                m.tvui.ShowPlayingState(PLAYSTATE_STOP);
+                m.tvui.ShowPlayingState("stop");
             }
 
             // Start playing buffered content
@@ -1443,7 +1435,7 @@ mVid.cmndFastForward = function () {
     this.Log.info("called : cmndFastForward"); 
 
     if (playingVideo) playingVideo.playbackRate = 4;	
-    this.tvui.ShowPlayingState(PLAYSTATE_FWD);
+    this.tvui.ShowPlayingState("ffwd");
 };	
 	
 mVid.cmndRewind = function () {
@@ -1460,7 +1452,7 @@ mVid.cmndRewind = function () {
     this.Log.info("called : cmndRewind"); 
 	
     if (playingVideo) playingVideo.playbackRate = -4;	
-    this.tvui.ShowPlayingState(PLAYSTATE_REW);
+    this.tvui.ShowPlayingState("rewind");
 };	
 	
 mVid.cmndPlay = function () {
@@ -1477,7 +1469,7 @@ mVid.cmndPlay = function () {
     this.Log.info("called : cmndPlay"); 
 	
     playingVideo.playbackRate = 1;
-    this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+    this.tvui.ShowPlayingState("play");
     if (playingVideo.paused) {
         playingVideo.bPlayPauseTransition = true;
         playingVideo.play();
@@ -1499,7 +1491,7 @@ mVid.cmndPause = function () {
 	
     if (playingVideo && !playingVideo.paused) {
         playingVideo.bPlayPauseTransition = true;
-        this.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+        this.tvui.ShowPlayingState("pause");
         playingVideo.pause();
     }
 };	
@@ -1520,10 +1512,10 @@ mVid.cmndPlayPause = function () {
     playingVideo.bPlayPauseTransition = true;
 	
     if (!playingVideo.paused) {
-        this.tvui.ShowPlayingState(PLAYSTATE_PAUSE);
+        this.tvui.ShowPlayingState("pause");
         playingVideo.pause();
     } else {
-        this.tvui.ShowPlayingState(PLAYSTATE_PLAY);
+        this.tvui.ShowPlayingState("play");
         playingVideo.play();
     }
 };	
@@ -1653,7 +1645,7 @@ mVid.cmndJumpToStart = function () {
 // Key mapping table
 var keyTable = {};
 
-var getVK = InitVKKeys();
+var getVK = window.InitVKKeys();
 
 keyTable.entries = [
     { func : mVid.cmndSubsOn, 		key : "",  hbbKey : getVK("VK_UP") 				}, 

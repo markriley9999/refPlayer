@@ -8,8 +8,8 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-function InitVKKeys() {
-    lVKTable = {};
+window.InitVKKeys = function() {
+    var lVKTable = {};
 
     lVKTable["VK_LEFT"]			= 37;
     lVKTable["VK_UP"]			= 38;
@@ -43,4 +43,4 @@ function InitVKKeys() {
             return lVKTable[vk];
         }
     }; 
-}
+};
