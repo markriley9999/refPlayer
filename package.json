@@ -15,8 +15,10 @@
     "help": "node . --help",
     "gui": "./run.sh",
     "nogui": "node .",
-    "lint": "./node_modules/.bin/eslint index.js > linterrors.txt",
-    "lintapp": "./node_modules/.bin/eslint views/js/*.js > linterrors.txt"
+    "lint": "./node_modules/.bin/eslint index.js",
+    "lintapp": "./node_modules/.bin/eslint -c views/js/.eslintrc.js views/js/*.js",
+    "lintui": "./node_modules/.bin/eslint -c views/js/.eslintrc.js ui/js/*.js",
+    "lintcommon": "./node_modules/.bin/eslint -c views/js/.eslintrc.js common/*.js"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
