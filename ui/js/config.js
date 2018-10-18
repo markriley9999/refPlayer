@@ -29,6 +29,14 @@ window.onload = function () {
     ipc.send("ipc-get-config");
 };
 
+window.selectOption = function(obj, f) {
+    //console.log(obj.value);
+    if (f) { 
+        f(obj.value);
+        ipc.send("ipc-set-config", commonConfig._getProps());
+    }
+};
+
 // listen for the ipc events
 ipc.on("ipc-send-config", function(event, message) {
 
