@@ -216,7 +216,7 @@ function init() {
     var v = generalInfo.version;
     var i;
     
-    runOptions.bMultiDevs           = (GUI == null);
+    runOptions.bMultiDevs           = (GUI === null);
     runOptions.bSegDump             = argv.segdump;
     runOptions.bEventAbs            = argv.eventabs;
     runOptions.logLevel             = argv.loglevel;
@@ -242,7 +242,7 @@ function init() {
 
     logger.info("--------------------------------------------------");
     logger.info(v.title + " v" + v.major + "." + v.minor);
-    logger.info("   " + (v.dev == "true" ? "Dev" : "Formal") + " Release");
+    logger.info("   " + (v.dev === "true" ? "Dev" : "Formal") + " Release");
     logger.info("--------------------------------------------------");
     logger.info("");
     logger.info(v.comment);
@@ -473,12 +473,12 @@ expressSrv.get("/*.html", function(req, res) {
         win["adtrans"].reload();
 
         var v = generalInfo.version;
-        var sRelType = v.dev == "true" ? "dev" : "";
+        var sRelType = v.dev === "true" ? "dev" : "";
 
         res.render("index.hbs",
             {
                 version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-                style       : v.dev == "true" ? "mvid-dev" : "mvid",
+                style       : v.dev === "true" ? "mvid-dev" : "mvid",
                 serverGUI   : GUI ? "true" : "false"
             },
             function(err, html) {
@@ -603,7 +603,7 @@ expressSrv.get("/content/*", function(req, res) {
     // ***** Simulate error condition (503)? *****
     var nErrs = commonConfig.getNetworkErrors();
 
-    if (nErrs.value != 0) {
+    if (nErrs.value !== 0) {
         var rndErr = Math.floor(Math.random() * (nErrs.value - 1));
 
         if (rndErr === 0) {
@@ -702,7 +702,7 @@ expressSrv.get("/content/*", function(req, res) {
                 logger.trace(" - send chunk");
                 var nThrot = commonConfig.getNetworkThrottle();
 
-                if (nThrot.value != 0) {
+                if (nThrot.value !== 0) {
                     stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
                     logger.info("Throttle server: " + nThrot.name);
                 } else {
@@ -839,7 +839,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
     if (req.query.contid) {
         clientContId = strippedURL + "-" + req.query.contid;
 
-        if (serverContId != clientContId) {
+        if (serverContId !== clientContId) {
             logger.info("Client requested non-current content: " + clientContId);
             if (archiveMPDs[clientContId]) {
                 logger.info("Found archived MPD, using that. ");
@@ -921,7 +921,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         }
 
         // Force ad duration to seg boundary???
-        if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign != "none")) {
+        if (sC.ads && sC.ads.adSegAlign && (sC.ads.adD > 0) && (sC.ads.adSegAlign !== "none")) {
             logger.info("- non aligned adD: " + sC.ads.adD);
 
             if (sC.ads.adSegAlign === "round") {
@@ -934,7 +934,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         }
 
         // Force main duration to seg boundary???
-        if (sC.segAlign && (sC.segAlign != "none")) {
+        if (sC.segAlign && (sC.segAlign !== "none")) {
             logger.info("- non aligned periodD: " + sC.periodD);
 
             var adD = sC.ads ? sC.ads.adD : 0;
@@ -1014,9 +1014,9 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         logger.info("*** Multiple Period Manifest ***");
 
         if (    (!persistState[useURL].publishTime)     ||
-                (lowerP != persistState[useURL].lowerP) ||
-                (upperP != persistState[useURL].upperP) ||
-                (serverContId != persistState[useURL].serverContId) ||
+                (lowerP !== persistState[useURL].lowerP) ||
+                (upperP !== persistState[useURL].upperP) ||
+                (serverContId !== persistState[useURL].serverContId) ||
                 bAllPeriods)
         {
             logger.info("Manifest has changed: publishTime - " + fNow);
@@ -1287,7 +1287,7 @@ function mainContentXML(fn, p, sDuration, sStart, AoffsetS, VoffsetS, seg, evPre
     var context = {};
     var sbs = "";
 
-    if ((prevPeriodID != "") && ptransTable[ptrans]) {
+    if ((prevPeriodID !== "") && ptransTable[ptrans]) {
         template = hbs.handlebars.compile(ptransTable[ptrans]);
         context = {prevperiod_id: prevPeriodID};
         pc =  template(context);
@@ -1341,7 +1341,7 @@ function adXML(fn, p, sDuration, sStart, evPresTime, eId, ptrans, prevPeriodID, 
     var context;
     var sbs = "";
 
-    if ((prevPeriodID != "") && ptransTable[ptrans]) {
+    if ((prevPeriodID !== "") && ptransTable[ptrans]) {
         template = hbs.handlebars.compile(ptransTable[ptrans]);
         context = {prevperiod_id: prevPeriodID};
         pc =  template(context);
@@ -1601,12 +1601,12 @@ expressSrv.post("/getkeys", function(req, res) {
             var lic = licenceTable[tag];
             logger.info("licence: " + JSON.stringify(lic));
 
-            if (lic.keys[0].kid !=  kid) {
+            if (lic.keys[0].kid !==  kid) {
                 logger.info(" * illegal kid.");
                 return res.sendStatus(403);
             }
 
-            if (lDelay.value != 0) {
+            if (lDelay.value !== 0) {
 
                 logger.info("getkeys: delay license by " + lDelay.name);
                 setTimeout(function() {
@@ -1635,7 +1635,7 @@ function sendConnectionStatus() {
         "addresses"     : g.serverAddresses,
         "bConnected"    : (g.connectedDevices > 0),
         "devName"       : g.devName,
-        "version"       : "v" + g.version.major + "." + g.version.minor + (g.version.dev == "true" ? "dev" : "")
+        "version"       : "v" + g.version.major + "." + g.version.minor + (g.version.dev === "true" ? "dev" : "")
     };
 
     win["log"].sendToWindow("ipc-connected", obj);

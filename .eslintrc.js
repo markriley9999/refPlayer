@@ -33,6 +33,10 @@ module.exports = {
                 "args": "none", 
                 "ignoreRestSiblings": false 
             }
+        ],
+        "eqeqeq": [
+            "error",
+            "always"
         ]
     }
 };

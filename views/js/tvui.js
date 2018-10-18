@@ -141,7 +141,7 @@ window.InitTVUI = function() {
             if (t) {
                 t.innerHTML = txt;
     
-                if (txt != prevMSyncTm) {
+                if (txt !== prevMSyncTm) {
                     t.setAttribute("class", "msync-text msync-show");
                 } else 
                 {

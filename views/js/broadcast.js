@@ -62,7 +62,7 @@ window.SetupBroadcastObject = function (id, container, log)
     
     
     function setState(st, p) {
-        if ((curState != st) || (pollInterval != p)) {
+        if ((curState !== st) || (pollInterval !== p)) {
             log.info("Broadcast - change state: " + stateTxt[st] + " --- Poll Interval (ms): " + p); 
             curState = st;
             pollInterval = p;
@@ -72,7 +72,7 @@ window.SetupBroadcastObject = function (id, container, log)
     function checkState() {
         var a;
         
-        if ((curState == STATE_STOPPED) || (curState == STATE_PLAYING_OD)) {
+        if ((curState === STATE_STOPPED) || (curState === STATE_PLAYING_OD)) {
             setTimeout(checkState, pollInterval);
             return;
         }
@@ -102,7 +102,7 @@ window.SetupBroadcastObject = function (id, container, log)
             setState(STATE_PLAYING_OD, POLL_SLOW);
         }
     
-        if ((curState == STATE_WAITINGFOR_BT) && curTime) {
+        if ((curState === STATE_WAITINGFOR_BT) && curTime) {
             setState(STATE_WATCHING_BT, POLL_SLOW);
         }
         

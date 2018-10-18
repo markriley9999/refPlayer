@@ -125,7 +125,7 @@ ipc.on("ipc-buffer", function(event, message) {
         var hbObj = msgObj.headroomBufferObj;
         var playerId = pbObj.id;
         
-        if ((playerId == "mVid-mainContent") || (playerId == "mVid-broadcast")) {
+        if ((playerId === "mVid-mainContent") || (playerId === "mVid-broadcast")) {
             playerId = "main";
         }
         
