@@ -11,38 +11,39 @@ function e(id) {
 var mVid = {};
 
 mVid.videoEvents = Object.freeze({
-    LOAD_START      : "loadstart",
-    PROGRESS            : "progress",
-    SUSPEND         : "suspend",
-    ABORT               : "abort",
-    ERROR               : "error",
-    EMPTIED         : "emptied",
-    STALLED         : "stalled",
-    LOADED_METADATA : "loadedmetadata",
-    LOADED_DATA     : "loadeddata",
-    CAN_PLAY            : "canplay",
-    CAN_PLAY_THROUGH    : "canplaythrough",
-    PLAYING         : "playing",
-    WAITING         : "waiting",
-    SEEKING         : "seeking",
-    SEEKED          : "seeked",
-    ENDED               : "ended",
-    DURATION_CHANGE : "durationchange",
-    TIME_UPDATE     : "timeupdate",
-    PLAY                : "play",
-    PAUSE               : "pause",
-    RATE_CHANGE     : "ratechange",
-    RESIZE          : "resize",
-    VOLUME_CHANGE       : "volumechange",
-    ENCRYPTED           : "encrypted"
+    LOAD_START       : "loadstart",
+    PROGRESS         : "progress",
+    SUSPEND          : "suspend",
+    ABORT            : "abort",
+    ERROR            : "error",
+    EMPTIED          : "emptied",
+    STALLED          : "stalled",
+    LOADED_METADATA  : "loadedmetadata",
+    LOADED_DATA      : "loadeddata",
+    CAN_PLAY         : "canplay",
+    CAN_PLAY_THROUGH : "canplaythrough",
+    PLAYING          : "playing",
+    WAITING          : "waiting",
+    SEEKING          : "seeking",
+    SEEKED           : "seeked",
+    ENDED            : "ended",
+    DURATION_CHANGE  : "durationchange",
+    TIME_UPDATE      : "timeupdate",
+    PLAY             : "play",
+    PAUSE            : "pause",
+    RATE_CHANGE      : "ratechange",
+    RESIZE           : "resize",
+    VOLUME_CHANGE    : "volumechange",
+    ENCRYPTED        : "encrypted"
 });
 
-mVid.playCount          = 0;
+mVid.playCount = 0;
 
-mVid.cnt = {};
-mVid.cnt.curBuffIdx = 0;
-mVid.cnt.curPlayIdx = 0;
-mVid.cnt.list = [];
+mVid.cnt = {
+    "curBuffIdx" : 0,
+    "curPlayIdx" : 0,
+    "list"       : []
+};
 
 const STALL_TIMEOUT_MS = 10000;
 
