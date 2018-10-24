@@ -53,7 +53,7 @@ const AD_TRANS_THRESHOLD_MS = 3000;
 const AD_START_THRESHOLD_S  = 10;
 const AD_START_TIMEOUT_MS   = 20;
 
-const PRELOAD_NEXT_AD_S = 5;
+const PRELOAD_NEXT_AD_S = 10;
 
 const CONTENT_FPS = 25;
 
