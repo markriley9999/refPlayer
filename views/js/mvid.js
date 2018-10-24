@@ -1644,32 +1644,32 @@ mVid.cmndJumpToStart = function () {
 // Key mapping table
 var keyTable = {};
 
-var getVK = window.InitVKKeys();
+var getKey = window.InitVKKeys();
 
 keyTable.entries = [
-    { func : mVid.cmndSubsOn,       key : "",  hbbKey : getVK("VK_UP")              }, 
-    { func : mVid.cmndSubsOff,      key : "",  hbbKey : getVK("VK_DOWN")            }, 
-    { func : mVid.cmndRewind,       key : "R", hbbKey : getVK("VK_REWIND")          }, 
-    { func : mVid.cmndPlay,         key : "P", hbbKey : getVK("VK_PLAY")            }, 
-    { func : mVid.cmndPause,        key : "U", hbbKey : getVK("VK_PAUSE")           }, 
-    { func : mVid.cmndPlayPause,    key : "T", hbbKey : getVK("VK_PLAY_PAUSE")      }, 
-    { func : mVid.cmndSeekFWD,      key : "",  hbbKey : getVK("VK_RIGHT")           }, 
-    { func : mVid.cmndSeekBACK,     key : "",  hbbKey : getVK("VK_LEFT")            }, 
-    { func : mVid.cmndReload,       key : "L", hbbKey : getVK("VK_RED")             }, 
-    { func : mVid.cmndLog,          key : "D", hbbKey : getVK("VK_GREEN")           }, 
-    { func : mVid.cmndJumpToStart,  key : "S", hbbKey : getVK("VK_YELLOW")          }, 
-    { func : mVid.cmndJumpToEnd,    key : "E", hbbKey : getVK("VK_BLUE")            }, 
+    { func : mVid.cmndSubsOn,       key : "",  hbbKey : getKey("VK_UP")              }, 
+    { func : mVid.cmndSubsOff,      key : "",  hbbKey : getKey("VK_DOWN")            }, 
+    { func : mVid.cmndRewind,       key : "R", hbbKey : getKey("VK_REWIND")          }, 
+    { func : mVid.cmndPlay,         key : "P", hbbKey : getKey("VK_PLAY")            }, 
+    { func : mVid.cmndPause,        key : "U", hbbKey : getKey("VK_PAUSE")           }, 
+    { func : mVid.cmndPlayPause,    key : "T", hbbKey : getKey("VK_PLAY_PAUSE")      }, 
+    { func : mVid.cmndSeekFWD,      key : "",  hbbKey : getKey("VK_RIGHT")           }, 
+    { func : mVid.cmndSeekBACK,     key : "",  hbbKey : getKey("VK_LEFT")            }, 
+    { func : mVid.cmndReload,       key : "L", hbbKey : getKey("VK_RED")             }, 
+    { func : mVid.cmndLog,          key : "D", hbbKey : getKey("VK_GREEN")           }, 
+    { func : mVid.cmndJumpToStart,  key : "S", hbbKey : getKey("VK_YELLOW")          }, 
+    { func : mVid.cmndJumpToEnd,    key : "E", hbbKey : getKey("VK_BLUE")            }, 
     
-    { func : function() {this.setChannel(0);},  key : "0",  hbbKey : getVK("VK_0")  }, 
-    { func : function() {this.setChannel(1);},  key : "1",  hbbKey : getVK("VK_1")  }, 
-    { func : function() {this.setChannel(2);},  key : "2",  hbbKey : getVK("VK_2")  }, 
-    { func : function() {this.setChannel(3);},  key : "3",  hbbKey : getVK("VK_3")  }, 
-    { func : function() {this.setChannel(4);},  key : "4",  hbbKey : getVK("VK_4")  }, 
-    { func : function() {this.setChannel(5);},  key : "5",  hbbKey : getVK("VK_5")  }, 
-    { func : function() {this.setChannel(6);},  key : "6",  hbbKey : getVK("VK_6")  }, 
-    { func : function() {this.setChannel(7);},  key : "7",  hbbKey : getVK("VK_7")  }, 
-    { func : function() {this.setChannel(8);},  key : "8",  hbbKey : getVK("VK_8")  }, 
-    { func : function() {this.setChannel(9);},  key : "9",  hbbKey : getVK("VK_9")  } 
+    { func : function() {this.setChannel(0);},  key : "0",  hbbKey : getKey("VK_0")  }, 
+    { func : function() {this.setChannel(1);},  key : "1",  hbbKey : getKey("VK_1")  }, 
+    { func : function() {this.setChannel(2);},  key : "2",  hbbKey : getKey("VK_2")  }, 
+    { func : function() {this.setChannel(3);},  key : "3",  hbbKey : getKey("VK_3")  }, 
+    { func : function() {this.setChannel(4);},  key : "4",  hbbKey : getKey("VK_4")  }, 
+    { func : function() {this.setChannel(5);},  key : "5",  hbbKey : getKey("VK_5")  }, 
+    { func : function() {this.setChannel(6);},  key : "6",  hbbKey : getKey("VK_6")  }, 
+    { func : function() {this.setChannel(7);},  key : "7",  hbbKey : getKey("VK_7")  }, 
+    { func : function() {this.setChannel(8);},  key : "8",  hbbKey : getKey("VK_8")  }, 
+    { func : function() {this.setChannel(9);},  key : "9",  hbbKey : getKey("VK_9")  } 
 ];
 
 
