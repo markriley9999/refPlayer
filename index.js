@@ -216,7 +216,7 @@ function init() {
     var v = generalInfo.version;
     var i;
     
-    runOptions.bMultiDevs           = (GUI === null);
+    runOptions.bMultiDevs           = !GUI;
     runOptions.bSegDump             = argv.segdump;
     runOptions.bEventAbs            = argv.eventabs;
     runOptions.logLevel             = argv.loglevel;
