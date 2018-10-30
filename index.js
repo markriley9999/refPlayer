@@ -523,7 +523,7 @@ expressSrv.get("/content/*", function(req, res) {
     var cType;
 
     if (suffix === "mpd") {
-        cType = "application/dash+xml";
+        cType = "application/dash+xml; charset=utf-8";
     } else {
         cType = "video/mp4";
     }
@@ -793,7 +793,7 @@ expressSrv.get("/segjump/*", function(req, res) {
                 res.end(err);
             }
 
-            res.type("application/dash+xml");
+            res.type("application/dash+xml; charset=utf-8");
             res.status(200);
             res.send(mpd);
         });
@@ -844,7 +844,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
             if (archiveMPDs[clientContId]) {
                 logger.info("Found archived MPD, using that. ");
 
-                res.type("application/dash+xml");
+                res.type("application/dash+xml; charset=utf-8");
                 res.status(200);
                 return res.send(archiveMPDs[clientContId]);
             } else {
@@ -978,7 +978,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         if (archiveMPDs[serverContId]) {
             logger.info("Using previously created manifest (no change). ");
 
-            res.type("application/dash+xml");
+            res.type("application/dash+xml; charset=utf-8");
             res.status(200);
             return res.send(archiveMPDs[serverContId]);
         } else {
@@ -1130,7 +1130,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
                 res.end(err);
             }
 
-            res.type("application/dash+xml");
+            res.type("application/dash+xml; charset=utf-8");
             res.status(200);
             res.send(mpd);
 
