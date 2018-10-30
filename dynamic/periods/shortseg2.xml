@@ -14,6 +14,7 @@
 		<AdaptationSet segmentAlignment="true" lang="und">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			{{{period_continuity}}}
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/shortseg/</BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="CLIP2_$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
@@ -21,6 +22,7 @@
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
 			{{{period_continuity}}}
+			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../content/shortseg/</BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip2_set2_init.mp4"/>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="6809724">
