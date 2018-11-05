@@ -629,15 +629,15 @@ expressSrv.get("/content/*", function(req, res) {
         if (err) {
             if (err.code === "ENOENT") {
                 // 404 Error if file not found
-                logger.error(" * file does not exist");
+                logger.error("file does not exist");
                 return res.sendStatus(404);
             }
-            logger.error(" * error in file request: " + file);
+            logger.error("error in file request: " + file);
             return res.sendStatus(400);
         }
 
         if (!stats.isFile()) {
-            logger.error(" * error in file request: " + file);
+            logger.error("error in file request: " + file);
             return res.sendStatus(400);
         }
 
@@ -684,8 +684,9 @@ expressSrv.get("/content/*", function(req, res) {
         logger.trace(" - rtn: " + rtn);
 
         if (start >= end) {
-            logger.error(" * Error: start >= end!");
-            return res.sendStatus(400);
+            logger.error("Error: start >= end!");
+            logger.warn("Ignoring error - send 200");
+            return res.sendStatus(200);
         }
 
         var stream = fs.createReadStream(file, { start: start, end: end })
@@ -757,7 +758,7 @@ expressSrv.get("/segjump/*", function(req, res) {
         if (fs.existsSync(cfn)) {
             configSegJump[useURL] = require(cfn);
         } else {
-            logger.error(" * file does not exist");
+            logger.error("file does not exist");
             return res.sendStatus(404);
         }
     }
@@ -782,7 +783,7 @@ expressSrv.get("/segjump/*", function(req, res) {
         if (err) {
             if (err.code === "ENOENT") {
                 // 404 Error if file not found
-                logger.error(" * file does not exist");
+                logger.error("file does not exist");
                 return res.sendStatus(404);
             }
             res.end(err);
@@ -879,7 +880,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         if (fs.existsSync(cfn)) {
             configStream[useURL] = require(cfn);
         } else {
-            logger.error(" * file does not exist");
+            logger.error("file does not exist");
             return res.sendStatus(404);
         }
 
@@ -1115,7 +1116,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
         if (err) {
             if (err.code === "ENOENT") {
                 // 404 Error if file not found
-                logger.error(" * file does not exist");
+                logger.error("file does not exist");
                 return res.sendStatus(404);
             }
             res.end(err);
@@ -1274,7 +1275,7 @@ function loadAndCache(fn, c) {
         if (fs.existsSync(fn)) {
             c[fn] = fs.readFileSync(fn, "utf8");
         } else {
-            logger.error(" * file does not exist");
+            logger.error("file does not exist");
             return false;
         }
     }
@@ -1566,7 +1567,7 @@ expressSrv.post("/getkeys", function(req, res) {
     try {
         kid = licReq.kids[0];
     } catch (err) {
-        logger.error(" * malformed licence request.");
+        logger.error("malformed licence request.");
         return res.sendStatus(400);
     }
 
@@ -1588,7 +1589,7 @@ expressSrv.post("/getkeys", function(req, res) {
             if (err) {
                 if (err.code === "ENOENT") {
                     // 404 Error if file not found
-                    logger.error(" * file does not exist: " + file);
+                    logger.error("file does not exist: " + file);
                     return res.sendStatus(404);
                 }
                 res.end(err);
@@ -1602,7 +1603,7 @@ expressSrv.post("/getkeys", function(req, res) {
             logger.info("licence: " + JSON.stringify(lic));
 
             if (lic.keys[0].kid !==  kid) {
-                logger.info(" * illegal kid.");
+                logger.info("illegal kid.");
                 return res.sendStatus(403);
             }
 
@@ -1620,7 +1621,7 @@ expressSrv.post("/getkeys", function(req, res) {
             }
         });
     } else {
-        logger.error(" * no tag");
+        logger.error("no tag");
         return res.sendStatus(404);
     }
 });
