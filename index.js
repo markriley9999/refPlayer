@@ -357,7 +357,7 @@ function socketConnect(socket) {
     generalInfo.connectedDevices++;
 
     generalInfo.devName = commonUtils.extractDevName(generalInfo.currentDeviceUA);
-    var UA = socket.request.headers["user-agent"];
+    var UA = socket.request.headers["user-agent"] || "";
 
     logger.info(" ---> Device connected (" + generalInfo.connectedDevices + ") IP: " + socket.handshake.address + " UA: " + UA);
     if (runOptions.bMultiDevs) {
@@ -455,7 +455,7 @@ expressSrv.post("/adtrans", function(req, res) {
 });
 
 expressSrv.get("/*.html", function(req, res) {
-    var UA = req.headers["user-agent"];
+    var UA = req.headers["user-agent"] || "";
 
     if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
         generalInfo.currentDeviceUA = UA;
@@ -484,7 +484,7 @@ expressSrv.get("/*.html", function(req, res) {
             function(err, html) {
                 res.status(200);
                 res.send(html);
-                logger.trace("UserAgent: " + req.headers["user-agent"]);
+                logger.trace("UserAgent: " + (req.headers["user-agent"] || ""));
                 logger.trace(JSON.stringify(req.headers));
             });
 
@@ -533,7 +533,7 @@ expressSrv.get("/content/*", function(req, res) {
     logger.trace(JSON.stringify(req.headers));
 
     if (runOptions.bMultiDevs) {
-        var u = req.headers["user-agent"];
+        var u = req.headers["user-agent"] || "";
         var d = commonUtils.extractDevName(u);
 
         if (d === "UnknownModel") {
