@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://live.unified-streaming.com/scte35/scte35.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - Unified Streaming reference stream with scte35 markers",
+
+	"info"				: [	"DASHIF: Live Content - Unified Streaming reference stream with scte35 markers",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}

@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://24x7dash-i.akamaihd.net/dash/live/900080/dash-demo/dash.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - Akamai 24x7 reference stream - segmentTemplate",
+
+	"info"				: [	"DASHIF: Live Content - Akamai 24x7 reference stream - segmentTemplate",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}

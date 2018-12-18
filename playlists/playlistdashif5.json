@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://irtdashreference-i.akamaihd.net/dash/live/901161/keepixo1/manifestBR2.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - IRT CMAF reference with subtitles",
+
+	"info"				: [	"DASHIF: Live Content - IRT CMAF reference with subtitles",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}

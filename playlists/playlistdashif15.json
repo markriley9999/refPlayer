@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://wowzaec2demo.streamlock.net/live/bigbuckbunny/manifest_mvnumber.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - Wowza Clear Dynamic SegmentTemplate",
+
+	"info"				: [	"DASHIF: Live Content - Wowza Clear Dynamic SegmentTemplate",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}
