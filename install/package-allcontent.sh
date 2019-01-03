@@ -76,3 +76,5 @@
 ./package-content.sh "itv/familyguy"
 
 ./package-content.sh "bbc/hevc1"
+
+./package-content.sh "msync"
