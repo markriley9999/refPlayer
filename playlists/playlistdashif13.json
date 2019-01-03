@@ -8,6 +8,8 @@
 
 	"info"				: [	"DASHIF: Live Content - Unified Streaming reference stream with scte35 markers",
 							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
-						  ]
+						  ],
+                          
+    "eventSchemeIdUri"  : "urn:scte:scte35:2014:xml+bin"
 
 }
