@@ -11,6 +11,11 @@ if [ "$CMD" == "--subs" ]; then
 	exit 0
 fi
 
+if [ "$CMD" == "--msync" ]; then
+	./getcontent.sh "$URL" "msync"
+	exit 0
+fi
+
 if [ "$CMD" != "--ext" ] || [ "$CMD" == "--all" ]; then
 	./getallcontent.sh "$URL"
 fi

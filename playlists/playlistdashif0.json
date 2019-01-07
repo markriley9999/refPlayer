@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - SegmentTemplate without manifest updates (livesim)",
+
+	"info"				: [	"DASHIF: Live Content - SegmentTemplate without manifest updates (livesim)",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}

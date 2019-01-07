@@ -37,6 +37,7 @@ while [  $COUNTER -lt $MAXATTEMPTS ]; do
 
 				if [ $? -eq 0 ]; then
 					# happy path
+
 					rm $DIR/$FNAME
 
 					echo "--- Success ---"

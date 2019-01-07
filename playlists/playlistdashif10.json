@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://akamaibroadcasteruseast.akamaized.net/cmaf/live/657078/akasource/out.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - Akamai Low Latency Stream",
+
+	"info"				: [	"DASHIF: Live Content - Akamai Low Latency Stream",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}

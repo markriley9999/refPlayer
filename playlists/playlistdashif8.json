@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://livesim.dashif.org/livesim-chunked/chunkdur_1/ato_7/testpic4_8s/Manifest300.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASHIF: Live Content - Low Latency (Single-Rate) (livesim-chunked)",
+
+	"info"				: [	"DASHIF: Live Content - Low Latency (Single-Rate) (livesim-chunked)",
+							"  - Taken from: https://reference.dashif.org/dash.js/v2.9.2/samples/dash-if-reference-player/index.html"
+						  ]
+
+}
