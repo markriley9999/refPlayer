@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "14",
-	"dev"		: "true",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
 					"Updated Media Sync stream (fixed PCR offset)",
