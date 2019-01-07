@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "14",
+	"minor" 	: "15",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "Linted source",
 					"Updated Media Sync stream (fixed PCR offset)",
 					"Media Sync Module",
 					"AV Aligned sub segments",
