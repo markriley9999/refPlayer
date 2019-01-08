@@ -1096,7 +1096,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
             }
 
             if (liveEdge) {
-                formProps["queryString"] = "?progStart=" + liveEdge + "&amp;segDuration=" + sC.averageSegSize;
+                formProps["queryString"] = "?progStart=" + liveEdge;
             }
 
             if (sC.subs) {
