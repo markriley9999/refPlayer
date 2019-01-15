@@ -8,7 +8,7 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-window.SetupEME = function(video, keySystem, name, options, contentTag, logObj)
+window.SetupEME = function(video, keySystem, name, options, licenceName, logObj)
 {
     const DRMSystemID = "0x1077efecc0b24d02ace33c1e52e2fb4b";
     
@@ -72,9 +72,9 @@ window.SetupEME = function(video, keySystem, name, options, contentTag, logObj)
     }
     */
     
-    function UpdateSessionFunc(name, contentTag) {
+    function UpdateSessionFunc(name, licenceName) {
         return function(ev) {
-            window.clearkeyGetLicence(ev.target, ev.message, contentTag, video, logObj);
+            window.clearkeyGetLicence(ev.target, ev.message, licenceName, video, logObj);
         };
     }
 
@@ -168,7 +168,7 @@ window.SetupEME = function(video, keySystem, name, options, contentTag, logObj)
                 video.bProcessingKey = true;
                 
                 var session = video.mediaKeys.createSession();
-                session.addEventListener("message", UpdateSessionFunc(name, contentTag));
+                session.addEventListener("message", UpdateSessionFunc(name, licenceName));
                 session.addEventListener("keystatuseschange", KeysChange);
                 session.generateRequest(ev.initDataType, ev.initData).then(function() {
                     log(name + " generated request");

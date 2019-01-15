@@ -275,7 +275,13 @@ mVid.procPlaylist = function (ch, playObj) {
     c.length = lt + 1;
     c[lt] = {};
     
-    this.contentTag = commonUtils.basename(playObj.src);
+    if (playObj.licenceName) {
+        this.contentTag = playObj.licenceName;
+    } else if (playObj.useKid === "true") {
+        this.contentTag = "";
+    } else {
+        this.contentTag = commonUtils.basename(playObj.src);
+    }
     
     if (playObj.addContentId === "false") {
         c[lt].src = playObj.src;
