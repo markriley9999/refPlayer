@@ -545,7 +545,7 @@ mVid.updatePlaybackBar = function(videoId) {
 mVid.__updatePlaybackBar = function(t, d) {
     var videoBar = e("playbackBar");
 
-    if (d && (d > 0)) {
+    if (d && (d > 0) && (d !== Infinity)) {
         videoBar.max = d;
         videoBar.value = t;
     } else
