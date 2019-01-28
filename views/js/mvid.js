@@ -261,20 +261,20 @@ mVid.start = function () {
 
     function loadJS(url, implementationCode, location) {
 
-        var scriptTag = document.createElement('script');
+        var scriptTag = document.createElement("script");
         scriptTag.src = url;
 
         scriptTag.onload = implementationCode;
         scriptTag.onreadystatechange = implementationCode;
 
         location.appendChild(scriptTag);
-    };
+    }
     
     if (this.hbbtv.app) {
         init2();
     } else {
         // load dashjs - non hbbtv device!
-        loadJS('https://cdn.dashjs.org/latest/dash.all.debug.js', init2, document.body);
+        loadJS("https://cdn.dashjs.org/latest/dash.all.debug.js", init2, document.body);
     }
     
 };
@@ -1113,7 +1113,7 @@ function onVideoEvent (m) {
                 
             // Sanity check
             if (m.isMainFeatureVideo(this) && (this === playingVideo) && (playingVideo.currentTime < playingVideo.resumeFrom)) {
-                m.Log.error(this.id + ": resume error (currentTime < resume point)");
+                m.Log.error(this.id + ": resume error (currentTime " + playingVideo.currentTime + "s < resume point " + playingVideo.resumeFrom + "s)");
                 playingVideo.currentTime = playingVideo.resumeFrom;
             }
             break;
