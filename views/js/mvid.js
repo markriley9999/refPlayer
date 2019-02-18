@@ -259,6 +259,37 @@ mVid.start = function () {
         });
     }
 
+    function loadBitmap(i) {
+
+        function drawDataURIOnCanvas(strDataURI, canvas) {
+
+            var img = new window.Image();
+            img.addEventListener("load", function () {
+                
+                canvas.getContext("2d").drawImage(img, 0, 0, screen.width, screen.height);
+            });
+            
+            var cacheBuster = "?nnn=" + i;
+            
+           img.setAttribute("src", strDataURI + cacheBuster);
+        }
+
+        var c = document.createElement('canvas');
+        
+        c.width = screen.width;
+        c.height = screen.height;
+        
+        document.body.appendChild(c);
+
+        c.style.position = "absolute";
+        c.style.left = i.toString() + "px";
+        c.style.top = i.toString() + "px";
+        c.style.opacity  = 0.01;
+                
+        drawDataURIOnCanvas("bitmaps/4k.jpg", c);
+        
+    }
+    
     function loadJS(url, implementationCode, location) {
 
         var scriptTag = document.createElement("script");
@@ -268,6 +299,12 @@ mVid.start = function () {
         scriptTag.onreadystatechange = implementationCode;
 
         location.appendChild(scriptTag);
+    }
+
+    var i;
+    
+    for (i = 0; i < 100; i++) {
+        loadBitmap(i);
     }
     
     if (this.hbbtv.app) {
