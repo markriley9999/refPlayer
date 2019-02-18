@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Unified Streaming Platform(version=1.7.18) -->
+<MPD
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="urn:mpeg:dash:schema:mpd:2011"
+  xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 http://standards.iso.org/ittf/PubliclyAvailableStandards/MPEG-DASH_schema_files/DASH-MPD.xsd"
+  xmlns:cenc="urn:mpeg:cenc:2013"
+  xmlns:mas="urn:marlin:mas:1-0:services:schemas:mpd"
+  type="static"
+  mediaPresentationDuration="PT1H28M9.960S"
+  maxSegmentDuration="PT13S"
+  minBufferTime="PT4S"
+  profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014">
+  <Period
+    duration="PT1H28M9.960S">
+    <BaseURL>http://itvpnpctv.content.itv.com/2-5040-0011-001/20/1/VAR015/2-5040-0011-001_20_1_VAR015.ism/dash/</BaseURL>
+    <AdaptationSet
+      group="1"
+      contentType="audio"
+      minBandwidth="96871"
+      maxBandwidth="96871"
+      segmentAlignment="true"
+      audioSamplingRate="48000"
+      mimeType="audio/mp4"
+      codecs="mp4a.40.2"
+      startWithSAP="1">
+      <AudioChannelConfiguration
+        schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011"
+        value="2">
+      </AudioChannelConfiguration>
+      <!-- Common Encryption -->
+      <ContentProtection
+        schemeIdUri="urn:mpeg:dash:mp4protection:2011"
+        value="cenc"
+        cenc:default_KID="11942571-811F-4FDD-8428-7005ABF2705F">
+      </ContentProtection>
+      <!-- ClearKey -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B">
+      </ContentProtection>
+      <!-- Widevine -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:EDEF8BA9-79D6-4ACE-A3C8-27DCD51D21ED">
+      </ContentProtection>
+      <!-- Marlin -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:5E629AF5-38DA-4063-8977-97FFBD9902D4">
+<mas:MarlinContentIds>
+  <mas:MarlinContentId>urn:marlin:kid:11942571811f4fdd84287005abf2705f</mas:MarlinContentId>
+</mas:MarlinContentIds>
+      </ContentProtection>
+      <Role
+        schemeIdUri="urn:mpeg:dash:role:2011"
+        value="main">
+      </Role>
+      <SegmentTemplate
+        timescale="48000"
+        initialization="2-5040-0011-001_20_1_VAR015-$RepresentationID$.dash"
+        media="2-5040-0011-001_20_1_VAR015-$RepresentationID$-$Number$.m4s"
+        startNumber="1"
+        duration="576000">
+      </SegmentTemplate>
+      <Representation
+        id="audio=96871"
+        bandwidth="96871">
+      </Representation>
+    </AdaptationSet>
+    <AdaptationSet
+      group="2"
+      contentType="video"
+      par="16:9"
+      minBandwidth="573000"
+      maxBandwidth="1459000"
+      minWidth="1024"
+      maxWidth="1024"
+      segmentAlignment="true"
+      height="576"
+      frameRate="25"
+      mimeType="video/mp4"
+      codecs="avc3.64001F"
+      startWithSAP="1">
+      <!-- Common Encryption -->
+      <ContentProtection
+        schemeIdUri="urn:mpeg:dash:mp4protection:2011"
+        value="cenc"
+        cenc:default_KID="11942571-811F-4FDD-8428-7005ABF2705F">
+      </ContentProtection>
+      <!-- ClearKey -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B">
+      </ContentProtection>
+      <!-- Widevine -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:EDEF8BA9-79D6-4ACE-A3C8-27DCD51D21ED">
+      </ContentProtection>
+      <!-- Marlin -->
+      <ContentProtection
+        schemeIdUri="urn:uuid:5E629AF5-38DA-4063-8977-97FFBD9902D4">
+<mas:MarlinContentIds>
+  <mas:MarlinContentId>urn:marlin:kid:11942571811f4fdd84287005abf2705f</mas:MarlinContentId>
+</mas:MarlinContentIds>
+      </ContentProtection>
+      <Role
+        schemeIdUri="urn:mpeg:dash:role:2011"
+        value="main">
+      </Role>
+      <SegmentTemplate
+        timescale="16000"
+        initialization="2-5040-0011-001_20_1_VAR015-$RepresentationID$.dash"
+        media="2-5040-0011-001_20_1_VAR015-$RepresentationID$-$Number$.m4s"
+        startNumber="1"
+        duration="192000">
+      </SegmentTemplate>
+      <Representation
+        id="video=573000"
+        bandwidth="573000"
+        width="544"
+        sar="32:17"
+        scanType="interlaced">
+      </Representation>
+      <Representation
+        id="video=916000"
+        bandwidth="916000"
+        width="720"
+        sar="64:45"
+        scanType="interlaced">
+      </Representation>
+      <Representation
+        id="video=1186000"
+        bandwidth="1186000"
+        width="720"
+        sar="64:45"
+        scanType="interlaced">
+      </Representation>
+      <Representation
+        id="video=1459000"
+        bandwidth="1459000"
+        width="720"
+        sar="64:45"
+        scanType="interlaced">
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>

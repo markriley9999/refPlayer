@@ -1,0 +1,19 @@
+{
+	"ads" : [
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201812/SPO6DCWC02805_WEBUYANYCAR_DANCINGONICEIDENTS_CURTAINCALL_5_9800_1200.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./content/itv/itvstall.mpd",
+	"type" 				: "application/dash+xml",
+    "useKid"            : "true",
+	"transitionTime" 	: "20",
+	"addContentId" 		: "false",
+	"channelName" 		: "ITV Stall",
+
+	"info"				: [	"",
+                            ""
+						  ]
+
+}
