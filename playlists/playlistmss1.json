@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "http://playready.directtaps.net/smoothstreaming/SSWSS720H264/SuperSpeedway_720.ism/Manifest",
+	"type" 				: "application/vnd.ms-sstr+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "MSS",
+
+	"info"				: []
+
+}
