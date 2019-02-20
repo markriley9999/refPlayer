@@ -1,0 +1,24 @@
+{
+	"ads" : [
+		{
+			"src" 	: "https://c5ads.ott.skymedia.co.uk/2019/01/405578/c5-mp4/405578_c5-mp4-2.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "https://c5ads.ott.skymedia.co.uk/2019/01/405578/c5-mp4/405578_c5-mp4-3.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "https://c5ads.ott.skymedia.co.uk/2019/01/405578/c5-mp4/405578_c5-mp4-4.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./content/adtest/adtest-subs.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "60",
+	"addContentId" 		: "false",
+	"channelName" 		: "Sky Ads",
+
+	"info"				: []
+
+}
