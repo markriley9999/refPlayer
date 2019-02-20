@@ -13,7 +13,7 @@
   profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014">
   <Period
     duration="PT45M38S">
-    <BaseURL>dash/</BaseURL>
+    <BaseURL>dash-ck/</BaseURL>
     <AdaptationSet
       group="1"
       contentType="audio"
