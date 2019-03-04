@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/itv/itv-segtimeline/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "ITV Seg Timeline Test - no ads",
+
+	"info"				: []
+
+}
