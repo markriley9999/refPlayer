@@ -16,7 +16,7 @@
 	"src" 				: "./content/itv/itv-segtimeline/manifest-ck.mpd",
 	"type" 				: "application/dash+xml",
     "useKid"            : "true",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "300",
 	"addContentId" 		: "false",
 	"channelName" 		: "ITV Seg Timeline Test (ClearKey + Subs)",
 
