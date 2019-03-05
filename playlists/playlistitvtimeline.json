@@ -15,7 +15,7 @@
 	],
 	"src" 				: "./content/itv/itv-segtimeline/manifest.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "300",
 	"addContentId" 		: "false",
 	"channelName" 		: "ITV Seg Timeline Test",
 
