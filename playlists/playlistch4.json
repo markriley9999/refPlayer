@@ -13,7 +13,7 @@
 			"type" 	: "video/mp4"
 		}
 	],
-	"src" 				: "http://cf.jos.test.c4assets.com/CH4_08_02_900_50017002001001_005/CH4_08_02_900_50017002001001_005_DVB.ism/stream.mpd",
+	"src" 				: "./content/ch4/test-clear.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "300",
 	"addContentId" 		: "false",
