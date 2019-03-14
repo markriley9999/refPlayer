@@ -15,6 +15,7 @@ window.InitHBBTVApp = function (log) {
     var appMan      = null;
     var _app        = null;
     var _cfg        = null;
+    var bKeysSet    = false;
     
     
     try {
@@ -67,6 +68,30 @@ window.InitHBBTVApp = function (log) {
     
     return {
         app : _app,
-        cfg : _cfg
+        cfg : _cfg,
+        
+        setKeys : function () {
+            if (_app) {
+                try {
+                    var myKeyset = _app.privateData.keyset;
+                    myKeyset.setValue(  myKeyset.RED        | 
+                                        myKeyset.GREEN      | 
+                                        myKeyset.BLUE       | 
+                                        myKeyset.YELLOW     | 
+                                        myKeyset.VCR        |
+                                        myKeyset.NUMERIC    |
+                                        myKeyset.NAVIGATION);
+                    
+                    bKeysSet = true;
+                } catch (err) {
+                    log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
+                }
+            }
+        },
+        
+        getKeysSet : function () {
+            return bKeysSet;
+        }
+        
     };
 };

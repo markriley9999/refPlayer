@@ -1432,6 +1432,10 @@ mVid.OnKeyDown = function (e) {
     var keyChar = String.fromCharCode(keyCode);
     var keyTableEntry = null;
     
+    if (!this.hbbtv.getKeysSet()) {
+        this.hbbtv.setKeys();
+    }
+    
     this.Log.info("KeyChar: " + keyChar);
 
     keyTableEntry = keyTable.entries.filter(function ( obj ) {
