@@ -96,26 +96,6 @@ mVid.startTime = Date.now();
 
 mVid.start = function () {
     
-    setTimeout(function () {
-        if ((commonUtils.getUrlVars()["noreload"] || "") == "") {
-                var srch = "";
-                
-                if (window.location.search) {
-                    srch = "&noreload=1";
-                } else {
-                    srch = "?noreload=1";
-                }
-                
-                //location.reload();
-                mVid.reload();
-                //location.assign(window.location.href + srch);
-                //location.reload(true);
-            }
-        }, 10000
-    );
-    
-    
-    
     var that        = this;
     
     this.EOPlayback = false;
