@@ -96,17 +96,20 @@ mVid.startTime = Date.now();
 
 mVid.start = function () {
     
-    if ((commonUtils.getUrlVars()["noreload"] || "") == "") {
-            var srch = "";
-            
-            if (window.location.search) {
-                srch = "&noreload=1";
-            } else {
-                srch = "?noreload=1";
+    setTimeout(function () {
+        if ((commonUtils.getUrlVars()["noreload"] || "") == "") {
+                var srch = "";
+                
+                if (window.location.search) {
+                    srch = "&noreload=1";
+                } else {
+                    srch = "?noreload=1";
+                }
+                
+                window.location.href = window.location.href + srch
             }
-            
-            window.location.href = window.location.href + srch
-    }
+        }, 1000
+    );
     
     
     
