@@ -38,18 +38,21 @@ window.InitHBBTVApp = function (log) {
             log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
         }
 
-        try {
-            var myKeyset = _app.privateData.keyset;
-            myKeyset.setValue(  myKeyset.RED        | 
-                                myKeyset.GREEN      | 
-                                myKeyset.BLUE       | 
-                                myKeyset.YELLOW     | 
-                                myKeyset.VCR        |
-                                myKeyset.NUMERIC    |
-                                myKeyset.NAVIGATION);
-        } catch (err) {
-            log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
-        }
+        setTimeout(function () {
+            try {
+                var myKeyset = _app.privateData.keyset;
+                myKeyset.setValue(  myKeyset.RED        | 
+                                    myKeyset.GREEN      | 
+                                    myKeyset.BLUE       | 
+                                    myKeyset.YELLOW     | 
+                                    myKeyset.VCR        |
+                                    myKeyset.NUMERIC    |
+                                    myKeyset.NAVIGATION);
+                log.info("myKeyset.setValue called.");
+            } catch (err) {
+                log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
+            }
+        }, 3000);
     }
 
     try {
