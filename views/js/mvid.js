@@ -108,7 +108,7 @@ mVid.start = function () {
                 
                 window.location.href = window.location.href + srch
             }
-        }, 1000
+        }, 5000
     );
     
     
