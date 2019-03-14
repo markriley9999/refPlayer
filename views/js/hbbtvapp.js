@@ -52,7 +52,7 @@ window.InitHBBTVApp = function (log) {
             } catch (err) {
                 log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
             }
-        }, 10000);
+        }, 3000);
     }
 
     try {
