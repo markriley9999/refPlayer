@@ -106,8 +106,8 @@ mVid.start = function () {
                     srch = "?noreload=1";
                 }
                 
-                window.location.reload(true);
-                window.location.replace(window.location.href + srch);
+                //window.location.reload(true);
+                window.location.assign(window.location.href + srch);
                 //window.location.reload(true);
             }
         }, 5000
