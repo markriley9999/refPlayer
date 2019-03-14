@@ -44,7 +44,7 @@ window.InitHBBTVApp = function (log) {
                                 myKeyset.GREEN      | 
                                 myKeyset.BLUE       | 
                                 myKeyset.YELLOW     | 
-                                myKeyset.VCR        |
+                                0x20        |
                                 myKeyset.NUMERIC    |
                                 myKeyset.NAVIGATION);
         } catch (err) {
