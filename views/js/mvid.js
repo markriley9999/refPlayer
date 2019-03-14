@@ -106,7 +106,8 @@ mVid.start = function () {
                     srch = "?noreload=1";
                 }
                 
-                location.reload();
+                //location.reload();
+                mVid.reload();
                 //location.assign(window.location.href + srch);
                 //location.reload(true);
             }
