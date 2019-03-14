@@ -110,7 +110,7 @@ mVid.start = function () {
                 window.location.replace(window.location.href + srch);
                 //window.location.reload(true);
             }
-        }, 1000
+        }, 5000
     );
     
     
