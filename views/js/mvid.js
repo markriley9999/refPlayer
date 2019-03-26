@@ -662,7 +662,7 @@ mVid.setContentSourceAndLoad = function () {
     }
     
     if (this.cues) { 
-        this.cues.CheckSubs();
+        this.cues.ClearSubs();
     }
     
     this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);

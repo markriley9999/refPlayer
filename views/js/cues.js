@@ -33,12 +33,6 @@ window.InitCues = function (o) {
     }
 
     var mainVideo = e("mVid-mainContent");
-    var bSysSubsEnabled = false;
-    
-    if (o.cfg) {
-        bSysSubsEnabled = o.cfg.configuration.subtitlesEnabled;
-        o.log.info("System Subs: " + (bSysSubsEnabled ? "Enabled" : "Disabled"));
-    }
     
     function arrayBufferToString(buffer) {
         var arr = new Uint8Array(buffer);
@@ -115,18 +109,16 @@ window.InitCues = function (o) {
                     track.mode = "disabled";
                 }
 
-                if (o.cfg && o.cfg.configuration) {
-                    bSysSubsEnabled = o.cfg.configuration.subtitlesEnabled;
-                    if (bSysSubsEnabled) {
-                        if (track.mode === "showing") {
-                            o.tvui.ShowSubs("subson");
-                        } else {
-                            o.tvui.ShowSubs("subsoff");
-                        }
-                    }
+                if( o.cfg && 
+                    o.cfg.configuration && 
+                    o.cfg.configuration.subtitlesEnabled && 
+                    (track.mode === "showing")) 
+                {
+                    o.tvui.ShowSubs("subson");
                 } else {
-                    o.tvui.ShowSubs("hidden");
+                    o.tvui.ShowSubs("subsoff");
                 }
+                o.log.warn("------------------ track.mode:" + track.mode);
             }
         }
     }
@@ -227,12 +219,8 @@ window.InitCues = function (o) {
 
     return {
         
-        CheckSubs       : function() {
-            if (bSysSubsEnabled) {
-                o.tvui.ShowSubs("nosubs");
-            } else {
-                o.tvui.ShowSubs("hidden");
-            }
+        ClearSubs       : function() {
+            o.tvui.ShowSubs("hidden");
         },
         
         OverrideSubs        : function (v) {

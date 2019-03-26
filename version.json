@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "16",
+	"minor" 	: "17",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Modified subtitle icon behaviour",
                     "Removed live-edge check for segtimeline content",
                     "Linted source",
 					"Updated Media Sync stream (fixed PCR offset)",
