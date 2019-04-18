@@ -19,7 +19,7 @@
 			<SegmentTemplate presentationTimeOffset="{{Aoffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="{{Aoffset}}" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -34,7 +34,7 @@
 			<SegmentTemplate presentationTimeOffset="{{Voffset}}" startNumber="{{period_seg}}" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="{{Voffset}}" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
