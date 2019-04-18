@@ -1,7 +1,7 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "17",
+	"minor" 	: "18",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
@@ -11,6 +11,7 @@
 					"Updated Media Sync stream (fixed PCR offset)",
 					"Media Sync Module",
 					"AV Aligned sub segments",
-					"Calculate manifest update based on update period param"
+					"Calculate manifest update based on update period param",
+                    "Segtimeline offset fix"
 				  ]
 }
