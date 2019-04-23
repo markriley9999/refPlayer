@@ -844,6 +844,7 @@ function onMsyncTimeUpdate (that) {
             
             if (that.broadcast.previousTimeMS > ms) {
                 that.Log.error("msync: previous time exceeds current time!");
+                that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                 that.broadcast.previousTimeMS = ms;
             }
             
@@ -865,6 +866,7 @@ function onMsyncTimeUpdate (that) {
                         that.broadcast.bSetupAdTransEvents = false;
                         
                         that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
+                        that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                         that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
                         that.tvui.ShowPlayrange((nextTrans-tv), that.broadcast.contentDuration, that.getTransitionPoint().v);
                     }
@@ -876,6 +878,7 @@ function onMsyncTimeUpdate (that) {
 
                         that.statusTableText(that.broadcast.getId(), "Play trans", playTransMS + "ms");
                         that.srvComms.AdTrans(that.broadcast.getId() + " (cumulative)", playTransMS);
+                        that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                         that.Log.info("msync: trans back to live (absolute)" + playTransMS + "(ms)  Frames: " + parseInt(playTransMS * that.broadcast.fps / 1000));
 
                         var relPlayTransMS = playTransMS - that.broadcast.cumulativeAdTransMS;
