@@ -554,7 +554,7 @@ mVid.updateBufferStatus = function(videoId, annot) {
         }
     }
     
-    this.srvComms.EmitBufferEvent(videoId, video, videoBuffer, headroomBuffer, (Date.now() - this.startTime) / 1000, annot);
+    this.srvComms.EmitBufferEvent(videoId, video, videoBuffer, buffV, headroomBuffer, buffD, (Date.now() - this.startTime) / 1000, annot);
 };
 
 mVid.updatePlaybackBar = function(videoId) {
@@ -1118,7 +1118,6 @@ function onVideoEvent (m) {
             // Sanity check
             if (m.isMainFeatureVideo(this) && (this === playingVideo) && (playingVideo.currentTime < playingVideo.resumeFrom)) {
                 m.Log.error(this.id + ": resume error (currentTime " + playingVideo.currentTime + "s < resume point " + playingVideo.resumeFrom + "s)");
-                playingVideo.currentTime = playingVideo.resumeFrom;
             }
             break;
                 

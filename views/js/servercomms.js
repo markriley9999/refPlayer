@@ -37,14 +37,14 @@ window.InitServerComms = function(bServerGUI) {
             socket.disconnect();	
         },
 		
-        EmitBufferEvent	: function (id, v, vb, hb, tm, annot) {
+        EmitBufferEvent	: function (id, v, vb, buffV, hb, buffD, tm, annot) {
             if (!bServerGUI) return;
 			
             var pObj = "\"playerBufferObj\": {";
             pObj += "\"id\":" + JSON.stringify(id) + ",";
             if (v)	{
                 pObj += "\"class\":" + JSON.stringify(vb.getAttribute("class")) + ",";
-                pObj += "\"value\":" + JSON.stringify("" + vb.value) + ","; 
+                pObj += "\"value\":" + JSON.stringify("" + buffV) + ","; 
                 pObj += "\"max\":" + JSON.stringify("" + vb.max) + ",";
                 pObj += "\"currentTime\":" + JSON.stringify("" + v.currentTime) + ",";
                 pObj += "\"resumeFrom\":" + JSON.stringify("" + v.resumeFrom) + ",";
@@ -65,7 +65,7 @@ window.InitServerComms = function(bServerGUI) {
             hObj += "\"id\":" + JSON.stringify(id) + ",";
             if (v)	{
                 hObj += "\"class\":" + JSON.stringify(hb.getAttribute("class")) + ",";
-                hObj += "\"value\":" + JSON.stringify("" + hb.value) + ",";
+                hObj += "\"value\":" + JSON.stringify("" + buffD) + ",";
                 hObj += "\"max\":" + JSON.stringify("" + hb.max);
             } else {
                 hObj += "\"class\":\"bufferBar\",";
