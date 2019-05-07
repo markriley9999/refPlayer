@@ -40,41 +40,58 @@ window.InitServerComms = function(bServerGUI) {
         EmitBufferEvent	: function (id, v, vb, buffV, hb, buffD, tm, annot) {
             if (!bServerGUI) return;
 			
-            var pObj = "\"playerBufferObj\": {";
-            pObj += "\"id\":" + JSON.stringify(id) + ",";
-            if (v)	{
-                pObj += "\"class\":" + JSON.stringify(vb.getAttribute("class")) + ",";
-                pObj += "\"value\":" + JSON.stringify("" + buffV) + ","; 
-                pObj += "\"max\":" + JSON.stringify("" + vb.max) + ",";
-                pObj += "\"currentTime\":" + JSON.stringify("" + v.currentTime) + ",";
-                pObj += "\"resumeFrom\":" + JSON.stringify("" + v.resumeFrom) + ",";
-                pObj += "\"duration\":" + JSON.stringify("" + v.duration) + ",";
+            var pObj;
+            
+
+            if (v) {    
+                pObj = {
+                    "class"         : vb.getAttribute("class"),
+                    "value"         : buffV,
+                    "max"           : vb.max,
+                    "currentTime"   : v.currentTime,
+                    "resumeFrom"    : v.resumeFrom,
+                    "duration"      : v.duration 
+                }
             } else {
-                pObj += "\"class\":\"bufferBar\",";
-                pObj += "\"value\":\"0\","; 
-                pObj += "\"max\":\"0\",";
-                pObj += "\"currentTime\":\"0\",";
-                pObj += "\"resumeFrom\":\"0\",";
-                pObj += "\"duration\":\"0\",";	
+                pObj = {
+                    "class"         : "bufferBar",
+                    "value"         : 0,
+                    "max"           : 0,
+                    "currentTime"   : 0,
+                    "resumeFrom"    : 0,
+                    "duration"      : 0 
+                }
             }
-            pObj += "\"time\":" + JSON.stringify("" + tm) + ",";
-            pObj += "\"annotation\":" + JSON.stringify(annot);
-            pObj += "}";
-			
-            var hObj = "\"headroomBufferObj\": {";
-            hObj += "\"id\":" + JSON.stringify(id) + ",";
+
+            pObj.id = id;
+            pObj.time = tm;
+            pObj.annotation = annot;
+
+            var mainObj = {};
+            
+            mainObj.playerBufferObj = pObj;
+            
+    
+            var hObj = {};
+            
             if (v)	{
-                hObj += "\"class\":" + JSON.stringify(hb.getAttribute("class")) + ",";
-                hObj += "\"value\":" + JSON.stringify("" + buffD) + ",";
-                hObj += "\"max\":" + JSON.stringify("" + hb.max);
+                hObj = {
+                    "class" : hb.getAttribute("class"),
+                    "value" : buffD,
+                    "max"   : hb.max
+                }
             } else {
-                hObj += "\"class\":\"bufferBar\",";
-                hObj += "\"value\":\"0\","; 
-                hObj += "\"max\":\"0\"";
+                hObj = {
+                    "class" : "bufferBar",
+                    "value" : 0,
+                    "max"   : 0
+                }
             }
-            hObj += "}";
-			
-            var out = "{" + pObj + "," + hObj + "}";
+            hObj.id = id;
+            			
+            mainObj.headroomBufferObj = hObj;
+            
+            var out = JSON.stringify(mainObj);
 
             socket.emit("bufferEvent", out);
         },
@@ -82,26 +99,29 @@ window.InitServerComms = function(bServerGUI) {
         EmitJustCurrentTime	: function (id, t, d, tm, annot) {
             if (!bServerGUI) return;
 
-            var pObj = "\"playerBufferObj\": {";
-            pObj += "\"id\":" + JSON.stringify(id) + ",";
-            pObj += "\"class\":\"bufferBar\",";
-            pObj += "\"value\":\"0\","; 
-            pObj += "\"max\":\"0\",";
-            pObj += "\"currentTime\":" + JSON.stringify("" + t) + ",";
-            pObj += "\"resumeFrom\":\"0\",";
-            pObj += "\"duration\":" + JSON.stringify("" + d) + ",";
-            pObj += "\"time\":" + JSON.stringify("" + tm) + ",";
-            pObj += "\"annotation\":" + JSON.stringify(annot);
-            pObj += "}";
-			
-            var hObj = "\"headroomBufferObj\": {";
-            hObj += "\"id\":" + JSON.stringify(id) + ",";
-            hObj += "\"class\":\"bufferBar\",";
-            hObj += "\"value\":\"0\","; 
-            hObj += "\"max\":\"0\"";
-            hObj += "}";
-			
-            var out = "{" + pObj + "," + hObj + "}";
+            var pObj = {
+                "id"            : id,
+                "class"         : "bufferBar",
+                "value"         : 0,
+                "max"           : 0,
+                "currentTime"   : t,
+                "resumeFrom"    : 0,
+                "duration"      : d,
+                "time"          : tm,
+                "annotation"    : annot
+            }
+
+            hObj = {
+                "id"        : id,
+                "class"     : "bufferBar",
+                "value"     : 0,
+                "max"       : 0
+            }
+            
+            var out = JSON.stringify({
+                "playerBufferObj" : pObj,
+                "headroomBufferObj" : hObj
+            });
 
             socket.emit("bufferEvent", out);
         },
@@ -109,10 +129,7 @@ window.InitServerComms = function(bServerGUI) {
         EmitPlaybackOffset	: function (v, m) {
             if (!bServerGUI) return;
 
-            var out = "{";
-            out += "\"value\":" + JSON.stringify("" + v) + ",";
-            out += "\"max\":" + JSON.stringify("" + m);
-            out += "}";
+            var out = JSON.stringify({"value": v, "max": m});
 			
             socket.emit("playbackOffset", out);
         },
