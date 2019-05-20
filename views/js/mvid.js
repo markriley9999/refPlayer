@@ -173,9 +173,7 @@ mVid.start = function () {
                 
                 if (that.broadcast) {
                     that.tvui.ShowTransportIcons(false);
-                    
-                    that.broadcast.bind();
-                    
+                                        
                     if (playObj.timeline && playObj.timeline.selector) {
                         that.broadcast.initMediaSync(playObj.timeline.selector, 
                             function() {
@@ -185,6 +183,9 @@ mVid.start = function () {
                                 that.tvui.ShowMSyncIcon("nomsyncicon");
                             }
                         );
+
+                        that.broadcast.play();
+
                         if (that.params.bWindowedObjs) {
                             that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
                         }
@@ -944,7 +945,7 @@ function onMsyncPlayAd (that) {
                 that.switchVideoToPlaying(v, null);
             }
             
-            that.broadcast.hide(); 
+            that.broadcast.stop(); 
             that.tvui.ShowMsyncTime(false);
         }
     };
@@ -1204,10 +1205,10 @@ function onVideoEvent (m) {
                     m.Log.info(newPlayingVideo.id + ": show broadcast.");
                         
                     if (m.broadcast) {
+                        m.switchVideoToPlaying(null, this);
                         m.broadcast.bSetupAdTransEvents = true;
                         m.broadcast.bTimePlayTransition = true;
-                        m.broadcast.resume();
-                        m.switchVideoToPlaying(null, this);
+                        m.broadcast.play();
                     }
 
                 } else {

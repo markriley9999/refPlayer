@@ -14,6 +14,8 @@ window.SetupBroadcastObject = function (id, container, log)
 {
     var bo;
     var mSync;
+    var timelineSelector;
+    
     
     const STATE_STOPPED         = 0;
     const STATE_WAITINGFOR_BT   = 1;
@@ -148,22 +150,15 @@ window.SetupBroadcastObject = function (id, container, log)
             winObj = o;
         },
         
-        bind: function () {
-            try {
-                log.info("SetupBroadcastObject: bindToCurrentChannel");
-                bo.bindToCurrentChannel();
-            } catch (e) {
-                log.error("Starting of broadcast video failed: bindToCurrentChannel");
-            }       
-        },
-        
         initMediaSync: function (s, fOk, fErr) {
+            timelineSelector = s;
+            
             try {
                 if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
                     log.info("SetupBroadcastObject: createMediaSynchroniser");
                     mSync = oipfObjectFactory.createMediaSynchroniser();
                     log.info("SetupBroadcastObject: initMediaSynchroniser");
-                    mSync.initMediaSynchroniser(bo, s);             
+                    //mSync.initMediaSynchroniser(bo, timelineSelector);             
                 } else {
                     log.error("application/hbbtvMediaSynchroniser not supported.");
                     if (fErr) {
@@ -196,12 +191,21 @@ window.SetupBroadcastObject = function (id, container, log)
             timeupdateFunc = f;
         },
         
-        hide: function () {
-            bo.style.display = "none";
+        stop: function () {
+            setState(STATE_STOPPED, POLL_SLOW);
+            bo.stop();
         },
         
-        resume: function () {
-            bo.style.display = "block";
+        play: function () {
+            try {
+                log.info("SetupBroadcastObject: bindToCurrentChannel");
+                bo.bindToCurrentChannel();
+            } catch (e) {
+                log.error("Starting of broadcast video failed: bindToCurrentChannel");
+                return false;
+            }       
+            
+            mSync.initMediaSynchroniser(bo, timelineSelector);             
             setState(STATE_WAITINGFOR_BT, POLL_FAST);
         },
         

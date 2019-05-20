@@ -5,6 +5,7 @@
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Media sync, call bindToChannel after ip ad insertion",
                     "Modified subtitle icon behaviour",
                     "Removed live-edge check for segtimeline content",
                     "Linted source",
