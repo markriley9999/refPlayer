@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "18",
-	"dev"		: "true",
+	"minor" 	: "20",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "New test9: multiple periods AND segment timelines",
                     "Media sync, call bindToChannel after ip ad insertion",
                     "Modified subtitle icon behaviour",
                     "Removed live-edge check for segtimeline content",
