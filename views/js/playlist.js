@@ -2,7 +2,7 @@
  
 window.getPlaylist = function(idx, logObj, playlistReadyCallback) {
 
-    var url = "./playlists/playlist" + idx + ".json";
+    var url = "./playlists/playlist-" + idx + ".json";
 
     function log(msg) {
         logObj.info("Playlist: " + msg);
