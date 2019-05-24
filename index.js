@@ -849,7 +849,7 @@ expressSrv.get("/dynamic/*", async function(req, res) {
                 res.status(200);
                 return res.send(archiveMPDs[clientContId]);
             } else {
-                logger.info("No previous content archived!");
+                logger.error("No previous content archived!");
                 return res.sendStatus(404);
             }
         }
