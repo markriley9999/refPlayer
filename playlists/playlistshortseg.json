@@ -1,0 +1,14 @@
+{
+	"ads" 				: [],
+	"src" 				: "./dynamic/shortseg.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Dynamic M-Periods - Partial final 'ad' segment",
+
+	"info"				: [	"Dynamic Manifest:",
+							"  - Final 'ad' segment 4 frames",
+							"  - 'Last Segment' burnt into final segment - should be visible to user"
+						  ]
+
+}
