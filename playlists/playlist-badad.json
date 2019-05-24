@@ -1,0 +1,27 @@
+{
+	"ads" : [
+		{	
+			"src" 	: "./content/adverts/itv/ad1.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/itv/ad2.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/itv/bad-ad.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./content/itv/clearkey/itv-clearkey.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "30",
+	"addContentId" 		: "false",
+	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV)",
+
+	"info"				: [	"3 mp4 (ITV) adverts",
+							"'Lorraine' DASH asset - playing for 120s",
+							"Clear Key encrypted (main asset)"
+						  ]
+
+}

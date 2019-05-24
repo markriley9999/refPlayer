@@ -84,7 +84,7 @@
 			<SegmentTemplate presentationTimeOffset="2949120" startNumber="17" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="2949120" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -99,7 +99,7 @@
 			<SegmentTemplate presentationTimeOffset="786432" startNumber="17" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="786432" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -199,7 +199,7 @@
 			<SegmentTemplate presentationTimeOffset="31703040" startNumber="173" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="31703040" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -214,7 +214,7 @@
 			<SegmentTemplate presentationTimeOffset="8454144" startNumber="173" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="8454144" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -314,7 +314,7 @@
 			<SegmentTemplate presentationTimeOffset="60641280" startNumber="330" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="60641280" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -329,7 +329,7 @@
 			<SegmentTemplate presentationTimeOffset="16171008" startNumber="330" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="16171008" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -429,7 +429,7 @@
 			<SegmentTemplate presentationTimeOffset="89579520" startNumber="487" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="89579520" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -444,7 +444,7 @@
 			<SegmentTemplate presentationTimeOffset="23887872" startNumber="487" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="23887872" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -544,7 +544,7 @@
 			<SegmentTemplate presentationTimeOffset="118333440" startNumber="643" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="118333440" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -559,7 +559,7 @@
 			<SegmentTemplate presentationTimeOffset="31555584" startNumber="643" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="31555584" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -659,7 +659,7 @@
 			<SegmentTemplate presentationTimeOffset="147271680" startNumber="800" media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" initialization="$RepresentationID$/SEG.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="184320" r="140"/>
+				  <S t="147271680" d="184320" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>
@@ -674,7 +674,7 @@
 			<SegmentTemplate presentationTimeOffset="39272448" startNumber="800" media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" initialization="init/sintel_set2_init.mp4">
 
 				<SegmentTimeline>
-				  <S t="0" d="49152" r="140"/>
+				  <S t="39272448" d="49152" r="140"/>
 				</SegmentTimeline>
 				
 			</SegmentTemplate>

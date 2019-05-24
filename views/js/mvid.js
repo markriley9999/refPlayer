@@ -95,6 +95,7 @@ mVid.startTime = Date.now();
 
 
 mVid.start = function () {
+    
     var that        = this;
     
     this.EOPlayback = false;
@@ -122,139 +123,162 @@ mVid.start = function () {
 
     this.hbbtv = window.InitHBBTVApp(this.Log);
     
-    this.showPlayrange();
-    
-    if (location.protocol === "https:") {
-        this.tvui.ShowSecure(true);
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(";");
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0)===" ") {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length,c.length);
-            }
+    function init2() {
+        
+        that.showPlayrange();
+        
+        if (location.protocol === "https:") {
+            that.tvui.ShowSecure(true);
         }
-        return "";
-    }
 
-    var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
-    
-    window.getPlaylist(currentChannel || "0", this.Log, function(ch, playObj) {     
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(";");
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)===" ") {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length,c.length);
+                }
+            }
+            return "";
+        }
 
-        that.procPlaylist(ch, playObj);
-
+        var currentChannel = commonUtils.getUrlVars()["test"] || getCookie("channel");
         
-        that.transitionThresholdMS  = AD_TRANS_THRESHOLD_MS;
-        that.bShowBufferingIcon     = false;
-                
-        that.showBufferingIcon(false);
+        window.getPlaylist(currentChannel || "0", that.Log, function(ch, playObj) {     
 
-        document.addEventListener("keydown", that.OnKeyDown.bind(that));
+            that.procPlaylist(ch, playObj);
 
-        
-        window.setInterval( function() {
-            that.updateAllBuffersStatus();  
-        }, 1000);
-
-        if (playObj.type === "video/broadcast") {
-
-            that.Log.info("*** Use Video Broadcast Object ***");
-
-            that.broadcast = window.SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
             
-            if (that.broadcast) {
-                that.tvui.ShowTransportIcons(false);
+            that.transitionThresholdMS  = AD_TRANS_THRESHOLD_MS;
+            that.bShowBufferingIcon     = false;
+                    
+            that.showBufferingIcon(false);
+
+            document.addEventListener("keydown", that.OnKeyDown.bind(that));
+
+            
+            window.setInterval( function() {
+                that.updateAllBuffersStatus();  
+            }, 1000);
+
+            if (playObj.type === "video/broadcast") {
+
+                that.Log.info("*** Use Video Broadcast Object ***");
+
+                that.broadcast = window.SetupBroadcastObject("mVid-broadcast", "player-container", that.Log);
                 
-                that.broadcast.bind();
-                
-                if (playObj.timeline && playObj.timeline.selector) {
-                    that.broadcast.initMediaSync(playObj.timeline.selector, 
-                        function() {
-                            that.tvui.ShowMSyncIcon("msyncicon");
-                        }, 
-                        function(err) {
-                            that.tvui.ShowMSyncIcon("nomsyncicon");
+                if (that.broadcast) {
+                    that.tvui.ShowTransportIcons(false);
+                                        
+                    if (playObj.timeline && playObj.timeline.selector) {
+                        that.broadcast.initMediaSync(playObj.timeline.selector, 
+                            function() {
+                                that.tvui.ShowMSyncIcon("msyncicon");
+                            }, 
+                            function(err) {
+                                that.tvui.ShowMSyncIcon("nomsyncicon");
+                            }
+                        );
+
+                        that.broadcast.play();
+
+                        if (that.params.bWindowedObjs) {
+                            that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
                         }
-                    );
-                    if (that.params.bWindowedObjs) {
-                        that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
+                        
+                        that.broadcast.contentDuration = playObj.contentDuration;
+                        that.broadcast.adsDuration = playObj.adsDuration;
+                        that.broadcast.cumulativeAdTransMS = 0;
+                        that.broadcast.previousTimeMS = 0;
+                        
+                        that.broadcast.fps = playObj.timeline.fps ? playObj.timeline.fps : CONTENT_FPS;
+                        
+                        that.broadcast.bSetupAdTransEvents = true;
+                        that.broadcast.bTimePlayTransition = false;
+                        that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
+                    } else {
+                        that.Log.warn("MediaSync timeline not defined.");           
                     }
-                    
-                    that.broadcast.contentDuration = playObj.contentDuration;
-                    that.broadcast.adsDuration = playObj.adsDuration;
-                    that.broadcast.cumulativeAdTransMS = 0;
-                    that.broadcast.previousTimeMS = 0;
-                    
-                    that.broadcast.fps = playObj.timeline.fps ? playObj.timeline.fps : CONTENT_FPS;
-                    
-                    that.broadcast.bSetupAdTransEvents = true;
-                    that.broadcast.bTimePlayTransition = false;
-                    that.broadcast.setTimeUpdateEvents(onMsyncTimeUpdate(that));
                 } else {
-                    that.Log.warn("MediaSync timeline not defined.");           
+                    that.Log.error("Broadcast object init failed.");            
                 }
+                
             } else {
-                that.Log.error("Broadcast object init failed.");            
+                that.resetStallTimer();
+            
+                var mainVideo = that.createVideo("mVid-mainContent");
+
+                that.cues = window.InitCues(
+                    {
+                        log     : that.Log, 
+                        tvui    : that.tvui, 
+                        params  : that.params, 
+                        cfg     : that.hbbtv.cfg, 
+                        fGetCurrentPlayingVideo : that.getCurrentPlayingVideo.bind(that),
+                        fUpdateBufferStatus     : that.updateBufferStatus.bind(that),
+                        eventSchemeIdUri        : playObj.eventSchemeIdUri
+                    }
+                );
+
+                if (!that.broadcast) {
+                    that.tvui.ShowPlayingState("stop");
+                }
+                
+                // Clear key
+                const KEYSYSTEM_TYPE = "org.w3.clearkey";
+
+                var options = [];
+                const audioContentType = "audio/mp4; codecs=\"mp4a.40.2\""; 
+                const videoContentType = "video/mp4; codecs=\"avc3.4D4015\""; 
+
+                options = [
+                    {
+                        initDataTypes: ["cenc"],
+                        videoCapabilities: [{contentType: videoContentType}],
+                        audioCapabilities: [{contentType: audioContentType}],
+                    }
+                ];
+
+                if (typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                    window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+                        that.Log.info(p);
+                        that.setContentSourceAndLoad();             
+                    }, function(p) {
+                        that.Log.error(p);
+                    });
+                    that.bEMESupport = true;
+                } else {
+                    that.setContentSourceAndLoad();
+                    that.tvui.ShowEncrypted("noeme");
+                    that.bEMESupport = false;
+                }
             }
             
-        } else {
-            that.resetStallTimer();
-        
-            var mainVideo = that.createVideo("mVid-mainContent");
+        });
+    }
 
-            that.cues = window.InitCues(
-                {
-                    log     : that.Log, 
-                    tvui    : that.tvui, 
-                    params  : that.params, 
-                    cfg     : that.hbbtv.cfg, 
-                    fGetCurrentPlayingVideo : that.getCurrentPlayingVideo.bind(that),
-                    fUpdateBufferStatus     : that.updateBufferStatus.bind(that),
-                    eventSchemeIdUri        : playObj.eventSchemeIdUri
-                }
-            );
+    function loadJS(url, implementationCode, location) {
 
-            if (!that.broadcast) {
-                that.tvui.ShowPlayingState("stop");
-            }
-            
-            // Clear key
-            const KEYSYSTEM_TYPE = "org.w3.clearkey";
+        var scriptTag = document.createElement("script");
+        scriptTag.src = url;
 
-            var options = [];
-            const audioContentType = "audio/mp4; codecs=\"mp4a.40.2\""; 
-            const videoContentType = "video/mp4; codecs=\"avc3.4D4015\""; 
+        scriptTag.onload = implementationCode;
+        scriptTag.onreadystatechange = implementationCode;
 
-            options = [
-                {
-                    initDataTypes: ["cenc"],
-                    videoCapabilities: [{contentType: videoContentType}],
-                    audioCapabilities: [{contentType: audioContentType}],
-                }
-            ];
-
-            if (typeof navigator.requestMediaKeySystemAccess !== "undefined") {
-                window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
-                    that.Log.info(p);
-                    that.setContentSourceAndLoad();             
-                }, function(p) {
-                    that.Log.error(p);
-                });
-                that.bEMESupport = true;
-            } else {
-                that.setContentSourceAndLoad();
-                that.tvui.ShowEncrypted("noeme");
-                that.bEMESupport = false;
-            }
-        }
-        
-    });
+        location.appendChild(scriptTag);
+    }
+    
+    if (this.hbbtv.app) {
+        init2();
+    } else {
+        // load dashjs - non hbbtv device!
+        loadJS("https://cdn.dashjs.org/latest/dash.all.debug.js", init2, document.body);
+    }
+    
 };
 
 mVid.procPlaylist = function (ch, playObj) {
@@ -275,7 +299,13 @@ mVid.procPlaylist = function (ch, playObj) {
     c.length = lt + 1;
     c[lt] = {};
     
-    this.contentTag = commonUtils.basename(playObj.src);
+    if (playObj.licenceName) {
+        this.contentTag = playObj.licenceName;
+    } else if (playObj.useKid === "true") {
+        this.contentTag = "";
+    } else {
+        this.contentTag = commonUtils.basename(playObj.src);
+    }
     
     if (playObj.addContentId === "false") {
         c[lt].src = playObj.src;
@@ -525,7 +555,7 @@ mVid.updateBufferStatus = function(videoId, annot) {
         }
     }
     
-    this.srvComms.EmitBufferEvent(videoId, video, videoBuffer, headroomBuffer, (Date.now() - this.startTime) / 1000, annot);
+    this.srvComms.EmitBufferEvent(videoId, video, videoBuffer, buffV, headroomBuffer, buffD, (Date.now() - this.startTime) / 1000, annot);
 };
 
 mVid.updatePlaybackBar = function(videoId) {
@@ -539,7 +569,7 @@ mVid.updatePlaybackBar = function(videoId) {
 mVid.__updatePlaybackBar = function(t, d) {
     var videoBar = e("playbackBar");
 
-    if (d && (d > 0)) {
+    if (d && (d > 0) && (d !== Infinity)) {
         videoBar.max = d;
         videoBar.value = t;
     } else
@@ -633,7 +663,7 @@ mVid.setContentSourceAndLoad = function () {
     }
     
     if (this.cues) { 
-        this.cues.CheckSubs();
+        this.cues.ClearSubs();
     }
     
     this.setSourceAndLoad(video, this.cnt.list[this.cnt.curBuffIdx].src, this.cnt.list[this.cnt.curBuffIdx].type);
@@ -815,6 +845,7 @@ function onMsyncTimeUpdate (that) {
             
             if (that.broadcast.previousTimeMS > ms) {
                 that.Log.error("msync: previous time exceeds current time!");
+                that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                 that.broadcast.previousTimeMS = ms;
             }
             
@@ -836,6 +867,7 @@ function onMsyncTimeUpdate (that) {
                         that.broadcast.bSetupAdTransEvents = false;
                         
                         that.Log.info("msync: Next Ad trans " + nextTrans + "(s)");
+                        that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                         that.broadcast.setTimeEvents(PRELOAD_NEXT_AD_S, nextTrans, onMsyncPreloadAd(that), onMsyncPlayAd(that));
                         that.tvui.ShowPlayrange((nextTrans-tv), that.broadcast.contentDuration, that.getTransitionPoint().v);
                     }
@@ -847,6 +879,7 @@ function onMsyncTimeUpdate (that) {
 
                         that.statusTableText(that.broadcast.getId(), "Play trans", playTransMS + "ms");
                         that.srvComms.AdTrans(that.broadcast.getId() + " (cumulative)", playTransMS);
+                        that.Log.info("msync: time " + t + "(s)" + " fps: " + that.broadcast.fps);
                         that.Log.info("msync: trans back to live (absolute)" + playTransMS + "(ms)  Frames: " + parseInt(playTransMS * that.broadcast.fps / 1000));
 
                         var relPlayTransMS = playTransMS - that.broadcast.cumulativeAdTransMS;
@@ -912,7 +945,7 @@ function onMsyncPlayAd (that) {
                 that.switchVideoToPlaying(v, null);
             }
             
-            that.broadcast.hide(); 
+            that.broadcast.stop(); 
             that.tvui.ShowMsyncTime(false);
         }
     };
@@ -1085,8 +1118,7 @@ function onVideoEvent (m) {
                 
             // Sanity check
             if (m.isMainFeatureVideo(this) && (this === playingVideo) && (playingVideo.currentTime < playingVideo.resumeFrom)) {
-                m.Log.error(this.id + ": resume error (currentTime < resume point)");
-                playingVideo.currentTime = playingVideo.resumeFrom;
+                m.Log.error(this.id + ": resume error (currentTime " + playingVideo.currentTime + "s < resume point " + playingVideo.resumeFrom + "s)");
             }
             break;
                 
@@ -1173,10 +1205,10 @@ function onVideoEvent (m) {
                     m.Log.info(newPlayingVideo.id + ": show broadcast.");
                         
                     if (m.broadcast) {
+                        m.switchVideoToPlaying(null, this);
                         m.broadcast.bSetupAdTransEvents = true;
                         m.broadcast.bTimePlayTransition = true;
-                        m.broadcast.resume();
-                        m.switchVideoToPlaying(null, this);
+                        m.broadcast.play();
                     }
 
                 } else {
@@ -1402,6 +1434,10 @@ mVid.OnKeyDown = function (e) {
     var keyCode = e.which || e.charCode || e.keyCode;
     var keyChar = String.fromCharCode(keyCode);
     var keyTableEntry = null;
+    
+    if (!this.hbbtv.getKeysSet()) {
+        this.hbbtv.setKeys();
+    }
     
     this.Log.info("KeyChar: " + keyChar);
 

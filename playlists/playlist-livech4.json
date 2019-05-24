@@ -1,0 +1,12 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://d2fo4jxnkrjgbu.cloudfront.net/v2/dvb-dash-sp/clr/c4/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE CH4: Live Content - segmenttimeline, single period",
+
+	"info"				: [	"LIVE CH4: Live Content - segmenttimeline, single period"
+						  ]
+
+}

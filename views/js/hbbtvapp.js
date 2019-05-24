@@ -15,6 +15,7 @@ window.InitHBBTVApp = function (log) {
     var appMan      = null;
     var _app        = null;
     var _cfg        = null;
+    var bKeysSet    = false;
     
     
     try {
@@ -25,33 +26,35 @@ window.InitHBBTVApp = function (log) {
         log.warn("Exception when creating creating ApplicationManager Object. Error: " + err.message);
     }
     
-    try {
-        _app = appMan.getOwnerApplication(document);
-    } catch (err) {
-        log.warn("Exception when getting the owner Application object. Error: " + err.message);
-    }
-
-    if (_app) {
+    if (appMan) {
         try {
-            _app.show();
+            _app = appMan.getOwnerApplication(document);
         } catch (err) {
-            log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
+            log.warn("Exception when getting the owner Application object. Error: " + err.message);
         }
 
-        try {
-            var myKeyset = _app.privateData.keyset;
-            myKeyset.setValue(  myKeyset.RED        | 
-                                myKeyset.GREEN      | 
-                                myKeyset.BLUE       | 
-                                myKeyset.YELLOW     | 
-                                myKeyset.VCR        |
-                                myKeyset.NUMERIC    |
-                                myKeyset.NAVIGATION);
-        } catch (err) {
-            log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
+        if (_app) {
+            try {
+                _app.show();
+            } catch (err) {
+                log.warn("Exception when calling show() on the owner Application object. Error: " + err.message);
+            }
+
+            try {
+                var myKeyset = _app.privateData.keyset;
+                myKeyset.setValue(  myKeyset.RED        | 
+                                    myKeyset.GREEN      | 
+                                    myKeyset.BLUE       | 
+                                    myKeyset.YELLOW     | 
+                                    myKeyset.VCR        |
+                                    myKeyset.NUMERIC    |
+                                    myKeyset.NAVIGATION);
+            } catch (err) {
+                log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
+            }
         }
     }
-
+    
     try {
         if (oipfObjectFactory.isObjectSupported("application/oipfConfiguration")) {
             _cfg = oipfObjectFactory.createConfigurationObject();
@@ -67,6 +70,30 @@ window.InitHBBTVApp = function (log) {
     
     return {
         app : _app,
-        cfg : _cfg
+        cfg : _cfg,
+        
+        setKeys : function () {
+            if (_app) {
+                try {
+                    var myKeyset = _app.privateData.keyset;
+                    myKeyset.setValue(  myKeyset.RED        | 
+                                        myKeyset.GREEN      | 
+                                        myKeyset.BLUE       | 
+                                        myKeyset.YELLOW     | 
+                                        myKeyset.VCR        |
+                                        myKeyset.NUMERIC    |
+                                        myKeyset.NAVIGATION);
+                    
+                    bKeysSet = true;
+                } catch (err) {
+                    log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
+                }
+            }
+        },
+        
+        getKeysSet : function () {
+            return bKeysSet;
+        }
+        
     };
 };

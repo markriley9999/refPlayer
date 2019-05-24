@@ -1,0 +1,12 @@
+{
+	"ads" : [],
+	"src" 				: "./content/bbb/bbb-clearkey-rep5-check.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Rep5 Check",
+
+    "useKid"            : "true",
+
+	"info"				: []
+}

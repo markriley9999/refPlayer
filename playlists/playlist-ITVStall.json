@@ -1,0 +1,43 @@
+{
+	"ads" : [
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201812/SPO6DCWC02805_WEBUYANYCAR_DANCINGONICEIDENTS_CURTAINCALL_5_9800_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201811/KOASDAY338030_TDCSameDayDentalImplants_SmileinaDay_SmileinaDayLondonlogoupdate_30_f076_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201812/SNQVIHE371030_Vitality_Vitality_VCCP_30_ccfe_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201812/CDRINDA011020_INNOCENT_DAIRYALTS_INNOCENT-DAIRYALTS20_20_9800_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201901/CMPWTER047030_FurnitureVilla_WinterSale201_CompleteLtd_30_ccfe_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201811/NSAVERS002030_VersusArthriti_VersusArthriti_MCSaatchiB_30_ccfe_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://toots-a.akamaihd.net/priority/201812/SPO6DCWC02805_WEBUYANYCAR_DANCINGONICEIDENTS_CURTAINCALL_5_9800_1200.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "http://itvpnpctv.content.itv.com/2-5040-0011-001/20/1/VAR015/2-5040-0011-001_20_1_VAR015.ism/.mpd?hdnea=st=1547570123~exp=1547591723~acl=/*~data=nohubplus~hmac=1eecdf324591431f526d290ef95d5d6a20d1aaac960e5b7d81ee084afff3fffe",
+	"type" 				: "application/dash+xml",
+    "useKid"            : "true",
+	"transitionTime" 	: "20",
+	"addContentId" 		: "false",
+	"channelName" 		: "ITV Stall",
+
+	"info"				: [	"",
+                            ""
+						  ]
+
+}

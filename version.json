@@ -1,14 +1,19 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "15",
+	"minor" 	: "20",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "New test9: multiple periods AND segment timelines",
+                    "Media sync, call bindToChannel after ip ad insertion",
+                    "Modified subtitle icon behaviour",
+                    "Removed live-edge check for segtimeline content",
                     "Linted source",
 					"Updated Media Sync stream (fixed PCR offset)",
 					"Media Sync Module",
 					"AV Aligned sub segments",
-					"Calculate manifest update based on update period param"
+					"Calculate manifest update based on update period param",
+                    "Segtimeline offset fix"
 				  ]
 }
