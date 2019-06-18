@@ -193,6 +193,7 @@ window.SetupBroadcastObject = function (id, container, log)
         
         stop: function () {
             setState(STATE_STOPPED, POLL_SLOW);
+            bo.style.display = "none";
             bo.stop();
         },
         
@@ -200,6 +201,7 @@ window.SetupBroadcastObject = function (id, container, log)
             try {
                 log.info("SetupBroadcastObject: bindToCurrentChannel");
                 bo.bindToCurrentChannel();
+                bo.style.display = "block";
             } catch (e) {
                 log.error("Starting of broadcast video failed: bindToCurrentChannel");
                 return false;
