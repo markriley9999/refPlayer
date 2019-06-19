@@ -1,0 +1,12 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://itvpnp-simulcast-mon-b.stage.ott.irdeto.com/monitor/pc01/itv2/mpegdash.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE ITV: Live Content - segmenttimeline, single period",
+
+	"info"				: [	"LIVE ITV: Live Content - segmenttimeline, single period"
+						  ]
+
+}
