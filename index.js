@@ -72,7 +72,7 @@ try {
     const httpsOpts = {
         key: fs.readFileSync("ssl/server/private/refPlayer.key.pem"),
         cert: fs.readFileSync("ssl/server/certs/refPlayer.cert.pem"),
-        secureProtocol: "TLSv1_method"
+        secureProtocol: "TLSv1_2_method"
     };
     generalInfo.bHTTPSEnabled = true;
     https = require("https").createServer(httpsOpts, expressSrv);
