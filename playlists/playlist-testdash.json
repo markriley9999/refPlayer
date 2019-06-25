@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/dash-test_video/test_video.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "60",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASH Test",
+
+	"info"				: []
+
+}
