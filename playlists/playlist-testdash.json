@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 				: "./content/dash-test_video/test_video.mpd",
+	"src" 				: "./content/dash_generic/generic.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
