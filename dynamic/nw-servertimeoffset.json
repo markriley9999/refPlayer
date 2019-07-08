@@ -1,6 +1,6 @@
 {
 	"useManifest"		: "./dynamic/dashads-dartest.mpd",
-	"serverTimeOffset"	: "15",
+	"serverTimeOffset"	: "20",
 	
 	"main"			: "./dynamic/periods/main-bbb.xml",
 	
