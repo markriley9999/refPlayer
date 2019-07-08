@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "23",
+	"minor" 	: "24",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Re-create mediaSync object when resuming after ip ad",
                     "New test9: multiple periods AND segment timelines",
                     "Media sync, call bindToChannel after ip ad insertion",
                     "Modified subtitle icon behaviour",

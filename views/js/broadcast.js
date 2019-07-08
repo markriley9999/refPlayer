@@ -157,8 +157,6 @@ window.SetupBroadcastObject = function (id, container, log)
                 if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
                     log.info("SetupBroadcastObject: createMediaSynchroniser");
                     mSync = oipfObjectFactory.createMediaSynchroniser();
-                    log.info("SetupBroadcastObject: initMediaSynchroniser");
-                    //mSync.initMediaSynchroniser(bo, timelineSelector);             
                 } else {
                     log.error("application/hbbtvMediaSynchroniser not supported.");
                     if (fErr) {
@@ -195,6 +193,7 @@ window.SetupBroadcastObject = function (id, container, log)
             setState(STATE_STOPPED, POLL_SLOW);
             bo.style.display = "none";
             bo.stop();
+            mSync = null;
         },
         
         play: function () {
@@ -207,6 +206,13 @@ window.SetupBroadcastObject = function (id, container, log)
                 return false;
             }       
             
+            if (!mSync)
+            {
+                log.info("SetupBroadcastObject: createMediaSynchroniser");
+                mSync = oipfObjectFactory.createMediaSynchroniser();
+            }
+            
+            log.info("SetupBroadcastObject: initMediaSynchroniser");
             mSync.initMediaSynchroniser(bo, timelineSelector);             
             setState(STATE_WAITINGFOR_BT, POLL_FAST);
         },
