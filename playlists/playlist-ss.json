@@ -1,0 +1,20 @@
+{
+	"ads" : [
+		{
+			"src" 	: "http://skyads-stage.ott.skymedia.co.uk/2019/04/9365/sky-mp4/9365_sky-mp4-1.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "http://skyads-stage.ott.skymedia.co.uk/2019/03/9055/sky-mp4/9055_sky-mp4-1.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "http://dclvcy55kq9x4.cloudfront.net/test/capture/CBSDramaUK/2019-07-19/35352817_clean.ism/manifest.mpd?t=00%3A00%3A00-00%3A43%3A19",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "874",
+	"addContentId" 		: "false",
+	"channelName" 		: "SS Ad Insertion",
+
+	"info"				: []
+
+}
