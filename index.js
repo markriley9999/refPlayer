@@ -71,7 +71,8 @@ var https;
 try {
     const httpsOpts = {
         key: fs.readFileSync("ssl/server/private/refPlayer.key.pem"),
-        cert: fs.readFileSync("ssl/server/certs/refPlayer.cert.pem")
+        cert: fs.readFileSync("ssl/server/certs/refPlayer.cert.pem"),
+        secureProtocol: "TLSv1_2_method"
     };
     generalInfo.bHTTPSEnabled = true;
     https = require("https").createServer(httpsOpts, expressSrv);
@@ -1655,8 +1656,9 @@ http.listen(8080, (err) => {
     }
 });
 
-https.listen(8082);
-
+https.listen(8082, (err) => {
+    logger.error("https error: " + err);
+});
 
 process.on("exit", function(code) {
     logger.info("exit: " + code);

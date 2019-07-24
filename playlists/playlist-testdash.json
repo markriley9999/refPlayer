@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/dash_generic/generic.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DASH Test",
+
+	"info"				: []
+
+}
