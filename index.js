@@ -1657,7 +1657,7 @@ http.listen(8080, (err) => {
 });
 
 https.listen(8082, (err) => {
-    logger.error("https error: " + err);
+    //logger.error("https error: " + err);
 });
 
 process.on("exit", function(code) {
