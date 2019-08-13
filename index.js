@@ -679,7 +679,7 @@ expressSrv.get("/content/*", function(req, res) {
         logger.trace(" - end: " + end);
         logger.trace(" - chunksize: " + chunksize);
 
-        if ((chunksize+start) < total) {
+        if (chunksize < total) {
             rtn = 206;
         }
         logger.trace(" - rtn: " + rtn);
