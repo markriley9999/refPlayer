@@ -5,7 +5,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
-	"channelName" 		: "3 Video Objs - BB content and sting",
+	"channelName" 		: "3 Video Objs - BB content only",
 
 	"info"				: []
 
