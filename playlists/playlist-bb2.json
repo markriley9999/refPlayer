@@ -1,10 +1,5 @@
 {
-	"ads" : [
-		{
-			"src" 	: "https://britbox.prd.content.itv.com/CTV05/BBC_PartnerBBCombined_BritBox_3_CTV05_3500_16X9_3.mp4", 
-			"type" 	: "video/mp4"
-		}
-    ],
+	"ads" : [],
     
 	"src" 				: "https://itvpnp-usp-mon.stage.ott.irdeto.com/MONITOR/PC-6072-05-003/32/1/VAR085/PC-6072-05-003_32_1_VAR085.ism/.mpd",
 	"type" 				: "application/dash+xml",
