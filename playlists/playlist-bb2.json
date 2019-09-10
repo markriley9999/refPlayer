@@ -7,6 +7,8 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB content only (remote)",
 
-	"info"				: []
+	"info"				: [],
+    
+    "noEME"             : "1"
 
 }

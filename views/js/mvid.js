@@ -228,22 +228,22 @@ mVid.start = function () {
                     that.tvui.ShowPlayingState("stop");
                 }
                 
-                // Clear key
-                const KEYSYSTEM_TYPE = "org.w3.clearkey";
+                if (!playObj.noEME || typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                    // Clear key
+                    const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
-                var options = [];
-                const audioContentType = "audio/mp4; codecs=\"mp4a.40.2\""; 
-                const videoContentType = "video/mp4; codecs=\"avc3.4D4015\""; 
+                    var options = [];
+                    const audioContentType = "audio/mp4; codecs=\"mp4a.40.2\""; 
+                    const videoContentType = "video/mp4; codecs=\"avc3.4D4015\""; 
 
-                options = [
-                    {
-                        initDataTypes: ["cenc"],
-                        videoCapabilities: [{contentType: videoContentType}],
-                        audioCapabilities: [{contentType: audioContentType}],
-                    }
-                ];
+                    options = [
+                        {
+                            initDataTypes: ["cenc"],
+                            videoCapabilities: [{contentType: videoContentType}],
+                            audioCapabilities: [{contentType: audioContentType}],
+                        }
+                    ];
 
-                if (typeof navigator.requestMediaKeySystemAccess !== "undefined") {
                     window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
                         that.Log.info(p);
                         that.setContentSourceAndLoad();             
