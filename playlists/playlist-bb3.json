@@ -1,7 +1,7 @@
 {
 	"ads" : [
 		{
-			"src" 	: "http://britbox.prd.content.itv.com/CTV05/BBC_PartnerBBCombined_BritBox_3_CTV05_3500_16X9_3.mp4", 
+			"src" 	: "https://britbox.prd.content.itv.com/CTV05/BBC_PartnerBBCombined_BritBox_3_CTV05_3500_16X9_3.mp4", 
 			"type" 	: "video/mp4"
 		}
     ],
