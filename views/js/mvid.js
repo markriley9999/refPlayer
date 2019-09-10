@@ -228,7 +228,7 @@ mVid.start = function () {
                     that.tvui.ShowPlayingState("stop");
                 }
                 
-                if (!playObj.noEME || typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                if (!playObj.noEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
                     // Clear key
                     const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
