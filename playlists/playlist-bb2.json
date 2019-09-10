@@ -3,7 +3,7 @@
     
 	"src" 				: "https://itvpnp-usp-mon.stage.ott.irdeto.com/MONITOR/PC-6072-05-003/32/1/VAR085/PC-6072-05-003_32_1_VAR085.ism/.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB content only (remote)",
 
