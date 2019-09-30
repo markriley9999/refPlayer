@@ -1,7 +1,7 @@
 {
 	"ads" : [],
     
-	"src" 				: "https://ctvcontent.britbox.co.uk/2-6312-0001-002/32/2/VAR081/2-6312-0001-002_32_2_VAR081.ism/.mpd?hdnea=st=1568107356~exp=1568128956~acl=/*~data=nohubplus~hmac=d06bc4fd9c5c930b40e5bb3df5a782c1634775126e1d7ed5c0bde64309f43bcc",
+	"src" 				: "https://ctvcontent.britbox.co.uk/2-6312-0001-002/32/2/VAR081/2-6312-0001-002_32_2_VAR081.ism/.mpd?hdnea%3Dst%3D1568107356~exp%3D1568128956~acl%3D%2F%2A~data%3Dnohubplus~hmac%3Dd06bc4fd9c5c930b40e5bb3df5a782c1634775126e1d7ed5c0bde64309f43bcc",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
