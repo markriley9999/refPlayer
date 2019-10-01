@@ -4,9 +4,9 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "LIVE CH4: Live Content - segmenttimeline, single period",
+	"channelName" 		: "LIVE CH4: Live Content - segment template, single period",
 
-	"info"				: [	"LIVE CH4: Live Content - segmenttimeline, single period"
+	"info"				: [	"LIVE CH4: Live Content - segment template, single period"
 						  ]
 
 }
