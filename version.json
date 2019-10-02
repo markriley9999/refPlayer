@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "27",
-	"dev"		: "false",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
                     "Fixed 206 not being sent for patial content bug",
