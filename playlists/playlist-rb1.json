@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "./content/redbee/dash1/C5257880012B_MPEGDASH.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "RB test content 1",
+
+	"info"				: []
+
+}

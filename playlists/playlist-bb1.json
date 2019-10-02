@@ -1,0 +1,18 @@
+{
+	"ads" : [
+		{
+			"src" 	: "./content/bb/ads/bb-sting.mp4", 
+			"type" 	: "video/mp4"
+		}
+    ],
+    
+	"src" 				: "./content/bb/bb.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "60",
+	"addContentId" 		: "false",
+	"channelName" 		: "3 Video Objs - BB content and sting",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}

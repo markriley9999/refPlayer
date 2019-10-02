@@ -679,7 +679,7 @@ expressSrv.get("/content/*", function(req, res) {
         logger.trace(" - end: " + end);
         logger.trace(" - chunksize: " + chunksize);
 
-        if ((chunksize+start) < total) {
+        if (chunksize < total) {
             rtn = 206;
         }
         logger.trace(" - rtn: " + rtn);
@@ -1657,7 +1657,7 @@ http.listen(8080, (err) => {
 });
 
 https.listen(8082, (err) => {
-    logger.error("https error: " + err);
+    //logger.error("https error: " + err);
 });
 
 process.on("exit", function(code) {
