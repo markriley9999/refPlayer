@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+    
+	"src" 				: "https://dplaynordics-live-01.akamaized.net/dplaydni/974/3/dash/245207001/manifest.mpd?hdnts=exp=1757069895~acl=/*~hmac=1e05f6ef88bead455cebebf871e02f22e58514953e9d464e0cd7ba09ccc0b70e",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Discovery",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}
