@@ -14,7 +14,7 @@
   <Period
     id="1"
     duration="PT24M0.021333S">
-    <BaseURL>dash/</BaseURL>
+    <BaseURL>http://dash-dvb-test.s3-eu-west-1.amazonaws.com/dash</BaseURL>
     <AdaptationSet
       id="1"
       group="1"
