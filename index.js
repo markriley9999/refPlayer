@@ -496,7 +496,7 @@ expressSrv.get("/*.html", function(req, res) {
 });
 
 expressSrv.get("/player.aitx", function(req, res) {
-    var srv = "https"; // Always https!  ----  "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
+    var srv = "https://" + req.headers.host + "/"; // Always https!  ----  "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 
     logger.trace("get ait: " + srv);
     res.render("playerait.hbs", {url: srv}, function(err, html) {
