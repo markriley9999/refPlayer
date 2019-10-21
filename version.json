@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "27",
-	"dev"		: "true",
+	"minor" 	: "28",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "AIT server always returns https url",
                     "Fixed 206 not being sent for patial content bug",
                     "Re-create mediaSync object when resuming after ip ad",
                     "New test9: multiple periods AND segment timelines",
