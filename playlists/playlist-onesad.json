@@ -7,7 +7,7 @@
 	],
 	"src" 				: "./content/adtest/adtest.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "60",
+	"transitionTime" 	: "20",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - 1 second ad",
 
