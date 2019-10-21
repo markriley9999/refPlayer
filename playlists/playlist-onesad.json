@@ -11,6 +11,7 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - 1 second ad",
 
-	"info"				: []
+	"info"				: [],
 
+    "special_jumptomain"    : "true"
 }
