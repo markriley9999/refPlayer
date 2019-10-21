@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+    
+	"src" 				: "./content/redbee/clear_ad_subs/C5164551552A.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "RB - New DASH: Clear",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}

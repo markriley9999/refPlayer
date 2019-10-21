@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+    
+	"src" 				: "./content/redbee/pr_ad_subs/C5164551552A.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "RB - New DASH: PlayReady",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}
