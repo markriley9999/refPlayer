@@ -1,7 +1,15 @@
 {
 	"ads" : [
+		{	
+			"src" 	: "./content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
 		{
 			"src" 	: "./content/adverts/itv/HOUSE_VIDEOLOGY_HOUSE_HOUSE_1_d3e3_1200.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
 			"type" 	: "video/mp4"
 		}
 	],
