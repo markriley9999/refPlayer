@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "29",
+	"minor" 	: "30",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Free decoder, if launched as broadcast related",
                     "Delayed licence tests",
                     "AIT server always returns https url",
                     "Fixed 206 not being sent for patial content bug",

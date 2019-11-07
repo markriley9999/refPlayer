@@ -73,6 +73,7 @@ window.InitHBBTVApp = function (log) {
         cfg : _cfg,
         
         setKeys : function () {
+            
             if (_app) {
                 try {
                     var myKeyset = _app.privateData.keyset;
@@ -89,10 +90,33 @@ window.InitHBBTVApp = function (log) {
                     log.warn("Exception accessing app.privateData.keyset. Error: " + err.message);
                 }
             }
+            
         },
         
         getKeysSet : function () {
+            
             return bKeysSet;
+            
+        },
+        
+        getDecoder : function () {
+            
+            try {
+                
+                var bo = document.createElement("object");  
+
+                bo.type = "video/broadcast";
+                document.body.appendChild(bo);
+                bo.bindToCurrentChannel();
+                log.info("--- App launched as Broadcast Related");
+                bo.stop();
+                log.info("--- App launched as Broadcast Related: free decoder from broadcast service");
+
+            } catch(err) {
+
+                log.info("--- Assuming app is broadcast independent");
+         
+            }        
         }
         
     };

@@ -208,6 +208,9 @@ mVid.start = function () {
                 }
                 
             } else {
+                
+                that.hbbtv.getDecoder();
+                
                 that.resetStallTimer();
             
                 var mainVideo = that.createVideo("mVid-mainContent");
