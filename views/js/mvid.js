@@ -244,7 +244,7 @@ mVid.start = function () {
                         }
                     ];
 
-                    window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, that.Log).then(function(p) {
+                    window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, playObj.licenceDelay, that.Log).then(function(p) {
                         that.Log.info(p);
                         that.setContentSourceAndLoad();             
                     }, function(p) {
