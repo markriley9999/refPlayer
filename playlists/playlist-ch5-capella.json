@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 				: "http://d2q56rwykut0wa.cloudfront.net/FreeViewTest3/manifest.mpd",
+	"src" 				: "https://d2q56rwykut0wa.cloudfront.net/FreeViewTest3/manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
