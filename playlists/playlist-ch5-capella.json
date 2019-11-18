@@ -1,10 +1,10 @@
 {
 	"ads" : [],
-	"src" 				: "https://d2q56rwykut0wa.cloudfront.net/FreeViewTest/HBBTVDASH_DRMNone/manifest.mpd",
+	"src" 				: "http://d2q56rwykut0wa.cloudfront.net/FreeViewTest/HBBTVDASH_DRMNone/manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "DASH Test: Ch5 - no DRM",
+	"channelName" 		: "DASH Test: Ch5 - no DRM (http)",
 
 	"info"				: [],
     
