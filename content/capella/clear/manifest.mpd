@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding='UTF-8'?><MPD maxSegmentDuration="PT0H0M3.840S" mediaPresentationDuration="PT0H1M0.000S" minBufferTime="PT0H0M3.840S" profiles="urn:dvb:dash:profile:dvb-dash:2014;urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" type="static" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:scte35="urn:scte:scte35:2014:xml+bin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd">
+   <Period duration="PT0H1M0.000S" id="1" start="PT0H0M0.000S">
+      <AdaptationSet contentType="video" maxFrameRate="25/1" maxHeight="1080" maxWidth="1920" mimeType="video/mp4" minHeight="288" minWidth="512" par="16:9" segmentAlignment="true" startWithSAP="1">
+         <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+         <SegmentTemplate duration="96" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/video-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="25"/>
+         <Representation bandwidth="4600000" codecs="avc3.4d4028" frameRate="25/1" height="1080" id="video/bitrate4600K/avc3" sar="1:1" scanType="progressive" width="1920"/>
+         <Representation bandwidth="2600000" codecs="avc3.4d401f" frameRate="25/1" height="720" id="video/bitrate2600K/avc3" sar="1:1" scanType="progressive" width="1280"/>
+         <Representation bandwidth="1400000" codecs="avc3.4d401f" frameRate="25/1" height="504" id="video/bitrate1400K/avc3" sar="1:1" scanType="progressive" width="896"/>
+         <Representation bandwidth="830000" codecs="avc3.4d401e" frameRate="25/1" height="396" id="video/bitrate830K/avc3" sar="1:1" scanType="progressive" width="704"/>
+         <Representation bandwidth="440000" codecs="avc3.4d4015" frameRate="25/1" height="288" id="video/bitrate440K/avc3" sar="1:1" scanType="progressive" width="512"/>
+      </AdaptationSet>
+      <AdaptationSet contentType="audio" lang="en" mimeType="audio/mp4" segmentAlignment="true" startWithSAP="1">
+         <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+         <SegmentTemplate duration="184320" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/audio-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="48000"/>
+         <Representation audioSamplingRate="48000" bandwidth="80000" codecs="mp4a.40.2" id="audio/bitrate80K/en/mp4a">
+            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+         </Representation>
+      </AdaptationSet>
+   </Period>
+</MPD>
