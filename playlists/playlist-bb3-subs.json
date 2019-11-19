@@ -6,7 +6,7 @@
 		}
     ],
     
-	"src" 				: "https://itvpnp-usp-mon.stage.ott.irdeto.com/MONITOR/PC-6072-05-003/32/1_2_0/VAR086/PC-6072-05-003_32_1_VAR086.ism/.mpd",
+	"src" 				: "https://itvpnp-usp-mon.stage.ott.irdeto.com/MONITOR/PC-6072-05-003/32/2_3_0/VAR086/PC-6072-05-003_32_2_VAR086.ism/.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "600",
 	"addContentId" 		: "false",
