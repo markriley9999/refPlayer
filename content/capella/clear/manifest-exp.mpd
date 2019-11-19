@@ -3,15 +3,15 @@
     type="static"
     xmlns="urn:mpeg:dash:schema:mpd:2011"
     xmlns:dvb="urn:dvb:dash-extensions:2014-1"
-    profiles="urn:dvb:dash:profile:dvb-dash:2014;urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014"
+    profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014"
     minBufferTime="PT10S"
     maxSegmentDuration="PT3.840S"
 	mediaPresentationDuration="PT0H10M0.320S" 
 >
-   <Period duration="PT10M0.000S">
+   <Period duration="PT0H10M0.320S">
       <AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
          <SegmentTemplate duration="96" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/video-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="25" />
-         <Representation mimeType="video/mp4" bandwidth="440000" codecs="avc3.4D4015" frameRate="25" height="288" id="videobitrate440Kavc3" sar="1:1" startWithSAP="1" scanType="progressive" width="512" />
+         <Representation mimeType="video/mp4" bandwidth="440000" codecs="avc3.4D4015" frameRate="25" height="288" id="video/bitrate440K/avc3" sar="1:1" startWithSAP="1" scanType="progressive" width="512" />
       </AdaptationSet>
    </Period>
 </MPD>
