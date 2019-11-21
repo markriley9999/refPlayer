@@ -6,7 +6,7 @@
 		}
     ],
     
-	"src" 				: "http://ctvcontent.britbox.co.uk/CFD0450-0001/32/3_2_0/VAR086/CFD0450-0001_32_3_VAR086.ism/.mpd?hdnea=st=1572962581~exp=1572984181~acl=/*~data=nohubplus~hmac=db214908008dc6b5f4a8fe72d53c11d2010f31a3c6e63b7b1d227bc9da222472",
+	"src" 				: "http://ctvcontent.britbox.co.uk/2-5717-0005-002/32/3/VAR085/2-5717-0005-002_32_3_VAR085.ism/.mpd?hdnea=st=1574349419~exp=1574371019~acl=/*~data=nohubplus~hmac=2f0250b94868800d416d1cffedd0c7463dba34946ee011f8c54965b626d46125",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "600",
 	"addContentId" 		: "false",
