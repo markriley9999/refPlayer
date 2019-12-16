@@ -15,6 +15,6 @@
 	"info"				: [],
     
     "noEME"             : "1",
-    "special_purgemain" : "1"
+    "special_purgemain" : "true"
 
 }
