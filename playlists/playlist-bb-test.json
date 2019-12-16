@@ -8,12 +8,13 @@
     
 	"src" 				: "http://ctvcontent.britbox.co.uk/2-1926-0001-007/32/9/VAR085/2-1926-0001-007_32_9_VAR085.ism/.mpd?hdnea=st=1576496181~exp=1576517781~acl=/*~data=nohubplus~hmac=d963f41f12c427dd25ca9d09bd6337024b643f47e956f4c689030fb8f23ca669",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "600",
+	"transitionTime" 	: "20",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB content and sting",
 
 	"info"				: [],
     
-    "noEME"             : "1"
+    "noEME"             : "1",
+    "special_purgemain" : "1"
 
 }
