@@ -1,12 +1,12 @@
 {
 	"ads" : [
 		{
-			"src" 	: "https://britbox.prd.content.itv.com/CTV05/BBC_PartnerBBCombined_BritBox_3_CTV05_3500_16X9_3.mp4", 
+			"src" 	: "http://britbox.prd.content.itv.com/CTV05/20191118_BB_Present_By_itv_CTV05_3500_16X9.mp4", 
 			"type" 	: "video/mp4"
 		}
     ],
     
-	"src" 				: "http://ctvcontent.britbox.co.uk/2-5717-0005-002/32/3/VAR085/2-5717-0005-002_32_3_VAR085.ism/.mpd?hdnea=st=1574349419~exp=1574371019~acl=/*~data=nohubplus~hmac=2f0250b94868800d416d1cffedd0c7463dba34946ee011f8c54965b626d46125",
+	"src" 				: "http://ctvcontent.britbox.co.uk/2-1926-0001-007/32/9/VAR085/2-1926-0001-007_32_9_VAR085.ism/.mpd?hdnea=st=1576496181~exp=1576517781~acl=/*~data=nohubplus~hmac=d963f41f12c427dd25ca9d09bd6337024b643f47e956f4c689030fb8f23ca669",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "600",
 	"addContentId" 		: "false",
