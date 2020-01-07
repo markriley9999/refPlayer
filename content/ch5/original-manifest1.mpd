@@ -11,5 +11,17 @@
          <SegmentTemplate duration="112" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/video-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="25"/>
          <Representation bandwidth="19388000" codecs="avc1.640032" frameRate="25/1" height="1080" id="video/bitrate19388K/avc1" sar="1:1" scanType="progressive" width="1920"/>
       </AdaptationSet>
+      <AdaptationSet contentType="audio" lang="en" mimeType="audio/mp4" segmentAlignment="true" startWithSAP="1">
+         <ContentProtection cenc:default_KID="8749572f-7b21-480a-a1fa-b269f2c58bd6" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013"/>
+         <ContentProtection schemeIdUri="urn:uuid:9A04F079-9840-4286-AB92-E65BE0885F95" value="MSPR 2.0" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013" xmlns:mspr="urn:microsoft:playready">
+            <cenc:pssh>AAACbnBzc2gAAAAAmgTweZhAQoarkuZb4IhflQAAAk5OAgAAAQABAEQCPABXAFIATQBIAEUAQQBEAEUAUgAgAHgAbQBsAG4AcwA9ACIAaAB0AHQAcAA6AC8ALwBzAGMAaABlAG0AYQBzAC4AbQBpAGMAcgBvAHMAbwBmAHQALgBjAG8AbQAvAEQAUgBNAC8AMgAwADAANwAvADAAMwAvAFAAbABhAHkAUgBlAGEAZAB5AEgAZQBhAGQAZQByACIAIAB2AGUAcgBzAGkAbwBuAD0AIgA0AC4AMAAuADAALgAwACIAPgA8AEQAQQBUAEEAPgA8AFAAUgBPAFQARQBDAFQASQBOAEYATwA+ADwASwBFAFkATABFAE4APgAxADYAPAAvAEsARQBZAEwARQBOAD4APABBAEwARwBJAEQAPgBBAEUAUwBDAFQAUgA8AC8AQQBMAEcASQBEAD4APAAvAFAAUgBPAFQARQBDAFQASQBOAEYATwA+ADwASwBJAEQAPgBMADEAZABKAGgAeQBGADcAQwBrAGkAaAArAHIASgBwADgAcwBXAEwAMQBnAD0APQA8AC8ASwBJAEQAPgA8AEwAQQBfAFUAUgBMAD4AaAB0AHQAcABzADoALwAvAHAAbABhAHkAcgBlAGEAZAB5AGQAcgBtAC4AYwBoAGEAbgBuAGUAbAA1AC4AYwBvAG0ALwByAGkAZwBoAHQAcwBtAGEAbgBhAGcAZQByAC4AYQBzAG0AeAA8AC8ATABBAF8AVQBSAEwAPgA8AC8ARABBAFQAQQA+ADwALwBXAFIATQBIAEUAQQBEAEUAUgA+AA==</cenc:pssh>
+            <mspr:pro>TgIAAAEAAQBEAjwAVwBSAE0ASABFAEEARABFAFIAIAB4AG0AbABuAHMAPQAiAGgAdAB0AHAAOgAvAC8AcwBjAGgAZQBtAGEAcwAuAG0AaQBjAHIAbwBzAG8AZgB0AC4AYwBvAG0ALwBEAFIATQAvADIAMAAwADcALwAwADMALwBQAGwAYQB5AFIAZQBhAGQAeQBIAGUAYQBkAGUAcgAiACAAdgBlAHIAcwBpAG8AbgA9ACIANAAuADAALgAwAC4AMAAiAD4APABEAEEAVABBAD4APABQAFIATwBUAEUAQwBUAEkATgBGAE8APgA8AEsARQBZAEwARQBOAD4AMQA2ADwALwBLAEUAWQBMAEUATgA+ADwAQQBMAEcASQBEAD4AQQBFAFMAQwBUAFIAPAAvAEEATABHAEkARAA+ADwALwBQAFIATwBUAEUAQwBUAEkATgBGAE8APgA8AEsASQBEAD4ATAAxAGQASgBoAHkARgA3AEMAawBpAGgAKwByAEoAcAA4AHMAVwBMADEAZwA9AD0APAAvAEsASQBEAD4APABMAEEAXwBVAFIATAA+AGgAdAB0AHAAcwA6AC8ALwBwAGwAYQB5AHIAZQBhAGQAeQBkAHIAbQAuAGMAaABhAG4AbgBlAGwANQAuAGMAbwBtAC8AcgBpAGcAaAB0AHMAbQBhAG4AYQBnAGUAcgAuAGEAcwBtAHgAPAAvAEwAQQBfAFUAUgBMAD4APAAvAEQAQQBUAEEAPgA8AC8AVwBSAE0ASABFAEEARABFAFIAPgA=</mspr:pro>
+         </ContentProtection>
+         <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
+         <SegmentTemplate duration="215040" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/audio-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="48000"/>
+         <Representation audioSamplingRate="48000" bandwidth="292000" codecs="mp4a.40.2" id="audio/bitrate292K/en/mp4a">
+            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
+         </Representation>
+      </AdaptationSet>
    </Period>
 </MPD>
