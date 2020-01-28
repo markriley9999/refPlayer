@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?><MPD maxSegmentDuration="PT0H0M4.000S" mediaPresentationDuration="PT0H23M8.200S" minBufferTime="PT0H0M4.000S" profiles="urn:dvb:dash:profile:dvb-dash:2014,urn:dvb:dash:profile:dvb-dash:isoff-ext-live:2014" type="static" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013" xmlns:scte35="urn:scte:scte35:2014:xml+bin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd">
    <Period duration="PT0H23M8.200S" id="1" start="PT0H0M0.000S">
-      <BaseURL>http://c5test-media-output.s3-eu-west-1.amazonaws.com/CapellaMedia/drm-16-jan/fullasset</BaseURL>
+      <BaseURL>http://c5test-media-output.s3-eu-west-1.amazonaws.com/CapellaMedia/drm-16-jan/fullasset/</BaseURL>
       <AdaptationSet contentType="video" maxFrameRate="25/1" maxHeight="468" maxWidth="832" mimeType="video/mp4" minHeight="180" minWidth="320" par="16:9" segmentAlignment="true" startWithSAP="1">
          <ContentProtection cenc:default_KID="8749572f-7b21-480a-a1fa-b269f2c58bd6" schemeIdUri="urn:mpeg:dash:mp4protection:2011" value="cenc" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013"/>
          <ContentProtection schemeIdUri="urn:uuid:9A04F079-9840-4286-AB92-E65BE0885F95" value="MSPR 2.0" xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:cenc="urn:mpeg:cenc:2013" xmlns:mspr="urn:microsoft:playready">
