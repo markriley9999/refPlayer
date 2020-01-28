@@ -27,9 +27,9 @@
          <Representation audioSamplingRate="48000" bandwidth="68000" codecs="mp4a.40.2" id="audio/bitrate68K/en/mp4a">
             <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
          </Representation>
-         <!--Representation audioSamplingRate="48000" bandwidth="100000" codecs="mp4a.40.2" id="audio/bitrate100K/en/mp4a">
+         <Representation audioSamplingRate="48000" bandwidth="100000" codecs="mp4a.40.2" id="audio/bitrate100K/en/mp4a">
             <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-         </Representation-->
+         </Representation>
       </AdaptationSet>
    </Period>
 </MPD>
