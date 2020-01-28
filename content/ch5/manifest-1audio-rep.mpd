@@ -24,12 +24,12 @@
          </ContentProtection>
          <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
          <SegmentTemplate duration="96000" initialization="$RepresentationID$/init.mp4" media="$RepresentationID$/audio-$Number$.mp4" presentationTimeOffset="0" startNumber="1" timescale="24000"/>
-         <Representation audioSamplingRate="48000" bandwidth="68000" codecs="mp4a.40.2" id="audio/bitrate68K/en/mp4a">
-            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
-         </Representation>
-         <!--Representation audioSamplingRate="48000" bandwidth="100000" codecs="mp4a.40.2" id="audio/bitrate100K/en/mp4a">
+         <!--Representation audioSamplingRate="48000" bandwidth="68000" codecs="mp4a.40.2" id="audio/bitrate68K/en/mp4a">
             <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
          </Representation-->
+         <Representation audioSamplingRate="48000" bandwidth="100000" codecs="mp4a.40.2" id="audio/bitrate100K/en/mp4a">
+            <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+         </Representation>
       </AdaptationSet>
    </Period>
 </MPD>
