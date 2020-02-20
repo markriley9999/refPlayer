@@ -974,11 +974,12 @@ function onVideoEvent (m) {
             m.Log.info(this.id + ": video has started loading");
             m.updateBufferStatus(this.id, "Event: " + event.type);
             // Sanity check
-            /* TODO: why is this being generated for non buffering content???
-                if (this != bufferingVideo) {
-                    m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
-                }
-                */
+            if (this !== bufferingVideo) {
+                m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
+            }
+
             if (this.readyState !== HAVE_NOTHING) {
                 m.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_NOTHING");
             }
@@ -992,7 +993,10 @@ function onVideoEvent (m) {
             // Sanity check
             if (this !== bufferingVideo) {
                 m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
             }
+
             if (this.readyState !== HAVE_METADATA) {
                 m.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_METADATA"); // TODO: Need to check this....
             }
@@ -1014,7 +1018,10 @@ function onVideoEvent (m) {
             // Sanity check
             if (this !== bufferingVideo) {
                 m.Log.error(this.id + ": " + event.type + ": event for non buffering video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
             }
+
             if (this.readyState !== HAVE_FUTURE_DATA) {
                 m.Log.info(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_FUTURE_DATA"); // TODO: Need to check this....
             }
@@ -1049,7 +1056,10 @@ function onVideoEvent (m) {
             // Sanity check
             if (this !== bufferingVideo) {
                 m.Log.warn(this.id + ": " + event.type + ": event for non buffering video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
             }
+
             if (this.readyState !== HAVE_ENOUGH_DATA) {
                 m.Log.warn(this.id + ": " + event.type + ": readyState mismatch - expected HAVE_ENOUGH_DATA");
             }
@@ -1133,6 +1143,8 @@ function onVideoEvent (m) {
             // Sanity check
             if (this !== playingVideo) {
                 m.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
             }
 
             if (this.bPlayPauseTransition) {
@@ -1164,6 +1176,8 @@ function onVideoEvent (m) {
             // Sanity check
             if (this !== playingVideo) {
                 m.Log.warn(this.id + ": " + event.type + ": event for non playing video object!");
+                m.Log.warn(" --- Ignoring event: " + event.type);
+                break;
             }
             break;
                 
