@@ -51,7 +51,7 @@ window.InitServerComms = function(bServerGUI) {
                     "currentTime"   : v.currentTime,
                     "resumeFrom"    : v.resumeFrom,
                     "duration"      : v.duration 
-                }
+                };
             } else {
                 pObj = {
                     "class"         : "bufferBar",
@@ -60,7 +60,7 @@ window.InitServerComms = function(bServerGUI) {
                     "currentTime"   : 0,
                     "resumeFrom"    : 0,
                     "duration"      : 0 
-                }
+                };
             }
 
             pObj.id = id;
@@ -79,16 +79,16 @@ window.InitServerComms = function(bServerGUI) {
                     "class" : hb.getAttribute("class"),
                     "value" : buffD,
                     "max"   : hb.max
-                }
+                };
             } else {
                 hObj = {
                     "class" : "bufferBar",
                     "value" : 0,
                     "max"   : 0
-                }
+                };
             }
             hObj.id = id;
-            			
+	
             mainObj.headroomBufferObj = hObj;
             
             var out = JSON.stringify(mainObj);
@@ -109,14 +109,14 @@ window.InitServerComms = function(bServerGUI) {
                 "duration"      : d,
                 "time"          : tm,
                 "annotation"    : annot
-            }
+            };
 
-            hObj = {
+            var hObj = {
                 "id"        : id,
                 "class"     : "bufferBar",
                 "value"     : 0,
                 "max"       : 0
-            }
+            };
             
             var out = JSON.stringify({
                 "playerBufferObj" : pObj,
