@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "30",
+	"minor" 	: "31",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Handle unexecpted events",
                     "Free decoder, if launched as broadcast related",
                     "Delayed licence tests",
                     "AIT server always returns https url",
