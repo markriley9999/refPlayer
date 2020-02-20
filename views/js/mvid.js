@@ -45,7 +45,7 @@ mVid.cnt = {
     "list"       : []
 };
 
-const STALL_TIMEOUT_MS = 10000;
+const STALL_TIMEOUT_MS = 3000;
 
 const AD_TRANS_TIMEOUT_MS   = 20;
 const AD_TRANS_THRESHOLD_MS = 3000;
@@ -1167,18 +1167,6 @@ function onVideoEvent (m) {
             }
             break;
                 
-        case m.videoEvents.STALLED:
-            m.Log.warn(this.id + ": has stalled");
-            m.showBufferingIcon(true);
-            m.updateBufferStatus(this.id, "Event: " + event.type);
-            break;
-                
-        case m.videoEvents.WAITING:
-            m.Log.warn(this.id + ": is waiting");
-            m.showBufferingIcon(true);
-            m.updateBufferStatus(this.id, "Event: " + event.type);
-            break;
-                
         case m.videoEvents.RESIZE:
             m.Log.info(this.id + ": resize called");
             m.updateBufferStatus(this.id, "Event: " + event.type);
@@ -1189,7 +1177,6 @@ function onVideoEvent (m) {
             m.Log.info(this.id + ": video has ended");
             m.updateBufferStatus(this.id, "Event: " + event.type);
                 
-            m.showBufferingIcon(true);
             if (!m.broadcast) {
                 m.tvui.ShowPlayingState("stop");
             }
