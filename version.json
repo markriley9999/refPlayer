@@ -5,11 +5,11 @@
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
-                    "Handle unexecpted events",
+                    "Handle unexpected events",
                     "Free decoder, if launched as broadcast related",
                     "Delayed licence tests",
                     "AIT server always returns https url",
-                    "Fixed 206 not being sent for patial content bug",
+                    "Fixed 206 not being sent for partial content bug",
                     "Re-create mediaSync object when resuming after ip ad",
                     "New test9: multiple periods AND segment timelines",
                     "Media sync, call bindToChannel after ip ad insertion",
