@@ -1,8 +1,8 @@
 /*global ActiveXObject */
  
-window.clearkeyGetLicence = function(session, msg, licenceName, video, logObj) {
+window.clearkeyGetLicence = function(session, msg, licenceName, delay, video, logObj) {
 
-    var keyServiceUrl = "./getkeys?tag=" + licenceName;
+    var keyServiceUrl = "./getkeys?tag=" + licenceName + (delay ? "&delay="+delay : "");
 
 
     function log(m) {

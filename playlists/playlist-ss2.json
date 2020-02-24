@@ -1,0 +1,11 @@
+{
+	"ads" : [],
+	"src" 				: "http://vod-amc.simplestreamcdn.com/amc/capture/CBSRealityUK/2019-11-13/35997862_clear.ism/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "SS Check crash at eop",
+
+	"info"				: []
+
+}

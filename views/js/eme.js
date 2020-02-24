@@ -8,7 +8,7 @@
 // *************************************************************************************** //
 // *************************************************************************************** //
 
-window.SetupEME = function(video, keySystem, name, options, licenceName, logObj)
+window.SetupEME = function(video, keySystem, name, options, licenceName, licenceDelay, logObj)
 {
     const DRMSystemID = "0x1077efecc0b24d02ace33c1e52e2fb4b";
     
@@ -74,7 +74,7 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, logObj)
     
     function UpdateSessionFunc(name, licenceName) {
         return function(ev) {
-            window.clearkeyGetLicence(ev.target, ev.message, licenceName, video, logObj);
+            window.clearkeyGetLicence(ev.target, ev.message, licenceName, licenceDelay, video, logObj);
         };
     }
 

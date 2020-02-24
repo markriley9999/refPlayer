@@ -1,0 +1,20 @@
+{
+	"ads" : [
+		{
+			"src" 	: "http://britbox.prd.content.itv.com/CTV05/20191118_BB_Present_By_itv_CTV05_3500_16X9.mp4", 
+			"type" 	: "video/mp4"
+		}
+    ],
+    
+	"src" 				: "http://ctvcontent.britbox.co.uk/2-7375-0048-001/32/1_1_0/VAR086/2-7375-0048-001_32_1_VAR086.ism/.mpd?hdnea=st=1578313049~exp=1578334649~acl=/*~data=nohubplus~hmac=57a6e00cdddc4218424b13c35590ce53b34022e1e478c6346b8008ec88eb5ba1",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "180",
+	"addContentId" 		: "false",
+	"channelName" 		: "3 Video Objs - Destroy video object after playback",
+
+	"info"				: [],
+    
+    "noEME"             : "1",
+    "special_purgemain" : "true"
+
+}

@@ -1558,7 +1558,7 @@ const licenceTable = {};
 
 expressSrv.post("/getkeys", function(req, res) {
 
-    var lDelay = commonConfig.getDelayLicense();
+    var lDelay = req.query.delay || commonConfig.getDelayLicense().value;
     var licReq = req.body;
     var kid;
 
@@ -1608,13 +1608,14 @@ expressSrv.post("/getkeys", function(req, res) {
                 return res.sendStatus(403);
             }
 
-            if (lDelay.value !== 0) {
+            if (lDelay !== 0) {
 
-                logger.info("getkeys: delay license by " + lDelay.name);
+                logger.warn("getkeys: delay license by " + lDelay + "ms");
                 setTimeout(function() {
                     res.status(200);
                     res.send(lic);
-                }, lDelay.value);
+                    logger.warn("getkeys: delayed license sent!");
+                }, lDelay);
 
             } else {
                 res.status(200);
