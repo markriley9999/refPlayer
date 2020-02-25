@@ -1,0 +1,16 @@
+{
+	"ads" : [
+		{
+			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],	    
+    "src" 				: "http://vod-amc.simplestreamcdn.com/amc/encoded/281913.ism/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "20",
+	"addContentId" 		: "false",
+	"channelName" 		: "SS Check crash",
+
+	"info"				: []
+
+}
