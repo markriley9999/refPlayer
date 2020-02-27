@@ -1,6 +1,6 @@
 {
 	"ads" : [],	    
-    "src" 				: "http://vod-amc.simplestreamcdn.com/amc/encoded/281913.ism/manifest.mpd",
+    "src" 				: "http://vod-amc.simplestreamcdn.com/amc/encoded/282078.ism/manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
