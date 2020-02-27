@@ -1,15 +1,10 @@
 {
-	"ads" : [
-		{
-			"src" 	: "./content/adverts/itv/GRYGKSP008010_ADROBOT_OldSpeckedHen_GreyLondon_10_a02_1200.mp4", 
-			"type" 	: "video/mp4"
-		}
-	],	    
+	"ads" : [],	    
     "src" 				: "http://vod-amc.simplestreamcdn.com/amc/encoded/281913.ism/manifest.mpd",
 	"type" 				: "application/dash+xml",
-	"transitionTime" 	: "20",
+	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "SS Check crash - Hisense",
+	"channelName" 		: "SS Check AV Sync and Crash issue",
 
 	"info"				: []
 
