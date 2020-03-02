@@ -1,11 +1,13 @@
 {
 	"ads" : [],	    
-    "src" 				: "http://vod-dash-uk-live.bbcfmt.hs.llnwd.net/usp/auth/vod/piff_abr_full_hd/d4204c-b0bn9jf8/vf_b0bn9jf8_6c767411-fd47-49dd-846c-1c892f787762.ism.hlsv2.ism/iptv_hd_abr_v1_dash_master.mpd?s=1583121381&e=1583164581&h=07e50a0d9cfd10922ca62eaee5f53765",
+    "src" 				: "http://refplayer-dev.cloud.digitaluk.co.uk/content/bbc/test/onerep.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "iPlayer Buffer Check",
 
-	"info"				: []
+	"info"				: [],
+    
+    "consumeResouces"   : 7
 
 }

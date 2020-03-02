@@ -1,11 +1,13 @@
 {
 	"ads" : [],	    
-    "src" 				: "http://vod-amc.simplestreamcdn.com/amc/encoded/282289.ism/manifest.mpd",
+    "src" 				: "http://refplayer-dev.cloud.digitaluk.co.uk/content/cbs-test/onerep.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "SS Buffer Check",
 
-	"info"				: []
+	"info"				: [],
+    
+    "consumeResouces"   : 7
 
 }

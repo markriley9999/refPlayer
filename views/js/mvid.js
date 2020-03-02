@@ -123,8 +123,40 @@ mVid.start = function () {
 
     this.hbbtv = window.InitHBBTVApp(this.Log);
     
-    function init2() {
+    
+    function loadBitmap(i) {
+
+        function drawDataURIOnCanvas(strDataURI, canvas) {
+
+            var img = new window.Image();
+            img.addEventListener("load", function () {
+                
+                canvas.getContext("2d").drawImage(img, 0, 0, 200 /*screen.width*/, 100 /*screen.height*/);
+            });
+            
+            var cacheBuster = "?nnn=" + i;
+            
+           img.setAttribute("src", strDataURI + cacheBuster);
+        }
+
+        var c = document.createElement('canvas');
         
+        c.width = screen.width;
+        c.height = screen.height;
+        
+        document.body.appendChild(c);
+
+        c.style.position = "absolute";
+        c.style.left = (i * 20) + "px";
+        c.style.top = (250 + (i * 10)) + "px";
+        c.style.opacity  = 0.75;
+                
+        drawDataURIOnCanvas("bitmaps/4k.jpg", c);        
+    }
+
+        
+    function init2() {
+      
         that.showPlayrange();
         
         if (location.protocol === "https:") {
@@ -258,6 +290,15 @@ mVid.start = function () {
                     that.setContentSourceAndLoad();
                     that.tvui.ShowEncrypted("noeme");
                     that.bEMESupport = false;
+                }
+            }
+
+            if (playObj.consumeResouces) {
+                var i;
+                
+                for (i = 0; i < playObj.consumeResouces; i++) {
+                    that.Log.info(" - Load bit (to consume memory)");
+                    loadBitmap(i);
                 }
             }
             
