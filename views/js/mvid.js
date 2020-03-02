@@ -149,9 +149,9 @@ mVid.start = function () {
         c.style.position = "absolute";
         c.style.left = (i * 20) + "px";
         c.style.top = (250 + (i * 10)) + "px";
-        c.style.opacity  = 0.75;
+        c.style.opacity  = 0.5;
                 
-        drawDataURIOnCanvas("bitmaps/4k.jpg", c);        
+        drawDataURIOnCanvas("bitmaps/gfx.bmp", c);        
     }
 
         
