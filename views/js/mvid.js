@@ -136,10 +136,10 @@ mVid.start = function () {
             
             var cacheBuster = "?nnn=" + i;
             
-           img.setAttribute("src", strDataURI + cacheBuster);
+            img.setAttribute("src", strDataURI + cacheBuster);
         }
 
-        var c = document.createElement('canvas');
+        var c = document.createElement("canvas");
         
         c.width = screen.width;
         c.height = screen.height;
