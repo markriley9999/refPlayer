@@ -77,6 +77,12 @@ window.SetupBroadcastObject = function (id, container, log)
                 if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
                     log.info("SetupBroadcastObject: createMediaSynchroniser");
                     mSync = oipfObjectFactory.createMediaSynchroniser();
+                    
+                    mSync.onError = function (err, src) {
+                        log.error("MediaSynchroniser error: " + err + " (" + src + ")");
+                        return;
+                    };
+                                        
                 } else {
                     log.error("application/hbbtvMediaSynchroniser not supported.");
                     return false;
@@ -213,6 +219,9 @@ window.SetupBroadcastObject = function (id, container, log)
             }            
             
             function checkEv(ev) {
+                
+                log.info("MediaSynchroniser event: " + ev.state);
+                
                 // A video/broadcast object that is passed to the initMediaSynchroniser() or addMediaObject() methods shall always be in the connecting or presenting states.
                 
                 if ((ev.state === 1 /* connecting */) || (ev.state === 2 /* presenting */)) {    
