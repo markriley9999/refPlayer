@@ -545,7 +545,7 @@ expressSrv.get("/content/*", function(req, res) {
         }
     }
 
-    var queryStr = req.query ? "?" + req.query : "";
+    var queryStr = url.parse(req.url, true).search;
     
     // Live (dynamic) content (emulation)???
     if (req.query.progStart && req.query.segDuration) {
