@@ -628,7 +628,7 @@ expressSrv.get("/content/*", function(req, res) {
     }
 
     file += queryStr;
-    logger.trace(" - Load file: " + file);
+    logger.debug(" - Load file: " + file);
     
     fs.stat(file, function(err, stats) {
         if (err) {
