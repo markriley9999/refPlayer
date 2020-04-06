@@ -545,14 +545,17 @@ expressSrv.get("/content/*", function(req, res) {
         }
     }
 
-
+    var queryStr = req.query ? "?" + req.query : "";
+    
     // Live (dynamic) content (emulation)???
     if (req.query.progStart && req.query.segDuration) {
         var dNow = new Date();
 
         var pStart = req.query.progStart;
         var segD = req.query.segDuration;
-
+    
+        queryStr = "";
+        
         // This segment request is for live content - does it exist yet?
         logger.debug("Live seg req: " + pStart + " (" + segD + "ms)");
 
@@ -622,10 +625,11 @@ expressSrv.get("/content/*", function(req, res) {
         logger.debug(" - file (prepended dir): " + file);
     } else {
         file = path.join(__dirname, req.path);
-        logger.trace(" - file: " + file);
     }
 
-
+    file += queryStr;
+    logger.trace(" - Load file: " + file);
+    
     fs.stat(file, function(err, stats) {
         if (err) {
             if (err.code === "ENOENT") {
@@ -1628,6 +1632,42 @@ expressSrv.post("/getkeys", function(req, res) {
     }
 });
 
+/* ------------------------------------------------------------
+expressSrv.post("/getDRMlic", function(req, res) {
+
+    var licReq = req.body || "No Body";
+    
+    logger.info("getDRMlic: " + licReq.toString());
+    logger.info(" - url: " + req.path);
+
+    var file = "./DRMlic/lg-resp.xml";
+
+logger.info("1");
+    fs.stat(file, function(err, stats) {
+logger.info("2");
+        if (err) {
+            if (err.code === "ENOENT") {
+                // 404 Error if file not found
+                logger.error("file does not exist: " + file);
+                return res.sendStatus(404);
+            }
+            res.end(err);
+        }
+logger.info("3");
+
+        //var lic = require(file);
+        const lic   = fs.readFileSync(file);
+
+logger.info("4");
+
+        logger.info("licence: " + lic);
+ 
+        res.type("text/xml;charset=utf-8");
+ 
+        res.send(lic);
+    });
+});
+------------------------------------------------------------ */
 
 function sendConnectionStatus() {
     var g = generalInfo;
