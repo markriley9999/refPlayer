@@ -6,6 +6,8 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "DPlay - EME",
 
-	"info"				: []
+	"info"				: [],
+    
+    "useKid"            : "true"
 
 }
