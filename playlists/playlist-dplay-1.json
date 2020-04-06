@@ -1,6 +1,6 @@
 {
 	"ads" : [],
-	"src" 				: "./content/dplay/manifest.mpd?version_hash=80bd5f2f",
+	"src" 				: "./content/dplay/manifest.mpd",
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
