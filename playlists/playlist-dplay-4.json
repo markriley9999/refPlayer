@@ -1,0 +1,12 @@
+{
+	"ads" : [],
+	"src" 				: "http://refplayer-dev.cloud.digitaluk.co.uk/content/dplay/manifest-pr-locman-1.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DPlay 3 - PlayReady - local manifest",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}
