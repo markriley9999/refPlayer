@@ -1559,6 +1559,55 @@ expressSrv.post("/savelog", function(req, res) {
     });
 });
 
+
+expressSrv.post("/consolelog", function(req, res) {
+    
+    /* Add this code to the app to debuf */
+    /*  --- START ---  
+        // *** POST CONSOLE MESSSAGES ***
+        var console=(function(oldCons, appName){
+           
+           function post(s) {
+                var x = new XMLHttpRequest();
+                x.open("POST", "[SERVER]/consolelog/?appname=" + appName, true);
+                x.send(s);
+            }
+           
+            post(appName + " --- START DEBUG SESSION ---");
+    
+            return {
+                log: function(text){
+                    oldCons.log(text);
+                    post(appName + " - log: " + text);
+                },
+                info: function (text) {
+                    oldCons.info(text);
+                    post(appName + " - info: " + text);
+                },
+                warn: function (text) {
+                    oldCons.warn(text);
+                    post(appName + " - WARNING: " + text);
+                },
+                error: function (text) {
+                    oldCons.error(text);
+                    post(appName + " - ERROR: " + text);
+                }
+            };
+        }(window.console, [APPNAME]));
+
+        window.console = console;
+        // *** POST CONSOLE MESSSAGES ***      
+    --- END --- */
+    
+    
+    logger.info("APP DEBUG LOG: " + req.body);
+    res.send(); // Send an empty response to stop clients from hanging
+
+    fs.appendFileSync("./logs/consolelog-" + req.query.appname + ".txt", req.body + "\n");
+});
+
+
+
 const licenceTable = {};
 
 expressSrv.post("/getkeys", function(req, res) {
