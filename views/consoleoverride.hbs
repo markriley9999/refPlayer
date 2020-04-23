@@ -2,7 +2,7 @@ var console=(function(oldCons, appName){
    
    function post(s) {
         var x = new XMLHttpRequest();
-        x.open("POST", "http://192.168.137.1:8080/consolelog/?appname=" + appName, false);
+        x.open("POST", "{{host}}consolelog/?appname=" + appName, false);
         x.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
         x.send(appName + " " + s);
     }

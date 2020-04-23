@@ -508,6 +508,19 @@ app.get("/player.aitx", function(req, res) {
     });
 });
 
+
+app.get("/dbg/consoleoverride.js", function(req, res) {
+    var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
+
+    logger.trace("get console override: " + srv);
+    res.render("consoleoverride.hbs", {host: srv}, function(err, html) {
+        res.type("text/javascript");
+        res.status(200);
+        logger.trace(html);
+        res.send(html);
+    });
+});
+
 const favIcon   = fs.readFileSync("./views/favicon.ico");
 
 app.get("/favicon.ico", function(req, res) {
