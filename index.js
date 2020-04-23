@@ -51,7 +51,7 @@ win["adtrans"]      = null;
 win["config"]       = null;
 
 
-var expressSrv = express(); // Active express object
+var app = express(); // Active express object
 
 var generalInfo = {
     port                : 0,
@@ -65,7 +65,7 @@ var generalInfo = {
 };
 
 
-var http = require("http").createServer(expressSrv);
+var http = require("http").createServer(app);
 var https;
 
 try {
@@ -75,9 +75,9 @@ try {
         secureProtocol: "TLSv1_2_method"
     };
     generalInfo.bHTTPSEnabled = true;
-    https = require("https").createServer(httpsOpts, expressSrv);
+    https = require("https").createServer(httpsOpts, app);
 } catch (error) {
-    https = require("https").createServer(expressSrv);
+    https = require("https").createServer(app);
 }
 
 
@@ -340,7 +340,7 @@ if (GUI) {
 }
 
 
-expressSrv.on("activate", function() {
+app.on("activate", function() {
 });
 
 ioHttp.sockets.on("connection", function(s) {
@@ -398,21 +398,22 @@ function socketConnect(socket) {
     });
 }
 
-expressSrv.use(express.static("public")); // put static files in the public folder to make them available on web pages
-expressSrv.use(bodyParser.urlencoded({ extended: false }));
-expressSrv.use(bodyParser.text({type: "text/plain"}));
-expressSrv.use(bodyParser.json());
+app.use(express.static("public")); // put static files in the public folder to make them available on web pages
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text({type: "text/plain"}));
+app.use(bodyParser.json());
 
-//expressSrv.use(express.static('views'));
-expressSrv.use("/common", express.static("common"));
-expressSrv.use("/css", express.static("views/css"));
-expressSrv.use("/bitmaps", express.static("views/bitmaps"));
-expressSrv.use("/js", express.static("views/js"));
-expressSrv.use("/playlists", express.static("playlists"));
 
-expressSrv.set("view-engine", "hbs");
+//app.use(express.static('views'));
+app.use("/common", express.static("common"));
+app.use("/css", express.static("views/css"));
+app.use("/bitmaps", express.static("views/bitmaps"));
+app.use("/js", express.static("views/js"));
+app.use("/playlists", express.static("playlists"));
 
-expressSrv.post("/log", function(req, res) {
+app.set("view-engine", "hbs");
+
+app.post("/log", function(req, res) {
     win["log"].sendToWindow("ipc-log", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
@@ -431,7 +432,7 @@ function sendServerLog(msg) {
 }
 */
 
-expressSrv.use(function(req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Max-Age", "1");
@@ -443,19 +444,19 @@ expressSrv.use(function(req, res, next) {
     next();
 });
 
-expressSrv.post("/status", function(req, res) {
+app.post("/status", function(req, res) {
     win["log"].sendToWindow("ipc-status", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressSrv.post("/adtrans", function(req, res) {
+app.post("/adtrans", function(req, res) {
     win["adtrans"].sendToWindow("ipc-adtrans", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressSrv.get("/*.html", function(req, res) {
+app.get("/*.html", function(req, res) {
     var UA = req.headers["user-agent"] || "";
 
     if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
@@ -495,7 +496,7 @@ expressSrv.get("/*.html", function(req, res) {
     }
 });
 
-expressSrv.get("/player.aitx", function(req, res) {
+app.get("/player.aitx", function(req, res) {
     var srv = "https://" + req.headers.host + "/"; // Always https!  ----  "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
 
     logger.trace("get ait: " + srv);
@@ -509,7 +510,7 @@ expressSrv.get("/player.aitx", function(req, res) {
 
 const favIcon   = fs.readFileSync("./views/favicon.ico");
 
-expressSrv.get("/favicon.ico", function(req, res) {
+app.get("/favicon.ico", function(req, res) {
     res.type("image/x-icon");
     res.status(200);
     res.send(favIcon);
@@ -518,7 +519,7 @@ expressSrv.get("/favicon.ico", function(req, res) {
 
 var mp4box = new mp4boxModule.MP4Box();
 
-expressSrv.get("/content/*", function(req, res) {
+app.get("/content/*", function(req, res) {
 
     var suffix = req.path.split(".").pop();
     var cType;
@@ -722,7 +723,7 @@ expressSrv.get("/content/*", function(req, res) {
 
 });
 
-expressSrv.get("/time", function(req, res) {
+app.get("/time", function(req, res) {
     var tISO;
 
     var d = new Date();
@@ -748,7 +749,7 @@ expressSrv.get("/time", function(req, res) {
 const configSegJump     = {};
 var segCount = 0;
 
-expressSrv.get("/segjump/*", function(req, res) {
+app.get("/segjump/*", function(req, res) {
 
     var useURL = req.path;
     var sC = {};
@@ -812,7 +813,7 @@ const configStream  = {};
 var archiveMPDs     = {};
 var persistState    = {};
 
-expressSrv.get("/dynamic/*", async function(req, res) {
+app.get("/dynamic/*", async function(req, res) {
 
     var progStart;
     var bAllPeriods = false;
@@ -1548,7 +1549,7 @@ function makeSegTimeLineSubs(sC, t) {
 }
 
 
-expressSrv.post("/savelog", function(req, res) {
+app.post("/savelog", function(req, res) {
     logger.info("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
@@ -1560,7 +1561,7 @@ expressSrv.post("/savelog", function(req, res) {
 });
 
 
-expressSrv.post("/consolelog", function(req, res) {
+app.post("/consolelog", function(req, res) {
     
     /* Add this code to the app to debuf */
     /*  --- START ---  
@@ -1570,6 +1571,7 @@ expressSrv.post("/consolelog", function(req, res) {
            function post(s) {
                 var x = new XMLHttpRequest();
                 x.open("POST", "[SERVER]/consolelog/?appname=" + appName, true);
+                x.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
                 x.send(s);
             }
            
@@ -1610,7 +1612,7 @@ expressSrv.post("/consolelog", function(req, res) {
 
 const licenceTable = {};
 
-expressSrv.post("/getkeys", function(req, res) {
+app.post("/getkeys", function(req, res) {
 
     var lDelay = req.query.delay || commonConfig.getDelayLicense().value;
     var licReq = req.body;
@@ -1683,7 +1685,7 @@ expressSrv.post("/getkeys", function(req, res) {
 });
 
 /* ------------------------------------------------------------
-expressSrv.post("/getDRMlic", function(req, res) {
+app.post("/getDRMlic", function(req, res) {
 
     var licReq = req.body || "No Body";
     
