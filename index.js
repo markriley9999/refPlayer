@@ -41,15 +41,15 @@ var commonConfig = new CONFIG();
 const mp4boxModule = require("mp4box");
 
 
-var win = {};
-win["log"]          = null;
-win["allvideoobjs"] = null;
-win["mainvideoobj"] = null;
-win["ad0videoobj"]  = null;
-win["ad1videoobj"]  = null;
-win["adtrans"]      = null;
-win["config"]       = null;
-
+var win = {
+    log             : null,
+    allvideoobjs    : null,
+    mainvideoobj    : null,
+    ad0videoobj     : null,
+    ad1videoobj     : null,
+    adtrans         : null,
+    config          : null
+};
 
 var app = express(); // Active express object
 
@@ -410,6 +410,7 @@ app.use("/css", express.static("views/css"));
 app.use("/bitmaps", express.static("views/bitmaps"));
 app.use("/js", express.static("views/js"));
 app.use("/playlists", express.static("playlists"));
+app.use("/logs", express.static("logs"));
 
 app.set("view-engine", "hbs");
 
