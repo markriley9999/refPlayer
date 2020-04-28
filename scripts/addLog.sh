@@ -2,6 +2,7 @@
 LOGFILE="$1"
 TXT="$2"
 
+echo
 echo "logfile: $LOGFILE"
 echo "txt: $TXT"
 
