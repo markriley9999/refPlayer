@@ -1586,7 +1586,7 @@ app.post("/consolelog", function(req, res) {
     var fn = "./logs/consolelog-" + req.query.appname + ".txt";
     var t = req.body + "\n";
     
-    exec("./scripts/addLog.sh  ${fn} ${t}", (error, stdout, stderr) => {
+    exec("./scripts/addLog.sh ${fn} ${t}", (error, stdout, stderr) => {
         if (error) {
             logger.error(`error: ${error.message}`);
             return;
