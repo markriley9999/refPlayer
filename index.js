@@ -1584,7 +1584,7 @@ app.post("/consolelog", function(req, res) {
     res.send(); // Send an empty response to stop clients from hanging
 
     var fn = "./logs/consolelog-" + req.query.appname + ".txt";
-    var t = req.body + "\n";
+    var t = req.body;
     
     exec('./scripts/addLog.sh "' + fn + '" "' + t + '"', (error, stdout, stderr) => {
         if (error) {
