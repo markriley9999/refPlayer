@@ -1595,7 +1595,7 @@ app.post("/consolelog", function(req, res) {
             logger.info(`stderr: ${stderr}`);
             return;
         }
-        logger.info(`stdout: ${stdout}`);
+        // logger.info(`stdout: ${stdout}`);
     });
     
 });
