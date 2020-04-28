@@ -1,6 +1,6 @@
 #!/bin/bash
-LOGFILE=$1
-TXT=$2
+LOGFILE="$1"
+TXT="$2"
 
 echo "logfile: $LOGFILE"
 echo "txt: $TXT"
