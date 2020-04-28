@@ -1,10 +1,14 @@
 #!/bin/bash
+LOGFILE=$1
+TXT=$2
 
-echo "logfile: $1"
-echo "txt: $2"
+echo "logfile: $LOGFILE"
+echo "txt: $TXT"
 
-touch "$1"
-cp "$1" log.tmp
-echo "$2" >> log.tmp  
-tail -n 100 log.tmp 
-mv log.tmp "$1"
+touch "$LOGFILE"
+cp "$LOGFILE" log.tmp
+echo "$TXT" >> log.tmp  
+tail -n 100 log.tmp > "$LOGFILE" 
+rm log.tmp
+
+
