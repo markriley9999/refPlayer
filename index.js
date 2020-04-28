@@ -1576,6 +1576,8 @@ app.post("/savelog", function(req, res) {
 });
 
 
+const { exec } = require("child_process");
+
 app.post("/consolelog", function(req, res) {
 
     logger.info("APP DEBUG LOG: " + req.body);
