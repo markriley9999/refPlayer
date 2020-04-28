@@ -1564,6 +1564,7 @@ function makeSegTimeLineSubs(sC, t) {
 
 
 app.post("/savelog", function(req, res) {
+
     logger.info("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
@@ -1576,50 +1577,25 @@ app.post("/savelog", function(req, res) {
 
 
 app.post("/consolelog", function(req, res) {
-    
-    /* Add this code to the app to debuf */
-    /*  --- START ---  
-        // *** POST CONSOLE MESSSAGES ***
-        var console=(function(oldCons, appName){
-           
-           function post(s) {
-                var x = new XMLHttpRequest();
-                x.open("POST", "[SERVER]/consolelog/?appname=" + appName, true);
-                x.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-                x.send(s);
-            }
-           
-            post(appName + " --- START DEBUG SESSION ---");
-    
-            return {
-                log: function(text){
-                    oldCons.log(text);
-                    post(appName + " - log: " + text);
-                },
-                info: function (text) {
-                    oldCons.info(text);
-                    post(appName + " - info: " + text);
-                },
-                warn: function (text) {
-                    oldCons.warn(text);
-                    post(appName + " - WARNING: " + text);
-                },
-                error: function (text) {
-                    oldCons.error(text);
-                    post(appName + " - ERROR: " + text);
-                }
-            };
-        }(window.console, [APPNAME]));
 
-        window.console = console;
-        // *** POST CONSOLE MESSSAGES ***      
-    --- END --- */
-    
-    
     logger.info("APP DEBUG LOG: " + req.body);
     res.send(); // Send an empty response to stop clients from hanging
 
-    fs.appendFileSync("./logs/consolelog-" + req.query.appname + ".txt", req.body + "\n");
+    var fn = "./logs/consolelog-" + req.query.appname + ".txt";
+    var t = req.body + "\n";
+    
+    exec("./scripts/addLog.sh  ${fn} ${t}", (error, stdout, stderr) => {
+        if (error) {
+            logger.error(`error: ${error.message}`);
+            return;
+        }
+        if (error) {
+            logger.info(`stderr: ${stderr}`);
+            return;
+        }
+        logger.info(`stdout: ${stdout}`);
+    });
+    
 });
 
 
