@@ -1576,13 +1576,16 @@ app.post("/savelog", function(req, res) {
 });
 
 
-const { exec } = require("child_process");
-
 app.post("/consolelog", function(req, res) {
 
     logger.info("APP DEBUG LOG: " + req.body);
     res.send(); // Send an empty response to stop clients from hanging
 
+    fs.appendFileSync("./logs/consolelog-" + req.query.appname + ".txt", req.body + "\n");
+    
+/* ...for another time...    
+    const { exec } = require("child_process");
+    
     var fn = "./logs/consolelog-" + req.query.appname + ".txt";
     var t = req.body;
     
@@ -1597,7 +1600,7 @@ app.post("/consolelog", function(req, res) {
         }
         // logger.info(`stdout: ${stdout}`);
     });
-    
+*/    
 });
 
 
