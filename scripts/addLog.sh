@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "logfile: ${S1}"
-echo "txt: ${$2}"
+echo "logfile: $1"
+echo "txt: $2"
 
 touch "$1"
 cp "$1" log.tmp
