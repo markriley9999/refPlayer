@@ -3,14 +3,10 @@ LOGFILE="$1"
 TXT="$2"
 TMP="$1~"
 
-echo
-echo "logfile: $LOGFILE"
-echo "txt: $TXT"
+#echo
+#echo "logfile: $LOGFILE"
+#echo "txt: $TXT"
 
-touch "$LOGFILE"
-cp "$LOGFILE" "$TMP"
-echo "$TXT" >> "$TMP"  
-tail -n 100 "$TMP" > "$LOGFILE" 
-rm "$TMP"
-
+echo "$TXT" >> "$LOGFILE" 
+#&& tail -n 100 "$LOGFILE" > "$TMP" && cp "$TMP" "$LOGFILE"
 
