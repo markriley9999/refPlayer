@@ -8,6 +8,7 @@ var console=(function(oldCons, appName){
     }
     
     post("--- START DEBUG SESSION ---");
+    post("UserAgent: " + navigator.userAgent);
     
     return {
         log: function(text){
