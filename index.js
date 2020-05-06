@@ -732,7 +732,7 @@ app.get("/content/*", function(req, res) {
                     }
                 }
                 
-                if (throttle_bps !== 0) {
+                if (throttle_bps && (throttle_bps !== 0)) {
                     stream.pipe(new Throttle({rate: throttle_bps / 8, chunksize: 2048 * 1024})).pipe(res);
                     logger.info("Throttle server (bps): " + throttle_bps);
                 } else {
