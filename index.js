@@ -643,6 +643,11 @@ app.get("/content/*", function(req, res) {
         file = path.join(__dirname, req.path);
     }
 
+    // If throttling test, clear query string - to make sure filename isn't mangled - crude workaround
+    if (req.query.throttle_bps) {
+        queryStr = '';
+    }
+    
     file += queryStr;
     logger.debug(" - Load file: " + file);
     
