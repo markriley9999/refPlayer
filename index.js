@@ -722,11 +722,19 @@ app.get("/content/*", function(req, res) {
                 });
 
                 logger.trace(" - send chunk");
-                var nThrot = commonConfig.getNetworkThrottle();
-
-                if (nThrot.value !== 0) {
-                    stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
-                    logger.info("Throttle server: " + nThrot.name);
+                
+                var throttle_bps = req.query.throttle_bps;
+                
+                if (!throttle_bps) {
+                    var t = commonConfig.getNetworkThrottle();
+                    if (t.value !== 0) {
+                        throttle_bps = t.value * 1024 * 1024;
+                    }
+                }
+                
+                if (throttle_bps !== 0) {
+                    stream.pipe(new Throttle({rate: throttle_bps / 8, chunksize: 2048 * 1024})).pipe(res);
+                    logger.info("Throttle server (bps): " + throttle_bps);
                 } else {
                     stream.pipe(res);
                 }
