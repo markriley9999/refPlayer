@@ -189,23 +189,23 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 /* Not used */
 /*
 function createWindows() {
-    win["log"].createWindow();
-    win["allvideoobjs"].createWindow();
-    win["mainvideoobj"].createWindow();
-    win["ad0videoobj"].createWindow();
-    win["ad1videoobj"].createWindow();
-    win["adtrans"].createWindow();
-    win["config"].createWindow();
+    win.log.createWindow();
+    win.allvideoobjs.createWindow();
+    win.mainvideoobj.createWindow();
+    win.ad0videoobj.createWindow();
+    win.ad1videoobj.createWindow();
+    win.adtrans.createWindow();
+    win.config.createWindow();
 }
 */
 
 function mainUIClosed() {
-    win["allvideoobjs"].closeWin();
-    win["mainvideoobj"].closeWin();
-    win["ad0videoobj"].closeWin();
-    win["ad1videoobj"].closeWin();
-    win["adtrans"].closeWin();
-    win["config"].closeWin();
+    win.allvideoobjs.closeWin();
+    win.mainvideoobj.closeWin();
+    win.ad0videoobj.closeWin();
+    win.ad1videoobj.closeWin();
+    win.adtrans.closeWin();
+    win.config.closeWin();
 }
 
 var runOptions = {};
@@ -291,18 +291,18 @@ function init() {
 
     logger.info("");
 
-    win["log"]          = new WINDOW(null,  "ui/ui.html",       1216,   700,    sendConnectionStatus,   mainUIClosed, false);
+    win.log          = new WINDOW(null,  "ui/ui.html",       1216,   700,    sendConnectionStatus,   mainUIClosed, false);
 
-    p = win["log"].getWin();
+    p = win.log.getWin();
 
-    win["allvideoobjs"] = new WINDOW(p, "ui/graph.html",        1216,   700,    null, null, false);
-    win["mainvideoobj"] = new WINDOW(p, "ui/singlegraph.html",  1216,   800,    null, null, false);
-    win["ad0videoobj"]  = new WINDOW(p, "ui/graphAdVid0.html",  1216,   800,    null, null, false);
-    win["ad1videoobj"]  = new WINDOW(p, "ui/graphAdVid1.html",  1216,   800,    null, null, false);
-    win["adtrans"]      = new WINDOW(p, "ui/adtransgraph.html", 800,    800,    null, null, false);
-    win["config"]       = new WINDOW(p, "ui/config.html",       335,    650,    null, null, false);
+    win.allvideoobjs = new WINDOW(p, "ui/graph.html",        1216,   700,    null, null, false);
+    win.mainvideoobj = new WINDOW(p, "ui/singlegraph.html",  1216,   800,    null, null, false);
+    win.ad0videoobj  = new WINDOW(p, "ui/graphAdVid0.html",  1216,   800,    null, null, false);
+    win.ad1videoobj  = new WINDOW(p, "ui/graphAdVid1.html",  1216,   800,    null, null, false);
+    win.adtrans      = new WINDOW(p, "ui/adtransgraph.html", 800,    800,    null, null, false);
+    win.config       = new WINDOW(p, "ui/config.html",       335,    650,    null, null, false);
 
-    win["log"].createWindow();
+    win.log.createWindow();
 
     var interfaces = os.networkInterfaces();
 
@@ -378,17 +378,17 @@ function socketConnect(socket) {
     sendConnectionStatus();
 
     socket.on("bufferEvent", function(data) {
-        win["log"].sendToWindow("ipc-buffer", data);
-        win["allvideoobjs"].sendToWindow("ipc-buffer", data);
-        win["mainvideoobj"].sendToWindow("ipc-buffer", data);
-        win["ad0videoobj"].sendToWindow("ipc-buffer", data);
-        win["ad1videoobj"].sendToWindow("ipc-buffer", data);
+        win.log.sendToWindow("ipc-buffer", data);
+        win.allvideoobjs.sendToWindow("ipc-buffer", data);
+        win.mainvideoobj.sendToWindow("ipc-buffer", data);
+        win.ad0videoobj.sendToWindow("ipc-buffer", data);
+        win.ad1videoobj.sendToWindow("ipc-buffer", data);
 
         logger.trace(data);
     });
 
     socket.on("playbackOffset", function(data) {
-        win["log"].sendToWindow("ipc-playbackOffset", data);
+        win.log.sendToWindow("ipc-playbackOffset", data);
         logger.trace(data);
     });
 
@@ -423,7 +423,7 @@ app.use("/logs", express.static("logs"));
 app.set("view-engine", "hbs");
 
 app.post("/log", function(req, res) {
-    win["log"].sendToWindow("ipc-log", req.body); // send the async-body message to the rendering thread
+    win.log.sendToWindow("ipc-log", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -437,7 +437,7 @@ function sendServerLog(msg) {
     };
 
     logger.info(msg);
-    win["log"].sendToWindow("ipc-log", logObj);
+    win.log.sendToWindow("ipc-log", logObj);
 }
 */
 
@@ -454,13 +454,13 @@ app.use(function(req, res, next) {
 });
 
 app.post("/status", function(req, res) {
-    win["log"].sendToWindow("ipc-status", req.body); // send the async-body message to the rendering thread
+    win.log.sendToWindow("ipc-status", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
 app.post("/adtrans", function(req, res) {
-    win["adtrans"].sendToWindow("ipc-adtrans", req.body); // send the async-body message to the rendering thread
+    win.adtrans.sendToWindow("ipc-adtrans", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -476,12 +476,12 @@ app.get("/*.html", function(req, res) {
 
         //createWindows();
 
-        win["log"].reload();
-        win["allvideoobjs"].reload();
-        win["mainvideoobj"].reload();
-        win["ad0videoobj"].reload();
-        win["ad1videoobj"].reload();
-        win["adtrans"].reload();
+        win.log.reload();
+        win.allvideoobjs.reload();
+        win.mainvideoobj.reload();
+        win.ad0videoobj.reload();
+        win.ad1videoobj.reload();
+        win.adtrans.reload();
 
         var v = generalInfo.version;
         var sRelType = v.dev === "true" ? "dev" : "";
@@ -1754,13 +1754,13 @@ function sendConnectionStatus() {
         "version"       : "v" + g.version.major + "." + g.version.minor + (g.version.dev === "true" ? "dev" : "")
     };
 
-    win["log"].sendToWindow("ipc-connected", obj);
+    win.log.sendToWindow("ipc-connected", obj);
 }
 
 function sendConfig() {
     var props = commonConfig._getProps();
 
-    win["config"].sendToWindow("ipc-send-config", props);
+    win.config.sendToWindow("ipc-send-config", props);
 }
 
 
