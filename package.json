@@ -15,6 +15,7 @@
     "help": "node . --help",
     "gui": "./node_modules/.bin/electron .",
     "nogui": "node . --headless",
+    "cloud": "node . --cloud",
     "lint": "./node_modules/.bin/eslint index.js",
     "lintapp": "./node_modules/.bin/eslint -c views/js/.eslintrc.js views/js/*.js",
     "lintui": "./node_modules/.bin/eslint -c views/js/.eslintrc.js ui/js/*.js",

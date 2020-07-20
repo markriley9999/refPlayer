@@ -14,7 +14,7 @@ var GUI         = null;
 var guiWindow   = null;
 var guiIPC      = null;
 
-if (!argv.headless && !argv.multidevs) {
+if (!argv.headless && !argv.multidevs && !argv.cloud) {
     GUI         = electron.app;
     guiWindow   = electron.BrowserWindow;
     guiIPC      = electron.ipcMain;
@@ -217,12 +217,15 @@ function init() {
     var v = generalInfo.version;
     var i;
     
-    runOptions.bMultiDevs           = !GUI;
-    runOptions.bSegDump             = argv.segdump;
-    runOptions.bEventAbs            = argv.eventabs;
-    runOptions.logLevel             = argv.loglevel;
-    runOptions.timeOffset           = argv.timeoffset;
-    runOptions.prependContentPath   = argv.pathprepend;
+    runOptions = {
+        bMultiDevs           : !GUI,
+        bSegDump             : argv.segdump,
+        bEventAbs            : argv.eventabs,
+        logLevel             : argv.loglevel,
+        timeOffset           : argv.timeoffset,
+        prependContentPath   : argv.pathprepend,
+        bCloud               : argv.cloud
+    };
 
     if (runOptions.logLevel) {
         logger.level = runOptions.logLevel;
@@ -234,6 +237,7 @@ function init() {
         logger.info("--segdump          : Dump segment information.");
         logger.info("--loglevel=[n]     : Set log level, where n = \"trace\", \"debug\", \"info\", \"warn\", \"error\" or \"fatal\".");
         logger.info("--timeoffset=[t]   : Used by dynamic dash manifests, adds 't' seconds to server time.");
+        logger.info("--cloud            : Use if hosting in the cloud.");
         if (GUI) {
             GUI.quit();
         }
@@ -267,6 +271,10 @@ function init() {
 
     if (!GUI) {
         logger.info("--- Headless Mode ---");
+    }
+
+    if (runOptions.bCloud) {
+        logger.info("--- Cloud hosting config ---");
     }
 
     if (runOptions.bSegDump) {
@@ -498,7 +506,11 @@ app.get("/*.html", function(req, res) {
 });
 
 app.get("/player.aitx", function(req, res) {
-    var srv = "https://" + req.headers.host + "/"; // Always https!  ----  "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
+    if (runOptions.bCloud) {
+        logger.info("player ait req: use https url");
+    }
+    
+    var srv = "http" + ((req.socket.encrypted || runOptions.bCloud) ? "s" : "") + "://" + req.headers.host + "/";
 
     logger.trace("get ait: " + srv);
     res.render("playerait.hbs", {url: srv}, function(err, html) {
@@ -645,7 +657,7 @@ app.get("/content/*", function(req, res) {
 
     // If throttling test, clear query string - to make sure filename isn't mangled - crude workaround
     if (req.query.throttle_bps) {
-        queryStr = '';
+        queryStr = "";
     }
     
     file += queryStr;
