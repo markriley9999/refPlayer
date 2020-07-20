@@ -123,8 +123,40 @@ mVid.start = function () {
 
     this.hbbtv = window.InitHBBTVApp(this.Log);
     
-    function init2() {
+    
+    function loadBitmap(i) {
+
+        function drawDataURIOnCanvas(strDataURI, canvas) {
+
+            var img = new window.Image();
+            img.addEventListener("load", function () {
+                
+                canvas.getContext("2d").drawImage(img, 0, 0, 200 /*screen.width*/, 100 /*screen.height*/);
+            });
+            
+            var cacheBuster = "?nnn=" + i;
+            
+            img.setAttribute("src", strDataURI + cacheBuster);
+        }
+
+        var c = document.createElement("canvas");
         
+        c.width = screen.width;
+        c.height = screen.height;
+        
+        document.body.appendChild(c);
+
+        c.style.position = "absolute";
+        c.style.left = (i * 20) + "px";
+        c.style.top = (250 + (i * 10)) + "px";
+        c.style.opacity  = 0.5;
+                
+        drawDataURIOnCanvas("bitmaps/gfx.bmp", c);        
+    }
+
+        
+    function init2() {
+      
         that.showPlayrange();
         
         if (location.protocol === "https:") {
@@ -175,7 +207,7 @@ mVid.start = function () {
                     that.tvui.ShowTransportIcons(false);
                                         
                     if (playObj.timeline && playObj.timeline.selector) {
-                        that.broadcast.initMediaSync(playObj.timeline.selector, 
+                        that.broadcast.init(playObj.timeline.selector, 
                             function() {
                                 that.tvui.ShowMSyncIcon("msyncicon");
                             }, 
@@ -184,7 +216,7 @@ mVid.start = function () {
                             }
                         );
 
-                        that.broadcast.play();
+                        that.broadcast.initMediaSync();
 
                         if (that.params.bWindowedObjs) {
                             that.broadcast.setWindow(that.windowVideoObjects["mVid-broadcast"]);
@@ -258,6 +290,15 @@ mVid.start = function () {
                     that.setContentSourceAndLoad();
                     that.tvui.ShowEncrypted("noeme");
                     that.bEMESupport = false;
+                }
+            }
+
+            if (playObj.consumeResouces) {
+                var i;
+                
+                for (i = 0; i < playObj.consumeResouces; i++) {
+                    that.Log.info(" - Load bit (to consume memory)");
+                    loadBitmap(i);
                 }
             }
             
@@ -948,7 +989,7 @@ function onMsyncPlayAd (that) {
                 that.switchVideoToPlaying(v, null);
             }
             
-            that.broadcast.stop(); 
+            that.broadcast.reset(); 
             that.tvui.ShowMsyncTime(false);
         }
     };
@@ -1212,7 +1253,7 @@ function onVideoEvent (m) {
                         m.switchVideoToPlaying(null, this);
                         m.broadcast.bSetupAdTransEvents = true;
                         m.broadcast.bTimePlayTransition = true;
-                        m.broadcast.play();
+                        m.broadcast.initMediaSync();
                     }
 
                 } else {

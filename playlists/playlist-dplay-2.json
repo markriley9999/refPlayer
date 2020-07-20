@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+	"src" 				: "./content/dplay/2/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DPlay 2 - EME",
+
+	"info"				: [],
+    
+    "useKid"            : "true"
+
+}

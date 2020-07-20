@@ -1,11 +1,13 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "32",
-	"dev"		: "true",
+	"minor" 	: "34",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
-                    "Handle unexpected events",
+                    "ait req of http returns http app url",
+                    "Mediasync: wait for broadcast object to be in correct state before init msync",
+                    "Handle unexpected video events",
                     "Free decoder, if launched as broadcast related",
                     "Delayed licence tests",
                     "AIT server always returns https url",

@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://capella-test.akamaized.net/cmaf/live/675807/CapellaFreeViewTest/manifest.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE Capella: Live Content - segment timeline, single period",
+
+	"info"				: []
+
+}

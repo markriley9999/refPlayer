@@ -14,7 +14,7 @@ var GUI         = null;
 var guiWindow   = null;
 var guiIPC      = null;
 
-if (!argv.headless && !argv.multidevs) {
+if (!argv.headless && !argv.multidevs && !argv.cloud) {
     GUI         = electron.app;
     guiWindow   = electron.BrowserWindow;
     guiIPC      = electron.ipcMain;
@@ -41,17 +41,17 @@ var commonConfig = new CONFIG();
 const mp4boxModule = require("mp4box");
 
 
-var win = {};
-win["log"]          = null;
-win["allvideoobjs"] = null;
-win["mainvideoobj"] = null;
-win["ad0videoobj"]  = null;
-win["ad1videoobj"]  = null;
-win["adtrans"]      = null;
-win["config"]       = null;
+var win = {
+    log             : null,
+    allvideoobjs    : null,
+    mainvideoobj    : null,
+    ad0videoobj     : null,
+    ad1videoobj     : null,
+    adtrans         : null,
+    config          : null
+};
 
-
-var expressSrv = express(); // Active express object
+var app = express(); // Active express object
 
 var generalInfo = {
     port                : 0,
@@ -65,7 +65,7 @@ var generalInfo = {
 };
 
 
-var http = require("http").createServer(expressSrv);
+var http = require("http").createServer(app);
 var https;
 
 try {
@@ -75,9 +75,9 @@ try {
         secureProtocol: "TLSv1_2_method"
     };
     generalInfo.bHTTPSEnabled = true;
-    https = require("https").createServer(httpsOpts, expressSrv);
+    https = require("https").createServer(httpsOpts, app);
 } catch (error) {
-    https = require("https").createServer(expressSrv);
+    https = require("https").createServer(app);
 }
 
 
@@ -189,23 +189,23 @@ function WINDOW(p, uiurl, w, h, r, c, bMax) {
 /* Not used */
 /*
 function createWindows() {
-    win["log"].createWindow();
-    win["allvideoobjs"].createWindow();
-    win["mainvideoobj"].createWindow();
-    win["ad0videoobj"].createWindow();
-    win["ad1videoobj"].createWindow();
-    win["adtrans"].createWindow();
-    win["config"].createWindow();
+    win.log.createWindow();
+    win.allvideoobjs.createWindow();
+    win.mainvideoobj.createWindow();
+    win.ad0videoobj.createWindow();
+    win.ad1videoobj.createWindow();
+    win.adtrans.createWindow();
+    win.config.createWindow();
 }
 */
 
 function mainUIClosed() {
-    win["allvideoobjs"].closeWin();
-    win["mainvideoobj"].closeWin();
-    win["ad0videoobj"].closeWin();
-    win["ad1videoobj"].closeWin();
-    win["adtrans"].closeWin();
-    win["config"].closeWin();
+    win.allvideoobjs.closeWin();
+    win.mainvideoobj.closeWin();
+    win.ad0videoobj.closeWin();
+    win.ad1videoobj.closeWin();
+    win.adtrans.closeWin();
+    win.config.closeWin();
 }
 
 var runOptions = {};
@@ -217,12 +217,15 @@ function init() {
     var v = generalInfo.version;
     var i;
     
-    runOptions.bMultiDevs           = !GUI;
-    runOptions.bSegDump             = argv.segdump;
-    runOptions.bEventAbs            = argv.eventabs;
-    runOptions.logLevel             = argv.loglevel;
-    runOptions.timeOffset           = argv.timeoffset;
-    runOptions.prependContentPath   = argv.pathprepend;
+    runOptions = {
+        bMultiDevs           : !GUI,
+        bSegDump             : argv.segdump,
+        bEventAbs            : argv.eventabs,
+        logLevel             : argv.loglevel,
+        timeOffset           : argv.timeoffset,
+        prependContentPath   : argv.pathprepend,
+        bCloud               : argv.cloud
+    };
 
     if (runOptions.logLevel) {
         logger.level = runOptions.logLevel;
@@ -234,6 +237,7 @@ function init() {
         logger.info("--segdump          : Dump segment information.");
         logger.info("--loglevel=[n]     : Set log level, where n = \"trace\", \"debug\", \"info\", \"warn\", \"error\" or \"fatal\".");
         logger.info("--timeoffset=[t]   : Used by dynamic dash manifests, adds 't' seconds to server time.");
+        logger.info("--cloud            : Use if hosting in the cloud.");
         if (GUI) {
             GUI.quit();
         }
@@ -269,6 +273,10 @@ function init() {
         logger.info("--- Headless Mode ---");
     }
 
+    if (runOptions.bCloud) {
+        logger.info("--- Cloud hosting config ---");
+    }
+
     if (runOptions.bSegDump) {
         logger.info("--- Dump Segment Info ---");
     }
@@ -283,18 +291,18 @@ function init() {
 
     logger.info("");
 
-    win["log"]          = new WINDOW(null,  "ui/ui.html",       1216,   700,    sendConnectionStatus,   mainUIClosed, false);
+    win.log          = new WINDOW(null,  "ui/ui.html",       1216,   700,    sendConnectionStatus,   mainUIClosed, false);
 
-    p = win["log"].getWin();
+    p = win.log.getWin();
 
-    win["allvideoobjs"] = new WINDOW(p, "ui/graph.html",        1216,   700,    null, null, false);
-    win["mainvideoobj"] = new WINDOW(p, "ui/singlegraph.html",  1216,   800,    null, null, false);
-    win["ad0videoobj"]  = new WINDOW(p, "ui/graphAdVid0.html",  1216,   800,    null, null, false);
-    win["ad1videoobj"]  = new WINDOW(p, "ui/graphAdVid1.html",  1216,   800,    null, null, false);
-    win["adtrans"]      = new WINDOW(p, "ui/adtransgraph.html", 800,    800,    null, null, false);
-    win["config"]       = new WINDOW(p, "ui/config.html",       335,    650,    null, null, false);
+    win.allvideoobjs = new WINDOW(p, "ui/graph.html",        1216,   700,    null, null, false);
+    win.mainvideoobj = new WINDOW(p, "ui/singlegraph.html",  1216,   800,    null, null, false);
+    win.ad0videoobj  = new WINDOW(p, "ui/graphAdVid0.html",  1216,   800,    null, null, false);
+    win.ad1videoobj  = new WINDOW(p, "ui/graphAdVid1.html",  1216,   800,    null, null, false);
+    win.adtrans      = new WINDOW(p, "ui/adtransgraph.html", 800,    800,    null, null, false);
+    win.config       = new WINDOW(p, "ui/config.html",       335,    650,    null, null, false);
 
-    win["log"].createWindow();
+    win.log.createWindow();
 
     var interfaces = os.networkInterfaces();
 
@@ -340,7 +348,7 @@ if (GUI) {
 }
 
 
-expressSrv.on("activate", function() {
+app.on("activate", function() {
 });
 
 ioHttp.sockets.on("connection", function(s) {
@@ -370,17 +378,17 @@ function socketConnect(socket) {
     sendConnectionStatus();
 
     socket.on("bufferEvent", function(data) {
-        win["log"].sendToWindow("ipc-buffer", data);
-        win["allvideoobjs"].sendToWindow("ipc-buffer", data);
-        win["mainvideoobj"].sendToWindow("ipc-buffer", data);
-        win["ad0videoobj"].sendToWindow("ipc-buffer", data);
-        win["ad1videoobj"].sendToWindow("ipc-buffer", data);
+        win.log.sendToWindow("ipc-buffer", data);
+        win.allvideoobjs.sendToWindow("ipc-buffer", data);
+        win.mainvideoobj.sendToWindow("ipc-buffer", data);
+        win.ad0videoobj.sendToWindow("ipc-buffer", data);
+        win.ad1videoobj.sendToWindow("ipc-buffer", data);
 
         logger.trace(data);
     });
 
     socket.on("playbackOffset", function(data) {
-        win["log"].sendToWindow("ipc-playbackOffset", data);
+        win.log.sendToWindow("ipc-playbackOffset", data);
         logger.trace(data);
     });
 
@@ -398,22 +406,24 @@ function socketConnect(socket) {
     });
 }
 
-expressSrv.use(express.static("public")); // put static files in the public folder to make them available on web pages
-expressSrv.use(bodyParser.urlencoded({ extended: false }));
-expressSrv.use(bodyParser.text({type: "text/plain"}));
-expressSrv.use(bodyParser.json());
+app.use(express.static("public")); // put static files in the public folder to make them available on web pages
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.text({type: "text/plain"}));
+app.use(bodyParser.json());
 
-//expressSrv.use(express.static('views'));
-expressSrv.use("/common", express.static("common"));
-expressSrv.use("/css", express.static("views/css"));
-expressSrv.use("/bitmaps", express.static("views/bitmaps"));
-expressSrv.use("/js", express.static("views/js"));
-expressSrv.use("/playlists", express.static("playlists"));
 
-expressSrv.set("view-engine", "hbs");
+//app.use(express.static('views'));
+app.use("/common", express.static("common"));
+app.use("/css", express.static("views/css"));
+app.use("/bitmaps", express.static("views/bitmaps"));
+app.use("/js", express.static("views/js"));
+app.use("/playlists", express.static("playlists"));
+app.use("/logs", express.static("logs"));
 
-expressSrv.post("/log", function(req, res) {
-    win["log"].sendToWindow("ipc-log", req.body); // send the async-body message to the rendering thread
+app.set("view-engine", "hbs");
+
+app.post("/log", function(req, res) {
+    win.log.sendToWindow("ipc-log", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
@@ -427,11 +437,11 @@ function sendServerLog(msg) {
     };
 
     logger.info(msg);
-    win["log"].sendToWindow("ipc-log", logObj);
+    win.log.sendToWindow("ipc-log", logObj);
 }
 */
 
-expressSrv.use(function(req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Max-Age", "1");
@@ -443,19 +453,19 @@ expressSrv.use(function(req, res, next) {
     next();
 });
 
-expressSrv.post("/status", function(req, res) {
-    win["log"].sendToWindow("ipc-status", req.body); // send the async-body message to the rendering thread
+app.post("/status", function(req, res) {
+    win.log.sendToWindow("ipc-status", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressSrv.post("/adtrans", function(req, res) {
-    win["adtrans"].sendToWindow("ipc-adtrans", req.body); // send the async-body message to the rendering thread
+app.post("/adtrans", function(req, res) {
+    win.adtrans.sendToWindow("ipc-adtrans", req.body); // send the async-body message to the rendering thread
     logger.trace(req.body);
     res.send(); // Send an empty response to stop clients from hanging
 });
 
-expressSrv.get("/*.html", function(req, res) {
+app.get("/*.html", function(req, res) {
     var UA = req.headers["user-agent"] || "";
 
     if (runOptions.bMultiDevs || !generalInfo.currentDeviceUA || (generalInfo.currentDeviceUA === UA)) {
@@ -466,12 +476,12 @@ expressSrv.get("/*.html", function(req, res) {
 
         //createWindows();
 
-        win["log"].reload();
-        win["allvideoobjs"].reload();
-        win["mainvideoobj"].reload();
-        win["ad0videoobj"].reload();
-        win["ad1videoobj"].reload();
-        win["adtrans"].reload();
+        win.log.reload();
+        win.allvideoobjs.reload();
+        win.mainvideoobj.reload();
+        win.ad0videoobj.reload();
+        win.ad1videoobj.reload();
+        win.adtrans.reload();
 
         var v = generalInfo.version;
         var sRelType = v.dev === "true" ? "dev" : "";
@@ -495,8 +505,12 @@ expressSrv.get("/*.html", function(req, res) {
     }
 });
 
-expressSrv.get("/player.aitx", function(req, res) {
-    var srv = "https://" + req.headers.host + "/"; // Always https!  ----  "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
+app.get("/player.aitx", function(req, res) {
+    if (runOptions.bCloud) {
+        logger.info("player ait req: use https url");
+    }
+    
+    var srv = "http" + ((req.socket.encrypted || runOptions.bCloud) ? "s" : "") + "://" + req.headers.host + "/";
 
     logger.trace("get ait: " + srv);
     res.render("playerait.hbs", {url: srv}, function(err, html) {
@@ -507,9 +521,22 @@ expressSrv.get("/player.aitx", function(req, res) {
     });
 });
 
+
+app.get("/dbg/consoleoverride.js", function(req, res) {
+    var srv = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/";
+
+    logger.trace("get console override: " + srv);
+    res.render("consoleoverride.hbs", {host: srv}, function(err, html) {
+        res.type("text/javascript");
+        res.status(200);
+        logger.trace(html);
+        res.send(html);
+    });
+});
+
 const favIcon   = fs.readFileSync("./views/favicon.ico");
 
-expressSrv.get("/favicon.ico", function(req, res) {
+app.get("/favicon.ico", function(req, res) {
     res.type("image/x-icon");
     res.status(200);
     res.send(favIcon);
@@ -518,7 +545,7 @@ expressSrv.get("/favicon.ico", function(req, res) {
 
 var mp4box = new mp4boxModule.MP4Box();
 
-expressSrv.get("/content/*", function(req, res) {
+app.get("/content/*", function(req, res) {
 
     var suffix = req.path.split(".").pop();
     var cType;
@@ -545,14 +572,18 @@ expressSrv.get("/content/*", function(req, res) {
         }
     }
 
-
+    var q = url.parse(req.url, true).search;
+    var queryStr = q ? q : "";
+    
     // Live (dynamic) content (emulation)???
     if (req.query.progStart && req.query.segDuration) {
         var dNow = new Date();
 
         var pStart = req.query.progStart;
         var segD = req.query.segDuration;
-
+    
+        queryStr = "";
+        
         // This segment request is for live content - does it exist yet?
         logger.debug("Live seg req: " + pStart + " (" + segD + "ms)");
 
@@ -622,10 +653,16 @@ expressSrv.get("/content/*", function(req, res) {
         logger.debug(" - file (prepended dir): " + file);
     } else {
         file = path.join(__dirname, req.path);
-        logger.trace(" - file: " + file);
     }
 
-
+    // If throttling test, clear query string - to make sure filename isn't mangled - crude workaround
+    if (req.query.throttle_bps) {
+        queryStr = "";
+    }
+    
+    file += queryStr;
+    logger.debug(" - Load file: " + file);
+    
     fs.stat(file, function(err, stats) {
         if (err) {
             if (err.code === "ENOENT") {
@@ -702,11 +739,19 @@ expressSrv.get("/content/*", function(req, res) {
                 });
 
                 logger.trace(" - send chunk");
-                var nThrot = commonConfig.getNetworkThrottle();
-
-                if (nThrot.value !== 0) {
-                    stream.pipe(new Throttle({rate: nThrot.value * (1024 * 1024) / 8, chunksize: 2048 * 1024})).pipe(res);
-                    logger.info("Throttle server: " + nThrot.name);
+                
+                var throttle_bps = req.query.throttle_bps;
+                
+                if (!throttle_bps) {
+                    var t = commonConfig.getNetworkThrottle();
+                    if (t.value !== 0) {
+                        throttle_bps = t.value * 1024 * 1024;
+                    }
+                }
+                
+                if (throttle_bps && (throttle_bps !== 0)) {
+                    stream.pipe(new Throttle({rate: throttle_bps / 8, chunksize: 2048 * 1024})).pipe(res);
+                    logger.info("Throttle server (bps): " + throttle_bps);
                 } else {
                     stream.pipe(res);
                 }
@@ -717,7 +762,7 @@ expressSrv.get("/content/*", function(req, res) {
 
 });
 
-expressSrv.get("/time", function(req, res) {
+app.get("/time", function(req, res) {
     var tISO;
 
     var d = new Date();
@@ -743,7 +788,7 @@ expressSrv.get("/time", function(req, res) {
 const configSegJump     = {};
 var segCount = 0;
 
-expressSrv.get("/segjump/*", function(req, res) {
+app.get("/segjump/*", function(req, res) {
 
     var useURL = req.path;
     var sC = {};
@@ -807,7 +852,7 @@ const configStream  = {};
 var archiveMPDs     = {};
 var persistState    = {};
 
-expressSrv.get("/dynamic/*", async function(req, res) {
+app.get("/dynamic/*", async function(req, res) {
 
     var progStart;
     var bAllPeriods = false;
@@ -1543,7 +1588,8 @@ function makeSegTimeLineSubs(sC, t) {
 }
 
 
-expressSrv.post("/savelog", function(req, res) {
+app.post("/savelog", function(req, res) {
+
     logger.info("/savelog: " + req.query.filename);
     res.send(); // Send an empty response to stop clients from hanging
 
@@ -1554,9 +1600,39 @@ expressSrv.post("/savelog", function(req, res) {
     });
 });
 
+
+app.post("/consolelog", function(req, res) {
+
+    logger.info("APP DEBUG LOG: " + req.body);
+    res.send(); // Send an empty response to stop clients from hanging
+
+    fs.appendFileSync("./logs/consolelog-" + req.query.appname + ".txt", req.body + "\n");
+    
+/* ...for another time...    
+    const { exec } = require("child_process");
+    
+    var fn = "./logs/consolelog-" + req.query.appname + ".txt";
+    var t = req.body;
+    
+    exec('./scripts/addLog.sh "' + fn + '" "' + t + '"', (error, stdout, stderr) => {
+        if (error) {
+            logger.error(`error: ${error.message}`);
+            return;
+        }
+        if (error) {
+            logger.info(`stderr: ${stderr}`);
+            return;
+        }
+        // logger.info(`stdout: ${stdout}`);
+    });
+*/    
+});
+
+
+
 const licenceTable = {};
 
-expressSrv.post("/getkeys", function(req, res) {
+app.post("/getkeys", function(req, res) {
 
     var lDelay = req.query.delay || commonConfig.getDelayLicense().value;
     var licReq = req.body;
@@ -1628,6 +1704,43 @@ expressSrv.post("/getkeys", function(req, res) {
     }
 });
 
+/* ------------------------------------------------------------
+app.post("/getDRMlic", function(req, res) {
+
+    var licReq = req.body || "No Body";
+    
+    logger.info("getDRMlic: " + licReq.toString());
+    logger.info(" - url: " + req.path);
+
+    var file = "./DRMlic/lg-resp.xml";
+
+logger.info("1");
+    fs.stat(file, function(err, stats) {
+logger.info("2");
+        if (err) {
+            if (err.code === "ENOENT") {
+                // 404 Error if file not found
+                logger.error("file does not exist: " + file);
+                return res.sendStatus(404);
+            }
+            res.end(err);
+        }
+logger.info("3");
+
+        //var lic = require(file);
+        const lic   = fs.readFileSync(file);
+
+logger.info("4");
+
+        logger.info("licence: " + lic);
+ 
+        res.type("text/xml;charset=utf-8");
+ 
+        res.send(lic);
+    });
+});
+------------------------------------------------------------ */
+
 function sendConnectionStatus() {
     var g = generalInfo;
 
@@ -1641,13 +1754,13 @@ function sendConnectionStatus() {
         "version"       : "v" + g.version.major + "." + g.version.minor + (g.version.dev === "true" ? "dev" : "")
     };
 
-    win["log"].sendToWindow("ipc-connected", obj);
+    win.log.sendToWindow("ipc-connected", obj);
 }
 
 function sendConfig() {
     var props = commonConfig._getProps();
 
-    win["config"].sendToWindow("ipc-send-config", props);
+    win.config.sendToWindow("ipc-send-config", props);
 }
 
 

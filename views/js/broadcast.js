@@ -12,9 +12,9 @@
 
 window.SetupBroadcastObject = function (id, container, log)
 {
-    var bo;
-    var mSync;
-    var timelineSelector;
+    var bo = null;
+    var mSync = null;
+    var timelineSelector = null;
     
     
     const STATE_STOPPED         = 0;
@@ -71,6 +71,36 @@ window.SetupBroadcastObject = function (id, container, log)
         }
     }
     
+    function createMediaSync() {
+        if (!mSync) {
+            try {
+                if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
+                    log.info("SetupBroadcastObject: createMediaSynchroniser");
+                    mSync = oipfObjectFactory.createMediaSynchroniser();
+                    
+                    mSync.onError = function (err, src) {
+                        log.error("MediaSynchroniser error: " + err + " (" + src + ")");
+                        return;
+                    };
+                                        
+                } else {
+                    log.error("application/hbbtvMediaSynchroniser not supported.");
+                    return false;
+                }
+            } catch (err) {
+                log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
+                return false;
+            }
+        } else {
+            log.info("hbbtvMediaSynchroniser already created.");
+        }
+
+        setState(STATE_WAITINGFOR_BT, POLL_FAST);
+
+        return true;        
+    }
+    
+    
     function checkState() {
         var a;
         
@@ -123,15 +153,19 @@ window.SetupBroadcastObject = function (id, container, log)
             return null;
         }
     
-        bo.setAttribute("id", id);
+        try {
+            bo.setAttribute("id", id);
 
-        bo.type = "video/broadcast";
-        //bo.setAttribute("type", bo.type);
-        bo.style.outline = "transparent";
-        bo.setAttribute("class", "broadcast");
-        e(container).appendChild(bo);
+            bo.type = "video/broadcast";
+            //bo.setAttribute("type", bo.type);
+            bo.style.outline = "transparent";
+            bo.setAttribute("class", "broadcast");
+            e(container).appendChild(bo);
+        } catch (err) {
+            log.error("SetupBroadcastObject error: " + err.messsage);
+        }
         
-        if (this.bWindowedObjs) {
+        if (bo && this.bWindowedObjs) {
             bo.style.display    = "block";
             bo.style.top        = winObj.top;
             bo.style.left       = winObj.left;
@@ -150,32 +184,14 @@ window.SetupBroadcastObject = function (id, container, log)
             winObj = o;
         },
         
-        initMediaSync: function (s, fOk, fErr) {
+        init: function (s, fOk, fErr) {
             timelineSelector = s;
             
-            try {
-                if (oipfObjectFactory.isObjectSupported("application/hbbtvMediaSynchroniser")) {
-                    log.info("SetupBroadcastObject: createMediaSynchroniser");
-                    mSync = oipfObjectFactory.createMediaSynchroniser();
-                } else {
-                    log.error("application/hbbtvMediaSynchroniser not supported.");
-                    if (fErr) {
-                        fErr();
-                    }
-                    return;
-                }
-            } catch (err) {
-                log.error("Exception when creating creating hbbtvMediaSynchroniser Object. Error: " + err.message);
-                if (fErr) {
-                    fErr(err);
-                }
-                return;
-            }
-            
-            setState(STATE_WAITINGFOR_BT, POLL_FAST);
-            if (fOk) {
+            if (createMediaSync()) {
                 fOk();
-            }
+            } else {
+                fErr();
+            }            
         },
         
         setTimeEvents: function (p, t, f1, f2) {
@@ -189,32 +205,53 @@ window.SetupBroadcastObject = function (id, container, log)
             timeupdateFunc = f;
         },
         
-        stop: function () {
+        reset: function () {
             setState(STATE_STOPPED, POLL_SLOW);
             bo.style.display = "none";
             bo.stop();
             mSync = null;
         },
         
-        play: function () {
+        initMediaSync: function () {
+
+            if (!createMediaSync()) {
+                return false;
+            }            
+            
+            function checkEv(ev) {
+                
+                log.info("MediaSynchroniser event: " + ev.state);
+                
+                // A video/broadcast object that is passed to the initMediaSynchroniser() or addMediaObject() methods shall always be in the connecting or presenting states.
+                
+                if ((ev.state === 1 /* connecting */) || (ev.state === 2 /* presenting */)) {    
+                    
+                    bo.removeEventListener("PlayStateChange", checkEv);
+                    
+                    try {
+                        if (mSync) {
+                            log.info("SetupBroadcastObject: initMediaSynchroniser");
+                            mSync.initMediaSynchroniser(bo, timelineSelector);             
+                            setState(STATE_WAITINGFOR_BT, POLL_FAST);
+                        }
+                    } catch(err) {
+                        log.error("SetupBroadcastObject: initMediaSynchroniser init error: " + err.message);
+                    }
+                    
+                }
+            }
+                        
             try {
                 log.info("SetupBroadcastObject: bindToCurrentChannel");
+                
+                bo.addEventListener("PlayStateChange", checkEv);
+                
                 bo.bindToCurrentChannel();
                 bo.style.display = "block";
-            } catch (e) {
-                log.error("Starting of broadcast video failed: bindToCurrentChannel");
+            } catch (err) {
+                log.error("Starting of broadcast video failed: bindToCurrentChannel: " + err.message);
                 return false;
-            }       
-            
-            if (!mSync)
-            {
-                log.info("SetupBroadcastObject: createMediaSynchroniser");
-                mSync = oipfObjectFactory.createMediaSynchroniser();
-            }
-            
-            log.info("SetupBroadcastObject: initMediaSynchroniser");
-            mSync.initMediaSynchroniser(bo, timelineSelector);             
-            setState(STATE_WAITINGFOR_BT, POLL_FAST);
+            }                   
         },
         
         getId: function () {

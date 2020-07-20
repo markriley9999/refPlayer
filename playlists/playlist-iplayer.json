@@ -1,0 +1,13 @@
+{
+	"ads" : [],	    
+    "src" 				: "http://refplayer-dev.cloud.digitaluk.co.uk/content/bbc/test/onerep.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "iPlayer Buffer Check",
+
+	"info"				: [],
+    
+    "consumeResouces"   : 14
+
+}

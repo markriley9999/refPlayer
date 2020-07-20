@@ -1,0 +1,12 @@
+{
+	"ads" : [],
+	"src" 				: "http://dplaynordics-vod-01.akamaized.net/dplaydni/125841/2/dash/9612012004/manifest.mpd?hdnts=exp=1771922117~acl=/*~hmac=37aeaa595c47c3c041568b4c21f382af9621257ffdffbd61243152faf4bead37",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DPlay 3 - PlayReady",
+
+	"info"				: [],
+    
+    "noEME"             : "1"
+}

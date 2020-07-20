@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+	"src" 				: "http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/dash/uk/dash_full/ak/bbc_radio_two.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Audio Only (http): BBC Radio 2 - 1",
+
+	"info"				: [],
+    
+    "useKid"            : "true"
+
+}
