@@ -17,11 +17,14 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
-	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV)",
+	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV) - Delay licence (500ms)",
 
 	"info"				: [	"3 mp4 (ITV) adverts",
 							"'Lorraine' DASH asset - playing for 120s",
-							"Clear Key encrypted (main asset)"
-						  ]
+							"Clear Key encrypted (main asset)",
+                            "Delay licence response for 500ms"
+						  ],
+                          
+    "licenceDelay"      : "500"
 
 }

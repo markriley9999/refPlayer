@@ -67,3 +67,6 @@ myrun.bat
 linterrors.txt
 playlists/playlistITVStall.json
 playlists/playlistlivech4.json
+*.aac
+*.mp3
+*.m4a
