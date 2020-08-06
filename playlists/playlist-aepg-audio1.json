@@ -1,0 +1,24 @@
+{
+	"ads" : [
+		{
+			"src" 	: "./content/aepg/audio1.aac", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/audio2.aac", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/audio3.aac", 
+			"type" 	: "audio/mp4"
+		}
+	],
+	"src" 				: "./content/aepg/audio3.aac",
+	"type" 				: "audio/mp4",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Accessible EPG Audio",
+
+	"info"				: []
+
+}
