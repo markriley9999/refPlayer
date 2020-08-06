@@ -1,8 +1,8 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "34",
-	"dev"		: "true",
+	"minor" 	: "35",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
                     "ait req of http returns http app url",
