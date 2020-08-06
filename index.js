@@ -552,6 +552,8 @@ app.get("/content/*", function(req, res) {
 
     if (suffix === "mpd") {
         cType = "application/dash+xml; charset=utf-8";
+    } else if ((suffix === "aac") || (suffix === "m4a")) {
+        cType = "audio/mp4";
     } else {
         cType = "video/mp4";
     }
