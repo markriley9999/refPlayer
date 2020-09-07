@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "35",
+	"minor" 	: "36",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "mediasync fix - ad transition, stop broadcast first",
                     "ait req of http returns http app url",
                     "Mediasync: wait for broadcast object to be in correct state before init msync",
                     "Handle unexpected video events",
