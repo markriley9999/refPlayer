@@ -985,11 +985,14 @@ function onMsyncPlayAd (that) {
         
             that.timeStampStartOfPlay(v);
 
+            // Stop broadcast object first
+            that.broadcast.reset(); 
+
+            // Start ad - if sufficiently buffered
             if (v.bBuffEnoughToPlay) {
                 that.switchVideoToPlaying(v, null);
             }
             
-            that.broadcast.reset(); 
             that.tvui.ShowMsyncTime(false);
         }
     };
