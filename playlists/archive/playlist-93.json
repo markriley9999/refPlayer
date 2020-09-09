@@ -1,0 +1,12 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/shortseg/shortseg-ck.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Short Final Seg (Clear Key)",
+
+	"info"				: [	"Short Final Seg",
+							"Clear Key"
+						  ]
+}

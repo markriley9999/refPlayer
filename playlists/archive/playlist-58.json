@@ -1,0 +1,13 @@
+{
+	"ads" : [],
+	"src" 				: "http://itvpnp-usp.test.ott.irdeto.com/MONITOR/SAMPLES/1-9360-1784-001-DVBDASH-CLEARKEY.ism/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "ITV Test Harness Clear Key Content",
+
+	"info"				: [	"3 mp4 ITVHub Test Content",
+							"Clear Key encrypted"
+						  ]
+
+}

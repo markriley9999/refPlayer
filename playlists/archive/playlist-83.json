@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "./content/ntl/DASH-addedtimeline.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "Static: Segment timeline added.",
+
+	"info"				: [	"Test only"
+						  ]
+}

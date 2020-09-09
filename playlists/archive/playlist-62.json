@@ -1,0 +1,13 @@
+{
+	"ads" 				: [],
+	"src" 				: "./dynamic/segtimeline.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Dynamic: Segment timeline and events",
+
+	"info"				: [	"Ads start every 10 minutes",
+							"Ads last 1 minute",
+							"Main content lasts ~9 minutes"
+						  ]
+}

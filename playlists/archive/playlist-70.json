@@ -1,0 +1,35 @@
+{
+	"ads" : [
+		{
+			"src" 	: "./content/blankads/ad1.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/sh-ad2.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/sh-ad3.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/blankads/ad4.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./dynamic/dashads-blankads.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "601.44",
+	"addContentId" 		: "true",
+	"channelName" 		: "3 Video Objs - Ads: 4, Main: Sintel (Subs)",
+
+	"info"				: [	"4 mp4 adverts",
+							"'Sintel' DASH asset - playing for 60s",
+							"EBU-TT-D 'Snake' Subtitles, in main asset"
+						  ],
+
+						  
+	"special_jumptomain"	: "true",
+	"special_purgemain"		: "true",
+	"special_transition_c"	: "1000"
+}
