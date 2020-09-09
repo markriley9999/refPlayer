@@ -339,12 +339,18 @@ function init() {
 }
 
 if (GUI) {
-    GUI.on("ready", init);
+    
+    GUI.on("ready", startListen);
 
     GUI.on("window-all-closed", function() { // if this is running on a mac closing all the windows does not kill the application
         if (process.platform !== "darwin")
             GUI.quit();
     });
+    
+} else {
+    
+    startListen();
+    
 }
 
 
@@ -543,7 +549,7 @@ app.get("/favicon.ico", function(req, res) {
 });
 
 
-var mp4box = new mp4boxModule.MP4Box();
+var mp4box = new mp4boxModule.createFile();
 
 app.get("/content/*", function(req, res) {
 
@@ -1765,16 +1771,16 @@ function sendConfig() {
     win.config.sendToWindow("ipc-send-config", props);
 }
 
-
-http.listen(8080, (err) => {
-    if (!GUI) {
+function startListen() {
+    
+    http.listen(8080, (err) => {
         init();
-    }
-});
+    });
 
-https.listen(8082, (err) => {
-    //logger.error("https error: " + err);
-});
+    https.listen(8082, (err) => {
+        // logger.error("https error: " + err);
+    });
+}
 
 process.on("exit", function(code) {
     logger.info("exit: " + code);
