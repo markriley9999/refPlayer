@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "Static M-Periods - Subs, Clear Key",
+    "useEME"            : "true",
 
 	"info"				: [	"Static Manifest (Adverts and Main Content):",
 							"  - Content duration 60m",
