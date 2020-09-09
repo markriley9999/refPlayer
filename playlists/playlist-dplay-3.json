@@ -6,7 +6,5 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "DPlay 3 - PlayReady",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 }
