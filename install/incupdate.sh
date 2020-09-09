@@ -7,7 +7,7 @@ echo "*** Perform Incremental Update ***"
 
 ./appinstall.sh bc
 
-MINVERSION="1.9"
+MINVERSION="3.0"
 
 VERSION="$1"
 
@@ -26,9 +26,6 @@ echo "Current version OK to update."
 
 URL="http://refplayer-content.cloud.digitaluk.co.uk"
 
-./getcontent.sh "$URL" "blankads"
-./getcontent.sh "$URL" "adverts"
-./getcontent.sh "$URL" "subs"
-./getcontent.sh "$URL" "msync"
+#./getcontent.sh "$URL" "msync"
 
 
