@@ -7,7 +7,5 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "RB - New DASH: Clear",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 }

@@ -6,7 +6,6 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "DPlay 3 - PlayReady - local manifest",
 
-	"info"				: [],
+	"info"				: []
     
-    "noEME"             : "1"
 }

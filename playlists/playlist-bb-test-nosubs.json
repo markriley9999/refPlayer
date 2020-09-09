@@ -7,7 +7,5 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB test content NO SUBS",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 }
