@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
 	"channelName" 		: "Dynamic M-Periods - Clear Key  + Subs (main only), ITV and Ch4 Ads",
+    "useEME"            : "true",
 
 	"info"				: [	"Dynamic Manifest (Adverts and Main Content):",
 							"  - Clear Key (main content)",

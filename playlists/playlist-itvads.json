@@ -162,6 +162,7 @@
 	"transitionTime" 	: "20",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - ITV Ads Stress",
+    "useEME"            : "true",
 
 	"info"				: []
 

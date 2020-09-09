@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "Rep5 Check",
+    "useEME"            : "true",
 
     "useKid"            : "true",
 
