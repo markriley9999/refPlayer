@@ -11,7 +11,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="und">
+		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -32,7 +32,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 

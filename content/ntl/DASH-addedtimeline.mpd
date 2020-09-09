@@ -6,7 +6,7 @@
  </ProgramInformation>
 
  <Period duration="PT1H0M0.080S">
-  <AdaptationSet segmentAlignment="true" lang="und">
+  <AdaptationSet segmentAlignment="true" lang="eng">
    <SegmentTemplate timescale="48000" media="NTL-$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="NTL-$RepresentationID$/SEG.mp4">
    
 		<SegmentTimeline>
@@ -19,7 +19,7 @@
     <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
    </Representation>
   </AdaptationSet>
-  <AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+  <AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
    <SegmentTemplate timescale="12800" media="NTL-$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="DASH-notimeline_set2_init.mp4">
    
 		<SegmentTimeline>

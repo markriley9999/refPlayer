@@ -11,7 +11,7 @@
 			</Event> 
 		</EventStream>
 			
-		<AdaptationSet segmentAlignment="true" lang="und">
+		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			{{{period_continuity}}}
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
