@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "DPlay 2 - EME",
+    "useEME"            : "true",
 
 	"info"				: [],
     
