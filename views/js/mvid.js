@@ -288,7 +288,7 @@ mVid.start = function () {
                     that.bEMESupport = true;
                 } else {
                     that.setContentSourceAndLoad();
-                    that.tvui.ShowEncrypted("noeme");
+                    that.tvui.ShowEncrypted(playObj.useEME ? "noeme" : "");
                     that.bEMESupport = false;
                 }
             }
