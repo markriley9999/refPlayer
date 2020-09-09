@@ -1,19 +1,55 @@
 {
 	"ads" : [
 		{
-			"src" 	: "./content/aepg/audio1.aac", 
+			"src" 	: "./content/aepg/first-48k.m4a", 
 			"type" 	: "audio/mp4"
 		},
 		{
-			"src" 	: "./content/aepg/audio2.aac", 
+			"src" 	: "./content/aepg/second-48k.m4a", 
 			"type" 	: "audio/mp4"
 		},
 		{
-			"src" 	: "./content/aepg/audio3.aac", 
+			"src" 	: "./content/aepg/third-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/first-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/second-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/third-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/first-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/second-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/third-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/first-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/second-48k.m4a", 
+			"type" 	: "audio/mp4"
+		},
+		{
+			"src" 	: "./content/aepg/third-48k.m4a", 
 			"type" 	: "audio/mp4"
 		}
 	],
-	"src" 				: "./content/aepg/audio3.aac",
+	"src" 				: "./content/aepg/first-48k.m4a",
 	"type" 				: "audio/mp4",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
