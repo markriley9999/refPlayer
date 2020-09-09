@@ -523,7 +523,7 @@ mVid.purgeVideo = function (videoId) {
         video.innerHTML = ""; // Why is the <source> placed in here!?
         video.load();
         video.parentNode.removeChild(video);
-        video=null; // don't really need this...
+        video = null; // don't really need this...
     }
 };
 
