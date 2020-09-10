@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "38",
-	"dev"		: "true",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
                     "mp4box init fix and http setup race condition fix",
