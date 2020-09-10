@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "Static: Segment timeline and events",
+    "useEME"            : "true",
 
 	"info"				: [	"Ads start every 10 minutes",
 							"Ads last 1 minute",

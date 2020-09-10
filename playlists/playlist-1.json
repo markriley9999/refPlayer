@@ -22,7 +22,8 @@
 	"transitionTime" 	: "60",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - Frame Count Check, Clear Key and subs",
-
+    "useEME"            : "true",
+    
 	"info"				: [	"'Sintel' DASH asset - playing for 60s",
 							"Main content stamped with frame number",
 							"Clear Key",

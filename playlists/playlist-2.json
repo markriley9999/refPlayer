@@ -18,6 +18,7 @@
 	"transitionTime" 	: "120",
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - Ads: 3, Main: Clear Key (ITV) - Delay licence (500ms)",
+    "useEME"            : "true",
 
 	"info"				: [	"3 mp4 (ITV) adverts",
 							"'Lorraine' DASH asset - playing for 120s",

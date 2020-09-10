@@ -7,7 +7,5 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "RB - New DASH: Fixed subs",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 }

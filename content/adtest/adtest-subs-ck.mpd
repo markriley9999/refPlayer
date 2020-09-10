@@ -15,7 +15,7 @@
 	</ProgramInformation>
 
 	<Period duration="PT0H10M0.320S">
-		<AdaptationSet segmentAlignment="true" lang="und">
+		<AdaptationSet segmentAlignment="true" lang="eng">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -34,7 +34,7 @@
 			</Representation>
 		</AdaptationSet>
 
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="und">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 

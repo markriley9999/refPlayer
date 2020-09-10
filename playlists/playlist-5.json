@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
 	"channelName" 		: "Static M-Periods - ITV Ads (1m) and ITV Clear Key (2m)",
+    "useEME"            : "true",
 
 	"info"				: [	"4 Periods:",
 							"  1. ITV Ads (1m)",

@@ -263,7 +263,7 @@ mVid.start = function () {
                     that.tvui.ShowPlayingState("stop");
                 }
                 
-                if (!playObj.noEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                if (playObj.useEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
                     // Clear key
                     const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
@@ -288,7 +288,7 @@ mVid.start = function () {
                     that.bEMESupport = true;
                 } else {
                     that.setContentSourceAndLoad();
-                    that.tvui.ShowEncrypted("noeme");
+                    that.tvui.ShowEncrypted(playObj.useEME ? "noeme" : "");
                     that.bEMESupport = false;
                 }
             }
@@ -523,7 +523,7 @@ mVid.purgeVideo = function (videoId) {
         video.innerHTML = ""; // Why is the <source> placed in here!?
         video.load();
         video.parentNode.removeChild(video);
-        video=null; // don't really need this...
+        video = null; // don't really need this...
     }
 };
 
@@ -985,11 +985,14 @@ function onMsyncPlayAd (that) {
         
             that.timeStampStartOfPlay(v);
 
+            // Stop broadcast object first
+            that.broadcast.reset(); 
+
+            // Start ad - if sufficiently buffered
             if (v.bBuffEnoughToPlay) {
                 that.switchVideoToPlaying(v, null);
             }
             
-            that.broadcast.reset(); 
             that.tvui.ShowMsyncTime(false);
         }
     };

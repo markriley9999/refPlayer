@@ -6,8 +6,6 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "DASH Test: Ch5 - no DRM, Subs (http)",
 
-	"info"				: [],
+	"info"				: []
     
-    
-    "noEME"             : "1"
 }

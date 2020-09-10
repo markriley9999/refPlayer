@@ -19,6 +19,7 @@
 	"transitionTime" 	: "300",
 	"addContentId" 		: "false",
 	"channelName" 		: "ITV Seg Timeline Test (ClearKey + Subs)",
+    "useEME"            : "true",
 
 	"info"				: []
 

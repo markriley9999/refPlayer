@@ -5,6 +5,7 @@
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "true",
 	"channelName" 		: "Dynamic: Segment timeline (events, clearkey + subs)",
+    "useEME"            : "true",
 
 	"info"				: [	"Ads start every 10 minutes",
 							"Ads last 1 minute",

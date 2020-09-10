@@ -12,8 +12,6 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB content and sting",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 
 }

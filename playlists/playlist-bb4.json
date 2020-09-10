@@ -7,8 +7,6 @@
 	"addContentId" 		: "false",
 	"channelName" 		: "3 Video Objs - BB content only (local)",
 
-	"info"				: [],
-    
-    "noEME"             : "1"
+	"info"				: []
 
 }

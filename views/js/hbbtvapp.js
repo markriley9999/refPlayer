@@ -101,12 +101,13 @@ window.InitHBBTVApp = function (log) {
         
         getDecoder : function () {
             
+            var bo = document.createElement("object");  
+
+            bo.type = "video/broadcast";
+            document.body.appendChild(bo);
+
             try {
                 
-                var bo = document.createElement("object");  
-
-                bo.type = "video/broadcast";
-                document.body.appendChild(bo);
                 bo.bindToCurrentChannel();
                 log.info("--- App launched as Broadcast Related");
                 bo.stop();
@@ -116,7 +117,13 @@ window.InitHBBTVApp = function (log) {
 
                 log.info("--- Assuming app is broadcast independent");
          
-            }        
+            }
+
+            if (bo) {
+                document.body.removeChild(bo);
+                bo = null;
+            }
+                
         }
         
     };
