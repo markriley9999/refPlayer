@@ -1,11 +1,14 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "37",
+	"minor" 	: "38",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
-                    "do not create EME session keys for clear content", 
+                    "mp4box init fix and http setup race condition fix",
+                    "Remove broadcast object after use",
+                    "Changed lang='und' to lang='eng' in mpds",
+                    "Do not create EME session keys for clear content", 
                     "mediasync fix - ad transition, stop broadcast first",
                     "ait req of http returns http app url",
                     "Mediasync: wait for broadcast object to be in correct state before init msync",
