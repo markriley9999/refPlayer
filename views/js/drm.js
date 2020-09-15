@@ -125,7 +125,7 @@ window.SetupDRM = function(laURL, logObj)
 
     function sendProactiveDrmMessage() {
 
-        function getProactiveMessage(laURL) {
+        function getProactiveMessage() {
 
             info("Override LA_URL");
             
@@ -139,18 +139,13 @@ window.SetupDRM = function(laURL, logObj)
         
         function sendDRMMessage(msg) {
             
-            info("msg: " + decodeURIComponent(msg));
+            info("LA_URL: " + decodeURIComponent(msg));
             return drm.drmAgent.sendDRMMessage(drm.playReadyMsgType, msg, drm.playReadyId);
 
         }
         
-        info("--- creating proactive message");
-        
-        var msg = getProactiveMessage(laURL);
-        
+        var msg = getProactiveMessage();
         info("--- sending proactive message");
-        info("msg: " + msg);
-    
         drm.proactiveMessageId = sendDRMMessage(msg);
         info("--- proactive message sent!");
 
