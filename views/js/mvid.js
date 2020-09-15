@@ -263,7 +263,24 @@ mVid.start = function () {
                     that.tvui.ShowPlayingState("stop");
                 }
                 
-                if (playObj.useEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                if (playObj.useEME && playObj.LA_URL) {
+                    that.Log.error("Illegal test: can not enabled both EME and oipf DRM");
+                    return;
+                }
+                
+                if (playObj.LA_URL) {
+                    
+                    window.SetupDRM(playObj.LA_URL,that.Log).then(
+                        function(p) {
+                            that.Log.info(p);
+                            that.setContentSourceAndLoad();             
+                        }, function(p) {
+                            that.Log.warn(p);
+                            return;
+                        });
+                    
+                } else if (playObj.useEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                    
                     // Clear key
                     const KEYSYSTEM_TYPE = "org.w3.clearkey";
 
