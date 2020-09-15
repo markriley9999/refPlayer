@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "LIVE ITV: Live Content - segment timeline, single period, clear, https",
+	"channelName" 		: "LIVE ITV: Test",
 
 	"info"				: []
 
