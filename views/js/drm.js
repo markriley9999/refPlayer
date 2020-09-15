@@ -60,9 +60,9 @@ window.SetupDRM = function(laURL, logObj)
             info("resultCode: " + resultCode + " (" + drm.messageResults[resultCode] + ")");
 
             if ((msgId === drm.proactiveMessageId) && (resultCode === 0)) {
-                resolve(msgId, resultMsg, resultCode);
+                resolve("DRM: init OK");
             } else {
-                reject();
+                reject("DRM: init fail");
             }
         
         }
@@ -81,13 +81,11 @@ window.SetupDRM = function(laURL, logObj)
 
         function onDRMRightsError(errorState, contentId, drmSystemId, rightsIssuerUrl ) {
             
-            info("drm rights error received");
-            info("error state: " + errorState);
-            info("content id: " + contentId);
-            info("drmSystemId: " + drmSystemId);
-            info("rights issuer url: " + rightsIssuerUrl);
-            
-            reject();
+            warn("drm rights error received");
+            warn("error state: " + errorState);
+            warn("content id: " + contentId);
+            warn("drmSystemId: " + drmSystemId);
+            warn("rights issuer url: " + rightsIssuerUrl);
         }
 	
         drm.drmAgent = document.getElementById("drm-agent");
@@ -97,18 +95,22 @@ window.SetupDRM = function(laURL, logObj)
             info("Using embedded application/oipfDrmAgent");
         
         } else {
-		
-            if (oipfObjectFactory.isObjectSupported("application/oipfDrmAgent")) {
-                
-                info("application/oipfDrmAgent is supported");
+            
+            try {
+                if (oipfObjectFactory.isObjectSupported("application/oipfDrmAgent")) {
+                    
+                    info("application/oipfDrmAgent is supported");
 
-                drm.drmAgent = oipfObjectFactory.createDrmAgentObject();
-                info("drm agent created");
+                    drm.drmAgent = oipfObjectFactory.createDrmAgentObject();
+                    info("drm agent created");
+                    
+                } else {
                 
-            } else {
-            
-                warn("application/oipfDrmAgent is NOT supported");
-            
+                    //warn("application/oipfDrmAgent is NOT supported");
+                    reject("DRM: application/oipfDrmAgent is NOT supported");
+                }
+            } catch (err) {
+                reject("DRM: application/oipfDrmAgent is NOT supported");
             }
         }
 	
