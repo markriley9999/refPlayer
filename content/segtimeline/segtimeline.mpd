@@ -92,7 +92,7 @@
 			</Event>
 		</EventStream>
 
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../segtimeline/</BaseURL>
 			<SegmentTemplate timescale="1000" media="$RepresentationID$/SEG$Number$.m4s" startNumber="1" initialization="init/SEG.mp4">
@@ -128,7 +128,7 @@
 			</Representation>
 		</AdaptationSet>
 		
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../segtimeline/</BaseURL>

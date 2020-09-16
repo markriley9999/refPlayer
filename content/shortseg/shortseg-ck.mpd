@@ -34,7 +34,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -42,7 +42,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip2_set2_init.mp4"/>
@@ -80,7 +80,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -101,7 +101,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -153,7 +153,7 @@
 			</Event> 
 		</EventStream>
 				
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -161,7 +161,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip1_set2_init.mp4"/>
@@ -199,7 +199,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -220,7 +220,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -272,7 +272,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -280,7 +280,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip2_set2_init.mp4"/>
@@ -318,7 +318,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -339,7 +339,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -391,7 +391,7 @@
 			</Event> 
 		</EventStream>
 				
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -399,7 +399,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip1_set2_init.mp4"/>
@@ -437,7 +437,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -458,7 +458,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -510,7 +510,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -518,7 +518,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP2_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip2_set2_init.mp4"/>
@@ -556,7 +556,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -577,7 +577,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -629,7 +629,7 @@
 			</Event> 
 		</EventStream>
 				
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
 			
 			<BaseURL></BaseURL>
@@ -637,7 +637,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71908">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<BaseURL></BaseURL>
 			<SegmentTemplate media="CLIP1_$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="clip1_set2_init.mp4"/>
@@ -675,7 +675,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
@@ -696,7 +696,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 

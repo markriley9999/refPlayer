@@ -26,7 +26,7 @@
                 <Representation frameRate="50" bandwidth="30000000" codecs="hev1.2.4.L153.00.00.B0" width="3840" id="3840x2160p50" height="2160" />
                 <Representation frameRate="50" bandwidth="10000000" codecs="hev1.2.4.L123.00.00.B0" width="1920" id="1920x1080p50" height="1080" />
         </AdaptationSet>
-        <AdaptationSet startWithSAP="2" segmentAlignment="true" audioSamplingRate="48000" codecs="mp4a.40.2" id="3" mimeType="audio/mp4" lang="eng" contentType="audio" >
+        <AdaptationSet startWithSAP="2" segmentAlignment="true" audioSamplingRate="48000" codecs="mp4a.40.2" id="3" mimeType="audio/mp4" lang="en" contentType="audio" >
                 <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
                     <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
                 <SegmentTemplate startNumber="379546738" presentationTimeOffset="136636825320000" timescale="90000" duration="360000" media="$RepresentationID$/$Number%06d$.m4s" initialization="$RepresentationID$/IS.mp4" />
