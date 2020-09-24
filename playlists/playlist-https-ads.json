@@ -1,19 +1,19 @@
 {
 	"ads" : [
 		{
-			"src" 	: "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.http.anno.test.channel4.com%2Fm%2F1%2F174055%2F0%2F1437184%2FTestAd_5s_A_17_29961.mp4&data=01%7C01%7CMark.Riley%40Digitaluk.co.uk%7Cb885fa82212543a4394808d85fc30cbb%7Ce12f464f14044bdb876393990b1e8be7%7C1&sdata=lzWbhtzqNwkzFaTcsi1O3u16eZiA8yDmnEBKTeqAtwo%3D&reserved=0", 
+			"src" 	: "https://cdn.http.anno.test.channel4.com/m/1/174055/0/1437184/TestAd_5s_A_17_29961.mp4", 
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.http.anno.test.channel4.com%2Fm%2F1%2F174055%2F0%2F1437184%2FTestAd_5s_A_17_29961.mp4&data=01%7C01%7CMark.Riley%40Digitaluk.co.uk%7Cb885fa82212543a4394808d85fc30cbb%7Ce12f464f14044bdb876393990b1e8be7%7C1&sdata=lzWbhtzqNwkzFaTcsi1O3u16eZiA8yDmnEBKTeqAtwo%3D&reserved=0", 
+			"src" 	: "https://cdn.http.anno.test.channel4.com/m/1/174055/0/1437184/TestAd_5s_A_17_29961.mp4", 
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.http.anno.test.channel4.com%2Fm%2F1%2F174055%2F0%2F1437184%2FTestAd_5s_A_17_29961.mp4&data=01%7C01%7CMark.Riley%40Digitaluk.co.uk%7Cb885fa82212543a4394808d85fc30cbb%7Ce12f464f14044bdb876393990b1e8be7%7C1&sdata=lzWbhtzqNwkzFaTcsi1O3u16eZiA8yDmnEBKTeqAtwo%3D&reserved=0", 
+			"src" 	: "https://cdn.http.anno.test.channel4.com/m/1/174055/0/1437184/TestAd_5s_A_17_29961.mp4", 
 			"type" 	: "video/mp4"
 		},
 		{
-			"src" 	: "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fcdn.http.anno.test.channel4.com%2Fm%2F1%2F174055%2F0%2F1437184%2FTestAd_5s_A_17_29961.mp4&data=01%7C01%7CMark.Riley%40Digitaluk.co.uk%7Cb885fa82212543a4394808d85fc30cbb%7Ce12f464f14044bdb876393990b1e8be7%7C1&sdata=lzWbhtzqNwkzFaTcsi1O3u16eZiA8yDmnEBKTeqAtwo%3D&reserved=0", 
+			"src" 	: "https://cdn.http.anno.test.channel4.com/m/1/174055/0/1437184/TestAd_5s_A_17_29961.mp4", 
 			"type" 	: "video/mp4"
 		}
 	],
