@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "38",
+	"minor" 	: "39",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "Fixed segmenttimeline segment loading issue",
                     "mp4box init fix and http setup race condition fix",
                     "Remove broadcast object after use",
                     "Changed lang='und' to lang='eng' in mpds",

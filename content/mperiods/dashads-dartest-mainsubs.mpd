@@ -18,7 +18,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -27,7 +27,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/itv/dash/</BaseURL>
@@ -60,7 +60,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-0"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -69,7 +69,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-0"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -85,7 +85,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
@@ -110,7 +110,7 @@
 			</Event> 
 		</EventStream>
 			
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-0"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -119,7 +119,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-0"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/ch4/dash/</BaseURL>
@@ -152,7 +152,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-1"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -161,7 +161,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-1"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -177,7 +177,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
@@ -202,7 +202,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-1"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -211,7 +211,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-1"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/itv/dash/</BaseURL>
@@ -244,7 +244,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -253,7 +253,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -269,7 +269,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
@@ -294,7 +294,7 @@
 			</Event> 
 		</EventStream>
 			
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -303,7 +303,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/ch4/dash/</BaseURL>
@@ -336,7 +336,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-3"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -345,7 +345,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-3"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -361,7 +361,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
@@ -386,7 +386,7 @@
 			</Event> 
 		</EventStream>
 						
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-3"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -395,7 +395,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-3"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/itv/dash/</BaseURL>
@@ -428,7 +428,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-4"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -437,7 +437,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-4"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -453,7 +453,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>
@@ -478,7 +478,7 @@
 			</Event> 
 		</EventStream>
 			
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-4"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -487,7 +487,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="128000">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="main-4"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../adverts/ch4/dash/</BaseURL>
@@ -520,7 +520,7 @@
 			</Event> 
 		</EventStream>
 					
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-5"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
@@ -529,7 +529,7 @@
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="130975">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 			<SupplementalProperty schemeIdUri="urn:mpeg:dash:period-connectivity:2015" value="ad-5"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../bbb/</BaseURL>
@@ -545,7 +545,7 @@
 			<Representation id="6" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2607432">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="eng" contentType="text" mimeType="application/mp4">
+		<AdaptationSet startWithSAP="2" segmentAlignment="true" id="10" codecs="stpp" lang="en" contentType="text" mimeType="application/mp4">
 			<Accessibility schemeIdUri="urn:tva:metadata:cs:AudioPurposeCS:2007" value="2"/>
 			<Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<BaseURL>../subs/</BaseURL>

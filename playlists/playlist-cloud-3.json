@@ -1,0 +1,17 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://refplayer-dev.cloud.digitaluk.co.uk/dynamic/segtimeline-ck-subs.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Dynamic: Segment timeline (events, clearkey + subs)",
+    "useEME"            : "true",
+
+	"info"				: [	"Ads start every 10 minutes",
+							"Ads last 1 minute",
+							"Main content lasts ~9 minutes",
+							"Events",
+							"Subs",
+							"ClearKey"
+						  ]
+}

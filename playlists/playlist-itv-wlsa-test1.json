@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://itvpnp-simulcast-a.test.ott.irdeto.com/playout/test01/testloop1/dvbdash.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE ITV: Test",
+
+	"info"				: []
+
+}

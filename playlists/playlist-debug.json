@@ -1,0 +1,21 @@
+{
+	"ads" : [
+		{	
+			"src" 	: "./content/itv/debug/v.mp4", 
+			"type" 	: "video/mp4"
+		},
+		{
+			"src" 	: "./content/itv/debug/v.mp4", 
+			"type" 	: "video/mp4"
+		}
+	],
+	"src" 				: "./content/itv/debug/v.mp4",
+	"type" 				: "video/mp4",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "DEBUG",
+    "useEME"            : "false",
+
+	"info"				: []
+
+}

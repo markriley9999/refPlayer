@@ -1,0 +1,12 @@
+{
+	"ads" 				: [],
+	"src" 				: "https://itvpnp-simulcast-b.stage.ott.irdeto.com/playout/ctv01/itv3/cenc-dvbdash.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE ITV1",
+    "LA_URL"            : "https://itvpnp.stage.ott.irdeto.com/playready/rightsmanager.asmx?CrmId=itvpnp&AccountId=itvpnp&ContentId=itv3",
+
+	"info"				: []
+
+}

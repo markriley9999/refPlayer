@@ -11,7 +11,7 @@
 			</Event> 
 		</EventStream>
 				
-		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="eng">
+		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
 
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
@@ -39,7 +39,7 @@
 			<Representation id="5" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2612761">
 			</Representation>
 		</AdaptationSet>
-		<AdaptationSet segmentAlignment="true" lang="eng">
+		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
 
 			<ContentProtection 
