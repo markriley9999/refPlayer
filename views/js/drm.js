@@ -10,7 +10,7 @@
 
 /*global oipfObjectFactory */
 
-window.SetupDRM = function(laURL, logObj)
+window.SetupDRM = function(logObj)
 {
 
     var drm = {
@@ -49,8 +49,36 @@ window.SetupDRM = function(laURL, logObj)
         logObj.error("DRM: " + m);
     }
     
+
+    function createDrmAgent() {
+
+        drm.drmAgent = document.getElementById("drm-agent");
+
+        if (drm.drmAgent) { 
+            info("Using embedded application/oipfDrmAgent");
+        } else {
+            
+            try {
+                if (oipfObjectFactory.isObjectSupported("application/oipfDrmAgent")) {
+                    
+                    info("application/oipfDrmAgent is supported");
+
+                    drm.drmAgent = oipfObjectFactory.createDrmAgentObject();
+                    info("drm agent created");
+                    
+                } else {
+                    warn("application/oipfDrmAgent is NOT supported");
+                }
+            } catch (err) {
+                warn("DRM: application/oipfDrmAgent is NOT supported");
+            }
+        }
+
+    }
+
     
-    function createDrmAgent(resolve, reject) {
+	
+    function sendProactiveDrmMessage(laURL, resolve, reject) {
 
         function onDRMMessageResult(msgId, resultMsg, resultCode) {
             
@@ -88,42 +116,6 @@ window.SetupDRM = function(laURL, logObj)
             warn("rights issuer url: " + rightsIssuerUrl);
         }
 	
-        drm.drmAgent = document.getElementById("drm-agent");
-
-        if (drm.drmAgent) { 
-            
-            info("Using embedded application/oipfDrmAgent");
-        
-        } else {
-            
-            try {
-                if (oipfObjectFactory.isObjectSupported("application/oipfDrmAgent")) {
-                    
-                    info("application/oipfDrmAgent is supported");
-
-                    drm.drmAgent = oipfObjectFactory.createDrmAgentObject();
-                    info("drm agent created");
-                    
-                } else {
-                
-                    //warn("application/oipfDrmAgent is NOT supported");
-                    reject("DRM: application/oipfDrmAgent is NOT supported");
-                }
-            } catch (err) {
-                reject("DRM: application/oipfDrmAgent is NOT supported");
-            }
-        }
-	
-        drm.drmAgent.onDRMRightsError 			= onDRMRightsError;
-        drm.drmAgent.onDRMSystemStatusChange 	= onDrmSystemStatusChange;
-        drm.drmAgent.onDRMMessageResult 		= onDRMMessageResult;
-        drm.drmAgent.onDRMSystemMessage			= onDRMSystemMessage;
-
-    }
-
-
-
-    function sendProactiveDrmMessage() {
 
         function getProactiveMessage() {
 
@@ -143,6 +135,12 @@ window.SetupDRM = function(laURL, logObj)
             return drm.drmAgent.sendDRMMessage(drm.playReadyMsgType, msg, drm.playReadyId);
 
         }
+
+        drm.drmAgent.onDRMRightsError 			= onDRMRightsError;
+        drm.drmAgent.onDRMSystemStatusChange 	= onDrmSystemStatusChange;
+        drm.drmAgent.onDRMMessageResult 		= onDRMMessageResult;
+        drm.drmAgent.onDRMSystemMessage			= onDRMSystemMessage;
+
         
         var msg = getProactiveMessage();
         info("--- sending proactive message");
@@ -152,15 +150,31 @@ window.SetupDRM = function(laURL, logObj)
     }
         
 
+    createDrmAgent(); 
 
-
-    var promise = new Promise(function(resolve, reject) {
-
-        createDrmAgent(resolve, reject); 
-        sendProactiveDrmMessage();
-               
-    });
+        
+    return {
     
-    return promise;
+        disable : function() {
+
+            info("Disabled DRM Client (oipf)");
+            try {
+                drm.drmAgent.setActiveDRM("urn:hbbtv:oipfdrm:inactive");
+            } catch(e) {
+                warn("setActiveDRM: not supported");
+            }
+        
+        },
+        
+        sendLicence : function(laURL) {
+
+            var promise = new Promise(function(resolve, reject) {
+                sendProactiveDrmMessage(laURL, resolve, reject);        
+            });
+            
+            return promise;
+        }
+    
+    };
     
 };

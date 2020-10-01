@@ -12,6 +12,9 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
 {
     const DRMSystemID = "0x1077efecc0b24d02ace33c1e52e2fb4b";
     
+    var keySession = null;
+    
+    
     function log(msg) {
         logObj.info("EME: " + msg);
     }
@@ -20,10 +23,13 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
         logObj.error("EME: " + msg);
     }
 
-    function bail(message)
+    function bail(reject, message)
     {
         return function(err) {
             logerr(message + (err ? " " + err : ""));
+            if (reject) { 
+                reject(err);
+            }
         };
     }
 
@@ -91,7 +97,8 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
     }
 
     var ensurePromise;
-
+    var keySystemAccess;
+    
     function EnsureMediaKeysCreated(video, keySystem, options) {
         if (ensurePromise) {
             return ensurePromise;
@@ -99,15 +106,11 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
 
         log("navigator.requestMediaKeySystemAccess("+ JSON.stringify(options) + ")");
 
-        ensurePromise = navigator.requestMediaKeySystemAccess(keySystem, options)
-            .then(function(keySystemAccess) {
-                return keySystemAccess.createMediaKeys();
-            }, bail(name + " Failed to request key system access."))
-
-            .then(function(mediaKeys) {
-                log(name + " created MediaKeys object ok");
-                return video.setMediaKeys(mediaKeys);
-            }, bail(name + " failed to create MediaKeys object"));
+        ensurePromise = navigator.requestMediaKeySystemAccess(keySystem, options).then(function(k) 
+        {
+            keySystemAccess = k;
+        }, 
+        bail(null, name + " Failed to request key system access."));
 
         return ensurePromise;
     }
@@ -156,25 +159,83 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
         
         return bCheckOk;
     }
+
+
+    function createKeySession() {
+
+        var promise = new Promise(function(resolve, reject) {
+
+            if (!keySession) {
+                
+                return keySystemAccess.createMediaKeys().then(function(mediaKeys) 
+                {
+                    
+                    log(name + " created MediaKeys object ok");
+                    return video.setMediaKeys(mediaKeys);
+                        
+                }, 
+                bail(reject, name + " failed to create MediaKeys object")).then(function() 
+                {
+                        
+                    log(name + " set MediaKeys ok");
+                    return video.mediaKeys.createSession();
+                        
+                }, 
+                bail(reject, name + " failed to set MediaKeys object")).then(function(s)
+                {
+            
+                    keySession = s;
+                    resolve(s);
+                    
+                },
+                bail(reject, name + " failed to create session"));
+
+            } else {
+
+                reject(name + " Session already created");
+
+            }
+              
+        });
+
+        return promise;
+
+    }
     
     function onEncrypted(ev) {
+        
         log(name + " got encrypted event - initDataType: " + ev.initDataType);
         log(" - initData: " +  arrayBufferToString(ev.initData));
         log(" - initData: " +  arrayBufferToHexString(ev.initData));
+
+
+        function genReq() {
+        
+            keySession.addEventListener("message", UpdateSessionFunc(name, licenceName));
+            keySession.addEventListener("keystatuseschange", KeysChange);
+            
+            return keySession.generateRequest(ev.initDataType, ev.initData);
+
+        }
         
         if (checkDRMSystemId(ev.initData))
         {
             if (!video.bProcessingKey) { 
                 video.bProcessingKey = true;
                 
-                var session = video.mediaKeys.createSession();
-                session.addEventListener("message", UpdateSessionFunc(name, licenceName));
-                session.addEventListener("keystatuseschange", KeysChange);
-                session.generateRequest(ev.initDataType, ev.initData).then(function() {
-                    log(name + " generated request");
-                }, bail(name + " Failed to generate request."));
+                if (!keySession) {
+        
+                    createKeySession().then(function() {return genReq();});
+        
+                } else {
+                    
+                    genReq();
+                }
+                
             } else {
+                
                 log(name + "Multiple encrypted events!");
+                
             }
         }
     }
@@ -185,11 +246,18 @@ window.SetupEME = function(video, keySystem, name, options, licenceName, licence
             log(name + " ensured MediaKeys available on HTMLMediaElement");
             video.addEventListener("encrypted", onEncrypted);
             resolve("EME: Clear Key Initialised");
-        }, function() {
-            reject("EME: Clear Key Failed To Initialise!");
-        });
+        }, 
+        bail(reject, "EME: Clear Key Failed To Initialise!"));
           
     });
     
-    return promise;
+    return {
+
+        promise : promise,
+
+        createKeySession : function() {
+            return createKeySession();
+        }
+        
+    };
 };

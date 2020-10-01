@@ -268,9 +268,11 @@ mVid.start = function () {
                     return;
                 }
                 
+                that.DRM = window.SetupDRM(that.Log);
+                
                 if (playObj.LA_URL) {
                     
-                    window.SetupDRM(playObj.LA_URL,that.Log).then(
+                    that.DRM.sendLicence(playObj.LA_URL).then(
                         function(p) {
                             that.Log.info(p);
                             that.setContentSourceAndLoad();             
@@ -280,6 +282,8 @@ mVid.start = function () {
                         });
                     
                 } else if (playObj.useEME && typeof navigator.requestMediaKeySystemAccess !== "undefined") {
+                    
+                    that.DRM.disable();
                     
                     // Clear key
                     const KEYSYSTEM_TYPE = "org.w3.clearkey";
@@ -296,17 +300,34 @@ mVid.start = function () {
                         }
                     ];
 
-                    window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, playObj.licenceDelay, that.Log).then(function(p) {
+                    that.EME = window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, playObj.licenceDelay, that.Log);
+                    
+                    
+                    that.EME.promise.then(function(p) {
+                        
                         that.Log.info(p);
-                        that.setContentSourceAndLoad();             
+                        
+                        if (that.hbbtv.app) {
+                            that.bEMESupport = true;
+                            that.setContentSourceAndLoad();
+                        } else {                          
+                            that.EME.createKeySession().then(function() {
+                                that.bEMESupport = true;
+                                that.setContentSourceAndLoad();
+                            });
+                        }
+                        
                     }, function(p) {
+                        
                         that.Log.error(p);
+                        
                     });
-                    that.bEMESupport = true;
                 } else {
+                    
                     that.setContentSourceAndLoad();
                     that.tvui.ShowEncrypted(playObj.useEME ? "noeme" : "");
                     that.bEMESupport = false;
+                
                 }
             }
 
