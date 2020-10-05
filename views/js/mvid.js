@@ -302,7 +302,6 @@ mVid.start = function () {
 
                     that.EME = window.SetupEME(mainVideo, KEYSYSTEM_TYPE, "video", options, that.contentTag, playObj.licenceDelay, that.Log);
                     
-                    
                     that.EME.promise.then(function(p) {
                         
                         that.Log.info(p);
