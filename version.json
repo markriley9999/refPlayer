@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "39",
-	"dev"		: "false",
+	"minor" 	: "40",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Refactored DRM and EME",
                     "Fixed segmenttimeline segment loading issue",
                     "mp4box init fix and http setup race condition fix",
                     "Remove broadcast object after use",
