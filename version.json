@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "40",
-	"dev"		: "true",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
                     "Refactored DRM and EME",
