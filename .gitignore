@@ -70,3 +70,4 @@ playlists/playlistlivech4.json
 *.aac
 *.mp3
 *.m4a
+debugServer.json
