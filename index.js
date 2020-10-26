@@ -212,11 +212,28 @@ function mainUIClosed() {
 var runOptions = {};
 
 
-
 function init() {
     var p;
     var v = generalInfo.version;
     var i;
+
+    function checkDebugServer(opt) {
+                
+        const fn = "./debugServer.json";
+        
+        try {
+            
+            if (fs.existsSync(fn)) {
+                var o = require(fn);
+                opt.dbgServerURL = o.url;
+            }
+            
+        } catch (err) {
+            opt.dbgServerURL = null;
+        }
+
+    }
+    
     
     runOptions = {
         bMultiDevs           : !GUI,
@@ -226,9 +243,11 @@ function init() {
         timeOffset           : argv.timeoffset,
         prependContentPath   : argv.pathprepend,
         bCloud               : argv.cloud,
-        bDebug               : argv.debug
     };
 
+    checkDebugServer(runOptions);
+    
+    
     if (runOptions.logLevel) {
         logger.level = runOptions.logLevel;
         logger.info("--setting log level to: " + runOptions.logLevel);
@@ -279,8 +298,9 @@ function init() {
         logger.info("--- Cloud hosting config ---");
     }
 
-    if (runOptions.bDebug) {
-        logger.info("--- Enable debugger (Weinre) ---");
+    if (runOptions.dbgServerURL) {
+        logger.info("--- Enable debugger (Weinre) --- ");
+        logger.info("   " + runOptions.dbgServerURL);
     }
 
     if (runOptions.bSegDump) {
@@ -500,10 +520,12 @@ app.get("/*.html", function(req, res) {
 
         var wienreSource = "";
         
-        if (runOptions.bDebug) {
+        if (runOptions.dbgServerURL) {
             
-            var wienreServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.hostname + ":" + wienrePort  +"/target/target-script-min.js#refplayer";
+            // var wienreServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.hostname + ":" + wienrePort  +"/target/target-script-min.js#refplayer";
 
+            var wienreServer = runOptions.dbgServerURL;
+            
             wienreSource = '<script src="' + wienreServer +'"></script>';
 
             logger.debug("wienreSource: " + wienreSource);
