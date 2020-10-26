@@ -20,6 +20,7 @@ if (!argv.headless && !argv.multidevs && !argv.cloud) {
     guiIPC      = electron.ipcMain;
 }
 
+const wienrePort = "5432";
 
 const path = require("path");
 const url = require("url");
@@ -224,7 +225,8 @@ function init() {
         logLevel             : argv.loglevel,
         timeOffset           : argv.timeoffset,
         prependContentPath   : argv.pathprepend,
-        bCloud               : argv.cloud
+        bCloud               : argv.cloud,
+        bDebug               : argv.debug
     };
 
     if (runOptions.logLevel) {
@@ -275,6 +277,10 @@ function init() {
 
     if (runOptions.bCloud) {
         logger.info("--- Cloud hosting config ---");
+    }
+
+    if (runOptions.bDebug) {
+        logger.info("--- Enable debugger (Weinre) ---");
     }
 
     if (runOptions.bSegDump) {
@@ -492,11 +498,23 @@ app.get("/*.html", function(req, res) {
         var v = generalInfo.version;
         var sRelType = v.dev === "true" ? "dev" : "";
 
+        var wienreSource = "";
+        
+        if (runOptions.bDebug) {
+            
+            var wienreServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.hostname + ":" + wienrePort  +"/target/target-script-min.js#refplayer";
+
+            wienreSource = '<script src="' + wienreServer +'"></script>';
+
+            logger.debug("wienreSource: " + wienreSource);
+        } 
+        
         res.render("index.hbs",
             {
                 version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-                style       : v.dev === "true" ? "mvid-dev" : "mvid",
-                serverGUI   : GUI ? "true" : "false"
+                style           : v.dev === "true" ? "mvid-dev" : "mvid",
+                serverGUI       : GUI ? "true" : "false",
+                wienreSource    : wienreSource
             },
             function(err, html) {
                 res.status(200);
