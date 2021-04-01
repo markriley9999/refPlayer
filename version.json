@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "40",
+	"minor" 	: "41",
 	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "Added role to adaptation sets in manifests",
                     "Refactored DRM and EME",
                     "Fixed segmenttimeline segment loading issue",
                     "mp4box init fix and http setup race condition fix",
