@@ -30,13 +30,14 @@
 				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
 			/>
 
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="77565">
 			</Representation>
 		</AdaptationSet>
 		
 		<AdaptationSet segmentAlignment="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
-
+            
 			<ContentProtection 
 				xmlns:cenc="urn:mpeg:cenc:2013" 
 				schemeIdUri="urn:mpeg:dash:mp4protection:2011" 
@@ -48,6 +49,7 @@
 				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
 			/>
 
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="ENC-$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="ENC-$RepresentationID$/SEG.mp4"/>
 			<Representation id="2" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4640832">
 			</Representation>

@@ -17,11 +17,13 @@
 	<Period duration="PT1H">
 		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="1"/>
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="$RepresentationID$/SEG$Number$.m4s" timescale="48000" startNumber="1" duration="184320" initialization="$RepresentationID$/SEG.mp4"/>
 			<Representation id="1" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="71354">
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="$RepresentationID$/SEG$Number$.m4s" timescale="12800" startNumber="1" duration="49152" initialization="init/sintel_set2_init.mp4"/>
 			<Representation id="3" mimeType="video/mp4" codecs="avc3.4D401F" width="1280" height="720" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="2599968">
 			</Representation>

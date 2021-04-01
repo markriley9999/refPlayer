@@ -28,6 +28,7 @@
 				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
 			/>
 
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" presentationTimeOffset="5184000" startNumber="406" duration="49152" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<!-- Representation id="1" mimeType="video/mp4" codecs="avc3.4D4028" width="1920" height="1080" frameRate="25" sar="1:1" startWithSAP="1" bandwidth="4646585">
 			</Representation -->
@@ -54,6 +55,7 @@
 				schemeIdUri="urn:uuid:1077EFEC-C0B2-4D02-ACE3-3C1E52E2FB4B"
 			/>
 
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="ENC-$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" presentationTimeOffset="19440000" startNumber="406" duration="184320" initialization="ENC-$RepresentationID$-$Bandwidth$/SEG.mp4"/>
 			<Representation id="6" mimeType="audio/mp4" codecs="mp4a.40.2" audioSamplingRate="48000" startWithSAP="1" bandwidth="137036">
 			</Representation>
