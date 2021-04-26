@@ -4,7 +4,7 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "SS Buffer Check",
+	"channelName" 		: "Resource Stress Test",
 
 	"info"				: [],
     
