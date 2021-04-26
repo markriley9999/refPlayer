@@ -4,10 +4,10 @@
 	"type" 				: "application/dash+xml",
 	"transitionTime" 	: "-1",
 	"addContentId" 		: "false",
-	"channelName" 		: "Resource Stress Test",
+	"channelName" 		: "Resource Stress Test - ver 2",
 
 	"info"				: [],
     
-    "consumeResouces"   : 1
+    "consumeResouces"   : 10
 
 }
