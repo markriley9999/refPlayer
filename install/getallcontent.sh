@@ -74,5 +74,3 @@ URL=$1
 ./getcontent.sh "$URL" "segtimeline-ENC-5"
 ./getcontent.sh "$URL" "segtimeline-ENC-6"
 
-./getcontent.sh "$URL" "msync"
-

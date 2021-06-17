@@ -1,4 +1,6 @@
 {
+    "baseURL"           : "https://refplayer.cloud.digitaluk.co.uk/",
+    
 	"ads" : [
 		{	
 			"src" 	: "./content/adverts/itv/KARRBDQ014020_BandQ_PaintPlants_ThursFri_20_6c6f_1200.mp4", 

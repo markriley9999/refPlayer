@@ -1,7 +1,6 @@
 #!/bin/bash
 
 CMD=$1
-CURRENTVERSION=$(./install/getversion.sh)
 
 if [ -e title.txt ]; then
     cat title.txt
@@ -16,26 +15,22 @@ if [ "$CMD" == "--updatenode" ]; then
 fi
 
 
-if [ "$CMD" == "--update" ] || [ "$CMD" == "--updateall" ] || [ "$CMD" == "--updateinc" ] ; then
+if [ "$CMD" == "--update" ]; then
   echo " - Update code"
   git stash
   git pull
   echo " - (Re)install node modules"
   npm install
   echo Done.
+  ./getcontent-duk-aws.sh
+  exit 0
+fi
 
-  if [ "$CMD" == "--updateall" ]; then
-    echo " - Get content"
-    cd install/
-	./getcontent-duk-aws.sh
-  fi
 
-  if [ "$CMD" == "--updateinc" ]; then
-    echo " - Get content"
-    cd install/
-	./incupdate.sh "$CURRENTVERSION"
-  fi
-
+if [ "$CMD" == "--getallcontent" ]; then
+  echo " - Get content"
+  cd install/
+  ./getcontent-duk-aws.sh --getallcontent
   exit 0
 fi
 

@@ -20,8 +20,6 @@ if (!argv.headless && !argv.multidevs && !argv.cloud) {
     guiIPC      = electron.ipcMain;
 }
 
-const wienrePort = "5432";
-
 const path = require("path");
 const url = require("url");
 
@@ -526,7 +524,7 @@ app.get("/*.html", function(req, res) {
 
             var wienreServer = runOptions.dbgServerURL;
             
-            wienreSource = '<script src="' + wienreServer +'"></script>';
+            wienreSource = "<script src='" + wienreServer +"'></script>";
 
             logger.debug("wienreSource: " + wienreSource);
         } 

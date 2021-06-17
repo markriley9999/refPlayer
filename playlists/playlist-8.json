@@ -1,4 +1,6 @@
 {
+    "baseURL"           : "https://refplayer.cloud.digitaluk.co.uk/",
+    
 	"ads" 				: [],
 	"src" 				: "./dynamic/dashads-dartest-ck-mainsubs.mpd",
 	"type" 				: "application/dash+xml",
