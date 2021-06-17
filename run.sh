@@ -22,7 +22,7 @@ if [ "$CMD" == "--update" ]; then
   echo " - (Re)install node modules"
   npm install
   echo Done.
-  ./getcontent-duk-aws.sh
+  ./install/getcontent-duk-aws.sh
   exit 0
 fi
 
@@ -30,7 +30,7 @@ fi
 if [ "$CMD" == "--getallcontent" ]; then
   echo " - Get content"
   cd install/
-  ./getcontent-duk-aws.sh --getallcontent
+  ./install/getcontent-duk-aws.sh --getallcontent
   exit 0
 fi
 
