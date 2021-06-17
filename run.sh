@@ -21,8 +21,10 @@ if [ "$CMD" == "--update" ]; then
   git pull
   echo " - (Re)install node modules"
   npm install
+  cd install/
+  ./getcontent-duk-aws.sh
+  cd ..
   echo Done.
-  ./install/getcontent-duk-aws.sh
   exit 0
 fi
 
@@ -30,7 +32,8 @@ fi
 if [ "$CMD" == "--getallcontent" ]; then
   echo " - Get content"
   cd install/
-  ./install/getcontent-duk-aws.sh --getallcontent
+  ./getcontent-duk-aws.sh --getallcontent
+  cd ..
   exit 0
 fi
 
