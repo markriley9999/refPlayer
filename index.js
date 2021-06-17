@@ -534,6 +534,7 @@ app.get("/*.html", function(req, res) {
                 version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
                 style           : v.dev === "true" ? "mvid-dev" : "mvid",
                 serverGUI       : GUI ? "true" : "false",
+                cloud           : runOptions.bCloud ? "true" : "false",
                 wienreSource    : wienreSource
             },
             function(err, html) {

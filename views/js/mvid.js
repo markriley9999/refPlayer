@@ -1,4 +1,4 @@
-/*global UTILS GLOBAL_SERVERGUI dashjs */
+/*global UTILS GLOBAL_SERVERGUI dashjs GLOBAL_CLOUD */
 
 var commonUtils = new UTILS();
 
@@ -108,7 +108,8 @@ mVid.start = function () {
     
     this.Log.info("app loaded");
 
-    this.Log.info("GLOBAL_SERVERGUI: " + GLOBAL_SERVERGUI);
+    this.Log.info("Server GUI enabled: " + GLOBAL_SERVERGUI);
+    this.Log.info("Cloud Served App: " + GLOBAL_CLOUD);
     
     this.displayBrowserInfo();
 
@@ -391,7 +392,7 @@ mVid.procPlaylist = function (ch, playObj) {
     
     var src = playObj.src;
     
-    if (!this.params.bForceLocal && playObj.baseURL) {
+    if (!GLOBAL_CLOUD && !this.params.bForceLocal && playObj.baseURL) {
         src = playObj.baseURL + src.replace("./", "");
     } 
     
@@ -430,7 +431,7 @@ mVid.procPlaylist = function (ch, playObj) {
         c[i] = {};
 
         adSrc = playObj.ads[i].src;    
-        if (!this.params.bForceLocal && playObj.baseURL) {
+        if (!GLOBAL_CLOUD && !this.params.bForceLocal && playObj.baseURL) {
             adSrc = playObj.baseURL + adSrc.replace("./", "");
         } 
 
