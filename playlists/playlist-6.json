@@ -1,4 +1,6 @@
 {
+    "baseURL"           : "https://refplayer.cloud.digitaluk.co.uk/",
+    
 	"ads" 				: [],
 	"src" 				: "./dynamic/mperiod.mpd",
 	"type" 				: "application/dash+xml",

@@ -1,10 +1,12 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "40",
-	"dev"		: "false",
+	"minor" 	: "5",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
+                    "No longer have to install all content locally!",
+                    "Added role to adaptation sets in manifests",
                     "Refactored DRM and EME",
                     "Fixed segmenttimeline segment loading issue",
                     "mp4box init fix and http setup race condition fix",

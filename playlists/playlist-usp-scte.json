@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://live.unified-streaming.com/scte35/scte35.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "true",
+	"channelName" 		: "Unified Streaming SCTE Test Stream",
+    "useEME"            : "true",
+
+	"info"				: []
+}

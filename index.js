@@ -20,7 +20,6 @@ if (!argv.headless && !argv.multidevs && !argv.cloud) {
     guiIPC      = electron.ipcMain;
 }
 
-
 const path = require("path");
 const url = require("url");
 
@@ -211,11 +210,28 @@ function mainUIClosed() {
 var runOptions = {};
 
 
-
 function init() {
     var p;
     var v = generalInfo.version;
     var i;
+
+    function checkDebugServer(opt) {
+                
+        const fn = "./debugServer.json";
+        
+        try {
+            
+            if (fs.existsSync(fn)) {
+                var o = require(fn);
+                opt.dbgServerURL = o.url;
+            }
+            
+        } catch (err) {
+            opt.dbgServerURL = null;
+        }
+
+    }
+    
     
     runOptions = {
         bMultiDevs           : !GUI,
@@ -224,9 +240,12 @@ function init() {
         logLevel             : argv.loglevel,
         timeOffset           : argv.timeoffset,
         prependContentPath   : argv.pathprepend,
-        bCloud               : argv.cloud
+        bCloud               : argv.cloud,
     };
 
+    checkDebugServer(runOptions);
+    
+    
     if (runOptions.logLevel) {
         logger.level = runOptions.logLevel;
         logger.info("--setting log level to: " + runOptions.logLevel);
@@ -275,6 +294,11 @@ function init() {
 
     if (runOptions.bCloud) {
         logger.info("--- Cloud hosting config ---");
+    }
+
+    if (runOptions.dbgServerURL) {
+        logger.info("--- Enable debugger (Weinre) --- ");
+        logger.info("   " + runOptions.dbgServerURL);
     }
 
     if (runOptions.bSegDump) {
@@ -492,11 +516,26 @@ app.get("/*.html", function(req, res) {
         var v = generalInfo.version;
         var sRelType = v.dev === "true" ? "dev" : "";
 
+        var wienreSource = "";
+        
+        if (runOptions.dbgServerURL) {
+            
+            // var wienreServer = "http" + (req.socket.encrypted ? "s" : "") + "://" + req.hostname + ":" + wienrePort  +"/target/target-script-min.js#refplayer";
+
+            var wienreServer = runOptions.dbgServerURL;
+            
+            wienreSource = "<script src='" + wienreServer +"'></script>";
+
+            logger.debug("wienreSource: " + wienreSource);
+        } 
+        
         res.render("index.hbs",
             {
                 version: "v" + generalInfo.version.major + "." + generalInfo.version.minor + sRelType,
-                style       : v.dev === "true" ? "mvid-dev" : "mvid",
-                serverGUI   : GUI ? "true" : "false"
+                style           : v.dev === "true" ? "mvid-dev" : "mvid",
+                serverGUI       : GUI ? "true" : "false",
+                cloud           : runOptions.bCloud ? "true" : "false",
+                wienreSource    : wienreSource
             },
             function(err, html) {
                 res.status(200);

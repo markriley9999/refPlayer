@@ -1,0 +1,11 @@
+{
+	"ads" 				: [],
+	"src" 				: "http://static.ott.itv-tv23.staging.vualto.com/live/ctv01/452071ea-85f4-41da-88e1-04a95381bcb1/clear-dvbdash.isml/.mpd",
+	"type" 				: "application/dash+xml",
+	"transitionTime" 	: "-1",
+	"addContentId" 		: "false",
+	"channelName" 		: "LIVE ITV (http) - Vualto",
+ 
+	"info"				: []
+
+}

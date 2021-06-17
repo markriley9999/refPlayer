@@ -1,4 +1,4 @@
-/*global UTILS GLOBAL_SERVERGUI dashjs */
+/*global UTILS GLOBAL_SERVERGUI dashjs GLOBAL_CLOUD */
 
 var commonUtils = new UTILS();
 
@@ -108,19 +108,21 @@ mVid.start = function () {
     
     this.Log.info("app loaded");
 
-    this.Log.info("GLOBAL_SERVERGUI: " + GLOBAL_SERVERGUI);
+    this.Log.info("Server GUI enabled: " + GLOBAL_SERVERGUI);
+    this.Log.info("Cloud Served App: " + GLOBAL_CLOUD);
     
     this.displayBrowserInfo();
 
     // Parse query params
-    this.params = [];
+    this.params = {   
+        overrideSubs    : commonUtils.getUrlVars()["subs"] || "",
+        bCheckResume    : commonUtils.getUrlVars()["checkresume"] || false,
+        bWindowedObjs   : commonUtils.getUrlVars()["win"] || false,
+        bEventsDump     : commonUtils.getUrlVars()["eventdump"] || false,
+        bPartialSCTE    : commonUtils.getUrlVars()["partialscte"] || false,
+        bForceLocal     : commonUtils.getUrlVars()["forcelocal"] || false
+    };
     
-    this.params.overrideSubs    = commonUtils.getUrlVars()["subs"] || "";
-    this.params.bCheckResume    = commonUtils.getUrlVars()["checkresume"] || false;
-    this.params.bWindowedObjs   = commonUtils.getUrlVars()["win"] || false; 
-    this.params.bEventsDump     = commonUtils.getUrlVars()["eventdump"] || false;
-    this.params.bPartialSCTE    = commonUtils.getUrlVars()["partialscte"] || false;
-
     this.hbbtv = window.InitHBBTVApp(this.Log);
     
     
@@ -388,10 +390,17 @@ mVid.procPlaylist = function (ch, playObj) {
         this.contentTag = commonUtils.basename(playObj.src);
     }
     
+    var src = playObj.src;
+    
+    if (!GLOBAL_CLOUD && !this.params.bForceLocal && playObj.baseURL) {
+        src = playObj.baseURL + src.replace("./", "");
+    } 
+    
+    
     if (playObj.addContentId === "false") {
-        c[lt].src = playObj.src;
+        c[lt].src = src;
     } else {
-        c[lt].src = playObj.src + "?" + commonUtils.createContentIdQueryString();
+        c[lt].src = src + "?" + commonUtils.createContentIdQueryString();
     }
     
     c[lt].type                  = playObj.type;
@@ -414,11 +423,19 @@ mVid.procPlaylist = function (ch, playObj) {
     
     var pId = "mVid-video0";
     
+    var adSrc;
+
     for (i = 0; i < lt; i++) {
         //this.Log.info("- Ad: " + i + " " + playObj.ads[i].src);   
         //this.Log.info("- Ad: " + i + " " + playObj.ads[i].type);  
         c[i] = {};
-        c[i].src                = playObj.ads[i].src;
+
+        adSrc = playObj.ads[i].src;    
+        if (!GLOBAL_CLOUD && !this.params.bForceLocal && playObj.baseURL) {
+            adSrc = playObj.baseURL + adSrc.replace("./", "");
+        } 
+
+        c[i].src                = adSrc;
         c[i].type               = playObj.ads[i].type;
         c[i].transitionTime     = -1;
         c[i].transitionOffsetMS = 0;

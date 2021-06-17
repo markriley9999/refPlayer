@@ -17,6 +17,7 @@
 	<Period duration="PT10M29.76S">
 		<AdaptationSet segmentAlignment="true" lang="en">
 			<AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="48000" startNumber="1" initialization="$RepresentationID$-$Bandwidth$/SEG.mp4">
 			
 				<SegmentTimeline>
@@ -29,6 +30,7 @@
 			</Representation>
 		</AdaptationSet>
 		<AdaptationSet segmentAlignment="true" bitstreamSwitching="true" maxWidth="1920" maxHeight="1080" maxFrameRate="25" par="16:9" lang="en">
+            <Role schemeIdUri="urn:mpeg:dash:role:2011" value="main"/>
 			<SegmentTemplate media="$RepresentationID$-$Bandwidth$/SEG$Number$.m4s" timescale="12800" startNumber="1" initialization="init/bbb-clear_set2_init.mp4">
 
 				<SegmentTimeline>
