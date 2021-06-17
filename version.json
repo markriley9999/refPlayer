@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "50",
-	"dev"		: "false",
+	"dev"		: "true",
 	"comment"	: "",
 	"notes"		: [	
                     "No longer have to install all content locally!",
