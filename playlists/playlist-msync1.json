@@ -1,4 +1,6 @@
 {
+    "baseURL"           : "https://refplayer.cloud.digitaluk.co.uk/",
+    
 	"ads" : [
 		{
 			"src" 	: "./content/adverts/itv/ads-itv.mp4", 

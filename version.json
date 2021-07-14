@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "50",
+	"minor" 	: "51",
 	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "Fixed mediasync local tests to use cloud content by default",
                     "No longer have to install all content locally!",
                     "Added role to adaptation sets in manifests",
                     "Refactored DRM and EME",
