@@ -2,7 +2,7 @@
 	"title"		: "Reference Player",
 	"major" 	: "3",
 	"minor" 	: "51",
-	"dev"		: "true",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
                     "Fixed mediasync local tests to use cloud content by default",
