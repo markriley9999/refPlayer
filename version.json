@@ -1,10 +1,11 @@
 {
 	"title"		: "Reference Player",
 	"major" 	: "3",
-	"minor" 	: "51",
-	"dev"		: "true",
+	"minor" 	: "52",
+	"dev"		: "false",
 	"comment"	: "",
 	"notes"		: [	
+                    "Media sync offset for PTS / TEMI", 
                     "Fixed mediasync local tests to use cloud content by default",
                     "No longer have to install all content locally!",
                     "Added role to adaptation sets in manifests",
