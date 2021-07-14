@@ -209,7 +209,7 @@ mVid.start = function () {
                     that.tvui.ShowTransportIcons(false);
                                         
                     if (playObj.timeline && playObj.timeline.selector) {
-                        that.broadcast.init(playObj.timeline.selector, 
+                        that.broadcast.init(playObj.timeline.selector, playObj.timeline.offsetMS,
                             function() {
                                 that.tvui.ShowMSyncIcon("msyncicon");
                             }, 
