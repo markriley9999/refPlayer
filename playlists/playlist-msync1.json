@@ -18,7 +18,8 @@
 	
 	"timeline"	: {
 		"selector"	: "urn:dvb:css:timeline:temi:11:129",
-		"fps"		: "24"
+		"fps"		: "24",
+        "offsetMS"  : "-1088"
 	},
 	
 	"info"				: [	"",

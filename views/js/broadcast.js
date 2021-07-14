@@ -15,7 +15,7 @@ window.SetupBroadcastObject = function (id, container, log)
     var bo = null;
     var mSync = null;
     var timelineSelector = null;
-    
+    var offsetMS = 0;
     
     const STATE_STOPPED         = 0;
     const STATE_WAITINGFOR_BT   = 1;
@@ -56,7 +56,7 @@ window.SetupBroadcastObject = function (id, container, log)
 
     function currentTime() {
         if (mSync) {
-            return mSync.currentTime;
+            return mSync.currentTime + (offsetMS / 1000);
         } else {
             return 0;
         }
@@ -184,8 +184,9 @@ window.SetupBroadcastObject = function (id, container, log)
             winObj = o;
         },
         
-        init: function (s, fOk, fErr) {
+        init: function (s, o, fOk, fErr) {
             timelineSelector = s;
+            offsetMS = parseInt(o) ? parseInt(o) : 0;
             
             if (createMediaSync()) {
                 fOk();

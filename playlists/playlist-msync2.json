@@ -18,7 +18,8 @@
 	
 	"timeline"	: {
 		"selector"	: "urn:dvb:css:timeline:pts",
-		"fps"		: "24"
+		"fps"       : "24",
+        "offsetMS"  : "-1083"
 	},
 	
 	"info"				: [	"",
